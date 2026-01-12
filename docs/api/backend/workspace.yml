@@ -1,0 +1,12 @@
+opencollection: 1.0.0
+info:
+  name: "ziqola-ams"
+  type: workspace
+
+collections:
+  - name: "backend"
+    path: "collections\\backend"
+
+specs:
+
+docs: ""

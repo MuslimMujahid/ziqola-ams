@@ -133,3 +133,37 @@ Learn more about the power of Turborepo:
 - [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
 - [Configuration Options](https://turborepo.com/docs/reference/configuration)
 - [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+
+## Docker + Postgres
+
+- Prerequisites: Docker Desktop installed and running.
+- Env: Copy [.env.example](.env.example) to `.env` and adjust values if needed.
+
+### Start services
+
+```sh
+docker compose up -d
+```
+
+### Stop services
+
+```sh
+docker compose down
+```
+
+### Services
+
+- Postgres: localhost on `${POSTGRES_PORT}` (default 5432)
+- Adminer UI: http://localhost:${ADMINER_PORT} (default 8080)
+	- System: PostgreSQL
+	- Server: postgres
+	- Username: `${POSTGRES_USER}`
+	- Password: `${POSTGRES_PASSWORD}`
+	- Database: `${POSTGRES_DB}`
+
+### Connection string
+
+- Local apps can use: `DATABASE_URL=postgresql://<user>:<pass>@localhost:<port>/<db>?schema=public`
+- Example (matches [.env.example](.env.example)): `postgresql://postgres:postgres@localhost:5432/ziqola_ams?schema=public`
+
+> Note: The backend currently does not include an ORM configuration. Once added (e.g., Prisma or TypeORM), point it to `DATABASE_URL` from the environment.

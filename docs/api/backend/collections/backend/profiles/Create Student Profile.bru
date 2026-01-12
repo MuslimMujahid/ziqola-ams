@@ -1,0 +1,26 @@
+meta {
+  name: Create Student Profile
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/profiles/student
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: "application/json"
+}
+
+body:json {
+  {
+    "userId": "{{userId}}",
+    "nis": "20230001",
+    "nisn": "9876543210",
+    "additionalIdentifiers": {
+      "externalId": "student-001"
+    }
+  }
+}

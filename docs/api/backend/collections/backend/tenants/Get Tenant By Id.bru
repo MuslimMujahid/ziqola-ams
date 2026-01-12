@@ -1,0 +1,11 @@
+meta {
+  name: Get Tenant By Id
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/tenants/{{tenantId}}
+  body: none
+  auth: inherit
+}

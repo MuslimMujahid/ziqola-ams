@@ -1,0 +1,607 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// =============================
+// Enums
+// =============================
+
+enum Role {
+  PRINCIPAL
+  ADMIN_STAFF
+  TEACHER
+  STUDENT
+}
+
+enum AcademicStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum PeriodStatus {
+  DRAFT
+  ARCHIVED
+}
+
+enum GroupType {
+  GRADE
+  STREAM
+  PROGRAM
+  CUSTOM
+}
+
+enum AttendanceStatus {
+  PRESENT
+  EXCUSED
+  SICK
+  ABSENT
+}
+
+enum AssessmentType {
+  ASSIGNMENT
+  QUIZ
+  MIDTERM
+  FINAL_EXAM
+  PRACTICAL
+}
+
+enum ReportCardStatus {
+  DRAFT
+  REVIEW
+  APPROVAL
+  LOCKED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum GradeLetter {
+  A
+  B
+  C
+  D
+  E
+  F
+}
+
+enum AuditEntityType {
+  GRADE
+  ATTENDANCE
+  REPORT_CARD
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  LOCK
+  APPROVE
+}
+
+// =============================
+// Core Tenant & Users
+// =============================
+
+model Tenant {
+  id                   String         @id @default(uuid())
+  name                 String
+  slug                 String         @unique
+  // Points to the currently active academic year (enforces one active per tenant at application level)
+  activeAcademicYearId String?        @unique
+  activeAcademicYear   AcademicYear?  @relation("TenantActiveAcademicYear", fields: [activeAcademicYearId], references: [id])
+
+  users                User[]
+  academicYears        AcademicYear[] @relation("TenantAcademicYears")
+  academicPeriods      AcademicPeriod[]
+  groups               Group[]
+  subjects             Subject[]
+  classes              Class[]
+  classEnrollments     ClassEnrollment[]
+  classSubjects        ClassSubject[]
+  classGroups          ClassGroup[]
+  homeroomAssignments  HomeroomAssignment[]
+  schedules            Schedule[]
+  sessions             Session[]
+  attendances          Attendance[]
+  assessmentComponents AssessmentComponent[]
+  assessmentScores     AssessmentScore[]
+  reportCards          ReportCard[]
+  reportCardSubjects   ReportCardSubject[]
+  auditLogs            AuditLog[]
+  teacherProfiles      TeacherProfile[]
+  studentProfiles      StudentProfile[]
+
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+}
+
+model User {
+  id        String   @id @default(uuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+
+  email     String
+  name      String
+  // Store a secure password hash (e.g., bcrypt)
+  passwordHash String
+  role      Role
+
+  // Optional user-level attributes
+  gender      Gender?
+  dateOfBirth DateTime?
+  phoneNumber       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Back-relations (user-level)
+  approvedReportCards         ReportCard[]          @relation("ReportCardApprovedBy")
+  auditLogs                   AuditLog[]            @relation("AuditLogActor")
+  teacherProfile              TeacherProfile?       @relation("TeacherProfileUser")
+  studentProfile              StudentProfile?       @relation("StudentProfileUser")
+
+  // Uniqueness of email is scoped per tenant
+  @@unique([tenantId, email])
+  @@index([tenantId, role])
+}
+
+// =============================
+// Role-specific Profiles
+// =============================
+
+model TeacherProfile {
+  id          String  @id @default(uuid())
+  tenantId    String
+  tenant      Tenant  @relation(fields: [tenantId], references: [id])
+
+  userId      String  @unique
+  user        User    @relation("TeacherProfileUser", fields: [userId], references: [id])
+
+  // Common Indonesian teacher identifiers (optional per tenant)
+  nip         String?
+  nuptk       String?
+  additionalIdentifiers Json?
+
+  hiredAt     DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([tenantId])
+  @@unique([tenantId, nip])
+  @@unique([tenantId, nuptk])
+
+  // Back-relations (teacher context)
+  homeroomAssignments HomeroomAssignment[] @relation("HomeroomAssignmentTeacherProfile")
+  classSubjects       ClassSubject[]        @relation("ClassSubjectTeacherProfile")
+  schedules          Schedule[]             @relation("ScheduleTeacherProfile")
+  compiledReportCards ReportCard[]          @relation("ReportCardCompiledByProfile")
+}
+
+model StudentProfile {
+  id          String  @id @default(uuid())
+  tenantId    String
+  tenant      Tenant  @relation(fields: [tenantId], references: [id])
+
+  userId      String  @unique
+  user        User    @relation("StudentProfileUser", fields: [userId], references: [id])
+
+  // Common Indonesian student identifiers (optional per tenant)
+  nis         String?
+  nisn        String?
+  additionalIdentifiers Json?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([tenantId])
+  @@unique([tenantId, nis])
+  @@unique([tenantId, nisn])
+
+  // Back-relations (student context)
+  classEnrollments ClassEnrollment[]     @relation("ClassEnrollmentStudentProfile")
+  attendances      Attendance[]          @relation("AttendanceStudentProfile")
+  assessmentScores AssessmentScore[]     @relation("AssessmentScoreStudentProfile")
+  reportCards      ReportCard[]          @relation("ReportCardStudentProfile")
+}
+
+// =============================
+// Academic Structure
+// =============================
+
+model AcademicYear {
+  id          String          @id @default(uuid())
+  tenantId    String
+  tenant      Tenant          @relation("TenantAcademicYears", fields: [tenantId], references: [id])
+  activeTenant Tenant?        @relation("TenantActiveAcademicYear")
+
+  // Label like "2025/2026"
+  label       String
+  status      AcademicStatus  @default(DRAFT)
+
+  // Optional dates for the year
+  startDate   DateTime?
+  endDate     DateTime?
+
+  // Active period (exactly one active period per year tracked via this pointer)
+  activePeriodId String?        @unique
+  activePeriod   AcademicPeriod? @relation("ActivePeriodInYear", fields: [activePeriodId], references: [id])
+
+  periods     AcademicPeriod[]
+  classes     Class[]
+  classSubjects ClassSubject[]
+  homeroomAssignments HomeroomAssignment[]
+
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([tenantId, id, status])
+}
+
+model AcademicPeriod {
+  id            String         @id @default(uuid())
+  tenantId      String
+  tenant        Tenant         @relation(fields: [tenantId], references: [id])
+  academicYearId String
+  academicYear  AcademicYear   @relation(fields: [academicYearId], references: [id])
+  activeInAcademicYear AcademicYear? @relation("ActivePeriodInYear")
+
+  name          String
+  startDate     DateTime
+  endDate       DateTime
+  orderIndex    Int
+  status        PeriodStatus   @default(DRAFT)
+
+  schedules     Schedule[]
+  sessions      Session[]
+  assessments   AssessmentComponent[]
+  reportCards   ReportCard[]
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([tenantId, academicYearId, status])
+  @@index([academicYearId, orderIndex])
+}
+
+model Class {
+  id             String        @id @default(uuid())
+  tenantId       String
+  tenant         Tenant        @relation(fields: [tenantId], references: [id])
+  academicYearId String
+  academicYear   AcademicYear  @relation(fields: [academicYearId], references: [id])
+
+  name           String
+
+  homeroomAssignments HomeroomAssignment[]
+  classGroups    ClassGroup[]
+  enrollments    ClassEnrollment[]
+  classSubjects  ClassSubject[]
+  schedules      Schedule[]
+  sessions       Session[]
+  reportCards    ReportCard[]
+
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([tenantId, academicYearId])
+  @@unique([tenantId, academicYearId, name])
+}
+
+model HomeroomAssignment {
+  id             String  @id @default(uuid())
+  tenantId       String
+  tenant         Tenant  @relation(fields: [tenantId], references: [id])
+  classId        String
+  class          Class   @relation(fields: [classId], references: [id])
+  academicYearId String
+  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
+  teacherProfileId String
+  teacherProfile   TeacherProfile @relation("HomeroomAssignmentTeacherProfile", fields: [teacherProfileId], references: [id])
+  assignedAt     DateTime @default(now())
+  // Optional end for reassignment scenario within the year
+  endedAt        DateTime?
+  isActive       Boolean  @default(true)
+
+  @@index([tenantId, academicYearId, teacherProfileId])
+  @@index([tenantId, classId, academicYearId, endedAt])
+  @@index([tenantId, classId, academicYearId, isActive])
+}
+
+model Group {
+  id        String    @id @default(uuid())
+  tenantId  String
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
+
+  name      String
+  type      GroupType
+
+  classGroups ClassGroup[]
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([tenantId, name, type])
+  @@index([tenantId, type])
+}
+
+model ClassGroup {
+  tenantId String
+  tenant   Tenant  @relation(fields: [tenantId], references: [id])
+  classId String
+  groupId String
+  class   Class   @relation(fields: [classId], references: [id])
+  group   Group   @relation(fields: [groupId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@id([classId, groupId])
+  @@index([tenantId, classId])
+}
+
+// Students are represented by users with role STUDENT.
+// Class membership is time-bounded to allow mid-year movement.
+model ClassEnrollment {
+  id        String   @id @default(uuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id])
+
+  studentProfileId String
+  studentProfile   StudentProfile @relation("ClassEnrollmentStudentProfile", fields: [studentProfileId], references: [id])
+
+  startDate DateTime
+  endDate   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, classId])
+  @@index([tenantId, studentProfileId])
+}
+
+// =============================
+// Subjects & Teaching Assignment
+// =============================
+
+model Subject {
+  id        String  @id @default(uuid())
+  tenantId  String
+  tenant    Tenant  @relation(fields: [tenantId], references: [id])
+  name      String
+  classSubjects ClassSubject[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, name])
+}
+
+model ClassSubject {
+  id             String   @id @default(uuid())
+  tenantId       String
+  tenant         Tenant   @relation(fields: [tenantId], references: [id])
+  classId        String
+  class          Class    @relation(fields: [classId], references: [id])
+  academicYearId String
+  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
+  subjectId      String
+  subject        Subject  @relation(fields: [subjectId], references: [id])
+  teacherProfileId String
+  teacherProfile   TeacherProfile @relation("ClassSubjectTeacherProfile", fields: [teacherProfileId], references: [id])
+
+  schedules      Schedule[]
+  sessions       Session[]
+  assessments    AssessmentComponent[]
+  reportCardSubjects ReportCardSubject[]
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([classId, academicYearId, subjectId])
+  @@index([tenantId, teacherProfileId])
+}
+
+// =============================
+// Scheduling & Sessions
+// =============================
+
+model Schedule {
+  id              String   @id @default(uuid())
+  tenantId        String
+  tenant          Tenant   @relation(fields: [tenantId], references: [id])
+  classId         String
+  class           Class    @relation(fields: [classId], references: [id])
+  academicPeriodId String
+  academicPeriod  AcademicPeriod @relation(fields: [academicPeriodId], references: [id])
+  classSubjectId  String
+  classSubject    ClassSubject @relation(fields: [classSubjectId], references: [id])
+  // Denormalized teacher profile to enable DB-level conflict constraints
+  teacherProfileId String
+  teacherProfile   TeacherProfile @relation("ScheduleTeacherProfile", fields: [teacherProfileId], references: [id])
+
+  dayOfWeek       Int      // 1 (Monday) .. 7 (Sunday)
+  startTime       DateTime // Use time component; application can standardize to time-only
+  endTime         DateTime
+
+  sessions        Session[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([tenantId, classId, academicPeriodId])
+  // Prevent exact start-time collisions for a teacher within a period/day
+  @@unique([teacherProfileId, academicPeriodId, dayOfWeek, startTime])
+}
+
+model Session {
+  id             String   @id @default(uuid())
+  tenantId       String
+  tenant         Tenant   @relation(fields: [tenantId], references: [id])
+  classId        String
+  class          Class    @relation(fields: [classId], references: [id])
+  academicPeriodId String?
+  academicPeriod AcademicPeriod? @relation(fields: [academicPeriodId], references: [id])
+  classSubjectId String
+  classSubject   ClassSubject @relation(fields: [classSubjectId], references: [id])
+  scheduleId     String?
+  schedule       Schedule? @relation(fields: [scheduleId], references: [id])
+
+  date           DateTime
+  startTime      DateTime
+  endTime        DateTime
+
+  attendance     Attendance[]
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([tenantId, classId, classSubjectId])
+  @@index([tenantId, date])
+}
+
+model Attendance {
+  id         String           @id @default(uuid())
+  tenantId   String
+  tenant     Tenant           @relation(fields: [tenantId], references: [id])
+  sessionId  String
+  session    Session          @relation(fields: [sessionId], references: [id])
+  studentProfileId  String
+  studentProfile    StudentProfile @relation("AttendanceStudentProfile", fields: [studentProfileId], references: [id])
+  status     AttendanceStatus
+  remarks    String?
+
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@unique([sessionId, studentProfileId])
+  @@index([tenantId, studentProfileId])
+}
+
+// =============================
+// Assessment & Grading
+// =============================
+
+model AssessmentComponent {
+  id               String          @id @default(uuid())
+  tenantId         String
+  tenant           Tenant          @relation(fields: [tenantId], references: [id])
+  classSubjectId   String
+  classSubject     ClassSubject    @relation(fields: [classSubjectId], references: [id])
+  academicPeriodId String
+  academicPeriod   AcademicPeriod  @relation(fields: [academicPeriodId], references: [id])
+
+  type             AssessmentType
+  name             String          // Optional descriptor override
+  weight           Int             // Percentage weight, must total 100 per classSubject+period (app-level validation)
+
+  scores           AssessmentScore[]
+
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@unique([classSubjectId, academicPeriodId, type])
+}
+
+model AssessmentScore {
+  id          String   @id @default(uuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  componentId String
+  component   AssessmentComponent @relation(fields: [componentId], references: [id])
+  studentProfileId   String
+  studentProfile     StudentProfile     @relation("AssessmentScoreStudentProfile", fields: [studentProfileId], references: [id])
+
+  score       Decimal  @db.Decimal(5,2)
+  isLocked    Boolean  @default(false)
+  lockedAt    DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([componentId, studentProfileId])
+  @@index([tenantId, studentProfileId])
+}
+
+// =============================
+// Report Card
+// =============================
+
+model ReportCard {
+  id               String           @id @default(uuid())
+  tenantId         String
+  tenant           Tenant           @relation(fields: [tenantId], references: [id])
+
+  studentProfileId        String
+  studentProfile          StudentProfile             @relation("ReportCardStudentProfile", fields: [studentProfileId], references: [id])
+
+  classId          String
+  clazz            Class            @relation(fields: [classId], references: [id])
+
+  academicPeriodId String
+  academicPeriod   AcademicPeriod   @relation(fields: [academicPeriodId], references: [id])
+
+  status           ReportCardStatus @default(DRAFT)
+  lockedAt         DateTime?
+  approvedById     String?
+  approvedBy       User?            @relation("ReportCardApprovedBy", fields: [approvedById], references: [id])
+  compiledByProfileId     String?
+  compiledByProfile       TeacherProfile?            @relation("ReportCardCompiledByProfile", fields: [compiledByProfileId], references: [id])
+  compiledAt       DateTime?
+
+  subjects         ReportCardSubject[]
+
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@unique([studentProfileId, academicPeriodId])
+  @@index([tenantId, classId])
+}
+
+model ReportCardSubject {
+  id              String       @id @default(uuid())
+  tenantId        String
+  tenant          Tenant       @relation(fields: [tenantId], references: [id])
+  reportCardId    String
+  reportCard      ReportCard   @relation(fields: [reportCardId], references: [id])
+  classSubjectId  String
+  classSubject    ClassSubject @relation(fields: [classSubjectId], references: [id])
+
+  numericScore    Decimal      @db.Decimal(5,2)
+  gradeLetter     GradeLetter
+  description     String?
+
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@unique([reportCardId, classSubjectId])
+  @@index([tenantId, reportCardId])
+}
+
+// =============================
+// Auditing
+// =============================
+
+model AuditLog {
+  id          String          @id @default(uuid())
+  tenantId    String
+  tenant      Tenant          @relation(fields: [tenantId], references: [id])
+  entityType  AuditEntityType
+  entityId    String
+  action      AuditAction
+  actorId     String
+  actor       User            @relation("AuditLogActor", fields: [actorId], references: [id])
+  timestamp   DateTime        @default(now())
+  metadata    Json?
+
+  @@index([tenantId, entityType, entityId])
+}

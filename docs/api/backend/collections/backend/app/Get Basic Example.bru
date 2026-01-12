@@ -1,0 +1,15 @@
+meta {
+  name: Get Basic Example
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/example/basic
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: "{{accessToken}}"
+}

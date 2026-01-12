@@ -1,0 +1,17 @@
+meta {
+  name: Create Tenant
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/tenants
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Example School"
+  }
+}

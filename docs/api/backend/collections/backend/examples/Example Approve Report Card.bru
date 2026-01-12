@@ -1,0 +1,11 @@
+meta {
+  name: Example Approve Report Card
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/examples/report-cards/{{reportCardId}}/approve
+  body: json
+  auth: inherit
+}

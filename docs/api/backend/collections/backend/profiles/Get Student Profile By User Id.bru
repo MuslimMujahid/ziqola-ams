@@ -1,0 +1,11 @@
+meta {
+  name: Get Student Profile By User Id
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/profiles/student/user/{{userId}}
+  body: none
+  auth: inherit
+}

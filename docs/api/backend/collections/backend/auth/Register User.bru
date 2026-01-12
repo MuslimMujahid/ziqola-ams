@@ -1,0 +1,28 @@
+meta {
+  name: Register User
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: "application/json"
+}
+
+body:json {
+  {
+    "tenantId": "{{tenantId}}",
+    "email": "new.user@example.com",
+    "password": "Password123",
+    "name": "New User",
+    "role": "ADMIN_STAFF",
+    "gender": "MALE",
+    "dateOfBirth": "2000-01-01",
+    "phoneNumber": "+628123456789"
+  }
+}

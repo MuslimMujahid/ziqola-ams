@@ -1,0 +1,26 @@
+meta {
+  name: Update Teacher Profile
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/profiles/teacher/{{teacherProfileId}}
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: "application/json"
+}
+
+body:json {
+  {
+    "nip": "1234567890",
+    "nuptk": "1122334455",
+    "hiredAt": "2022-06-15",
+    "additionalIdentifiers": {
+      "externalId": "teacher-001"
+    }
+  }
+}

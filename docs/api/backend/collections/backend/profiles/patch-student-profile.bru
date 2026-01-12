@@ -1,0 +1,25 @@
+meta {
+  name: "Update Student Profile"
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{baseUrl}}/profiles/student/{{studentProfileId}}
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: "application/json"
+}
+
+body:json {
+  {
+    "nis": "20230001",
+    "nisn": "9876543210",
+    "additionalIdentifiers": {
+      "externalId": "student-001"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+meta {
+  name: Get Teacher Profile By User Id
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/profiles/teacher/user/{{userId}}
+  body: none
+  auth: inherit
+}

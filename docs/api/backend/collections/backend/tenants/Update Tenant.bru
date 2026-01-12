@@ -1,0 +1,21 @@
+meta {
+  name: Update Tenant
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/tenants/{{tenantId}}
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: "application/json"
+}
+
+body:json {
+  {
+    "name": "Updated School Name"
+  }
+}

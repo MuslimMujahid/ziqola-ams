@@ -1,0 +1,46 @@
+meta {
+  name: Login
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "teacher1@demo.school",
+    "password": "password123",
+    "tenantId": "83f83055-bf1e-497d-be54-b7e6b485c903"
+  }
+}
+
+body:text {
+  {
+    ""
+  }
+}
+
+body:form-urlencoded {
+  tenantId: 83f83055-bf1e-497d-be54-b7e6b485c903
+  email: teacher1@demo.school
+  password: password123
+}
+
+body:multipart-form {
+  email: teacher1@demo.school
+  password: password123
+  tenantId: 83f83055-bf1e-497d-be54-b7e6b485c903
+}
+
+script:post-response {
+  
+  if (res.body.success) {
+    const data = res.body.data
+    bru.setEnvVar("accessToken", data.accessToken)
+    bru.setEnvVar("tenantId", data.user.tenantId)
+  }
+}
