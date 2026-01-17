@@ -76,6 +76,50 @@ const { data: stats } = useQuery({
 });
 ```
 
+## Server-Only Utilities (Avoid Vite Import Errors)
+
+Vite will fail to resolve TanStack Start virtual modules if server-only
+utilities are imported from client-reachable modules.
+
+Follow these rules:
+
+- NEVER import from `@tanstack/react-start/server` in route components or any
+  shared module that can be bundled for the client.
+- Put server-only helpers in `*.server.ts` modules and import them only from
+  other server-only files.
+- If a server helper must be used inside a server function, wrap it with
+  `createServerOnlyFn`.
+- As a fallback, dynamically import server-only utilities inside server
+  function handlers.
+
+```typescript
+// ✅ server-only module: session.server.ts
+import { useSession } from "@tanstack/react-start/server";
+
+export const useAppSession = async () => {
+  return await useSession({ name: "app" });
+};
+
+// ✅ client-reachable file: import server function only
+import { login } from "@/lib/services/server/auth.functions";
+
+// ✅ server-only wrapper for utilities
+import { createServerOnlyFn } from "@tanstack/react-start";
+import { getRequestHeader } from "@tanstack/react-start/server";
+
+export const getRequestHeaderServer = createServerOnlyFn((name: string) =>
+  getRequestHeader(name),
+);
+
+// ✅ dynamic import fallback inside server function
+export const authCallback = createServerFn({ method: "GET" }).handler(
+  async () => {
+    const { getRequestUrl } = await import("@tanstack/react-start/server");
+    return getRequestUrl();
+  },
+);
+```
+
 ## Zod Validation
 
 Always validate external data. Define schemas in `src/lib/schemas.ts`:

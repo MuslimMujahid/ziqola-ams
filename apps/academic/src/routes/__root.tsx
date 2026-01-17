@@ -1,3 +1,4 @@
+import React from "react";
 import {
   HeadContent,
   Scripts,
@@ -6,14 +7,14 @@ import {
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 
-import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
+import { tanstackQueryDevtools } from "@/integrations/tanstack-query/devtools";
 
-import appCss from "../styles.css?url";
+import appCss from "@/styles.css?url";
 
 import type { QueryClient } from "@tanstack/react-query";
 import type { AuthUser } from "@/lib/services/api/auth";
 
-interface MyRouterContext {
+type MyRouterContext = {
   queryClient: QueryClient;
   auth: {
     accessToken: string | null;
@@ -21,7 +22,7 @@ interface MyRouterContext {
     isAuthenticated: boolean;
     hydrated: boolean;
   };
-}
+};
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   head: () => ({
@@ -65,7 +66,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               name: "Tanstack Router",
               render: <TanStackRouterDevtoolsPanel />,
             },
-            TanStackQueryDevtools,
+            tanstackQueryDevtools,
           ]}
         />
         <Scripts />

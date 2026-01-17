@@ -7,13 +7,13 @@ import { useLogout } from "@/lib/services/api/auth/use-logout";
 export const Route = createFileRoute("/_authed/_layout")({
   component: AppLayout,
   errorComponent: ({ error }: { error: Error }) => (
-    <div className="min-h-screen p-6 text-red-600">
+    <div className="min-h-screen p-6 text-error">
       Terjadi kesalahan: {error.message}
     </div>
   ),
   pendingComponent: () => (
     <div className="flex min-h-screen items-center justify-center">
-      <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-slate-900" />
+      <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-ink-strong" />
     </div>
   ),
 });
@@ -28,7 +28,7 @@ function AppLayout() {
   if (!hydrated || meQuery.isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-slate-900" />
+        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-ink-strong" />
       </div>
     );
   }
@@ -39,14 +39,14 @@ function AppLayout() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-slate-200/80 bg-white shadow-sm">
+      <header className="border-b border-border/80 bg-surface-contrast shadow-sm">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div>
-            <div className="text-lg font-semibold text-slate-900">Ziqola</div>
-            <div className="text-xs text-slate-500">Dashboard Akademik</div>
+            <div className="text-lg font-semibold text-ink-strong">Ziqola</div>
+            <div className="text-xs text-ink-muted">Dashboard Akademik</div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-sm text-slate-600">
+            <div className="text-sm text-ink-muted">
               {user?.name ?? user?.email}
             </div>
             <Button

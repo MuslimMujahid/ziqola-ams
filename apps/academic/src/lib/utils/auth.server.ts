@@ -4,7 +4,7 @@ import type {
   MeResponse,
 } from "@/lib/services/api/auth";
 import type { AuthUser } from "@/lib/services/api/auth";
-import { useAppSession } from "@/lib/utils/session";
+import { useAppSession } from "@/lib/utils/session.server";
 import { isApiError, serverApi } from "../services/api";
 
 export async function loginAndCreateSession(data: LoginVars) {

@@ -85,7 +85,7 @@ export function LoginForm() {
       {serverError ? (
         <div
           role="alert"
-          className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+          className="rounded-md border border-error/20 bg-error/10 px-4 py-3 text-sm text-error"
         >
           {serverError}
         </div>
@@ -101,7 +101,7 @@ export function LoginForm() {
             />
           )}
         </form.AppField>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-ink-muted">
           Gunakan kode sekolah yang diberikan admin.
         </p>
       </div>
@@ -119,7 +119,7 @@ export function LoginForm() {
             />
           )}
         </form.AppField>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-ink-muted">
           Pilih peran sesuai akun Anda di sekolah.
         </p>
       </div>

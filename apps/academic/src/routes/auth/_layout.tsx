@@ -17,13 +17,13 @@ export const Route = createFileRoute("/auth/_layout")({
     }
   },
   errorComponent: ({ error }: { error: Error }) => (
-    <div className="min-h-screen p-6 text-red-600">
+    <div className="min-h-screen p-6 text-error">
       Terjadi kesalahan: {error.message}
     </div>
   ),
   pendingComponent: () => (
     <div className="flex min-h-screen items-center justify-center">
-      <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-slate-900" />
+      <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-ink-strong" />
     </div>
   ),
 });
@@ -33,8 +33,8 @@ function AuthLayout() {
     <div className="min-h-screen bg-background px-6 py-12">
       <div className="mx-auto flex w-full max-w-md flex-col items-center gap-6">
         <div className="text-center">
-          <div className="text-3xl font-semibold text-slate-900">Ziqola</div>
-          <p className="mt-2 text-sm text-slate-600">
+          <div className="text-3xl font-semibold text-ink-strong">Ziqola</div>
+          <p className="mt-2 text-sm text-ink-muted">
             Solusi Cerdas untuk Sekolah Modern
           </p>
         </div>
@@ -43,7 +43,7 @@ function AuthLayout() {
           <Outlet />
         </AuthCard>
 
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-ink-muted">
           Butuh bantuan? Hubungi admin sekolah Anda.
         </p>
       </div>
