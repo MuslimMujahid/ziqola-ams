@@ -31,7 +31,11 @@ export enum Permission {
   ACADEMIC_YEAR_ACTIVATE = "ACADEMIC_YEAR_ACTIVATE",
 
   // Academic Period Management
+  ACADEMIC_PERIOD_READ = "ACADEMIC_PERIOD_READ",
   ACADEMIC_PERIOD_CREATE = "ACADEMIC_PERIOD_CREATE",
+  ACADEMIC_PERIOD_UPDATE = "ACADEMIC_PERIOD_UPDATE",
+  ACADEMIC_PERIOD_DELETE = "ACADEMIC_PERIOD_DELETE",
+  ACADEMIC_PERIOD_ACTIVATE = "ACADEMIC_PERIOD_ACTIVATE",
 
   // Class Management
   CLASS_READ = "CLASS_READ",
@@ -119,7 +123,11 @@ export const DefaultRolePermissions: Record<string, Permission[]> = {
     Permission.AUDIT_READ,
     // Academic oversight
     Permission.ACADEMIC_YEAR_ACTIVATE,
+    Permission.ACADEMIC_PERIOD_READ,
     Permission.ACADEMIC_PERIOD_CREATE,
+    Permission.ACADEMIC_PERIOD_UPDATE,
+    Permission.ACADEMIC_PERIOD_DELETE,
+    Permission.ACADEMIC_PERIOD_ACTIVATE,
     Permission.REPORT_CARD_APPROVE,
     Permission.REPORT_CARD_LOCK,
     // Can update tenant settings
@@ -150,7 +158,12 @@ export const DefaultRolePermissions: Record<string, Permission[]> = {
     Permission.ACADEMIC_YEAR_CREATE,
     Permission.ACADEMIC_YEAR_UPDATE,
     Permission.ACADEMIC_YEAR_DELETE,
+    Permission.ACADEMIC_YEAR_ACTIVATE,
+    Permission.ACADEMIC_PERIOD_READ,
     Permission.ACADEMIC_PERIOD_CREATE,
+    Permission.ACADEMIC_PERIOD_UPDATE,
+    Permission.ACADEMIC_PERIOD_DELETE,
+    Permission.ACADEMIC_PERIOD_ACTIVATE,
     // Class management
     Permission.CLASS_READ,
     Permission.CLASS_CREATE,

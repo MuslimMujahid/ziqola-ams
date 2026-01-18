@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_authed/dashboard/teacher")({
+export const Route = createFileRoute("/_authed/dashboard/_topnavs/teacher")({
   component: TeacherDashboardPage,
   errorComponent: ({ error }: { error: Error }) => (
     <div className="p-6 text-error">Terjadi kesalahan: {error.message}</div>

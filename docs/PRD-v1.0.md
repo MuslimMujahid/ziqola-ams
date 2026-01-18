@@ -245,6 +245,9 @@ Roles represent a **user’s primary identity** within a tenant. Roles are globa
 - Exactly **one active tahun ajaran per tenant**
 - Status: Draft, Active, Archived
 - A Tahun Ajaran contains **configurable Academic Periods**
+- New Academic Year can only start **after the latest Academic Period** ends
+- Date ranges **must not overlap** with other Academic Years
+- Activation is **explicit** (user chooses whether a new year becomes Active)
 
 ### 5.1.1 Academic Periods (Configurable)
 
@@ -256,10 +259,14 @@ Academic Periods represent instructional periods within a Tahun Ajaran.
   - Name (e.g., "Semester 1")
   - Start date
   - End date
-  - Order index
   - Status: Draft, Active, Archived
 
+- Date ranges **must not overlap** within the same Academic Year (including archived periods)
+- Each period start date must be **after** the previous period end date
+- Period order is derived from the date range (start date, then end date)
+
 - Exactly one Academic Period may be Active at a time
+- Activation is **explicit** (user chooses whether a new period becomes Active)
 - Used consistently by:
   - Schedules
   - Attendance

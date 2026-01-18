@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { z } from "zod";
 import { AnimatePresence, motion } from "motion/react";
 import { formOptions, useStore } from "@tanstack/react-form";
@@ -133,8 +132,6 @@ export function AcademicSetupWizard() {
           label: value.year.label,
           startDate: value.year.startDate || undefined,
           endDate: value.year.endDate || undefined,
-          makeActive: true,
-          status: "ACTIVE",
         },
         period: {
           name: value.period.name,

@@ -11,7 +11,7 @@ import {
 export function successResponse<T>(
   data: T,
   message = "Success",
-  statusCode = 200
+  statusCode = 200,
 ): SuccessResponseDto<T> {
   return new SuccessResponseDto(data, message, statusCode);
 }
@@ -23,7 +23,7 @@ export function paginatedResponse<T>(
   data: T[],
   query?: PaginationMetaQuery,
   message = "Success",
-  statusCode = 200
+  statusCode = 200,
 ): PaginatedResponseDto<T> {
   const meta = new PaginationMeta(query);
   return new PaginatedResponseDto(data, meta, message, statusCode);
@@ -37,4 +37,5 @@ export interface PaginationQuery {
   limit?: number;
   sort?: string;
   order?: "asc" | "desc";
+  total?: number;
 }

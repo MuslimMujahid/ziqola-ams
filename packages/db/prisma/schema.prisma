@@ -19,7 +19,6 @@ enum Role {
 }
 
 enum AcademicStatus {
-  DRAFT
   ACTIVE
   ARCHIVED
 }
@@ -226,7 +225,7 @@ model AcademicYear {
 
   // Label like "2025/2026"
   label       String
-  status      AcademicStatus  @default(DRAFT)
+  status      AcademicStatus  @default(ACTIVE)
 
   // Optional dates for the year
   startDate   DateTime?
@@ -243,8 +242,10 @@ model AcademicYear {
 
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
+  deletedAt   DateTime?
 
   @@index([tenantId, id, status])
+  @@index([tenantId, deletedAt])
 }
 
 model AcademicPeriod {

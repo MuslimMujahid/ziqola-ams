@@ -23,6 +23,7 @@ export interface PaginationMetaQuery {
   limit?: number;
   sort?: string;
   order?: "asc" | "desc";
+  total?: number;
 }
 
 export class PaginationMeta {
@@ -30,12 +31,14 @@ export class PaginationMeta {
   limit: number;
   sort: string;
   order: string;
+  total: number;
 
   constructor(query?: PaginationMetaQuery) {
     this.offset = query?.offset ?? 0;
     this.limit = query?.limit ?? 10;
     this.sort = query?.sort ?? "createdAt";
     this.order = query?.order ?? "desc";
+    this.total = query?.total ?? 0;
   }
 }
 
@@ -53,7 +56,7 @@ export class PaginatedResponseDto<T = any> {
     data: T[],
     meta: PaginationMeta,
     message = "Success",
-    statusCode = 200
+    statusCode = 200,
   ) {
     this.message = message;
     this.statusCode = statusCode;

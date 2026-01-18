@@ -11,6 +11,10 @@ export function useCreateAcademicPeriod() {
       createAcademicPeriod(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: academicQueryKeys.context() });
+      queryClient.invalidateQueries({
+        queryKey: academicQueryKeys.periods(),
+        exact: false,
+      });
     },
   });
 }

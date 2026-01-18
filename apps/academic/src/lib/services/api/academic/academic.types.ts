@@ -1,6 +1,10 @@
-import type { ApiResponse } from "@/lib/services/api/api.types";
+import type {
+  ApiListResponse,
+  ApiResponse,
+  QueryParams,
+} from "@/lib/services/api/api.types";
 
-type AcademicYearStatus = "DRAFT" | "ACTIVE" | "ARCHIVED";
+type AcademicYearStatus = "ACTIVE" | "ARCHIVED";
 type AcademicPeriodStatus = "DRAFT" | "ARCHIVED";
 
 type AcademicYear = {
@@ -47,8 +51,22 @@ type CreateAcademicYearVars = {
   label: string;
   startDate?: string;
   endDate?: string;
-  status?: AcademicYearStatus;
   makeActive?: boolean;
+};
+
+type UpdateAcademicYearVars = {
+  id: string;
+  label?: string;
+  startDate?: string;
+  endDate?: string;
+};
+
+type ActivateAcademicYearVars = {
+  id: string;
+};
+
+type DeleteAcademicYearVars = {
+  id: string;
 };
 
 type CreateAcademicPeriodVars = {
@@ -57,7 +75,6 @@ type CreateAcademicPeriodVars = {
   startDate?: string;
   endDate?: string;
   status?: AcademicPeriodStatus;
-  orderIndex?: number;
   makeActive?: boolean;
 };
 
@@ -77,8 +94,30 @@ type AcademicSetup = {
 };
 
 type AcademicContextResponse = ApiResponse<AcademicContext>;
+type GetAcademicYearsVars = QueryParams<{ status?: AcademicYearStatus }>;
+type GetAcademicYearsResponse = ApiListResponse<AcademicYear>;
+type GetAcademicPeriodsVars = QueryParams<{
+  academicYearId?: string;
+  status?: AcademicPeriodStatus;
+}>;
+type GetAcademicPeriodsResponse = ApiListResponse<AcademicPeriod>;
 type CreateAcademicYearResponse = ApiResponse<AcademicYear>;
+type UpdateAcademicYearResponse = ApiResponse<AcademicYear>;
+type ActivateAcademicYearResponse = ApiResponse<AcademicYear>;
+type DeleteAcademicYearResponse = ApiResponse<AcademicYear>;
 type CreateAcademicPeriodResponse = ApiResponse<AcademicPeriod>;
+type UpdateAcademicPeriodVars = {
+  id: string;
+  name?: string;
+  startDate?: string;
+  endDate?: string;
+  status?: AcademicPeriodStatus;
+};
+type UpdateAcademicPeriodResponse = ApiResponse<AcademicPeriod>;
+type ActivateAcademicPeriodVars = {
+  id: string;
+};
+type ActivateAcademicPeriodResponse = ApiResponse<AcademicPeriod>;
 type CreateAcademicSetupResponse = ApiResponse<AcademicSetup>;
 type CreateAcademicOnboardingResponse = ApiResponse<AcademicSetup>;
 
@@ -89,13 +128,27 @@ export type {
   AcademicPeriodStatus,
   AcademicContext,
   AcademicContextResponse,
+  ActivateAcademicYearResponse,
+  ActivateAcademicYearVars,
+  DeleteAcademicYearResponse,
+  DeleteAcademicYearVars,
   CreateAcademicYearVars,
   CreateAcademicPeriodVars,
   CreateAcademicSetupVars,
   CreateAcademicOnboardingVars,
   AcademicSetup,
   CreateAcademicYearResponse,
+  UpdateAcademicYearResponse,
+  UpdateAcademicYearVars,
+  GetAcademicYearsVars,
+  GetAcademicYearsResponse,
+  GetAcademicPeriodsVars,
+  GetAcademicPeriodsResponse,
   CreateAcademicPeriodResponse,
+  UpdateAcademicPeriodVars,
+  UpdateAcademicPeriodResponse,
+  ActivateAcademicPeriodVars,
+  ActivateAcademicPeriodResponse,
   CreateAcademicSetupResponse,
   CreateAcademicOnboardingResponse,
 };

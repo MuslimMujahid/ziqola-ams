@@ -158,7 +158,8 @@ export const AcademicYearScalarFieldEnum = {
   endDate: 'endDate',
   activePeriodId: 'activePeriodId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type AcademicYearScalarFieldEnum = (typeof AcademicYearScalarFieldEnum)[keyof typeof AcademicYearScalarFieldEnum]

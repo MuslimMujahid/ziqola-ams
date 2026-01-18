@@ -16,7 +16,7 @@ export const Route = createFileRoute("/_authed")({
     const role = user.role;
     if (role && location.pathname.startsWith("/dashboard")) {
       const context = await getAcademicContextFn();
-      const needsSetup = !context?.year || !context?.period;
+      const needsSetup = !context?.year;
 
       if (needsSetup) {
         throw redirect({
@@ -25,8 +25,12 @@ export const Route = createFileRoute("/_authed")({
       }
 
       const dashboardRoute = getDashboardRoute(role);
+      const isDashboardRoute = location.pathname === dashboardRoute;
+      const isDashboardSubRoute = location.pathname.startsWith(
+        `${dashboardRoute}/`,
+      );
 
-      if (location.pathname !== dashboardRoute) {
+      if (!isDashboardRoute && !isDashboardSubRoute) {
         throw redirect({
           to: dashboardRoute,
         });

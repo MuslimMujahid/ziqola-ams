@@ -20,7 +20,6 @@ export type Role = (typeof Role)[keyof typeof Role]
 
 
 export const AcademicStatus = {
-  DRAFT: 'DRAFT',
   ACTIVE: 'ACTIVE',
   ARCHIVED: 'ARCHIVED'
 } as const
