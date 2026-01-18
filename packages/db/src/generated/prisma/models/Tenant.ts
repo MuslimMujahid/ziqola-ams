@@ -28,6 +28,7 @@ export type TenantMinAggregateOutputType = {
   id: string | null
   name: string | null
   slug: string | null
+  educationLevel: string | null
   activeAcademicYearId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -37,6 +38,7 @@ export type TenantMaxAggregateOutputType = {
   id: string | null
   name: string | null
   slug: string | null
+  educationLevel: string | null
   activeAcademicYearId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -46,6 +48,7 @@ export type TenantCountAggregateOutputType = {
   id: number
   name: number
   slug: number
+  educationLevel: number
   activeAcademicYearId: number
   createdAt: number
   updatedAt: number
@@ -57,6 +60,7 @@ export type TenantMinAggregateInputType = {
   id?: true
   name?: true
   slug?: true
+  educationLevel?: true
   activeAcademicYearId?: true
   createdAt?: true
   updatedAt?: true
@@ -66,6 +70,7 @@ export type TenantMaxAggregateInputType = {
   id?: true
   name?: true
   slug?: true
+  educationLevel?: true
   activeAcademicYearId?: true
   createdAt?: true
   updatedAt?: true
@@ -75,6 +80,7 @@ export type TenantCountAggregateInputType = {
   id?: true
   name?: true
   slug?: true
+  educationLevel?: true
   activeAcademicYearId?: true
   createdAt?: true
   updatedAt?: true
@@ -157,6 +163,7 @@ export type TenantGroupByOutputType = {
   id: string
   name: string
   slug: string
+  educationLevel: string | null
   activeAcademicYearId: string | null
   createdAt: Date
   updatedAt: Date
@@ -187,6 +194,7 @@ export type TenantWhereInput = {
   id?: Prisma.StringFilter<"Tenant"> | string
   name?: Prisma.StringFilter<"Tenant"> | string
   slug?: Prisma.StringFilter<"Tenant"> | string
+  educationLevel?: Prisma.StringNullableFilter<"Tenant"> | string | null
   activeAcademicYearId?: Prisma.StringNullableFilter<"Tenant"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
@@ -217,6 +225,7 @@ export type TenantOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  educationLevel?: Prisma.SortOrderInput | Prisma.SortOrder
   activeAcademicYearId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -251,6 +260,7 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.TenantWhereInput[]
   NOT?: Prisma.TenantWhereInput | Prisma.TenantWhereInput[]
   name?: Prisma.StringFilter<"Tenant"> | string
+  educationLevel?: Prisma.StringNullableFilter<"Tenant"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   activeAcademicYear?: Prisma.XOR<Prisma.AcademicYearNullableScalarRelationFilter, Prisma.AcademicYearWhereInput> | null
@@ -280,6 +290,7 @@ export type TenantOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  educationLevel?: Prisma.SortOrderInput | Prisma.SortOrder
   activeAcademicYearId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -295,6 +306,7 @@ export type TenantScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
   name?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
+  educationLevel?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   activeAcademicYearId?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Tenant"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Tenant"> | Date | string
@@ -304,6 +316,7 @@ export type TenantCreateInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -333,6 +346,7 @@ export type TenantUncheckedCreateInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -362,6 +376,7 @@ export type TenantUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -391,6 +406,7 @@ export type TenantUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -420,6 +436,7 @@ export type TenantCreateManyInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -429,6 +446,7 @@ export type TenantUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -437,6 +455,7 @@ export type TenantUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -446,6 +465,7 @@ export type TenantCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  educationLevel?: Prisma.SortOrder
   activeAcademicYearId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -455,6 +475,7 @@ export type TenantMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  educationLevel?: Prisma.SortOrder
   activeAcademicYearId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -464,6 +485,7 @@ export type TenantMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  educationLevel?: Prisma.SortOrder
   activeAcademicYearId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -483,12 +505,12 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
 }
 
 export type TenantCreateNestedOneWithoutUsersInput = {
@@ -807,6 +829,7 @@ export type TenantCreateWithoutUsersInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -835,6 +858,7 @@ export type TenantUncheckedCreateWithoutUsersInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -879,6 +903,7 @@ export type TenantUpdateWithoutUsersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -907,6 +932,7 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -935,6 +961,7 @@ export type TenantCreateWithoutTeacherProfilesInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -963,6 +990,7 @@ export type TenantUncheckedCreateWithoutTeacherProfilesInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1007,6 +1035,7 @@ export type TenantUpdateWithoutTeacherProfilesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -1035,6 +1064,7 @@ export type TenantUncheckedUpdateWithoutTeacherProfilesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1063,6 +1093,7 @@ export type TenantCreateWithoutStudentProfilesInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -1091,6 +1122,7 @@ export type TenantUncheckedCreateWithoutStudentProfilesInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1135,6 +1167,7 @@ export type TenantUpdateWithoutStudentProfilesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -1163,6 +1196,7 @@ export type TenantUncheckedUpdateWithoutStudentProfilesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1191,6 +1225,7 @@ export type TenantCreateWithoutAcademicYearsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -1219,6 +1254,7 @@ export type TenantUncheckedCreateWithoutAcademicYearsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1252,6 +1288,7 @@ export type TenantCreateWithoutActiveAcademicYearInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
@@ -1280,6 +1317,7 @@ export type TenantUncheckedCreateWithoutActiveAcademicYearInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
@@ -1324,6 +1362,7 @@ export type TenantUpdateWithoutAcademicYearsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -1352,6 +1391,7 @@ export type TenantUncheckedUpdateWithoutAcademicYearsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1391,6 +1431,7 @@ export type TenantUpdateWithoutActiveAcademicYearInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
@@ -1419,6 +1460,7 @@ export type TenantUncheckedUpdateWithoutActiveAcademicYearInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
@@ -1447,6 +1489,7 @@ export type TenantCreateWithoutAcademicPeriodsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -1475,6 +1518,7 @@ export type TenantUncheckedCreateWithoutAcademicPeriodsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1519,6 +1563,7 @@ export type TenantUpdateWithoutAcademicPeriodsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -1547,6 +1592,7 @@ export type TenantUncheckedUpdateWithoutAcademicPeriodsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1575,6 +1621,7 @@ export type TenantCreateWithoutClassesInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -1603,6 +1650,7 @@ export type TenantUncheckedCreateWithoutClassesInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1647,6 +1695,7 @@ export type TenantUpdateWithoutClassesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -1675,6 +1724,7 @@ export type TenantUncheckedUpdateWithoutClassesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1703,6 +1753,7 @@ export type TenantCreateWithoutHomeroomAssignmentsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -1731,6 +1782,7 @@ export type TenantUncheckedCreateWithoutHomeroomAssignmentsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1775,6 +1827,7 @@ export type TenantUpdateWithoutHomeroomAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -1803,6 +1856,7 @@ export type TenantUncheckedUpdateWithoutHomeroomAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1831,6 +1885,7 @@ export type TenantCreateWithoutGroupsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -1859,6 +1914,7 @@ export type TenantUncheckedCreateWithoutGroupsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1903,6 +1959,7 @@ export type TenantUpdateWithoutGroupsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -1931,6 +1988,7 @@ export type TenantUncheckedUpdateWithoutGroupsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1959,6 +2017,7 @@ export type TenantCreateWithoutClassGroupsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -1987,6 +2046,7 @@ export type TenantUncheckedCreateWithoutClassGroupsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2031,6 +2091,7 @@ export type TenantUpdateWithoutClassGroupsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -2059,6 +2120,7 @@ export type TenantUncheckedUpdateWithoutClassGroupsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2087,6 +2149,7 @@ export type TenantCreateWithoutClassEnrollmentsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -2115,6 +2178,7 @@ export type TenantUncheckedCreateWithoutClassEnrollmentsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2159,6 +2223,7 @@ export type TenantUpdateWithoutClassEnrollmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -2187,6 +2252,7 @@ export type TenantUncheckedUpdateWithoutClassEnrollmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2215,6 +2281,7 @@ export type TenantCreateWithoutSubjectsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -2243,6 +2310,7 @@ export type TenantUncheckedCreateWithoutSubjectsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2287,6 +2355,7 @@ export type TenantUpdateWithoutSubjectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -2315,6 +2384,7 @@ export type TenantUncheckedUpdateWithoutSubjectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2343,6 +2413,7 @@ export type TenantCreateWithoutClassSubjectsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -2371,6 +2442,7 @@ export type TenantUncheckedCreateWithoutClassSubjectsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2415,6 +2487,7 @@ export type TenantUpdateWithoutClassSubjectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -2443,6 +2516,7 @@ export type TenantUncheckedUpdateWithoutClassSubjectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2471,6 +2545,7 @@ export type TenantCreateWithoutSchedulesInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -2499,6 +2574,7 @@ export type TenantUncheckedCreateWithoutSchedulesInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2543,6 +2619,7 @@ export type TenantUpdateWithoutSchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -2571,6 +2648,7 @@ export type TenantUncheckedUpdateWithoutSchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2599,6 +2677,7 @@ export type TenantCreateWithoutSessionsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -2627,6 +2706,7 @@ export type TenantUncheckedCreateWithoutSessionsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2671,6 +2751,7 @@ export type TenantUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -2699,6 +2780,7 @@ export type TenantUncheckedUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2727,6 +2809,7 @@ export type TenantCreateWithoutAttendancesInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -2755,6 +2838,7 @@ export type TenantUncheckedCreateWithoutAttendancesInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2799,6 +2883,7 @@ export type TenantUpdateWithoutAttendancesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -2827,6 +2912,7 @@ export type TenantUncheckedUpdateWithoutAttendancesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2855,6 +2941,7 @@ export type TenantCreateWithoutAssessmentComponentsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -2883,6 +2970,7 @@ export type TenantUncheckedCreateWithoutAssessmentComponentsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2927,6 +3015,7 @@ export type TenantUpdateWithoutAssessmentComponentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -2955,6 +3044,7 @@ export type TenantUncheckedUpdateWithoutAssessmentComponentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2983,6 +3073,7 @@ export type TenantCreateWithoutAssessmentScoresInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -3011,6 +3102,7 @@ export type TenantUncheckedCreateWithoutAssessmentScoresInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3055,6 +3147,7 @@ export type TenantUpdateWithoutAssessmentScoresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -3083,6 +3176,7 @@ export type TenantUncheckedUpdateWithoutAssessmentScoresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3111,6 +3205,7 @@ export type TenantCreateWithoutReportCardsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -3139,6 +3234,7 @@ export type TenantUncheckedCreateWithoutReportCardsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3183,6 +3279,7 @@ export type TenantUpdateWithoutReportCardsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -3211,6 +3308,7 @@ export type TenantUncheckedUpdateWithoutReportCardsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3239,6 +3337,7 @@ export type TenantCreateWithoutReportCardSubjectsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -3267,6 +3366,7 @@ export type TenantUncheckedCreateWithoutReportCardSubjectsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3311,6 +3411,7 @@ export type TenantUpdateWithoutReportCardSubjectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -3339,6 +3440,7 @@ export type TenantUncheckedUpdateWithoutReportCardSubjectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3367,6 +3469,7 @@ export type TenantCreateWithoutAuditLogsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
@@ -3395,6 +3498,7 @@ export type TenantUncheckedCreateWithoutAuditLogsInput = {
   id?: string
   name: string
   slug: string
+  educationLevel?: string | null
   activeAcademicYearId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3439,6 +3543,7 @@ export type TenantUpdateWithoutAuditLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
@@ -3467,6 +3572,7 @@ export type TenantUncheckedUpdateWithoutAuditLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3697,6 +3803,7 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   id?: boolean
   name?: boolean
   slug?: boolean
+  educationLevel?: boolean
   activeAcademicYearId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3728,6 +3835,7 @@ export type TenantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   name?: boolean
   slug?: boolean
+  educationLevel?: boolean
   activeAcademicYearId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3738,6 +3846,7 @@ export type TenantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   name?: boolean
   slug?: boolean
+  educationLevel?: boolean
   activeAcademicYearId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3748,12 +3857,13 @@ export type TenantSelectScalar = {
   id?: boolean
   name?: boolean
   slug?: boolean
+  educationLevel?: boolean
   activeAcademicYearId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "activeAcademicYearId" | "createdAt" | "updatedAt", ExtArgs["result"]["tenant"]>
+export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "educationLevel" | "activeAcademicYearId" | "createdAt" | "updatedAt", ExtArgs["result"]["tenant"]>
 export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   activeAcademicYear?: boolean | Prisma.Tenant$activeAcademicYearArgs<ExtArgs>
   users?: boolean | Prisma.Tenant$usersArgs<ExtArgs>
@@ -3814,6 +3924,7 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     id: string
     name: string
     slug: string
+    educationLevel: string | null
     activeAcademicYearId: string | null
     createdAt: Date
     updatedAt: Date
@@ -4264,6 +4375,7 @@ export interface TenantFieldRefs {
   readonly id: Prisma.FieldRef<"Tenant", 'String'>
   readonly name: Prisma.FieldRef<"Tenant", 'String'>
   readonly slug: Prisma.FieldRef<"Tenant", 'String'>
+  readonly educationLevel: Prisma.FieldRef<"Tenant", 'String'>
   readonly activeAcademicYearId: Prisma.FieldRef<"Tenant", 'String'>
   readonly createdAt: Prisma.FieldRef<"Tenant", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Tenant", 'DateTime'>

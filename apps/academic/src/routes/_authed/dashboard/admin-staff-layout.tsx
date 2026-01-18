@@ -19,22 +19,17 @@ type AdminStaffSubNavItem = {
 
 type AdminStaffNavItem = {
   label: string;
-  description: string;
   to: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   subItems?: AdminStaffSubNavItem[];
 };
 
 type AdminStaffDashboardLayoutProps = {
-  title: string;
-  description: string;
   navItems: AdminStaffNavItem[];
   children: React.ReactNode;
 };
 
 export function AdminStaffDashboardLayout({
-  title,
-  description,
   navItems,
   children,
 }: AdminStaffDashboardLayoutProps) {
@@ -108,38 +103,16 @@ export function AdminStaffDashboardLayout({
   }, [openNotifications, openProfile]);
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       <aside
-        className="fixed inset-y-0 left-0 flex flex-col gap-6 overflow-hidden bg-surface-1 px-4 py-6 text-ink transition-all"
+        className="fixed inset-y-0 left-0 flex flex-col gap-6 overflow-hidden border-r border-border/40 bg-neutral-100/50 px-4 py-6 text-ink transition-all dark:bg-neutral-800/50"
         style={{ width: collapsed ? collapsedWidth : expandedWidth }}
       >
-        <div className="flex items-start justify-between">
+        <div className="flex gap-3 justify-between items-center">
           {!collapsed ? (
-            <div className="space-y-2 rounded-xl bg-surface-2 p-3">
-              <div className="flex items-center justify-between gap-2">
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink-muted">
-                  Ziqola AMS
-                </p>
-                <span className="rounded-full bg-primary/10 px-2 py-1 text-[10px] font-semibold text-primary">
-                  Staf
-                </span>
-              </div>
-              <div className="space-y-1">
-                <h2 className="text-xl font-semibold leading-tight text-ink-strong">
-                  Admin Staff Desk
-                </h2>
-                <p className="text-xs text-ink-muted">
-                  Navigasi operasional & pengelolaan akademik
-                </p>
-              </div>
-              <div className="flex items-center gap-2 text-[11px] text-success">
-                <span
-                  className="h-2 w-2 rounded-full bg-success"
-                  aria-hidden="true"
-                />
-                Operasional stabil hari ini
-              </div>
-            </div>
+            <Link to="/dashboard/admin-staff" className="flex items-center">
+              <span className="text-lg font-bold text-primary">Ziqola</span>
+            </Link>
           ) : null}
           <Button
             type="button"
@@ -156,8 +129,19 @@ export function AdminStaffDashboardLayout({
           </Button>
         </div>
 
+        {!collapsed ? (
+          <div className="space-y-1 bg-surface-2 p-3 rounded-xl">
+            <h2 className="text-base font-semibold leading-tight text-ink-strong">
+              Staf Admin
+            </h2>
+            <p className="text-xs text-ink-muted">
+              Navigasi operasional & pengelolaan akademik
+            </p>
+          </div>
+        ) : null}
+
         <nav
-          className="admin-sidebar-scroll mt-4 flex-1 space-y-3 overflow-y-auto pr-1"
+          className="admin-sidebar-scroll mt-4 flex-1 space-y-2 overflow-y-auto pr-1"
           aria-label="Navigasi dashboard"
         >
           {navItems.map((item) => {
@@ -173,41 +157,38 @@ export function AdminStaffDashboardLayout({
                     type="button"
                     variant="ghost"
                     onClick={() => handleGroupToggle(item)}
-                    className="group flex h-auto w-full items-start justify-start gap-3 rounded-xl bg-surface-2/50 px-3 py-3 text-left text-sm transition hover:bg-surface-2"
+                    className="group flex h-auto w-full items-center justify-start gap-3 rounded-lg px-3 py-2 text-left text-sm transition hover:bg-surface-2"
                     aria-expanded={isOpen}
                     aria-controls={navId}
                   >
-                    <span className="mt-0.5 rounded-lg bg-surface-2 p-1.5 text-ink-muted">
-                      <Icon className="h-4 w-4" aria-hidden="true" />
-                    </span>
+                    <Icon
+                      className="h-4 w-4 text-ink-muted"
+                      aria-hidden="true"
+                    />
                     {!collapsed ? (
-                      <span className="flex flex-1 items-start justify-between gap-3">
-                        <span className="space-y-1">
-                          <span className="block font-semibold leading-none text-ink-strong">
-                            {item.label}
-                          </span>
-                          <span className="block text-xs text-ink-muted">
-                            {item.description}
-                          </span>
+                      <>
+                        <span className="flex-1 font-normal text-ink">
+                          {item.label}
                         </span>
-                        <span className="rounded-full bg-surface-3/50 p-1 text-ink-subtle transition hover:bg-surface-3">
-                          <ChevronDownIcon
-                            className={cn("h-4 w-4", !isOpen && "-rotate-90")}
-                            aria-hidden="true"
-                          />
-                          <span className="sr-only">
-                            {isOpen
-                              ? "Sembunyikan sub menu"
-                              : "Tampilkan sub menu"}
-                          </span>
+                        <ChevronDownIcon
+                          className={cn(
+                            "h-4 w-4 text-ink-muted",
+                            !isOpen && "-rotate-90",
+                          )}
+                          aria-hidden="true"
+                        />
+                        <span className="sr-only">
+                          {isOpen
+                            ? "Sembunyikan sub menu"
+                            : "Tampilkan sub menu"}
                         </span>
-                      </span>
+                      </>
                     ) : null}
                   </Button>
                 ) : (
                   <Link
                     to={item.to}
-                    className="group flex items-start gap-3 rounded-xl bg-surface-2/50 px-3 py-3 text-left text-sm transition hover:bg-surface-2"
+                    className="group flex items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition hover:bg-surface-2"
                     activeProps={{
                       className: "bg-primary/10 text-primary",
                     }}
@@ -215,19 +196,13 @@ export function AdminStaffDashboardLayout({
                       className: "hover:bg-surface-2",
                     }}
                   >
-                    <span className="mt-0.5 rounded-lg bg-surface-2 p-1.5 text-ink-muted">
-                      <Icon className="h-4 w-4" aria-hidden="true" />
-                    </span>
+                    <Icon
+                      className="h-4 w-4 text-ink-muted"
+                      aria-hidden="true"
+                    />
                     {!collapsed ? (
-                      <span className="flex flex-1 items-start justify-between gap-3">
-                        <span className="space-y-1">
-                          <span className="block font-semibold leading-none text-ink-strong">
-                            {item.label}
-                          </span>
-                          <span className="block text-xs text-ink-muted">
-                            {item.description}
-                          </span>
-                        </span>
+                      <span className="flex-1 font-normal text-ink">
+                        {item.label}
                       </span>
                     ) : null}
                   </Link>
@@ -237,7 +212,7 @@ export function AdminStaffDashboardLayout({
                   <div
                     id={navId}
                     className={cn(
-                      "ml-6 space-y-1 overflow-hidden pl-3 transition-all",
+                      "ml-7 space-y-0.5 overflow-hidden border-l border-border pl-3 transition-all",
                       isOpen ? "max-h-44 opacity-100" : "max-h-0 opacity-0",
                     )}
                   >
@@ -245,7 +220,7 @@ export function AdminStaffDashboardLayout({
                       <Link
                         key={subItem.label}
                         to={subItem.to}
-                        className="block rounded-md px-2 py-1 text-xs font-medium text-ink-subtle transition"
+                        className="block rounded-md px-2 py-1.5 text-[13px] text-ink-muted transition"
                         activeProps={{
                           className: "bg-primary/10 text-primary",
                         }}
@@ -272,7 +247,7 @@ export function AdminStaffDashboardLayout({
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: "easeOut" }}
-          className="space-y-6 px-6 py-6"
+          className="space-y-8 px-8 py-8"
         >
           <div className="relative z-20 flex flex-wrap items-center justify-between gap-3 px-1 sm:px-2">
             <div className="flex w-full items-center gap-3 rounded-xl bg-surface-1 px-4 py-2.5 text-sm text-ink sm:w-auto sm:min-w-[20rem]">
@@ -403,19 +378,6 @@ export function AdminStaffDashboardLayout({
             </div>
           </div>
 
-          <header className="rounded-xl bg-surface-contrast p-6">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="space-y-1">
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
-                  Dashboard
-                </p>
-                <h1 className="text-2xl font-semibold text-ink-strong">
-                  {title}
-                </h1>
-                <p className="text-sm text-ink-muted">{description}</p>
-              </div>
-            </div>
-          </header>
           {children}
         </motion.div>
       </main>

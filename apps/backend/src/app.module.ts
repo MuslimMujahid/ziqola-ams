@@ -9,16 +9,27 @@ import { RbacModule } from "./common/rbac/rbac.module";
 import { ExamplesModule } from "./examples/examples.module";
 import { TenantsModule } from "./tenants/tenants.module";
 import { ProfilesModule } from "./profiles/profiles.module";
+import { AcademicModule } from "./academic/academic.module";
+import { ThrottlerModule } from "@nestjs/throttler";
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60,
+          limit: 60,
+        },
+      ],
+    }),
     PrismaModule,
     RbacModule, // Global RBAC guards
     AuthModule,
     UsersModule,
     TenantsModule,
     ProfilesModule,
+    AcademicModule,
     ExamplesModule, // Example controller for RBAC patterns
   ],
   controllers: [AppController],

@@ -4,6 +4,11 @@ import type {
   MeResponse,
 } from "@/lib/services/api/auth";
 import type { AuthUser } from "@/lib/services/api/auth";
+import type {
+  RegisterTenantResponse,
+  RegisterTenantVars,
+  RegisterTenantSessionResult,
+} from "@/lib/services/api/tenant";
 import { useAppSession } from "@/lib/utils/session.server";
 import { isApiError, serverApi } from "../services/api";
 
@@ -57,5 +62,30 @@ export async function getCurrentUser() {
   } catch {
     await session.clear();
     return null;
+  }
+}
+
+export async function registerTenantAndCreateSession(
+  data: RegisterTenantVars,
+): Promise<RegisterTenantSessionResult> {
+  try {
+    const response = await serverApi.post<RegisterTenantResponse>(
+      "/tenants/register",
+      data,
+    );
+    const { user, accessToken } = response.data.data;
+
+    const session = await useAppSession();
+    await session.update({ accessToken, user });
+
+    return { user, accessToken };
+  } catch (error) {
+    if (isApiError(error)) {
+      const message =
+        error.response?.data?.message ?? error.message ?? "Registration failed";
+      throw new Error(message);
+    }
+
+    throw error;
   }
 }

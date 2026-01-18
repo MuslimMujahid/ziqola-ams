@@ -4,13 +4,20 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
+import * as argon2 from "argon2";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { UpdateTenantDto } from "./dto/update-tenant.dto";
+import { RegisterTenantDto } from "./dto/register-tenant.dto";
+import { AuthService } from "../auth/auth.service";
+import { Role } from "@repo/db";
 
 @Injectable()
 export class TenantsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly authService: AuthService,
+  ) {}
 
   async create(dto: CreateTenantDto) {
     const existing = await this.prisma.client.tenant.findFirst({
@@ -25,11 +32,16 @@ export class TenantsService {
     }
 
     return this.prisma.client.tenant.create({
-      data: { name: dto.name, slug: dto.slug },
+      data: {
+        name: dto.name,
+        slug: dto.slug,
+        ...(dto.educationLevel ? { educationLevel: dto.educationLevel } : {}),
+      },
       select: {
         id: true,
         name: true,
         slug: true,
+        educationLevel: true,
         activeAcademicYearId: true,
         createdAt: true,
         updatedAt: true,
@@ -48,6 +60,7 @@ export class TenantsService {
         id: true,
         name: true,
         slug: true,
+        educationLevel: true,
         activeAcademicYearId: true,
         createdAt: true,
         updatedAt: true,
@@ -102,14 +115,94 @@ export class TenantsService {
       data: {
         ...(dto.name ? { name: dto.name } : {}),
         ...(dto.slug ? { slug: dto.slug } : {}),
+        ...(dto.educationLevel ? { educationLevel: dto.educationLevel } : {}),
       },
       select: {
         id: true,
         name: true,
         slug: true,
+        educationLevel: true,
         activeAcademicYearId: true,
         updatedAt: true,
       },
     });
+  }
+
+  async checkSchoolCodeAvailability(schoolCode: string) {
+    const normalized = schoolCode.trim().toLowerCase();
+    const existing = await this.prisma.client.tenant.findFirst({
+      where: { slug: normalized },
+      select: { id: true },
+    });
+
+    return { available: !existing };
+  }
+
+  async registerTenant(dto: RegisterTenantDto) {
+    const normalizedCode = dto.schoolCode.trim().toLowerCase();
+
+    const existing = await this.prisma.client.tenant.findFirst({
+      where: {
+        OR: [{ name: dto.schoolName }, { slug: normalizedCode }],
+      },
+      select: { id: true },
+    });
+
+    if (existing) {
+      throw new ConflictException("School name or code already exists");
+    }
+
+    const passwordHash = await argon2.hash(dto.admin.password);
+
+    const result = await this.prisma.client.$transaction(async (tx) => {
+      const tenant = await tx.tenant.create({
+        data: {
+          name: dto.schoolName,
+          slug: normalizedCode,
+          educationLevel: dto.educationLevel,
+        },
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          educationLevel: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      });
+
+      const user = await tx.user.create({
+        data: {
+          tenantId: tenant.id,
+          email: dto.admin.email,
+          name: dto.admin.fullName,
+          passwordHash,
+          role: Role.ADMIN_STAFF,
+        },
+        select: {
+          id: true,
+          tenantId: true,
+          email: true,
+          name: true,
+          role: true,
+          createdAt: true,
+        },
+      });
+
+      return { tenant, user };
+    });
+
+    const accessToken = await this.authService.signToken(
+      result.user.id,
+      result.user.tenantId,
+      result.user.email,
+      result.user.role,
+    );
+
+    return {
+      tenant: result.tenant,
+      user: result.user,
+      accessToken,
+    };
   }
 }

@@ -94,6 +94,7 @@ model Tenant {
   id                   String         @id @default(uuid())
   name                 String
   slug                 String         @unique
+  educationLevel       String?
   // Points to the currently active academic year (enforces one active per tenant at application level)
   activeAcademicYearId String?        @unique
   activeAcademicYear   AcademicYear?  @relation("TenantActiveAcademicYear", fields: [activeAcademicYearId], references: [id])

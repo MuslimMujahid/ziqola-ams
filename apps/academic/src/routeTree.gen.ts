@@ -11,10 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as AuthedIndexRouteImport } from './routes/_authed/index'
+import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthLayoutRouteImport } from './routes/auth/_layout'
 import { Route as AuthedLayoutRouteImport } from './routes/_authed/_layout'
 import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashboard/index'
+import { Route as AuthedOnboardingAcademicSetupRouteImport } from './routes/_authed/onboarding/academic-setup'
 import { Route as AuthedDashboardTeacherRouteImport } from './routes/_authed/dashboard/teacher'
 import { Route as AuthedDashboardStudentRouteImport } from './routes/_authed/dashboard/student'
 import { Route as AuthedDashboardPrincipalRouteImport } from './routes/_authed/dashboard/principal'
@@ -28,6 +30,11 @@ const AuthedIndexRoute = AuthedIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthedRoute,
+} as any)
+const AuthRegisterRoute = AuthRegisterRouteImport.update({
+  id: '/auth/register',
+  path: '/auth/register',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/auth/login',
@@ -48,6 +55,12 @@ const AuthedDashboardIndexRoute = AuthedDashboardIndexRouteImport.update({
   path: '/dashboard/',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedOnboardingAcademicSetupRoute =
+  AuthedOnboardingAcademicSetupRouteImport.update({
+    id: '/onboarding/academic-setup',
+    path: '/onboarding/academic-setup',
+    getParentRoute: () => AuthedRoute,
+  } as any)
 const AuthedDashboardTeacherRoute = AuthedDashboardTeacherRouteImport.update({
   id: '/dashboard/teacher',
   path: '/dashboard/teacher',
@@ -74,21 +87,25 @@ const AuthedDashboardAdminStaffRoute =
 export interface FileRoutesByFullPath {
   '/auth': typeof AuthLayoutRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
   '/': typeof AuthedIndexRoute
   '/dashboard/admin-staff': typeof AuthedDashboardAdminStaffRoute
   '/dashboard/principal': typeof AuthedDashboardPrincipalRoute
   '/dashboard/student': typeof AuthedDashboardStudentRoute
   '/dashboard/teacher': typeof AuthedDashboardTeacherRoute
+  '/onboarding/academic-setup': typeof AuthedOnboardingAcademicSetupRoute
   '/dashboard': typeof AuthedDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthLayoutRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
   '/': typeof AuthedIndexRoute
   '/dashboard/admin-staff': typeof AuthedDashboardAdminStaffRoute
   '/dashboard/principal': typeof AuthedDashboardPrincipalRoute
   '/dashboard/student': typeof AuthedDashboardStudentRoute
   '/dashboard/teacher': typeof AuthedDashboardTeacherRoute
+  '/onboarding/academic-setup': typeof AuthedOnboardingAcademicSetupRoute
   '/dashboard': typeof AuthedDashboardIndexRoute
 }
 export interface FileRoutesById {
@@ -97,11 +114,13 @@ export interface FileRoutesById {
   '/_authed/_layout': typeof AuthedLayoutRoute
   '/auth/_layout': typeof AuthLayoutRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
   '/_authed/': typeof AuthedIndexRoute
   '/_authed/dashboard/admin-staff': typeof AuthedDashboardAdminStaffRoute
   '/_authed/dashboard/principal': typeof AuthedDashboardPrincipalRoute
   '/_authed/dashboard/student': typeof AuthedDashboardStudentRoute
   '/_authed/dashboard/teacher': typeof AuthedDashboardTeacherRoute
+  '/_authed/onboarding/academic-setup': typeof AuthedOnboardingAcademicSetupRoute
   '/_authed/dashboard/': typeof AuthedDashboardIndexRoute
 }
 export interface FileRouteTypes {
@@ -109,21 +128,25 @@ export interface FileRouteTypes {
   fullPaths:
     | '/auth'
     | '/auth/login'
+    | '/auth/register'
     | '/'
     | '/dashboard/admin-staff'
     | '/dashboard/principal'
     | '/dashboard/student'
     | '/dashboard/teacher'
+    | '/onboarding/academic-setup'
     | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
     | '/auth/login'
+    | '/auth/register'
     | '/'
     | '/dashboard/admin-staff'
     | '/dashboard/principal'
     | '/dashboard/student'
     | '/dashboard/teacher'
+    | '/onboarding/academic-setup'
     | '/dashboard'
   id:
     | '__root__'
@@ -131,11 +154,13 @@ export interface FileRouteTypes {
     | '/_authed/_layout'
     | '/auth/_layout'
     | '/auth/login'
+    | '/auth/register'
     | '/_authed/'
     | '/_authed/dashboard/admin-staff'
     | '/_authed/dashboard/principal'
     | '/_authed/dashboard/student'
     | '/_authed/dashboard/teacher'
+    | '/_authed/onboarding/academic-setup'
     | '/_authed/dashboard/'
   fileRoutesById: FileRoutesById
 }
@@ -143,6 +168,7 @@ export interface RootRouteChildren {
   AuthedRoute: typeof AuthedRouteWithChildren
   AuthLayoutRoute: typeof AuthLayoutRoute
   AuthLoginRoute: typeof AuthLoginRoute
+  AuthRegisterRoute: typeof AuthRegisterRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -160,6 +186,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof AuthedIndexRouteImport
       parentRoute: typeof AuthedRoute
+    }
+    '/auth/register': {
+      id: '/auth/register'
+      path: '/auth/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/auth/login': {
       id: '/auth/login'
@@ -187,6 +220,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthedDashboardIndexRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/onboarding/academic-setup': {
+      id: '/_authed/onboarding/academic-setup'
+      path: '/onboarding/academic-setup'
+      fullPath: '/onboarding/academic-setup'
+      preLoaderRoute: typeof AuthedOnboardingAcademicSetupRouteImport
       parentRoute: typeof AuthedRoute
     }
     '/_authed/dashboard/teacher': {
@@ -227,6 +267,7 @@ interface AuthedRouteChildren {
   AuthedDashboardPrincipalRoute: typeof AuthedDashboardPrincipalRoute
   AuthedDashboardStudentRoute: typeof AuthedDashboardStudentRoute
   AuthedDashboardTeacherRoute: typeof AuthedDashboardTeacherRoute
+  AuthedOnboardingAcademicSetupRoute: typeof AuthedOnboardingAcademicSetupRoute
   AuthedDashboardIndexRoute: typeof AuthedDashboardIndexRoute
 }
 
@@ -237,6 +278,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedDashboardPrincipalRoute: AuthedDashboardPrincipalRoute,
   AuthedDashboardStudentRoute: AuthedDashboardStudentRoute,
   AuthedDashboardTeacherRoute: AuthedDashboardTeacherRoute,
+  AuthedOnboardingAcademicSetupRoute: AuthedOnboardingAcademicSetupRoute,
   AuthedDashboardIndexRoute: AuthedDashboardIndexRoute,
 }
 
@@ -247,6 +289,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthedRoute: AuthedRouteWithChildren,
   AuthLayoutRoute: AuthLayoutRoute,
   AuthLoginRoute: AuthLoginRoute,
+  AuthRegisterRoute: AuthRegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -79,6 +79,101 @@ A **cloud-based, multi-tenant academic management system** that digitizes core a
 
 ---
 
+### 3.4 Tenant Registration & Onboarding Flow
+
+#### Overview
+
+Tenant registration enables a school or educational institution to create an isolated workspace (tenant) in the system. The process is designed to be **simple, fast, and safe**, while ensuring data integrity and future scalability.
+
+At MVP, tenant registration focuses on **institution identity and administrative access**, deferring academic configuration to post-registration setup.
+
+---
+
+#### Registration Principles
+
+- One tenant represents **one school / institution**
+- The **first user is Admin Staff (Staf Administrasi)**, not Principal
+- Curriculum selection is **out of scope** during registration
+- Minimal required data to reduce onboarding friction
+- Tenant identity must be **globally unique** via `Kode Sekolah`
+
+---
+
+#### Registration Form (Public)
+
+**Form Fields:**
+| Field | Description | Required |
+| --- | --- | --- |
+| Kode Sekolah | URL-safe unique school identifier (e.g., `sm-1-bdg`) | ✅ |
+| Nama Sekolah | Official / commonly used school name | ✅ |
+| Jenjang | SD / SMP / SMA / SMK / Lainnya | ✅ |
+
+**Notes:**
+
+- `Kode Sekolah` is used for:
+  - Tenant identification
+  - URL path
+  - Human-readable tenant reference
+
+---
+
+#### Real-Time Kode Sekolah Availability Check
+
+Before form submission, the system MUST:
+
+- Validate `Kode Sekolah` format (lowercase, alphanumeric, hyphen)
+- Perform **real-time availability check** against existing tenants
+
+**Expected Behavior:**
+
+- Immediate feedback (available / already taken)
+- Submission is blocked if kode sekolah is unavailable
+
+---
+
+#### First User Creation
+
+After successful tenant creation, the registrant creates the **first user account**.
+
+**First User Characteristics:**
+
+- Assigned system role: `ADMIN_STAFF`
+- Has full administrative access by default
+
+**Required User Fields:**
+
+- Full Name
+- Email (login identifier)
+- Password
+
+Additional personal attributes (gender, birth date, NIP, etc.) may be completed later.
+
+---
+
+#### Default System State After Registration
+
+| Entity           | State        |
+| ---------------- | ------------ |
+| Tenant           | Active       |
+| Admin Staff User | Active       |
+| Academic Year    | Not created  |
+| Curriculum       | Not selected |
+
+The system redirects the user to the **Admin Dashboard** with onboarding guidance.
+
+---
+
+#### Post-Registration Setup
+
+The following are handled **after** tenant registration:
+
+- Academic year (Tahun Ajaran) creation
+- Academic period configuration
+- Principal role assignment
+- Class, teacher, and student setup
+
+---
+
 ## 4. User Roles & Permissions
 
 ### 4.0 User Identity vs Academic Profiles

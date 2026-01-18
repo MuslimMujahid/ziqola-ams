@@ -6,14 +6,19 @@ import {
   ActivityIcon,
   BookOpenIcon,
   CalendarDaysIcon,
+  CheckCircle2Icon,
   ClipboardListIcon,
+  DatabaseIcon,
   FileTextIcon,
+  InfoIcon,
   LayoutDashboardIcon,
   ListChecksIcon,
   SettingsIcon,
   ShieldIcon,
+  XCircleIcon,
   ZapIcon,
   UsersIcon,
+  UserCogIcon,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -81,38 +86,9 @@ type AlertItem = {
 
 const NAV_ITEMS: AdminStaffNavItem[] = [
   {
-    label: "Ringkasan",
-    description: "Kesehatan sistem",
-    to: "/dashboard/admin-staff",
-    icon: LayoutDashboardIcon,
-    subItems: [
-      {
-        label: "Kesehatan sistem",
-        to: "/dashboard/admin-staff#ringkasan",
-      },
-      {
-        label: "Aksi cepat",
-        to: "/dashboard/admin-staff#aksi-cepat",
-      },
-      {
-        label: "Daftar periksa",
-        to: "/dashboard/admin-staff#daftar-periksa",
-      },
-      {
-        label: "Aktivitas terbaru",
-        to: "/dashboard/admin-staff#aktivitas-terbaru",
-      },
-      {
-        label: "Peringatan",
-        to: "/dashboard/admin-staff#peringatan",
-      },
-    ],
-  },
-  {
-    label: "Struktur akademik",
-    description: "Tahun ajaran & periode",
-    to: "/dashboard/admin-staff/academic-years",
-    icon: CalendarDaysIcon,
+    label: "Data master",
+    to: "/dashboard/admin-staff/classes",
+    icon: DatabaseIcon,
     subItems: [
       {
         label: "Tahun ajaran",
@@ -122,14 +98,6 @@ const NAV_ITEMS: AdminStaffNavItem[] = [
         label: "Periode akademik",
         to: "/dashboard/admin-staff/academic-periods",
       },
-    ],
-  },
-  {
-    label: "Data master",
-    description: "Kelas, siswa, guru, mapel",
-    to: "/dashboard/admin-staff/classes",
-    icon: UsersIcon,
-    subItems: [
       {
         label: "Kelas",
         to: "/dashboard/admin-staff/classes",
@@ -154,7 +122,6 @@ const NAV_ITEMS: AdminStaffNavItem[] = [
   },
   {
     label: "Penjadwalan",
-    description: "Penugasan & jadwal",
     to: "/dashboard/admin-staff/teaching-assignments",
     icon: ClipboardListIcon,
     subItems: [
@@ -174,7 +141,6 @@ const NAV_ITEMS: AdminStaffNavItem[] = [
   },
   {
     label: "Penilaian & rapor",
-    description: "Komponen nilai & rapor",
     to: "/dashboard/admin-staff/assessments",
     icon: FileTextIcon,
     subItems: [
@@ -193,10 +159,9 @@ const NAV_ITEMS: AdminStaffNavItem[] = [
     ],
   },
   {
-    label: "Akses & keamanan",
-    description: "Pengguna & peran",
+    label: "Akses Pengguna",
     to: "/dashboard/admin-staff/users",
-    icon: ShieldIcon,
+    icon: UsersIcon,
     subItems: [
       {
         label: "Pengguna",
@@ -214,7 +179,6 @@ const NAV_ITEMS: AdminStaffNavItem[] = [
   },
   {
     label: "Pengaturan",
-    description: "Kelola preferensi",
     to: "/dashboard/admin-staff/settings",
     icon: SettingsIcon,
   },
@@ -296,6 +260,12 @@ const SHORTCUT_ITEMS: ShortcutItem[] = [
     icon: ShieldIcon,
     href: "/dashboard/admin-staff",
   },
+  {
+    label: "Edit profil sekolah",
+    description: "Perbarui data admin",
+    icon: UserCogIcon,
+    href: "/dashboard/admin-staff/settings",
+  },
 ];
 
 const CHECKLIST_ITEMS: ChecklistItem[] = [
@@ -371,38 +341,81 @@ function AdminStaffDashboardPage() {
   const navItems = React.useMemo(() => NAV_ITEMS, []);
 
   return (
-    <AdminStaffDashboardLayout
-      title="Dashboard Staf Administrasi"
-      description="Pantau kesiapan data akademik dan operasional harian dalam satu tampilan."
-      navItems={navItems}
-    >
-      <section className="rounded-xl bg-surface-contrast p-5">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-ink-subtle">
-              Konteks aktif
-            </p>
-            <h2 className="text-lg font-semibold text-ink-strong">
-              SMA Nusantara 1
-            </h2>
-            <p className="text-sm text-ink-muted">
-              Tahun Ajaran 2025/2026 · Semester 1
-            </p>
+    <AdminStaffDashboardLayout navItems={navItems}>
+      <section className="grid gap-4 lg:grid-cols-3">
+        <div className="relative overflow-hidden rounded-xl bg-primary/70 p-6 text-white">
+          <div
+            className="absolute inset-y-0 right-[-12%] hidden w-64 rounded-full bg-white/6 blur-3xl md:block"
+            aria-hidden="true"
+          />
+
+          <div className="space-y-3">
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold leading-tight">
+                SMA Nusantara 1
+              </h2>
+            </div>
+
+            <div className="flex w-full gap-3 text-sm sm:w-auto">
+              <div className="rounded-xl bg-white/10 px-4 py-3">
+                <p className="text-xs text-white/70">Tahun Ajaran</p>
+                <div className="mt-1 flex items-center gap-2">
+                  <CalendarDaysIcon
+                    className="h-4 w-4 text-white"
+                    aria-hidden="true"
+                  />
+                  <span className="font-semibold">2025/2026</span>
+                </div>
+              </div>
+              <div className="rounded-xl bg-white/8 px-4 py-3">
+                <p className="text-xs text-white/70">Periode berjalan</p>
+                <div className="mt-1 flex items-center gap-2">
+                  <CalendarDaysIcon
+                    className="h-4 w-4 text-white"
+                    aria-hidden="true"
+                  />
+                  <span className="font-semibold">Semester 1</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-success/10 px-3 py-1 text-xs font-semibold text-success">
-              Aktif
-            </span>
-            <span className="rounded-full bg-info/10 px-3 py-1 text-xs font-semibold text-info">
-              Periode akademik berjalan
-            </span>
+        </div>
+
+        <div
+          id="aksi-cepat"
+          className="space-y-3 rounded-xl bg-surface-contrast p-6 lg:col-span-2"
+        >
+          <div className="flex items-center gap-2 text-sm font-semibold text-ink-strong">
+            <ZapIcon className="h-4 w-4 text-primary" aria-hidden="true" />
+            Aksi cepat
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-3">
+            {SHORTCUT_ITEMS.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="group flex items-center justify-between gap-3 rounded-lg border border-primary/25 bg-transparent px-3 py-2 text-sm font-semibold text-ink transition hover:border-primary hover:bg-primary/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                >
+                  <span className="text-sm font-medium text-ink">
+                    {item.label}
+                  </span>
+                  <span className="rounded-md border border-primary/40 p-2 text-primary transition group-hover:border-primary group-hover:bg-primary/10">
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                  </span>
+                </a>
+              );
+            })}
           </div>
         </div>
       </section>
 
       <section
         id="ringkasan"
-        className="grid gap-4 md:grid-cols-2 xl:grid-cols-3"
+        className="grid gap-5 md:grid-cols-2 xl:grid-cols-3"
       >
         {STAT_ITEMS.map((item) => {
           const Icon = item.icon;
@@ -410,7 +423,7 @@ function AdminStaffDashboardPage() {
           return (
             <div
               key={item.label}
-              className="relative overflow-hidden rounded-xl bg-surface-contrast p-4"
+              className="relative overflow-hidden rounded-xl bg-surface-contrast p-5"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="space-y-1">
@@ -435,85 +448,47 @@ function AdminStaffDashboardPage() {
         })}
       </section>
 
-      <section id="aksi-cepat" className="rounded-xl bg-surface-contrast p-5">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h2 className="flex items-center gap-2 text-base font-semibold text-ink-strong">
-              <ZapIcon className="h-4 w-4 text-warning" aria-hidden="true" />
-              Aksi cepat
-            </h2>
-            <p className="text-xs text-ink-muted">
-              Shortcut yang sesuai akses staf administrasi
-            </p>
-          </div>
-          <span className="text-xs text-ink-subtle">
-            Semua tindakan mengarah ke dashboard
-          </span>
-        </div>
-        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
-          {SHORTCUT_ITEMS.map((item) => {
-            const Icon = item.icon;
-
-            return (
-              <a
-                key={item.label}
-                href={item.href}
-                className="group rounded-xl bg-surface-1 p-4 transition hover:bg-surface-2"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="space-y-1">
-                    <p className="text-sm font-semibold text-ink-strong">
-                      {item.label}
-                    </p>
-                    <p className="text-xs text-ink-muted">{item.description}</p>
-                  </div>
-                  <span className="rounded-lg bg-surface-2 p-2 text-ink-subtle group-hover:bg-surface-3 group-hover:text-ink">
-                    <Icon className="h-4 w-4" aria-hidden="true" />
-                  </span>
-                </div>
-              </a>
-            );
-          })}
-        </div>
-      </section>
-
-      <section className="grid gap-4 xl:grid-cols-[1.4fr_1fr]">
-        <div id="daftar-periksa" className="rounded-xl bg-surface-contrast p-5">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+      <section className="grid gap-5 xl:grid-cols-[1.4fr_1fr]">
+        <div id="daftar-periksa" className="rounded-xl bg-surface-contrast p-6">
+          <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <h3 className="flex items-center gap-2 text-base font-semibold text-ink-strong">
                 <ListChecksIcon
-                  className="h-4 w-4 text-success"
+                  className="h-4 w-4 text-ink-muted"
                   aria-hidden="true"
                 />
                 Daftar Periksa
               </h3>
-              <p className="text-xs text-ink-muted">
+              <p className="mt-1 text-xs text-ink-muted">
                 Pastikan data akademik siap dipakai
               </p>
             </div>
             <span className="text-xs text-ink-subtle">5 poin dipantau</span>
           </div>
-          <div className="mt-4 space-y-3">
+          <div className="mt-5 divide-y divide-border/60">
             {CHECKLIST_ITEMS.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
-                className="flex items-center justify-between gap-3 rounded-xl bg-surface-1 p-3 text-sm transition hover:bg-surface-2"
+                className="flex items-center justify-between gap-4 px-2 py-3 text-sm transition hover:bg-surface-1"
               >
-                <span className="font-medium text-ink">{item.label}</span>
-                <span
-                  className={cn(
-                    "rounded-full px-3 py-1 text-[11px] font-medium",
-                    item.status === "Aktif"
-                      ? "bg-success/10 text-success"
-                      : item.status === "Perlu tindakan"
-                        ? "bg-error/10 text-error"
-                        : "bg-warning/10 text-warning",
-                  )}
-                >
-                  {item.status}
-                </span>
+                <span className="text-ink">{item.label}</span>
+                {item.status === "Aktif" ? (
+                  <CheckCircle2Icon
+                    className="h-4 w-4 text-success"
+                    aria-label="Aktif"
+                  />
+                ) : item.status === "Perlu tindakan" ? (
+                  <XCircleIcon
+                    className="h-4 w-4 text-error"
+                    aria-label="Perlu tindakan"
+                  />
+                ) : (
+                  <AlertCircleIcon
+                    className="h-4 w-4 text-warning"
+                    aria-label="Peringatan"
+                  />
+                )}
               </a>
             ))}
           </div>
@@ -521,21 +496,24 @@ function AdminStaffDashboardPage() {
 
         <div
           id="aktivitas-terbaru"
-          className="rounded-xl bg-surface-contrast p-5"
+          className="rounded-xl bg-surface-contrast p-6"
         >
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center justify-between gap-3">
             <h3 className="flex items-center gap-2 text-base font-semibold text-ink-strong">
-              <ActivityIcon className="h-4 w-4 text-info" aria-hidden="true" />
+              <ActivityIcon
+                className="h-4 w-4 text-ink-muted"
+                aria-hidden="true"
+              />
               Aktivitas Terbaru
             </h3>
             <span className="text-xs text-ink-subtle">3 aktivitas</span>
           </div>
-          <div className="mt-4 space-y-3">
+          <div className="mt-5 divide-y divide-border/60">
             {ACTIVITY_ITEMS.map((item) => (
-              <div key={item.title} className="rounded-xl bg-surface-1 p-3">
-                <p className="text-sm font-semibold text-ink">{item.title}</p>
+              <div key={item.title} className="px-2 py-3">
+                <p className="text-sm font-medium text-ink">{item.title}</p>
                 <p className="mt-1 text-xs text-ink-muted">{item.detail}</p>
-                <span className="mt-2 inline-flex rounded-full bg-surface-2 px-2 py-0.5 text-[11px] font-medium text-ink-subtle">
+                <span className="mt-1.5 inline-block text-[11px] text-ink-subtle">
                   {item.timestamp}
                 </span>
               </div>
@@ -544,61 +522,50 @@ function AdminStaffDashboardPage() {
         </div>
       </section>
 
-      <section id="peringatan" className="rounded-xl bg-surface-contrast p-5">
-        <div className="flex flex-wrap items-center justify-between gap-3">
+      <section id="peringatan" className="rounded-xl bg-surface-contrast p-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h3 className="flex items-center gap-2 text-base font-semibold text-ink-strong">
               <AlertTriangleIcon
-                className="h-4 w-4 text-warning"
+                className="h-4 w-4 text-ink-muted"
                 aria-hidden="true"
               />
               Peringatan
             </h3>
-            <p className="text-xs text-ink-muted">
+            <p className="mt-1 text-xs text-ink-muted">
               Hanya isu yang bisa ditindaklanjuti
             </p>
           </div>
           <span className="text-xs text-ink-subtle">4 peringatan</span>
         </div>
-        <div className="mt-4 grid gap-3 md:grid-cols-2">
+        <div className="mt-5 divide-y divide-border/60">
           {ALERT_ITEMS.map((item) => (
-            <div
-              key={item.title}
-              className={cn(
-                "flex flex-col gap-2 rounded-xl p-4",
-                item.severity === "blocking"
-                  ? "bg-error/5"
-                  : item.severity === "warning"
-                    ? "bg-warning/5"
-                    : item.severity === "success"
-                      ? "bg-success/5"
-                      : "bg-info/5",
+            <div key={item.title} className="flex items-start gap-3 px-2 py-3">
+              {item.severity === "blocking" ? (
+                <XCircleIcon
+                  className="mt-0.5 h-4 w-4 shrink-0 text-error"
+                  aria-label="Blocking"
+                />
+              ) : item.severity === "warning" ? (
+                <AlertTriangleIcon
+                  className="mt-0.5 h-4 w-4 shrink-0 text-warning"
+                  aria-label="Warning"
+                />
+              ) : item.severity === "success" ? (
+                <CheckCircle2Icon
+                  className="mt-0.5 h-4 w-4 shrink-0 text-success"
+                  aria-label="Sukses"
+                />
+              ) : (
+                <InfoIcon
+                  className="mt-0.5 h-4 w-4 shrink-0 text-info"
+                  aria-label="Info"
+                />
               )}
-            >
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-sm font-semibold text-ink">{item.title}</p>
-                <span
-                  className={cn(
-                    "rounded-full px-3 py-1 text-[11px] font-semibold",
-                    item.severity === "blocking"
-                      ? "bg-error/10 text-error"
-                      : item.severity === "warning"
-                        ? "bg-warning/10 text-warning"
-                        : item.severity === "success"
-                          ? "bg-success/10 text-success"
-                          : "bg-info/10 text-info",
-                  )}
-                >
-                  {item.severity === "blocking"
-                    ? "Blocking"
-                    : item.severity === "warning"
-                      ? "Warning"
-                      : item.severity === "success"
-                        ? "Sukses"
-                        : "Info"}
-                </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium text-ink">{item.title}</p>
+                <p className="mt-0.5 text-xs text-ink-muted">{item.detail}</p>
               </div>
-              <p className="text-xs text-ink-muted">{item.detail}</p>
             </div>
           ))}
         </div>

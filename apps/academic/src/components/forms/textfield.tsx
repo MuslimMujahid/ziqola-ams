@@ -10,11 +10,13 @@ export function TextField({
   placeholder,
   type = "text",
   id,
+  disabled,
 }: {
   label: string;
   placeholder?: string;
   type?: string;
   id?: string;
+  disabled?: boolean;
 }) {
   const field = useFieldContext<string>();
   const errors = useStore(field.store, (state) => state.meta.errors);
@@ -30,6 +32,7 @@ export function TextField({
         type={type}
         value={field.state.value}
         placeholder={placeholder}
+        disabled={disabled}
         onBlur={field.handleBlur}
         onChange={(e) => field.handleChange(e.target.value)}
       />

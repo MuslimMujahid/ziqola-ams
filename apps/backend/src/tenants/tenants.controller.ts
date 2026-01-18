@@ -1,7 +1,19 @@
-import { Body, Controller, Get, Param, Patch, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from "@nestjs/common";
+import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
 import { TenantsService } from "./tenants.service";
 import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { UpdateTenantDto } from "./dto/update-tenant.dto";
+import { RegisterTenantDto } from "./dto/register-tenant.dto";
+import { CheckSchoolCodeQueryDto } from "./dto/check-school-code.dto";
 import {
   Permission,
   RequirePermissions,
@@ -30,6 +42,30 @@ export class TenantsController {
     return successResponse(tenant, "Tenant created successfully", 201);
   }
 
+  @Public()
+  @UseGuards(ThrottlerGuard)
+  @Throttle({ default: { limit: 10, ttl: 60 } })
+  @Get("check-school-code")
+  async checkSchoolCodeAvailability(@Query() query: CheckSchoolCodeQueryDto) {
+    const result = await this.tenants.checkSchoolCodeAvailability(
+      query.schoolCode,
+    );
+    return successResponse(
+      result,
+      "School code availability retrieved successfully",
+      200,
+    );
+  }
+
+  @Public()
+  @UseGuards(ThrottlerGuard)
+  @Throttle({ default: { limit: 5, ttl: 60 } })
+  @Post("register")
+  async register(@Body() dto: RegisterTenantDto) {
+    const result = await this.tenants.registerTenant(dto);
+    return successResponse(result, "Tenant registered successfully", 201);
+  }
+
   @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
   @RequirePermissions(Permission.TENANT_READ)
   @Get(":id")
@@ -44,7 +80,7 @@ export class TenantsController {
   async update(
     @Param("id") id: string,
     @Body() dto: UpdateTenantDto,
-    @UserDecorator() user: JwtUser
+    @UserDecorator() user: JwtUser,
   ) {
     const tenant = await this.tenants.update(user.tenantId, id, dto);
     return successResponse(tenant, "Tenant updated successfully", 200);
