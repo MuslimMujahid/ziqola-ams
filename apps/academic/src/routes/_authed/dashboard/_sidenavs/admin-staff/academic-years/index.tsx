@@ -26,7 +26,7 @@ import { CreateNewYearModal } from "@/components/academic-years/create-new-year-
 import { formatDateLocal, renderDateRange } from "@/lib/utils/date";
 
 export const Route = createFileRoute(
-  "/_authed/dashboard/_sidenavs/admin-staff/academic-years",
+  "/_authed/dashboard/_sidenavs/admin-staff/academic-years/",
 )({
   component: AcademicYearsPage,
   pendingComponent: () => (

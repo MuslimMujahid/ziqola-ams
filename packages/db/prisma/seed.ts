@@ -40,6 +40,7 @@ async function main() {
     data: {
       name: "Demo School",
       slug: "demo-school",
+      educationLevel: "SMA",
     },
   });
   console.log(`✅ Created tenant: ${tenant.name} (${tenant.id})\n`);
@@ -219,14 +220,14 @@ async function main() {
   // 4. Create subjects
   console.log("📚 Creating subjects...");
   const subjectNames = [
-    "Mathematics",
-    "English Language",
-    "Indonesian Language",
-    "Science",
-    "Social Studies",
-    "Physical Education",
-    "Arts",
-    "Religion",
+    "Matematika",
+    "Bahasa Inggris",
+    "Bahasa Indonesia",
+    "IPA",
+    "IPS",
+    "PJOK",
+    "Seni Budaya",
+    "Pendidikan Agama",
   ];
 
   const subjects = await Promise.all(
@@ -243,8 +244,9 @@ async function main() {
 
   // 5. Create groups (grades)
   console.log("🏫 Creating groups...");
+  const gradeNames = getDefaultGrades(tenant.educationLevel ?? "SMA");
   const grades = await Promise.all(
-    ["Grade 10", "Grade 11", "Grade 12"].map((name) =>
+    gradeNames.map((name) =>
       prisma.group.create({
         data: {
           tenantId: tenant.id,
@@ -256,7 +258,7 @@ async function main() {
   );
 
   const streams = await Promise.all(
-    ["Science", "Social"].map((name) =>
+    ["IPA", "IPS"].map((name) =>
       prisma.group.create({
         data: {
           tenantId: tenant.id,
@@ -280,6 +282,7 @@ async function main() {
       classGroups: {
         create: [
           { tenantId: tenant.id, groupId: grades[0].id }, // Grade 10
+          { tenantId: tenant.id, groupId: streams[0].id }, // Science
         ],
       },
     },
@@ -293,6 +296,7 @@ async function main() {
       classGroups: {
         create: [
           { tenantId: tenant.id, groupId: grades[0].id }, // Grade 10
+          { tenantId: tenant.id, groupId: streams[1].id }, // Social
         ],
       },
     },
@@ -414,6 +418,22 @@ async function main() {
   console.log(`   Admin: admin@demo.school`);
   console.log(`   Teacher: teacher1@demo.school`);
   console.log(`   Student: student001@demo.school`);
+}
+
+function getDefaultGrades(level: string): string[] {
+  if (level === "SD") {
+    return ["Kelas 1", "Kelas 2", "Kelas 3", "Kelas 4", "Kelas 5", "Kelas 6"];
+  }
+
+  if (level === "SMP") {
+    return ["Kelas 7", "Kelas 8", "Kelas 9"];
+  }
+
+  if (level === "SMA" || level === "SMK") {
+    return ["Kelas 10", "Kelas 11", "Kelas 12"];
+  }
+
+  return [];
 }
 
 main()

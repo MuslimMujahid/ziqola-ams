@@ -134,7 +134,10 @@ export class AcademicService {
     }
 
     const latest = await this.prisma.client.academicPeriod.aggregate({
-      where: { tenantId },
+      where: {
+        tenantId,
+        academicYear: { deletedAt: null },
+      },
       _max: { endDate: true },
     });
 

@@ -6,17 +6,21 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from "@nestjs/common";
 import { ProfilesService } from "./profiles.service";
 import { CreateTeacherProfileDto } from "./dto/create-teacher-profile.dto";
 import { UpdateTeacherProfileDto } from "./dto/update-teacher-profile.dto";
 import { CreateStudentProfileDto } from "./dto/create-student-profile.dto";
 import { UpdateStudentProfileDto } from "./dto/update-student-profile.dto";
+import { ListTeacherProfilesDto } from "./dto/list-teacher-profiles.dto";
+import { ListStudentProfilesDto } from "./dto/list-student-profiles.dto";
 import {
   Permission,
   RequirePermissions,
   Role,
   Roles,
+  paginatedResponse,
   successResponse,
   User as UserDecorator,
 } from "../common";
@@ -37,16 +41,35 @@ export class ProfilesController {
   @Post("teacher")
   async createTeacher(
     @Body() dto: CreateTeacherProfileDto,
-    @UserDecorator() user: JwtUser
+    @UserDecorator() user: JwtUser,
   ) {
     const profile = await this.profiles.createTeacherProfile(
       user.tenantId,
-      dto
+      dto,
     );
     return successResponse(
       profile,
       "Teacher profile created successfully",
-      201
+      201,
+    );
+  }
+
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
+  @RequirePermissions(Permission.TEACHER_READ)
+  @Get("teacher")
+  async listTeachers(
+    @UserDecorator() user: JwtUser,
+    @Query() query: ListTeacherProfilesDto,
+  ) {
+    const result = await this.profiles.listTeacherProfiles(
+      user.tenantId,
+      query,
+    );
+    return paginatedResponse(
+      result.data,
+      { ...query, total: result.total, sort: "createdAt" },
+      "Teacher profiles retrieved successfully",
+      200,
     );
   }
 
@@ -55,11 +78,11 @@ export class ProfilesController {
   @Get("teacher/:id")
   async findTeacherById(
     @Param("id") id: string,
-    @UserDecorator() user: JwtUser
+    @UserDecorator() user: JwtUser,
   ) {
     const profile = await this.profiles.findTeacherProfileById(
       user.tenantId,
-      id
+      id,
     );
 
     if (user.role === Role.TEACHER && profile.userId !== user.sub) {
@@ -69,7 +92,7 @@ export class ProfilesController {
     return successResponse(
       profile,
       "Teacher profile retrieved successfully",
-      200
+      200,
     );
   }
 
@@ -78,7 +101,7 @@ export class ProfilesController {
   @Get("teacher/user/:userId")
   async findTeacherByUserId(
     @Param("userId") userId: string,
-    @UserDecorator() user: JwtUser
+    @UserDecorator() user: JwtUser,
   ) {
     if (user.role === Role.TEACHER && userId !== user.sub) {
       throw new ForbiddenException("Insufficient permissions");
@@ -86,13 +109,13 @@ export class ProfilesController {
 
     const profile = await this.profiles.findTeacherProfileByUserId(
       user.tenantId,
-      userId
+      userId,
     );
 
     return successResponse(
       profile,
       "Teacher profile retrieved successfully",
-      200
+      200,
     );
   }
 
@@ -102,18 +125,18 @@ export class ProfilesController {
   async updateTeacher(
     @Param("id") id: string,
     @Body() dto: UpdateTeacherProfileDto,
-    @UserDecorator() user: JwtUser
+    @UserDecorator() user: JwtUser,
   ) {
     const profile = await this.profiles.updateTeacherProfile(
       user.tenantId,
       id,
-      dto
+      dto,
     );
 
     return successResponse(
       profile,
       "Teacher profile updated successfully",
-      200
+      200,
     );
   }
 
@@ -122,16 +145,35 @@ export class ProfilesController {
   @Post("student")
   async createStudent(
     @Body() dto: CreateStudentProfileDto,
-    @UserDecorator() user: JwtUser
+    @UserDecorator() user: JwtUser,
   ) {
     const profile = await this.profiles.createStudentProfile(
       user.tenantId,
-      dto
+      dto,
     );
     return successResponse(
       profile,
       "Student profile created successfully",
-      201
+      201,
+    );
+  }
+
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
+  @RequirePermissions(Permission.STUDENT_READ)
+  @Get("student")
+  async listStudents(
+    @UserDecorator() user: JwtUser,
+    @Query() query: ListStudentProfilesDto,
+  ) {
+    const result = await this.profiles.listStudentProfiles(
+      user.tenantId,
+      query,
+    );
+    return paginatedResponse(
+      result.data,
+      { ...query, total: result.total, sort: "createdAt" },
+      "Student profiles retrieved successfully",
+      200,
     );
   }
 
@@ -140,11 +182,11 @@ export class ProfilesController {
   @Get("student/:id")
   async findStudentById(
     @Param("id") id: string,
-    @UserDecorator() user: JwtUser
+    @UserDecorator() user: JwtUser,
   ) {
     const profile = await this.profiles.findStudentProfileById(
       user.tenantId,
-      id
+      id,
     );
 
     if (user.role === Role.STUDENT && profile.userId !== user.sub) {
@@ -154,7 +196,7 @@ export class ProfilesController {
     return successResponse(
       profile,
       "Student profile retrieved successfully",
-      200
+      200,
     );
   }
 
@@ -163,7 +205,7 @@ export class ProfilesController {
   @Get("student/user/:userId")
   async findStudentByUserId(
     @Param("userId") userId: string,
-    @UserDecorator() user: JwtUser
+    @UserDecorator() user: JwtUser,
   ) {
     if (user.role === Role.STUDENT && userId !== user.sub) {
       throw new ForbiddenException("Insufficient permissions");
@@ -171,13 +213,13 @@ export class ProfilesController {
 
     const profile = await this.profiles.findStudentProfileByUserId(
       user.tenantId,
-      userId
+      userId,
     );
 
     return successResponse(
       profile,
       "Student profile retrieved successfully",
-      200
+      200,
     );
   }
 
@@ -187,18 +229,18 @@ export class ProfilesController {
   async updateStudent(
     @Param("id") id: string,
     @Body() dto: UpdateStudentProfileDto,
-    @UserDecorator() user: JwtUser
+    @UserDecorator() user: JwtUser,
   ) {
     const profile = await this.profiles.updateStudentProfile(
       user.tenantId,
       id,
-      dto
+      dto,
     );
 
     return successResponse(
       profile,
       "Student profile updated successfully",
-      200
+      200,
     );
   }
 }

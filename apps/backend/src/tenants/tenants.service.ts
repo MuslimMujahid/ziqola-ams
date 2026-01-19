@@ -8,9 +8,12 @@ import * as argon2 from "argon2";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { UpdateTenantDto } from "./dto/update-tenant.dto";
-import { RegisterTenantDto } from "./dto/register-tenant.dto";
+import {
+  RegisterTenantDto,
+  type EducationLevel,
+} from "./dto/register-tenant.dto";
 import { AuthService } from "../auth/auth.service";
-import { Role } from "@repo/db";
+import { GroupType, Role } from "@repo/db";
 
 @Injectable()
 export class TenantsService {
@@ -171,6 +174,19 @@ export class TenantsService {
         },
       });
 
+      const gradeGroups = this.getGradeGroups(dto.educationLevel);
+
+      if (gradeGroups.length > 0) {
+        await tx.group.createMany({
+          data: gradeGroups.map((name) => ({
+            tenantId: tenant.id,
+            name,
+            type: GroupType.GRADE,
+          })),
+          skipDuplicates: true,
+        });
+      }
+
       const user = await tx.user.create({
         data: {
           tenantId: tenant.id,
@@ -204,5 +220,21 @@ export class TenantsService {
       user: result.user,
       accessToken,
     };
+  }
+
+  private getGradeGroups(educationLevel: EducationLevel): string[] {
+    if (educationLevel === "SD") {
+      return ["Kelas 1", "Kelas 2", "Kelas 3", "Kelas 4", "Kelas 5", "Kelas 6"];
+    }
+
+    if (educationLevel === "SMP") {
+      return ["Kelas 7", "Kelas 8", "Kelas 9"];
+    }
+
+    if (educationLevel === "SMA" || educationLevel === "SMK") {
+      return ["Kelas 10", "Kelas 11", "Kelas 12"];
+    }
+
+    return [];
   }
 }

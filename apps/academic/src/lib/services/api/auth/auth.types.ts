@@ -9,6 +9,8 @@ type AuthUser = {
   role: AuthRole;
 };
 
+type Gender = "MALE" | "FEMALE";
+
 export type { AuthUser };
 
 export type LoginVars = {
@@ -28,3 +30,26 @@ export type MeResponse = ApiResponse<{
 }>;
 
 export type LogoutResponse = EmptyResponse;
+
+export type RegisterVars = {
+  tenantId: string;
+  email: string;
+  password: string;
+  name: string;
+  role: AuthRole;
+  gender?: Gender;
+  dateOfBirth?: string;
+  phoneNumber?: string;
+};
+
+export type RegisterResponse = ApiResponse<{
+  user: AuthUser & {
+    gender?: Gender | null;
+    dateOfBirth?: string | null;
+    phoneNumber?: string | null;
+    createdAt?: string | null;
+  };
+  accessToken: string;
+}>;
+
+export type { Gender };

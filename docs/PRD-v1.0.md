@@ -279,6 +279,8 @@ Academic Periods represent instructional periods within a Tahun Ajaran.
 - No enforced hierarchy (no Tingkat)
 - Each Kelas has:
   - Name (e.g., "XI IPA 1")
+  - Optional Grade (derived from GRADE Kelompok)
+  - Optional Label (e.g., "1" or "Akselerasi")
   - Academic year
 
 **Wali Kelas Assignment:**
@@ -288,11 +290,11 @@ Academic Periods represent instructional periods within a Tahun Ajaran.
 - Assignment is **time-bounded and year-scoped**
 - A Guru may be Wali Kelas for multiple classes (across years or concurrently, depending on school policy)
 
-### 5.3 Groups (Typed, Optional)
+### 5.3 Kelompok (Typed, Optional)
 
-Groups provide **flexible, non-hierarchical classification** for classes.
+Kelompok provides **flexible, non-hierarchical classification** for classes.
 
-**Group Properties:**
+**Kelompok Properties:**
 
 - Name (e.g., XI, IPA, Unggulan)
 - Type (system-defined, extendable):
@@ -303,9 +305,13 @@ Groups provide **flexible, non-hierarchical classification** for classes.
 
 **Rules:**
 
-- Groups are optional
-- A class may belong to zero, one, or multiple groups
+- Kelompok is optional
+- A class may belong to **at most two** Kelompok:
+  - **Exactly one** GRADE Kelompok (if grading is used)
+  - **At most one** non-GRADE Kelompok (STREAM, PROGRAM, or CUSTOM)
 - The system does not enforce ordering or hierarchy
+- GRADE Kelompok is auto-generated based on Jenjang (e.g., SD 1–6, SMP 7–9, SMA/SMK 10–12)
+- Only STREAM, PROGRAM, and CUSTOM are shown in the manual creation list; GRADE is system-managed
 
 ### 5.4 Student Enrollment
 
@@ -320,7 +326,7 @@ Groups provide **flexible, non-hierarchical classification** for classes.
 
 - Global per tenant
 - Defined by base subject name (e.g., Matematika)
-- Not linked to grade or group
+- Not linked to grade or Kelompok
 
 ### 6.2 Teaching Assignment
 
@@ -506,7 +512,7 @@ This section defines a **canonical mapping** between Indonesian academic terms u
 | Semester        | Semester            | Ganjil / Genap             |
 | Kelas           | Class               | Primary academic container |
 | Kelompok        | Group               | Typed classification       |
-| Jenis Kelompok  | GroupType           | GRADE, STREAM, PROGRAM     |
+| Tipe Kelompok   | GroupType           | GRADE, STREAM, PROGRAM     |
 | Wali Kelas      | HomeroomTeacher     | Role assignment            |
 | Siswa           | Student             | Learner                    |
 | Guru            | Teacher             | Teaching staff             |

@@ -10,10 +10,174 @@ import { UpdateTeacherProfileDto } from "./dto/update-teacher-profile.dto";
 import { CreateStudentProfileDto } from "./dto/create-student-profile.dto";
 import { UpdateStudentProfileDto } from "./dto/update-student-profile.dto";
 import { Prisma, Role } from "@repo/db";
+import { ListTeacherProfilesDto } from "./dto/list-teacher-profiles.dto";
+import { ListStudentProfilesDto } from "./dto/list-student-profiles.dto";
 
 @Injectable()
 export class ProfilesService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async listTeacherProfiles(tenantId: string, query: ListTeacherProfilesDto) {
+    const offset = query.offset ?? 0;
+    const limit = query.limit ?? 10;
+    const order = query.order ?? "desc";
+
+    const where: Prisma.TeacherProfileWhereInput = { tenantId };
+
+    if (query.search) {
+      where.user = {
+        OR: [
+          { name: { contains: query.search, mode: "insensitive" } },
+          { email: { contains: query.search, mode: "insensitive" } },
+        ],
+      };
+    }
+
+    const [data, total] = await this.prisma.client.$transaction([
+      this.prisma.client.teacherProfile.findMany({
+        where,
+        orderBy: { createdAt: order },
+        skip: offset,
+        take: limit,
+        select: {
+          id: true,
+          tenantId: true,
+          userId: true,
+          nip: true,
+          nuptk: true,
+          user: { select: { id: true, name: true, email: true } },
+          createdAt: true,
+          updatedAt: true,
+        },
+      }),
+      this.prisma.client.teacherProfile.count({ where }),
+    ]);
+
+    return {
+      data,
+      total,
+    };
+  }
+
+  async listStudentProfiles(tenantId: string, query: ListStudentProfilesDto) {
+    const offset = query.offset ?? 0;
+    const limit = query.limit ?? 10;
+    const order = query.order ?? "desc";
+
+    const where: Prisma.StudentProfileWhereInput = { tenantId };
+    const andFilters: Prisma.StudentProfileWhereInput[] = [];
+
+    if (query.search) {
+      andFilters.push({
+        OR: [
+          { user: { name: { contains: query.search, mode: "insensitive" } } },
+          { user: { email: { contains: query.search, mode: "insensitive" } } },
+          { nis: { contains: query.search, mode: "insensitive" } },
+          { nisn: { contains: query.search, mode: "insensitive" } },
+        ],
+      });
+    }
+
+    const enrollmentFilter: Prisma.ClassEnrollmentWhereInput = {
+      endDate: null,
+      ...(query.academicYearId
+        ? { class: { academicYearId: query.academicYearId } }
+        : {}),
+      ...(query.classId && !query.withoutClass
+        ? { classId: query.classId }
+        : {}),
+    };
+
+    if (query.withoutClass) {
+      andFilters.push({
+        classEnrollments: {
+          none: enrollmentFilter,
+        },
+      });
+    } else if (query.academicYearId || query.classId) {
+      andFilters.push({
+        classEnrollments: {
+          some: enrollmentFilter,
+        },
+      });
+    }
+
+    if (andFilters.length > 0) {
+      where.AND = andFilters;
+    }
+
+    const [data, total] = await this.prisma.client.$transaction([
+      this.prisma.client.studentProfile.findMany({
+        where,
+        orderBy: { createdAt: order },
+        skip: offset,
+        take: limit,
+        select: {
+          id: true,
+          tenantId: true,
+          userId: true,
+          nis: true,
+          nisn: true,
+          createdAt: true,
+          updatedAt: true,
+          user: { select: { id: true, name: true, email: true } },
+          classEnrollments: {
+            where: {
+              endDate: null,
+              ...(query.academicYearId
+                ? { class: { academicYearId: query.academicYearId } }
+                : {}),
+            },
+            orderBy: { startDate: "desc" },
+            take: 1,
+            select: {
+              startDate: true,
+              endDate: true,
+              class: {
+                select: {
+                  id: true,
+                  name: true,
+                  academicYearId: true,
+                  academicYear: { select: { id: true, label: true } },
+                },
+              },
+            },
+          },
+        },
+      }),
+      this.prisma.client.studentProfile.count({ where }),
+    ]);
+
+    const mapped = data.map((profile) => {
+      const activeEnrollment = profile.classEnrollments[0];
+      const currentClass = activeEnrollment
+        ? {
+            id: activeEnrollment.class.id,
+            name: activeEnrollment.class.name,
+            academicYearId: activeEnrollment.class.academicYearId,
+            academicYearLabel:
+              activeEnrollment.class.academicYear?.label ?? null,
+          }
+        : null;
+
+      return {
+        id: profile.id,
+        tenantId: profile.tenantId,
+        userId: profile.userId,
+        nis: profile.nis,
+        nisn: profile.nisn,
+        createdAt: profile.createdAt,
+        updatedAt: profile.updatedAt,
+        user: profile.user,
+        currentClass,
+      };
+    });
+
+    return {
+      data: mapped,
+      total,
+    };
+  }
 
   async createTeacherProfile(tenantId: string, dto: CreateTeacherProfileDto) {
     const user = await this.prisma.client.user.findFirst({
@@ -152,7 +316,7 @@ export class ProfilesService {
   async updateTeacherProfile(
     tenantId: string,
     id: string,
-    dto: UpdateTeacherProfileDto
+    dto: UpdateTeacherProfileDto,
   ) {
     const existing = await this.prisma.client.teacherProfile.findFirst({
       where: { id, tenantId },
@@ -342,7 +506,7 @@ export class ProfilesService {
   async updateStudentProfile(
     tenantId: string,
     id: string,
-    dto: UpdateStudentProfileDto
+    dto: UpdateStudentProfileDto,
   ) {
     const existing = await this.prisma.client.studentProfile.findFirst({
       where: { id, tenantId },

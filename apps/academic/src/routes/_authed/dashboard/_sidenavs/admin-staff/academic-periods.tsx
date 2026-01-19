@@ -18,6 +18,7 @@ import { useFeedbackDialog } from "@/lib/utils/use-feedback-dialog";
 import {
   type AcademicPeriod,
   useAcademicContext,
+  useAcademicYears,
   useAcademicPeriods,
   useCreateAcademicPeriod,
 } from "@/lib/services/api/academic";
@@ -25,6 +26,7 @@ import { useActivateAcademicPeriod } from "@/lib/services/api/academic/use-activ
 import { useUpdateAcademicPeriod } from "@/lib/services/api/academic/use-update-academic-period";
 import { CreateAcademicPeriodModal } from "@/components/academic-periods/create-academic-period-modal";
 import { formatDateLocal, renderDateRange } from "@/lib/utils/date";
+import { useWorkspaceStore } from "@/stores/workspace.store";
 
 export const Route = createFileRoute(
   "/_authed/dashboard/_sidenavs/admin-staff/academic-periods",
@@ -49,9 +51,6 @@ function AcademicPeriodsPage() {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [academicYearId, setAcademicYearId] = React.useState<
-    string | undefined
-  >();
   const { confirm, ConfirmDialog } = useConfirm();
   const { showFeedback, FeedbackDialog } = useFeedbackDialog();
 
@@ -70,14 +69,14 @@ function AcademicPeriodsPage() {
   }, [searchInput]);
 
   const academicContext = useAcademicContext();
-  const activeYearId = academicContext.data?.year?.id;
+  const workspace = useWorkspaceStore();
+  const academicYearId = workspace.academicYearId ?? undefined;
+  const academicYearsQuery = useAcademicYears({ offset: 0, limit: 50 });
   const activePeriodId = academicContext.data?.year?.activePeriodId;
 
   React.useEffect(() => {
-    if (activeYearId) {
-      setAcademicYearId((current) => current ?? activeYearId);
-    }
-  }, [activeYearId]);
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [academicYearId]);
 
   const queryParams = React.useMemo(
     () => ({
@@ -194,7 +193,9 @@ function AcademicPeriodsPage() {
                   Aktifkan
                 </Button>
               ) : null}
-              {row.original.status !== "ARCHIVED" && !updatePeriod.isPending ? (
+              {!isActive &&
+              row.original.status !== "ARCHIVED" &&
+              !updatePeriod.isPending ? (
                 <Button
                   type="button"
                   size="sm"
@@ -220,7 +221,11 @@ function AcademicPeriodsPage() {
     ],
   );
 
-  const isYearMissing = !academicYearId && !academicContext.isLoading;
+  const selectedYearLabel = academicYearsQuery.data?.data.find(
+    (year) => year.id === academicYearId,
+  )?.label;
+
+  const isYearMissing = !academicYearId && !academicYearsQuery.isLoading;
 
   return (
     <div className="space-y-6">
@@ -276,9 +281,9 @@ function AcademicPeriodsPage() {
                   className="w-full"
                 />
               </div>
-              {academicContext.data?.year?.label ? (
+              {selectedYearLabel ? (
                 <div className="text-sm text-ink-muted">
-                  Tahun ajaran: {academicContext.data.year.label}
+                  Tahun ajaran: {selectedYearLabel}
                 </div>
               ) : null}
             </div>

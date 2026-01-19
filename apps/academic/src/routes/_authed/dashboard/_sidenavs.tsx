@@ -14,19 +14,39 @@ import {
   FileTextIcon,
   SearchIcon,
   SettingsIcon,
+  SparklesIcon,
   UsersIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
 import { Button } from "@repo/ui/button";
 import { Input } from "@repo/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@repo/ui/select";
 
 import { cn } from "@/lib/utils";
 import { useLogout } from "@/lib/services/api/auth/use-logout";
+import {
+  useAcademicContext,
+  useAcademicPeriods,
+  useAcademicYears,
+} from "@/lib/services/api/academic";
+import { useWorkspaceStore } from "@/stores/workspace.store";
 
-type AdminStaffSubNavItem = {
-  label: string;
-  to: string;
-};
+type AdminStaffSubNavItem =
+  | {
+      type?: "link";
+      label: string;
+      to: string;
+    }
+  | {
+      type: "separator";
+      label?: string;
+    };
 
 type AdminStaffNavItem = {
   label: string;
@@ -48,6 +68,9 @@ const ADMIN_STAFF_NAV_ITEMS: AdminStaffNavItem[] = [
       {
         label: "Periode akademik",
         to: "/dashboard/admin-staff/academic-periods",
+      },
+      {
+        type: "separator",
       },
       {
         label: "Kelas",
@@ -195,6 +218,20 @@ export function SidenavLayout({ config }: SidenavLayoutProps) {
   const notificationMenuRef = React.useRef<HTMLDivElement | null>(null);
   const profileMenuRef = React.useRef<HTMLDivElement | null>(null);
 
+  const workspace = useWorkspaceStore();
+  const academicContext = useAcademicContext();
+  const academicYearsQuery = useAcademicYears({ offset: 0, limit: 50 });
+  const academicPeriodsQuery = useAcademicPeriods(
+    {
+      offset: 0,
+      limit: 50,
+      academicYearId: workspace.academicYearId ?? undefined,
+    },
+    { enabled: Boolean(workspace.academicYearId) },
+  );
+
+  const hasDefaultWorkspace = React.useRef(false);
+
   const expandedWidth = "18.5rem";
   const collapsedWidth = "5rem";
 
@@ -253,6 +290,49 @@ export function SidenavLayout({ config }: SidenavLayoutProps) {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [openNotifications, openProfile]);
+
+  React.useEffect(() => {
+    if (hasDefaultWorkspace.current) {
+      return;
+    }
+
+    if (!workspace.academicYearId && academicContext.data?.year?.id) {
+      workspace.setAcademicYearId(academicContext.data.year.id);
+    }
+
+    if (!workspace.academicPeriodId && academicContext.data?.period?.id) {
+      workspace.setAcademicPeriodId(academicContext.data.period.id);
+    }
+
+    if (
+      workspace.academicYearId ||
+      academicContext.data?.year?.id ||
+      workspace.academicPeriodId ||
+      academicContext.data?.period?.id
+    ) {
+      hasDefaultWorkspace.current = true;
+    }
+  }, [
+    academicContext.data?.period?.id,
+    academicContext.data?.year?.id,
+    workspace,
+  ]);
+
+  const activeYearLabel = React.useMemo(() => {
+    return (
+      academicYearsQuery.data?.data.find(
+        (year) => year.id === workspace.academicYearId,
+      )?.label ?? "Belum dipilih"
+    );
+  }, [academicYearsQuery.data?.data, workspace.academicYearId]);
+
+  const activePeriodLabel = React.useMemo(() => {
+    return (
+      academicPeriodsQuery.data?.data.find(
+        (period) => period.id === workspace.academicPeriodId,
+      )?.name ?? "Belum dipilih"
+    );
+  }, [academicPeriodsQuery.data?.data, workspace.academicPeriodId]);
 
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
@@ -366,21 +446,40 @@ export function SidenavLayout({ config }: SidenavLayoutProps) {
                       isOpen ? "max-h-44 opacity-100" : "max-h-0 opacity-0",
                     )}
                   >
-                    {item.subItems?.map((subItem) => (
-                      <Link
-                        key={subItem.label}
-                        to={subItem.to}
-                        className="block rounded-md px-2 py-1.5 text-[13px] text-ink-muted transition"
-                        activeProps={{
-                          className: "bg-primary/10 text-primary",
-                        }}
-                        inactiveProps={{
-                          className: "hover:bg-surface-2 hover:text-ink",
-                        }}
-                      >
-                        {subItem.label}
-                      </Link>
-                    ))}
+                    {item.subItems?.map((subItem, index) => {
+                      if (subItem.type === "separator") {
+                        return (
+                          <div
+                            key={`separator-${index}`}
+                            className="my-2"
+                            role="separator"
+                          >
+                            <div className="h-px w-full bg-surface-2" />
+                            {subItem.label ? (
+                              <span className="mt-1 block text-[11px] font-semibold uppercase text-ink-subtle">
+                                {subItem.label}
+                              </span>
+                            ) : null}
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <Link
+                          key={subItem.label}
+                          to={subItem.to}
+                          className="block rounded-md px-2 py-1.5 text-[13px] text-ink-muted transition"
+                          activeProps={{
+                            className: "bg-primary/10 text-primary",
+                          }}
+                          inactiveProps={{
+                            className: "hover:bg-surface-2 hover:text-ink",
+                          }}
+                        >
+                          {subItem.label}
+                        </Link>
+                      );
+                    })}
                   </div>
                 ) : null}
               </div>
@@ -532,6 +631,66 @@ export function SidenavLayout({ config }: SidenavLayoutProps) {
               </div>
             </div>
           </div>
+
+          <section className="relative overflow-hidden rounded-2xl bg-linear-to-r from-primary/15 via-surface-1 to-primary/8 px-5 py-4">
+            <div
+              className="absolute inset-y-0 left-0 w-1.5 bg-primary"
+              aria-hidden="true"
+            />
+            <div className="flex flex-wrap items-start justify-between gap-4 pl-2">
+              <div className="flex flex-1 flex-wrap items-start gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
+                  <SparklesIcon className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div className="space-y-1 min-w-56">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+                    Workspace akademik
+                  </p>
+                  <p className="text-sm text-ink">
+                    Pilih tahun ajaran dan periode untuk mulai mengolah data.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Select
+                  value={workspace.academicYearId ?? ""}
+                  onValueChange={(value) =>
+                    workspace.setAcademicYearId(value || null)
+                  }
+                >
+                  <SelectTrigger className="w-full sm:w-48 bg-surface-contrast/80">
+                    <SelectValue placeholder="Tahun ajaran" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(academicYearsQuery.data?.data ?? []).map((year) => (
+                      <SelectItem key={year.id} value={year.id}>
+                        {year.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select
+                  value={workspace.academicPeriodId ?? ""}
+                  onValueChange={(value) =>
+                    workspace.setAcademicPeriodId(value || null)
+                  }
+                  disabled={!workspace.academicYearId}
+                >
+                  <SelectTrigger className="w-full sm:w-48 bg-surface-contrast/80">
+                    <SelectValue placeholder="Periode" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(academicPeriodsQuery.data?.data ?? []).map((period) => (
+                      <SelectItem key={period.id} value={period.id}>
+                        {period.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </section>
 
           <Outlet />
         </motion.div>
