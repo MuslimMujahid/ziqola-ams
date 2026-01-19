@@ -5,6 +5,8 @@ const teacherQueryKeys = {
   lists: () => [...teacherQueryKeys.all, "list"] as const,
   list: (params?: GetTeacherProfilesVars) =>
     [...teacherQueryKeys.lists(), params ?? {}] as const,
+  details: () => [...teacherQueryKeys.all, "detail"] as const,
+  detail: (id: string) => [...teacherQueryKeys.details(), id] as const,
 };
 
 export { teacherQueryKeys };

@@ -318,22 +318,6 @@ export function SidenavLayout({ config }: SidenavLayoutProps) {
     workspace,
   ]);
 
-  const activeYearLabel = React.useMemo(() => {
-    return (
-      academicYearsQuery.data?.data.find(
-        (year) => year.id === workspace.academicYearId,
-      )?.label ?? "Belum dipilih"
-    );
-  }, [academicYearsQuery.data?.data, workspace.academicYearId]);
-
-  const activePeriodLabel = React.useMemo(() => {
-    return (
-      academicPeriodsQuery.data?.data.find(
-        (period) => period.id === workspace.academicPeriodId,
-      )?.name ?? "Belum dipilih"
-    );
-  }, [academicPeriodsQuery.data?.data, workspace.academicPeriodId]);
-
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
       <aside
@@ -342,7 +326,12 @@ export function SidenavLayout({ config }: SidenavLayoutProps) {
       >
         <div className="flex gap-3 justify-between items-center">
           {!collapsed ? (
-            <Link to={config.homeTo} className="flex items-center">
+            <Link
+              to={config.homeTo}
+              params={(prev) => prev}
+              search={(prev) => prev}
+              className="flex items-center"
+            >
               <span className="text-lg font-bold text-primary">Ziqola</span>
             </Link>
           ) : null}
@@ -418,6 +407,8 @@ export function SidenavLayout({ config }: SidenavLayoutProps) {
                 ) : (
                   <Link
                     to={item.to}
+                    params={(prev) => prev}
+                    search={(prev) => prev}
                     className="group flex items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition hover:bg-surface-2"
                     activeProps={{
                       className: "bg-primary/10 text-primary",
@@ -443,7 +434,7 @@ export function SidenavLayout({ config }: SidenavLayoutProps) {
                     id={navId}
                     className={cn(
                       "ml-7 space-y-0.5 overflow-hidden border-l border-border pl-3 transition-all",
-                      isOpen ? "max-h-44 opacity-100" : "max-h-0 opacity-0",
+                      isOpen ? "max-h-none opacity-100" : "max-h-0 opacity-0",
                     )}
                   >
                     {item.subItems?.map((subItem, index) => {
@@ -468,6 +459,8 @@ export function SidenavLayout({ config }: SidenavLayoutProps) {
                         <Link
                           key={subItem.label}
                           to={subItem.to}
+                          params={(prev) => prev}
+                          search={(prev) => prev}
                           className="block rounded-md px-2 py-1.5 text-[13px] text-ink-muted transition"
                           activeProps={{
                             className: "bg-primary/10 text-primary",
