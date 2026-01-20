@@ -85,7 +85,7 @@ async function main() {
       data: {
         tenantId: tenant.id,
         email: "teacher1@demo.school",
-        name: "Maria Teacher",
+        name: "Siti Nurhayati",
         passwordHash: defaultPassword,
         role: Role.TEACHER,
         gender: Gender.FEMALE,
@@ -104,7 +104,7 @@ async function main() {
       data: {
         tenantId: tenant.id,
         email: "teacher2@demo.school",
-        name: "David Teacher",
+        name: "Budi Santoso",
         passwordHash: defaultPassword,
         role: Role.TEACHER,
         gender: Gender.MALE,
@@ -123,7 +123,7 @@ async function main() {
       data: {
         tenantId: tenant.id,
         email: "teacher3@demo.school",
-        name: "Lisa Teacher",
+        name: "Rina Handayani",
         passwordHash: defaultPassword,
         role: Role.TEACHER,
         gender: Gender.FEMALE,
@@ -143,6 +143,18 @@ async function main() {
 
   // Students
   console.log("🎓 Creating students...");
+  const studentNames = [
+    "Ahmad Fauzi",
+    "Nadia Aulia",
+    "Rizky Pratama",
+    "Dewi Lestari",
+    "Fajar Hidayat",
+    "Intan Permata",
+    "Ilham Ramadhan",
+    "Putri Amelia",
+    "Bagas Saputra",
+    "Salsabila Nur",
+  ];
   const students = await Promise.all(
     Array.from({ length: 10 }, (_, i) => {
       const num = (i + 1).toString().padStart(3, "0");
@@ -150,7 +162,7 @@ async function main() {
         data: {
           tenantId: tenant.id,
           email: `student${num}@demo.school`,
-          name: `Student ${num}`,
+          name: studentNames[i] ?? `Siswa ${num}`,
           passwordHash: defaultPassword,
           role: Role.STUDENT,
           gender: i % 2 === 0 ? Gender.MALE : Gender.FEMALE,
@@ -171,29 +183,33 @@ async function main() {
 
   // 3. Create academic year with periods
   console.log("📅 Creating academic year...");
-  const currentYear = new Date().getFullYear();
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const academicYearStartYear =
+    today.getMonth() >= 6 ? currentYear : currentYear - 1;
+  const academicYearEndYear = academicYearStartYear + 1;
   const academicYear = await prisma.academicYear.create({
     data: {
       tenantId: tenant.id,
-      label: `${currentYear}/${currentYear + 1}`,
+      label: `${academicYearStartYear}/${academicYearEndYear}`,
       status: AcademicStatus.ACTIVE,
-      startDate: new Date(`${currentYear}-07-01`),
-      endDate: new Date(`${currentYear + 1}-06-30`),
+      startDate: new Date(`${academicYearStartYear}-07-01`),
+      endDate: new Date(`${academicYearEndYear}-06-30`),
       periods: {
         create: [
           {
             tenantId: tenant.id,
             name: "Semester 1",
-            startDate: new Date(`${currentYear}-07-01`),
-            endDate: new Date(`${currentYear}-12-31`),
+            startDate: new Date(`${academicYearStartYear}-07-01`),
+            endDate: new Date(`${academicYearStartYear}-12-31`),
             orderIndex: 1,
             status: PeriodStatus.DRAFT,
           },
           {
             tenantId: tenant.id,
             name: "Semester 2",
-            startDate: new Date(`${currentYear + 1}-01-01`),
-            endDate: new Date(`${currentYear + 1}-06-30`),
+            startDate: new Date(`${academicYearEndYear}-01-01`),
+            endDate: new Date(`${academicYearEndYear}-06-30`),
             orderIndex: 2,
             status: PeriodStatus.DRAFT,
           },
@@ -203,10 +219,16 @@ async function main() {
     include: { periods: true },
   });
 
-  // Set active period to first semester
+  const activePeriod =
+    academicYear.periods.find(
+      (period) =>
+        today >= period.startDate && today <= (period.endDate ?? today),
+    ) ?? academicYear.periods[0];
+
+  // Set active period
   await prisma.academicYear.update({
     where: { id: academicYear.id },
-    data: { activePeriodId: academicYear.periods[0].id },
+    data: { activePeriodId: activePeriod.id },
   });
   console.log(`✅ Created academic year: ${academicYear.label}`);
   console.log(`   - ${academicYear.periods.length} periods created\n`);
@@ -278,7 +300,7 @@ async function main() {
     data: {
       tenantId: tenant.id,
       academicYearId: academicYear.id,
-      name: "10-A",
+      name: "X IPA 1",
       classGroups: {
         create: [
           { tenantId: tenant.id, groupId: grades[0].id }, // Grade 10
@@ -292,7 +314,7 @@ async function main() {
     data: {
       tenantId: tenant.id,
       academicYearId: academicYear.id,
-      name: "10-B",
+      name: "X IPS 1",
       classGroups: {
         create: [
           { tenantId: tenant.id, groupId: grades[0].id }, // Grade 10
@@ -365,22 +387,46 @@ async function main() {
 
   // 8.5 Create schedules for calendar view
   console.log("🗓️  Creating schedules...");
-  const activePeriod = academicYear.periods[0];
-
   const buildTime = (baseDate: Date, hour: number, minute = 0) => {
     const date = new Date(baseDate);
     date.setHours(hour, minute, 0, 0);
     return date;
   };
 
+  const normalizeDayOfWeek = (value: number) => (value === 0 ? 7 : value);
+
+  const getNextDateForDayOfWeek = (baseDate: Date, dayOfWeek: number) => {
+    const date = new Date(baseDate);
+    const baseDay = normalizeDayOfWeek(date.getDay());
+    let diff = dayOfWeek - baseDay;
+    if (diff < 0) diff += 7;
+    date.setDate(date.getDate() + diff);
+    return date;
+  };
+
+  const getPreviousDateForDayOfWeek = (baseDate: Date, dayOfWeek: number) => {
+    const date = new Date(baseDate);
+    const baseDay = normalizeDayOfWeek(date.getDay());
+    let diff = baseDay - dayOfWeek;
+    if (diff < 0) diff += 7;
+    date.setDate(date.getDate() - diff);
+    return date;
+  };
+
+  const combineDateAndTime = (date: Date, timeSource: Date) => {
+    const result = new Date(date);
+    result.setHours(timeSource.getHours(), timeSource.getMinutes(), 0, 0);
+    return result;
+  };
+
   const allClassSubjects = [...class10ASubjects, ...class10BSubjects];
 
-  await Promise.all(
+  const schedules = await Promise.all(
     allClassSubjects.map((classSubject, index) => {
       const dayOfWeek = (index % 5) + 1; // Monday - Friday
-      const startHour = 7 + Math.floor(index / 5);
-      const startTime = buildTime(academicYear.startDate!, startHour);
-      const endTime = buildTime(academicYear.startDate!, startHour + 1);
+      const startHour = 7 + (index % 5); // 07:00 - 11:00
+      const startTime = buildTime(new Date(), startHour);
+      const endTime = buildTime(new Date(), startHour + 1);
 
       return prisma.schedule.create({
         data: {
@@ -398,6 +444,41 @@ async function main() {
   );
 
   console.log(`✅ Created ${allClassSubjects.length} schedules\n`);
+
+  // 8.6 Create sample study sessions
+  console.log("🧪 Creating sample study sessions...");
+  const sessionSeeds = schedules.flatMap((schedule) => {
+    const lastDate = getPreviousDateForDayOfWeek(today, schedule.dayOfWeek);
+    const nextDate = getNextDateForDayOfWeek(today, schedule.dayOfWeek);
+
+    const sessionDates = [lastDate, nextDate].filter((sessionDate) =>
+      activePeriod.startDate && activePeriod.endDate
+        ? sessionDate >= new Date(activePeriod.startDate) &&
+          sessionDate <= new Date(activePeriod.endDate)
+        : true,
+    );
+
+    return sessionDates.map((sessionDate) => ({
+      tenantId: tenant.id,
+      classId: schedule.classId,
+      classSubjectId: schedule.classSubjectId,
+      academicPeriodId: schedule.academicPeriodId,
+      scheduleId: schedule.id,
+      date: sessionDate,
+      startTime: combineDateAndTime(sessionDate, schedule.startTime),
+      endTime: combineDateAndTime(sessionDate, schedule.endTime),
+    }));
+  });
+
+  await Promise.all(
+    sessionSeeds.map((session) =>
+      prisma.session.create({
+        data: session,
+      }),
+    ),
+  );
+
+  console.log(`✅ Created ${sessionSeeds.length} sessions\n`);
 
   // 9. Enroll students
   console.log("📝 Enrolling students...");

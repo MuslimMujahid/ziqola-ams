@@ -23,9 +23,10 @@ async function createGroup(vars: CreateGroupVars) {
 }
 
 async function updateGroup(vars: UpdateGroupVars) {
+  const { id, ...payload } = vars;
   const response = await clientApi.patch<UpdateGroupResponse>(
-    `/groups/${vars.id}`,
-    vars,
+    `/groups/${id}`,
+    payload,
   );
   return response.data.data;
 }

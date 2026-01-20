@@ -39,7 +39,7 @@ export const Route = createFileRoute(
   pendingComponent: () => (
     <div className="flex items-center justify-center py-10 text-ink-muted">
       <Loader2Icon className="h-5 w-5 animate-spin" aria-hidden="true" />
-      <span className="ml-2 text-sm">Memuat data kelompok...</span>
+      <span className="ml-2 text-sm">Memuat data rombongan belajar...</span>
     </div>
   ),
   errorComponent: ({ error }: { error: Error }) => (
@@ -136,9 +136,9 @@ function GroupsPage() {
   const handleDelete = React.useCallback(
     async (group: Group) => {
       const confirmed = await confirm({
-        title: `Hapus kelompok ${group.name}?`,
+        title: `Hapus rombongan belajar ${group.name}?`,
         description:
-          "Kelompok akan dihapus jika belum dipakai di kelas manapun.",
+          "Rombongan belajar akan dihapus jika belum dipakai di kelas manapun.",
         confirmText: "Hapus",
         cancelText: "Batal",
         confirmVariant: "destructive",
@@ -151,7 +151,7 @@ function GroupsPage() {
       await deleteGroup.mutateAsync({ id: group.id });
       showFeedback({
         tone: "success",
-        title: "Kelompok dihapus",
+        title: "Rombongan belajar dihapus",
         description: `${group.name} berhasil dihapus.`,
       });
     },
@@ -161,7 +161,7 @@ function GroupsPage() {
   const columns = React.useMemo<ColumnDef<Group>[]>(
     () => [
       {
-        header: "Kelompok",
+        header: "Rombongan Belajar",
         accessorKey: "name",
         cell: ({ row }) => (
           <div className="space-y-1">
@@ -222,7 +222,9 @@ function GroupsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-ink-strong">Kelompok</h1>
+          <h1 className="text-2xl font-semibold text-ink-strong">
+            Rombongan Belajar
+          </h1>
           <p className="text-sm text-ink-muted">
             Kelola klasifikasi kelas berdasarkan tingkat, jurusan, atau program.
           </p>
@@ -240,7 +242,7 @@ function GroupsPage() {
           </Button>
           <Button type="button" onClick={openCreate} className="gap-2">
             <PlusIcon className="h-4 w-4" aria-hidden="true" />
-            Tambah kelompok
+            Tambah rombongan belajar
           </Button>
         </div>
       </div>
@@ -252,7 +254,7 @@ function GroupsPage() {
               <Input
                 value={searchInput}
                 onChange={(event) => setSearchInput(event.target.value)}
-                placeholder="Cari kelompok"
+                placeholder="Cari rombongan belajar"
                 className="w-full"
               />
             </div>
@@ -275,7 +277,9 @@ function GroupsPage() {
             </Select>
           </div>
 
-          <div className="text-xs text-ink-muted">Total: {total} kelompok</div>
+          <div className="text-xs text-ink-muted">
+            Total: {total} rombongan belajar
+          </div>
         </div>
 
         <div className="mt-4">
@@ -300,7 +304,9 @@ function GroupsPage() {
               pageCount,
             }}
             emptyMessage={
-              groupsQuery.isLoading ? "Memuat data..." : "Belum ada kelompok"
+              groupsQuery.isLoading
+                ? "Memuat data..."
+                : "Belum ada rombongan belajar"
             }
           />
         </div>
@@ -323,7 +329,7 @@ function GroupsPage() {
               await createGroup.mutateAsync(values);
               showFeedback({
                 tone: "success",
-                title: "Kelompok berhasil dibuat",
+                title: "Rombongan belajar berhasil dibuat",
                 description: `${values.name} telah ditambahkan.`,
               });
             } else if (selectedGroup) {
@@ -334,7 +340,7 @@ function GroupsPage() {
               });
               showFeedback({
                 tone: "success",
-                title: "Kelompok diperbarui",
+                title: "Rombongan belajar diperbarui",
                 description: `${values.name} berhasil diperbarui.`,
               });
             }

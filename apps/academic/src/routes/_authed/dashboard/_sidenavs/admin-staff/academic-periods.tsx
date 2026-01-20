@@ -281,11 +281,6 @@ function AcademicPeriodsPage() {
                   className="w-full"
                 />
               </div>
-              {selectedYearLabel ? (
-                <div className="text-sm text-ink-muted">
-                  Tahun ajaran: {selectedYearLabel}
-                </div>
-              ) : null}
             </div>
 
             <div className="text-xs text-ink-muted">Total: {total} periode</div>

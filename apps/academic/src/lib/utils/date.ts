@@ -31,3 +31,40 @@ export function renderDateRange(
   if (startLabel && endLabel) return `${startLabel} – ${endLabel}`;
   return startLabel || endLabel;
 }
+
+/**
+ * Get a YYYY-MM-DD string based on the user's local timezone.
+ */
+export function getLocalDateInputValue(date: Date = new Date()) {
+  return new Intl.DateTimeFormat("en-CA", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+}
+
+/**
+ * Parse a YYYY-MM-DD string into a Date object in local timezone.
+ */
+export function parseDateInputLocal(value: string) {
+  const [year, month, day] = value.split("-").map((part) => Number(part));
+  if (!year || !month || !day) return null;
+  const date = new Date(year, month - 1, day);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+/**
+ * Format a date in local timezone using Indonesian locale.
+ */
+export function formatDateLocalLong(value?: Date | string | null) {
+  if (!value) return "";
+  const date = typeof value === "string" ? new Date(value) : value;
+
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat("id-ID", {
+    weekday: "long",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+}

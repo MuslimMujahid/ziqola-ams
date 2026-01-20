@@ -1,6 +1,5 @@
 import React from "react";
 import { z } from "zod";
-import { useStore } from "@tanstack/react-form";
 import { Loader2Icon } from "lucide-react";
 import {
   Dialog,
@@ -17,137 +16,83 @@ import { useAppForm } from "@/lib/utils/form";
 import type { ClassSubject } from "@/lib/services/api/class-subjects";
 import { cn } from "@/lib/utils";
 
-const scheduleSchema = z
+const sessionSchema = z
   .object({
-    academicPeriodId: z.string().min(1, "Pilih periode"),
+    academicPeriodId: z.string().min(1, "Periode akademik wajib diisi"),
     classId: z.string().min(1, "Pilih kelas"),
     subjectId: z.string().min(1, "Pilih mata pelajaran"),
-    teacherProfileId: z.string().min(1, "Pilih guru"),
-    dayOfWeek: z.string().min(1, "Pilih hari"),
+    date: z.string().min(1, "Pilih tanggal"),
     startTime: z.string().min(1, "Isi jam mulai"),
     endTime: z.string().min(1, "Isi jam selesai"),
   })
-  .refine(
-    (values) => {
-      if (!values.startTime || !values.endTime) return true;
-      return values.startTime < values.endTime;
-    },
-    {
-      path: ["endTime"],
-      message: "Jam selesai harus setelah jam mulai",
-    },
-  );
+  .superRefine((values, context) => {
+    if (values.startTime && values.endTime) {
+      if (values.startTime >= values.endTime) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["endTime"],
+          message: "Jam selesai harus setelah jam mulai",
+        });
+      }
+    }
+  });
 
-export type ScheduleFormValues = z.infer<typeof scheduleSchema>;
+export type SessionFormValues = z.infer<typeof sessionSchema>;
 
-type ScheduleFormModalProps = {
+type SessionFormModalProps = {
   isOpen: boolean;
   mode: "create" | "edit";
   isSubmitting: boolean;
-  initialValues: ScheduleFormValues;
+  initialValues: SessionFormValues;
   academicPeriodLabel: string;
   classOptions: Array<{ label: string; value: string }>;
+  subjectOptions: Array<{ label: string; value: string }>;
   classSubjects: ClassSubject[];
-  dayOptions: Array<{ label: string; value: string }>;
   onDelete?: () => void;
   isDeleting?: boolean;
   onClose: () => void;
-  onSubmit: (values: ScheduleFormValues) => Promise<void> | void;
+  onSubmit: (values: SessionFormValues) => Promise<void> | void;
 };
 
-export function ScheduleFormModal({
+export function SessionFormModal({
   isOpen,
   mode,
   isSubmitting,
   initialValues,
   academicPeriodLabel,
   classOptions,
+  subjectOptions,
   classSubjects,
-  dayOptions,
   onDelete,
   isDeleting,
   onClose,
   onSubmit,
-}: ScheduleFormModalProps) {
+}: SessionFormModalProps) {
   const isCreateMode = React.useMemo(() => mode === "create", [mode]);
 
   const form = useAppForm({
     defaultValues: initialValues,
     validators: {
-      onChange: scheduleSchema,
+      onChange: sessionSchema,
     },
     onSubmit: async ({ value }) => {
       await onSubmit(value);
     },
   });
 
-  const formValues = useStore(form.store, (state) => state.values);
-
-  const filteredSubjectOptions = React.useMemo(() => {
-    if (!formValues.classId) return [];
-    const map = new Map<string, string>();
-
-    classSubjects
-      .filter(
-        (item) =>
-          item.classId === formValues.classId && Boolean(item.teacherProfileId),
-      )
-      .forEach((item) => {
-        map.set(item.subjectId, item.subjectName);
-      });
-
-    return Array.from(map.entries()).map(([value, label]) => ({
-      value,
-      label,
-    }));
-  }, [classSubjects, formValues.classId]);
-
-  const selectedAssignment = React.useMemo(
-    () =>
-      classSubjects.find(
-        (item) =>
-          item.classId === formValues.classId &&
-          item.subjectId === formValues.subjectId,
-      ),
-    [classSubjects, formValues.classId, formValues.subjectId],
-  );
-
-  React.useEffect(() => {
-    if (!formValues.classId) return;
-    const isSubjectValid = filteredSubjectOptions.some(
-      (option) => option.value === formValues.subjectId,
-    );
-
-    if (!isSubjectValid && formValues.subjectId) {
-      form.setFieldValue("subjectId", "");
-      form.setFieldValue("teacherProfileId", "");
-      return;
-    }
-
-    const nextTeacherId = selectedAssignment?.teacherProfileId ?? "";
-    if (formValues.teacherProfileId !== nextTeacherId) {
-      form.setFieldValue("teacherProfileId", nextTeacherId);
-    }
-  }, [
-    filteredSubjectOptions,
-    form,
-    formValues.classId,
-    formValues.subjectId,
-    formValues.teacherProfileId,
-    selectedAssignment?.teacherProfileId,
-  ]);
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>
-            {isCreateMode ? "Tambah jadwal mengajar" : "Ubah jadwal mengajar"}
+            {isCreateMode
+              ? "Tambah sesi pembelajaran"
+              : "Ubah sesi pembelajaran"}
           </DialogTitle>
           <DialogDescription>
             {isCreateMode
-              ? "Atur slot waktu pengajaran pada periode yang dipilih"
-              : "Perbarui slot waktu atau penugasan guru untuk jadwal ini"}
+              ? "Catat sesi pembelajaran berdasarkan jadwal atau input manual"
+              : "Perbarui waktu atau detail sesi pembelajaran"}
           </DialogDescription>
         </DialogHeader>
 
@@ -160,9 +105,9 @@ export function ScheduleFormModal({
           noValidate
         >
           <div>
-            <Label htmlFor="schedule-academic-period">Periode akademik</Label>
+            <Label htmlFor="session-academic-period">Periode akademik</Label>
             <Input
-              id="schedule-academic-period"
+              id="session-academic-period"
               value={academicPeriodLabel}
               disabled
               className="mt-2"
@@ -180,56 +125,69 @@ export function ScheduleFormModal({
           </form.AppField>
 
           <form.Subscribe selector={(state) => state.values.classId}>
-            {(selectedClassId) => (
-              <div>
-                <form.AppField name="subjectId">
-                  {(field) => (
-                    <field.Select
-                      label="Mata pelajaran"
-                      placeholder={
-                        selectedClassId
-                          ? "Pilih mata pelajaran"
-                          : "Pilih kelas terlebih dahulu"
-                      }
-                      values={selectedClassId ? filteredSubjectOptions : []}
-                    />
-                  )}
-                </form.AppField>
-                {selectedClassId && filteredSubjectOptions.length === 0 ? (
-                  <p className="mt-2 text-xs text-error">
-                    Tidak ada mata pelajaran dengan penugasan guru untuk kelas
-                    ini.
-                  </p>
-                ) : null}
-              </div>
-            )}
+            {(selectedClassId) => {
+              const filteredSubjects = selectedClassId
+                ? Array.from(
+                    new Map(
+                      classSubjects
+                        .filter((item) => item.classId === selectedClassId)
+                        .map((item) => [item.subjectId, item.subjectName]),
+                    ).entries(),
+                  ).map(([value, label]) => ({ value, label }))
+                : subjectOptions;
+
+              return (
+                <div>
+                  <form.AppField name="subjectId">
+                    {(field) => (
+                      <field.Select
+                        label="Mata pelajaran"
+                        placeholder="Pilih mata pelajaran"
+                        values={filteredSubjects}
+                      />
+                    )}
+                  </form.AppField>
+                  {selectedClassId && filteredSubjects.length === 0 ? (
+                    <p className="mt-2 text-xs text-error">
+                      Belum ada mata pelajaran untuk kelas ini.
+                    </p>
+                  ) : null}
+                </div>
+              );
+            }}
           </form.Subscribe>
 
-          <div>
-            <Label htmlFor="schedule-teacher">Guru</Label>
-            <Input
-              id="schedule-teacher"
-              value={selectedAssignment?.teacherName ?? "-"}
-              disabled
-              className="mt-2"
-            />
-            {!selectedAssignment &&
-            formValues.classId &&
-            formValues.subjectId ? (
-              <p className="mt-2 text-xs text-error">
-                Penugasan guru untuk kelas dan mata pelajaran ini belum dibuat.
-              </p>
-            ) : null}
-          </div>
+          <form.Subscribe
+            selector={(state) => [state.values.classId, state.values.subjectId]}
+          >
+            {([classId, subjectId]) => {
+              const selectedAssignment = classSubjects.find(
+                (item) =>
+                  item.classId === classId && item.subjectId === subjectId,
+              );
 
-          <form.AppField name="dayOfWeek">
-            {(field) => (
-              <field.Select
-                label="Hari"
-                placeholder="Pilih hari"
-                values={dayOptions}
-              />
-            )}
+              return (
+                <div>
+                  <Label htmlFor="session-teacher">Guru</Label>
+                  <Input
+                    id="session-teacher"
+                    value={selectedAssignment?.teacherName ?? "-"}
+                    disabled
+                    className="mt-2"
+                  />
+                  {!selectedAssignment && classId && subjectId ? (
+                    <p className="mt-2 text-xs text-error">
+                      Penugasan guru untuk kelas dan mata pelajaran ini belum
+                      dibuat.
+                    </p>
+                  ) : null}
+                </div>
+              );
+            }}
+          </form.Subscribe>
+
+          <form.AppField name="date">
+            {(field) => <field.DateField label="Tanggal" />}
           </form.AppField>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -272,7 +230,7 @@ export function ScheduleFormModal({
                       onClick={onDelete}
                       disabled={isDeleting}
                     >
-                      Hapus jadwal
+                      Hapus sesi
                     </Button>
                   ) : null}
                   <Button type="button" variant="ghost" onClick={onClose}>

@@ -27,7 +27,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/select";
-
 import { cn } from "@/lib/utils";
 import { useLogout } from "@/lib/services/api/auth/use-logout";
 import {
@@ -88,7 +87,7 @@ const ADMIN_STAFF_NAV_ITEMS: AdminStaffNavItem[] = [
         type: "separator",
       },
       {
-        label: "Kelompok",
+        label: "Rombongan Belajar",
         to: "/dashboard/admin-staff/groups",
       },
       {

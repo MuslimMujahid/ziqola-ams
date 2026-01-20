@@ -7,6 +7,7 @@ import {
 import { Role } from "@repo/db";
 
 import { PrismaService } from "../prisma/prisma.service";
+import { SessionsService } from "../sessions/sessions.service";
 import { ScheduleQueryDto } from "./dto/schedule-query.dto";
 import { CreateScheduleDto } from "./dto/create-schedule.dto";
 import { UpdateScheduleDto } from "./dto/update-schedule.dto";
@@ -32,7 +33,10 @@ export type ScheduleSummary = {
 
 @Injectable()
 export class SchedulesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly sessionsService: SessionsService,
+  ) {}
 
   private mapSchedule(item: {
     id: string;
@@ -453,6 +457,11 @@ export class SchedulesService {
       },
     });
 
+    await this.sessionsService.generateSessionsForSchedule(
+      tenantId,
+      created.id,
+    );
+
     return this.mapSchedule(created);
   }
 
@@ -555,6 +564,11 @@ export class SchedulesService {
         updatedAt: true,
       },
     });
+
+    await this.sessionsService.generateSessionsForSchedule(
+      tenantId,
+      updated.id,
+    );
 
     return this.mapSchedule(updated);
   }

@@ -257,7 +257,7 @@ function AdminStaffDashboardIndexPage() {
                     className="h-4 w-4 text-white"
                     aria-hidden="true"
                   />
-                  <span className="font-semibold">2025/2026</span>
+                  <span className="font-semibold">2026/2027</span>
                 </div>
               </div>
               <div className="rounded-xl bg-white/8 px-4 py-3">

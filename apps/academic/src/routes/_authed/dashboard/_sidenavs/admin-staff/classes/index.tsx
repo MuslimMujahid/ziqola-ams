@@ -199,18 +199,11 @@ function ClassesPage() {
         header: "Kelas",
         accessorKey: "name",
         cell: ({ row }) => (
-          <div className="space-y-1">
-            <div className="font-medium text-ink-strong">
-              {row.original.name}
-            </div>
-            <p className="text-xs text-ink-muted">
-              Tahun ajaran: {row.original.academicYear?.label ?? "-"}
-            </p>
-          </div>
+          <div className="font-medium text-ink-strong">{row.original.name}</div>
         ),
       },
       {
-        header: "Kelompok",
+        header: "Rombongan Belajar",
         cell: ({ row }) => renderGroupChips(row.original.groups),
       },
       {
@@ -290,7 +283,7 @@ function ClassesPage() {
         <div>
           <h1 className="text-2xl font-semibold text-ink-strong">Kelas</h1>
           <p className="text-sm text-ink-muted">
-            Kelola daftar kelas, kelompok, dan wali kelas.
+            Kelola daftar kelas, rombongan belajar, dan wali kelas.
           </p>
         </div>
 
@@ -340,10 +333,10 @@ function ClassesPage() {
                 onValueChange={(value) => setGroupFilterId(value)}
               >
                 <SelectTrigger className="w-full sm:w-48">
-                  <SelectValue placeholder="Kelompok" />
+                  <SelectValue placeholder="Rombongan Belajar" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ALL">Semua kelompok</SelectItem>
+                  <SelectItem value="ALL">Semua rombel</SelectItem>
                   {(groupOptionsQuery.data?.data ?? []).map((group) => (
                     <SelectItem key={group.id} value={group.id}>
                       {group.name}
@@ -351,11 +344,6 @@ function ClassesPage() {
                   ))}
                 </SelectContent>
               </Select>
-              {selectedYearLabel ? (
-                <div className="text-sm text-ink-muted">
-                  Tahun ajaran: {selectedYearLabel}
-                </div>
-              ) : null}
             </div>
 
             <div className="text-xs text-ink-muted">Total: {total} kelas</div>

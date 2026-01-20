@@ -25,6 +25,7 @@ import { useConfirm } from "@/lib/utils/use-confirm";
 import { useFeedbackDialog } from "@/lib/utils/use-feedback-dialog";
 import { useWorkspaceStore } from "@/stores/workspace.store";
 import { useAcademicPeriods } from "@/lib/services/api/academic";
+import { useClassSubjects } from "@/lib/services/api/class-subjects";
 import { useClasses } from "@/lib/services/api/classes";
 import { useSubjects } from "@/lib/services/api/subjects";
 import { useTeacherProfiles } from "@/lib/services/api/teachers";
@@ -157,6 +158,14 @@ function TeachingAssignmentsPage() {
 
   const subjectOptionsQuery = useSubjects({ offset: 0, limit: 200 });
   const teacherOptionsQuery = useTeacherProfiles({ offset: 0, limit: 200 });
+  const classSubjectsQuery = useClassSubjects(
+    {
+      offset: 0,
+      limit: 500,
+      academicYearId: workspace.academicYearId ?? undefined,
+    },
+    { enabled: Boolean(workspace.academicYearId) },
+  );
 
   const academicPeriodOptions = React.useMemo(
     () => academicPeriodsQuery.data?.data ?? [],
@@ -214,6 +223,11 @@ function TeachingAssignmentsPage() {
   const teacherOptions = React.useMemo(
     () => teacherOptionsQuery.data?.data ?? [],
     [teacherOptionsQuery.data?.data],
+  );
+
+  const classSubjectAssignments = React.useMemo(
+    () => classSubjectsQuery.data?.data ?? [],
+    [classSubjectsQuery.data?.data],
   );
 
   const canCreate = Boolean(activeAcademicPeriodId);
@@ -691,8 +705,7 @@ function TeachingAssignmentsPage() {
               : (selectedAcademicPeriod?.name ?? "-")
           }
           classOptions={classSelectOptions}
-          subjectOptions={subjectSelectOptions}
-          teacherOptions={teacherSelectOptions}
+          classSubjects={classSubjectAssignments}
           dayOptions={dayOptions}
           initialValues={scheduleInitialValues}
           onDelete={

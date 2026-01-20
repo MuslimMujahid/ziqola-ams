@@ -77,7 +77,7 @@ export function ClassesFormModal({
           .min(2, "Minimal 2 karakter")
           .max(CLASS_NAME_MAX, "Maksimal 60 karakter"),
         gradeGroupId: z.string().optional(),
-        groupId: z.string().min(1, "Kelompok wajib dipilih"),
+        groupId: z.string().min(1, "Rombongan belajar wajib dipilih"),
         academicYearId: z.string().optional(),
       })
       .superRefine((value, ctx) => {
@@ -204,15 +204,17 @@ export function ClassesFormModal({
               <div className="space-y-2">
                 {nonGradeGroups.length === 0 ? (
                   <div className="space-y-1">
-                    <Label className="text-sm font-medium">Kelompok</Label>
+                    <Label className="text-sm font-medium">
+                      Rombongan Belajar
+                    </Label>
                     <div className="rounded-md bg-surface-1 px-3 py-2 text-sm text-ink-muted">
-                      Belum ada kelompok yang tersedia.
+                      Belum ada rombongan belajar yang tersedia.
                     </div>
                   </div>
                 ) : (
                   <field.Select
-                    label="Kelompok"
-                    placeholder="Pilih kelompok"
+                    label="Rombongan Belajar"
+                    placeholder="Pilih rombongan belajar"
                     values={[
                       ...nonGradeGroups.map((group) => ({
                         label: `${group.name} · ${GROUP_TYPE_LABELS[group.type]}`,

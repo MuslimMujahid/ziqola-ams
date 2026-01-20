@@ -57,7 +57,7 @@ export function SubjectsFormModal({
           </DialogTitle>
           <DialogDescription>
             {mode === "create"
-              ? "Buat mata pelajaran baru untuk tenant ini"
+              ? "Buat mata pelajaran baru"
               : "Perbarui nama mata pelajaran"}
           </DialogDescription>
         </DialogHeader>

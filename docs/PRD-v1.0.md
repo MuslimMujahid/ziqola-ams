@@ -279,7 +279,7 @@ Academic Periods represent instructional periods within a Tahun Ajaran.
 - No enforced hierarchy (no Tingkat)
 - Each Kelas has:
   - Name (e.g., "XI IPA 1")
-  - Optional Grade (derived from GRADE Kelompok)
+  - Optional Grade (derived from GRADE Rombongan Belajar)
   - Optional Label (e.g., "1" or "Akselerasi")
   - Academic year
 
@@ -290,11 +290,11 @@ Academic Periods represent instructional periods within a Tahun Ajaran.
 - Assignment is **time-bounded and year-scoped**
 - A Guru may be Wali Kelas for multiple classes (across years or concurrently, depending on school policy)
 
-### 5.3 Kelompok (Typed, Optional)
+### 5.3 Rombongan Belajar (Typed, Optional)
 
-Kelompok provides **flexible, non-hierarchical classification** for classes.
+Rombongan Belajar provides **flexible, non-hierarchical classification** for classes.
 
-**Kelompok Properties:**
+**Rombongan Belajar Properties:**
 
 - Name (e.g., XI, IPA, Unggulan)
 - Type (system-defined, extendable):
@@ -305,12 +305,12 @@ Kelompok provides **flexible, non-hierarchical classification** for classes.
 
 **Rules:**
 
-- Kelompok is optional
-- A class may belong to **at most two** Kelompok:
-  - **Exactly one** GRADE Kelompok (if grading is used)
-  - **At most one** non-GRADE Kelompok (STREAM, PROGRAM, or CUSTOM)
+- Rombongan Belajar is optional
+- A class may belong to **at most two** Rombongan Belajar:
+  - **Exactly one** GRADE Rombongan Belajar (if grading is used)
+  - **At most one** non-GRADE Rombongan Belajar (STREAM, PROGRAM, or CUSTOM)
 - The system does not enforce ordering or hierarchy
-- GRADE Kelompok is auto-generated based on Jenjang (e.g., SD 1–6, SMP 7–9, SMA/SMK 10–12)
+- GRADE Rombongan Belajar is auto-generated based on Jenjang (e.g., SD 1–6, SMP 7–9, SMA/SMK 10–12)
 - Only STREAM, PROGRAM, and CUSTOM are shown in the manual creation list; GRADE is system-managed
 
 ### 5.4 Student Enrollment
@@ -326,7 +326,7 @@ Kelompok provides **flexible, non-hierarchical classification** for classes.
 
 - Global per tenant
 - Defined by base subject name (e.g., Matematika)
-- Not linked to grade or Kelompok
+- Not linked to grade or Rombongan Belajar
 
 ### 6.2 Teaching Assignment
 
@@ -375,7 +375,17 @@ Kelompok provides **flexible, non-hierarchical classification** for classes.
 
 Session Generation
 
-- Schedules generate teaching sessions
+- Sessions can be created **manually** by Admin Staff (create/edit/delete)
+- Teachers can start sessions **from schedule**; session derives class/subject/teacher/period from `scheduleId`
+- System prevents duplicate sessions for the same schedule and date
+- Teachers may start sessions **outside the scheduled time window**
+
+**Automatic generation (MVP support)**
+
+- System can auto-generate sessions from schedules on a **rolling window** (e.g., next 7 days)
+- A **nightly cron** triggers generation for all tenants with an active academic period
+- On **schedule create/update**, the system **backfills** sessions for the remaining days in the current window
+- Auto-generation is **idempotent** (skips duplicates) and **conflict-aware** (skips time collisions)
 
 ### 7.3 Attendance
 
@@ -505,32 +515,32 @@ This section defines a **canonical mapping** between Indonesian academic terms u
 
 ### 13.1 Core Academic Terms
 
-| Indonesian Term | English Term (Code) | Notes                      |
-| --------------- | ------------------- | -------------------------- |
-| Tenant          | Tenant              | One school (one level)     |
-| Tahun Ajaran    | AcademicYear        | Exactly one active         |
-| Semester        | Semester            | Ganjil / Genap             |
-| Kelas           | Class               | Primary academic container |
-| Kelompok        | Group               | Typed classification       |
-| Tipe Kelompok   | GroupType           | GRADE, STREAM, PROGRAM     |
-| Wali Kelas      | HomeroomTeacher     | Role assignment            |
-| Siswa           | Student             | Learner                    |
-| Guru            | Teacher             | Teaching staff             |
-| Kepala Sekolah  | Principal           | School head                |
-| Tata Usaha      | AdminStaff          | Administrative role        |
+| Indonesian Term        | English Term (Code) | Notes                      |
+| ---------------------- | ------------------- | -------------------------- |
+| Tenant                 | Tenant              | One school (one level)     |
+| Tahun Ajaran           | AcademicYear        | Exactly one active         |
+| Semester               | Semester            | Ganjil / Genap             |
+| Kelas                  | Class               | Primary academic container |
+| Rombongan Belajar      | Group               | Typed classification       |
+| Tipe Rombongan Belajar | GroupType           | GRADE, STREAM, PROGRAM     |
+| Wali Kelas             | HomeroomTeacher     | Role assignment            |
+| Siswa                  | Student             | Learner                    |
+| Guru                   | Teacher             | Teaching staff             |
+| Kepala Sekolah         | Principal           | School head                |
+| Tata Usaha             | AdminStaff          | Administrative role        |
 
 ### 13.2 Teaching & Scheduling
 
-| Indonesian Term  | English Term (Code) | Notes                   |
-| ---------------- | ------------------- | ----------------------- |
-| Mata Pelajaran   | Subject             | Base subject name       |
-| Jadwal Pelajaran | Schedule            | Weekly structure        |
-| Sesi             | Session             | Generated from schedule |
-| Absensi          | Attendance          | Per session             |
-| Hadir            | Present             | Attendance status       |
-| Izin             | Excused             | Attendance status       |
-| Sakit            | Sick                | Attendance status       |
-| Alpha            | Absent              | Unexcused absence       |
+| Indonesian Term  | English Term (Code) | Notes                                         |
+| ---------------- | ------------------- | --------------------------------------------- |
+| Mata Pelajaran   | Subject             | Base subject name                             |
+| Jadwal Pelajaran | Schedule            | Weekly structure                              |
+| Sesi             | Session             | Created on start by teacher; admin-manageable |
+| Absensi          | Attendance          | Per session                                   |
+| Hadir            | Present             | Attendance status                             |
+| Izin             | Excused             | Attendance status                             |
+| Sakit            | Sick                | Attendance status                             |
+| Alpha            | Absent              | Unexcused absence                             |
 
 ### 13.3 Assessment & Rapor
 

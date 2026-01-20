@@ -179,7 +179,7 @@ function SubjectsPage() {
             Mata pelajaran
           </h1>
           <p className="text-sm text-ink-muted">
-            Kelola daftar mata pelajaran untuk tenant ini.
+            Kelola daftar mata pelajaran untuk.
           </p>
         </div>
 

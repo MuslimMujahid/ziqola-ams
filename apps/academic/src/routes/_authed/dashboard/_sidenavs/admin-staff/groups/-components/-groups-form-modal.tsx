@@ -81,12 +81,14 @@ export function GroupsFormModal({
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>
-            {mode === "create" ? "Tambah kelompok" : "Edit kelompok"}
+            {mode === "create"
+              ? "Tambah rombongan belajar"
+              : "Edit rombongan belajar"}
           </DialogTitle>
           <DialogDescription>
             {mode === "create"
-              ? "Buat kelompok untuk klasifikasi kelas"
-              : "Perbarui detail kelompok"}
+              ? "Buat rombongan belajar untuk klasifikasi kelas"
+              : "Perbarui detail rombongan belajar"}
           </DialogDescription>
         </DialogHeader>
 
@@ -101,8 +103,8 @@ export function GroupsFormModal({
           <form.AppField name="name">
             {(field) => (
               <field.TextField
-                label="Nama kelompok"
-                placeholder="mis. XI IPA"
+                label="Nama rombongan belajar"
+                placeholder="mis. IPA"
               />
             )}
           </form.AppField>

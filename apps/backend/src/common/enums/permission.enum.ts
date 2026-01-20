@@ -57,6 +57,12 @@ export enum Permission {
   SCHEDULE_UPDATE = "SCHEDULE_UPDATE",
   SCHEDULE_DELETE = "SCHEDULE_DELETE",
 
+  // Session Management
+  SESSION_READ = "SESSION_READ",
+  SESSION_CREATE = "SESSION_CREATE",
+  SESSION_UPDATE = "SESSION_UPDATE",
+  SESSION_DELETE = "SESSION_DELETE",
+
   // Attendance
   ATTENDANCE_READ = "ATTENDANCE_READ",
   ATTENDANCE_RECORD = "ATTENDANCE_RECORD",
@@ -115,6 +121,10 @@ export const DefaultRolePermissions: Record<string, Permission[]> = {
     Permission.CLASS_READ,
     Permission.SUBJECT_READ,
     Permission.SCHEDULE_READ,
+    Permission.SESSION_READ,
+    Permission.SESSION_CREATE,
+    Permission.SESSION_UPDATE,
+    Permission.SESSION_DELETE,
     Permission.ATTENDANCE_READ_ALL,
     Permission.ASSESSMENT_READ,
     Permission.GRADE_READ_ALL,
@@ -186,6 +196,11 @@ export const DefaultRolePermissions: Record<string, Permission[]> = {
     Permission.SCHEDULE_CREATE,
     Permission.SCHEDULE_UPDATE,
     Permission.SCHEDULE_DELETE,
+    // Session management
+    Permission.SESSION_READ,
+    Permission.SESSION_CREATE,
+    Permission.SESSION_UPDATE,
+    Permission.SESSION_DELETE,
     // Read-only access to academic data
     Permission.ATTENDANCE_READ_ALL,
     Permission.GRADE_READ_ALL,
@@ -212,6 +227,9 @@ export const DefaultRolePermissions: Record<string, Permission[]> = {
     Permission.GRADE_INPUT,
     Permission.GRADE_UPDATE,
     Permission.GRADE_LOCK,
+    // Session access (assigned classes)
+    Permission.SESSION_READ,
+    Permission.SESSION_CREATE,
     // Report cards (limited to assigned classes)
     Permission.REPORT_CARD_READ,
     Permission.REPORT_CARD_GENERATE,
