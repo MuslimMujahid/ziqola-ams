@@ -247,6 +247,8 @@ export const SubjectScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -261,6 +263,8 @@ export const ClassSubjectScalarFieldEnum = {
   academicYearId: 'academicYearId',
   subjectId: 'subjectId',
   teacherProfileId: 'teacherProfileId',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

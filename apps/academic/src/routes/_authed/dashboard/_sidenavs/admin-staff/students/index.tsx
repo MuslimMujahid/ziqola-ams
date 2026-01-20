@@ -29,9 +29,9 @@ import { useClasses } from "@/lib/services/api/classes";
 import { useRegisterUser } from "@/lib/services/api/auth";
 import { useCreateEnrollment } from "@/lib/services/api/enrollments";
 import { useWorkspaceStore } from "@/stores/workspace.store";
-import { StudentsFormModal } from "./(components)/students-form-modal";
-import { StudentsEditModal } from "./(components)/students-edit-modal";
-import { StudentsEnrollmentModal } from "./(components)/students-enrollment-modal";
+import { StudentsFormModal } from "./-components/-students-form-modal";
+import { StudentsEditModal } from "./-components/-students-edit-modal";
+import { StudentsEnrollmentModal } from "./-components/-students-enrollment-modal";
 
 const ALL_FILTER = "ALL" as const;
 const NO_CLASS_FILTER = "NO_CLASS" as const;

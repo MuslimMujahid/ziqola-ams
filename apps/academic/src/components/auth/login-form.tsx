@@ -7,6 +7,8 @@ import { useAppForm } from "@/lib/utils/form";
 import { useLogin } from "@/lib/services/api/auth/use-login";
 import { getDashboardRoute } from "@/lib/utils/auth";
 import { formOptions } from "@tanstack/react-form";
+import { getAcademicContext } from "@/lib/services/api/academic";
+import { useWorkspaceStore } from "@/stores/workspace.store";
 
 const ROLE_VALUES = ["PRINCIPAL", "ADMIN_STAFF", "TEACHER", "STUDENT"] as const;
 
@@ -42,6 +44,7 @@ export function LoginForm() {
   const navigate = useNavigate();
   const { mutateAsync: login } = useLogin();
   const [serverError, setServerError] = React.useState<string | null>(null);
+  const workspace = useWorkspaceStore();
 
   const form = useAppForm({
     ...loginFormOptions,
@@ -53,6 +56,19 @@ export function LoginForm() {
           email: value.email,
           password: value.password,
         });
+        setServerError(null);
+        workspace.resetWorkspace();
+        try {
+          const academicContext = await getAcademicContext();
+          if (academicContext?.year?.id) {
+            workspace.setAcademicYearId(academicContext.year.id);
+          }
+          if (academicContext?.period?.id) {
+            workspace.setAcademicPeriodId(academicContext.period.id);
+          }
+        } catch (contextError) {
+          console.warn("Failed to load academic context", contextError);
+        }
         const role = response.user.role;
         navigate({ to: getDashboardRoute(role), replace: true });
       } catch (error) {

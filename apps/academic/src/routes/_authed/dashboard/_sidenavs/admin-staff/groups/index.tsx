@@ -30,7 +30,7 @@ import {
   useGroups,
   useUpdateGroup,
 } from "@/lib/services/api/groups";
-import { GroupsFormModal } from "./(components)/groups-form-modal";
+import { GroupsFormModal } from "./-components/-groups-form-modal";
 
 export const Route = createFileRoute(
   "/_authed/dashboard/_sidenavs/admin-staff/groups/",

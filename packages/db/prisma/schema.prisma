@@ -382,10 +382,13 @@ model Subject {
   tenant    Tenant  @relation(fields: [tenantId], references: [id])
   name      String
   classSubjects ClassSubject[]
+  isDeleted Boolean @default(false)
+  deletedAt DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([tenantId, name])
+  @@unique([tenantId, name, isDeleted])
+  @@index([tenantId, isDeleted])
 }
 
 model ClassSubject {
@@ -406,11 +409,14 @@ model ClassSubject {
   assessments    AssessmentComponent[]
   reportCardSubjects ReportCardSubject[]
 
+  isDeleted      Boolean @default(false)
+  deletedAt      DateTime?
+
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  @@unique([classId, academicYearId, subjectId])
-  @@index([tenantId, teacherProfileId])
+  @@unique([classId, academicYearId, subjectId, isDeleted])
+  @@index([tenantId, teacherProfileId, isDeleted])
 }
 
 // =============================

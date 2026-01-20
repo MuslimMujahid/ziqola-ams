@@ -14,6 +14,9 @@ import { ThrottlerModule } from "@nestjs/throttler";
 import { GroupsModule } from "./groups/groups.module";
 import { ClassesModule } from "./classes/classes.module";
 import { EnrollmentsModule } from "./enrollments/enrollments.module";
+import { SubjectsModule } from "./subjects/subjects.module";
+import { ClassSubjectsModule } from "./class-subjects/class-subjects.module";
+import { SchedulesModule } from "./schedules/schedules.module";
 
 @Module({
   imports: [
@@ -35,6 +38,9 @@ import { EnrollmentsModule } from "./enrollments/enrollments.module";
     AcademicModule,
     GroupsModule,
     ClassesModule,
+    SubjectsModule,
+    ClassSubjectsModule,
+    SchedulesModule,
     EnrollmentsModule,
     ExamplesModule, // Example controller for RBAC patterns
   ],

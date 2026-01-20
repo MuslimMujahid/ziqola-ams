@@ -11,12 +11,24 @@ export function TextField({
   type = "text",
   id,
   disabled,
+  step,
+  min,
+  max,
+  inputMode,
+  pattern,
+  lang,
 }: {
   label: string;
   placeholder?: string;
   type?: string;
   id?: string;
   disabled?: boolean;
+  step?: number;
+  min?: string;
+  max?: string;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
+  pattern?: string;
+  lang?: string;
 }) {
   const field = useFieldContext<string>();
   const errors = useStore(field.store, (state) => state.meta.errors);
@@ -33,6 +45,12 @@ export function TextField({
         value={field.state.value}
         placeholder={placeholder}
         disabled={disabled}
+        step={step}
+        min={min}
+        max={max}
+        inputMode={inputMode}
+        pattern={pattern}
+        lang={lang}
         onBlur={field.handleBlur}
         onChange={(e) => field.handleChange(e.target.value)}
       />

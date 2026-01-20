@@ -363,6 +363,42 @@ async function main() {
   );
   console.log(`✅ Created class subjects for both classes\n`);
 
+  // 8.5 Create schedules for calendar view
+  console.log("🗓️  Creating schedules...");
+  const activePeriod = academicYear.periods[0];
+
+  const buildTime = (baseDate: Date, hour: number, minute = 0) => {
+    const date = new Date(baseDate);
+    date.setHours(hour, minute, 0, 0);
+    return date;
+  };
+
+  const allClassSubjects = [...class10ASubjects, ...class10BSubjects];
+
+  await Promise.all(
+    allClassSubjects.map((classSubject, index) => {
+      const dayOfWeek = (index % 5) + 1; // Monday - Friday
+      const startHour = 7 + Math.floor(index / 5);
+      const startTime = buildTime(academicYear.startDate!, startHour);
+      const endTime = buildTime(academicYear.startDate!, startHour + 1);
+
+      return prisma.schedule.create({
+        data: {
+          tenantId: tenant.id,
+          classId: classSubject.classId,
+          academicPeriodId: activePeriod.id,
+          classSubjectId: classSubject.id,
+          teacherProfileId: classSubject.teacherProfileId,
+          dayOfWeek,
+          startTime,
+          endTime,
+        },
+      });
+    }),
+  );
+
+  console.log(`✅ Created ${allClassSubjects.length} schedules\n`);
+
   // 9. Enroll students
   console.log("📝 Enrolling students...");
 

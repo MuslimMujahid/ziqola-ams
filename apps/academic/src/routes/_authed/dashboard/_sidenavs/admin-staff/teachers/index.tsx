@@ -16,8 +16,8 @@ import {
   useTeacherProfiles,
   useUpdateTeacherProfile,
 } from "@/lib/services/api/teachers";
-import { TeachersFormModal } from "./(components)/teachers-form-modal";
-import { TeachersEditModal } from "./(components)/teachers-edit-modal";
+import { TeachersFormModal } from "./-components/-teachers-form-modal";
+import { TeachersEditModal } from "./-components/-teachers-edit-modal";
 
 export const Route = createFileRoute(
   "/_authed/dashboard/_sidenavs/admin-staff/teachers/",

@@ -33,8 +33,8 @@ import {
 } from "@/lib/services/api/classes";
 import { useAcademicYears } from "@/lib/services/api/academic";
 import { useGroups } from "@/lib/services/api/groups";
-import { ClassesFormModal } from "./(components)/classes-form-modal";
-import { AssignHomeroomModal } from "./(components)/assign-homeroom-modal";
+import { ClassesFormModal } from "./-components/-classes-form-modal";
+import { AssignHomeroomModal } from "./-components/-assign-homeroom-modal";
 import { useWorkspaceStore } from "@/stores/workspace.store";
 
 export const Route = createFileRoute(

@@ -73,20 +73,23 @@ const ADMIN_STAFF_NAV_ITEMS: AdminStaffNavItem[] = [
         type: "separator",
       },
       {
-        label: "Kelas",
-        to: "/dashboard/admin-staff/classes",
-      },
-      {
-        label: "Kelompok",
-        to: "/dashboard/admin-staff/groups",
-      },
-      {
         label: "Siswa",
         to: "/dashboard/admin-staff/students",
       },
       {
         label: "Guru",
         to: "/dashboard/admin-staff/teachers",
+      },
+      {
+        label: "Kelas",
+        to: "/dashboard/admin-staff/classes",
+      },
+      {
+        type: "separator",
+      },
+      {
+        label: "Kelompok",
+        to: "/dashboard/admin-staff/groups",
       },
       {
         label: "Mata pelajaran",
@@ -100,12 +103,8 @@ const ADMIN_STAFF_NAV_ITEMS: AdminStaffNavItem[] = [
     icon: ClipboardListIcon,
     subItems: [
       {
-        label: "Penugasan mengajar",
+        label: "Jadwal mengajar",
         to: "/dashboard/admin-staff/teaching-assignments",
-      },
-      {
-        label: "Jadwal pelajaran",
-        to: "/dashboard/admin-staff/schedules",
       },
       {
         label: "Sesi pembelajaran",

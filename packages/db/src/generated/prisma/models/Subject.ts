@@ -28,6 +28,8 @@ export type SubjectMinAggregateOutputType = {
   id: string | null
   tenantId: string | null
   name: string | null
+  isDeleted: boolean | null
+  deletedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -36,6 +38,8 @@ export type SubjectMaxAggregateOutputType = {
   id: string | null
   tenantId: string | null
   name: string | null
+  isDeleted: boolean | null
+  deletedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -44,6 +48,8 @@ export type SubjectCountAggregateOutputType = {
   id: number
   tenantId: number
   name: number
+  isDeleted: number
+  deletedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -54,6 +60,8 @@ export type SubjectMinAggregateInputType = {
   id?: true
   tenantId?: true
   name?: true
+  isDeleted?: true
+  deletedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -62,6 +70,8 @@ export type SubjectMaxAggregateInputType = {
   id?: true
   tenantId?: true
   name?: true
+  isDeleted?: true
+  deletedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -70,6 +80,8 @@ export type SubjectCountAggregateInputType = {
   id?: true
   tenantId?: true
   name?: true
+  isDeleted?: true
+  deletedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -151,6 +163,8 @@ export type SubjectGroupByOutputType = {
   id: string
   tenantId: string
   name: string
+  isDeleted: boolean
+  deletedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: SubjectCountAggregateOutputType | null
@@ -180,6 +194,8 @@ export type SubjectWhereInput = {
   id?: Prisma.StringFilter<"Subject"> | string
   tenantId?: Prisma.StringFilter<"Subject"> | string
   name?: Prisma.StringFilter<"Subject"> | string
+  isDeleted?: Prisma.BoolFilter<"Subject"> | boolean
+  deletedAt?: Prisma.DateTimeNullableFilter<"Subject"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
@@ -190,6 +206,8 @@ export type SubjectOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
@@ -198,22 +216,26 @@ export type SubjectOrderByWithRelationInput = {
 
 export type SubjectWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  tenantId_name?: Prisma.SubjectTenantIdNameCompoundUniqueInput
+  tenantId_name_isDeleted?: Prisma.SubjectTenantIdNameIsDeletedCompoundUniqueInput
   AND?: Prisma.SubjectWhereInput | Prisma.SubjectWhereInput[]
   OR?: Prisma.SubjectWhereInput[]
   NOT?: Prisma.SubjectWhereInput | Prisma.SubjectWhereInput[]
   tenantId?: Prisma.StringFilter<"Subject"> | string
   name?: Prisma.StringFilter<"Subject"> | string
+  isDeleted?: Prisma.BoolFilter<"Subject"> | boolean
+  deletedAt?: Prisma.DateTimeNullableFilter<"Subject"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   classSubjects?: Prisma.ClassSubjectListRelationFilter
-}, "id" | "tenantId_name">
+}, "id" | "tenantId_name_isDeleted">
 
 export type SubjectOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.SubjectCountOrderByAggregateInput
@@ -228,6 +250,8 @@ export type SubjectScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Subject"> | string
   tenantId?: Prisma.StringWithAggregatesFilter<"Subject"> | string
   name?: Prisma.StringWithAggregatesFilter<"Subject"> | string
+  isDeleted?: Prisma.BoolWithAggregatesFilter<"Subject"> | boolean
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Subject"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Subject"> | Date | string
 }
@@ -235,6 +259,8 @@ export type SubjectScalarWhereWithAggregatesInput = {
 export type SubjectCreateInput = {
   id?: string
   name: string
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutSubjectsInput
@@ -245,6 +271,8 @@ export type SubjectUncheckedCreateInput = {
   id?: string
   tenantId: string
   name: string
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutSubjectInput
@@ -253,6 +281,8 @@ export type SubjectUncheckedCreateInput = {
 export type SubjectUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutSubjectsNestedInput
@@ -263,6 +293,8 @@ export type SubjectUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutSubjectNestedInput
@@ -272,6 +304,8 @@ export type SubjectCreateManyInput = {
   id?: string
   tenantId: string
   name: string
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -279,6 +313,8 @@ export type SubjectCreateManyInput = {
 export type SubjectUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -287,6 +323,8 @@ export type SubjectUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -301,15 +339,18 @@ export type SubjectOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type SubjectTenantIdNameCompoundUniqueInput = {
+export type SubjectTenantIdNameIsDeletedCompoundUniqueInput = {
   tenantId: string
   name: string
+  isDeleted: boolean
 }
 
 export type SubjectCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -318,6 +359,8 @@ export type SubjectMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -326,6 +369,8 @@ export type SubjectMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -394,6 +439,8 @@ export type SubjectUpdateOneRequiredWithoutClassSubjectsNestedInput = {
 export type SubjectCreateWithoutTenantInput = {
   id?: string
   name: string
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutSubjectInput
@@ -402,6 +449,8 @@ export type SubjectCreateWithoutTenantInput = {
 export type SubjectUncheckedCreateWithoutTenantInput = {
   id?: string
   name: string
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutSubjectInput
@@ -440,6 +489,8 @@ export type SubjectScalarWhereInput = {
   id?: Prisma.StringFilter<"Subject"> | string
   tenantId?: Prisma.StringFilter<"Subject"> | string
   name?: Prisma.StringFilter<"Subject"> | string
+  isDeleted?: Prisma.BoolFilter<"Subject"> | boolean
+  deletedAt?: Prisma.DateTimeNullableFilter<"Subject"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
 }
@@ -447,6 +498,8 @@ export type SubjectScalarWhereInput = {
 export type SubjectCreateWithoutClassSubjectsInput = {
   id?: string
   name: string
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutSubjectsInput
@@ -456,6 +509,8 @@ export type SubjectUncheckedCreateWithoutClassSubjectsInput = {
   id?: string
   tenantId: string
   name: string
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -479,6 +534,8 @@ export type SubjectUpdateToOneWithWhereWithoutClassSubjectsInput = {
 export type SubjectUpdateWithoutClassSubjectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutSubjectsNestedInput
@@ -488,6 +545,8 @@ export type SubjectUncheckedUpdateWithoutClassSubjectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -495,6 +554,8 @@ export type SubjectUncheckedUpdateWithoutClassSubjectsInput = {
 export type SubjectCreateManyTenantInput = {
   id?: string
   name: string
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -502,6 +563,8 @@ export type SubjectCreateManyTenantInput = {
 export type SubjectUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classSubjects?: Prisma.ClassSubjectUpdateManyWithoutSubjectNestedInput
@@ -510,6 +573,8 @@ export type SubjectUpdateWithoutTenantInput = {
 export type SubjectUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutSubjectNestedInput
@@ -518,6 +583,8 @@ export type SubjectUncheckedUpdateWithoutTenantInput = {
 export type SubjectUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -557,6 +624,8 @@ export type SubjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   tenantId?: boolean
   name?: boolean
+  isDeleted?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
@@ -568,6 +637,8 @@ export type SubjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   tenantId?: boolean
   name?: boolean
+  isDeleted?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
@@ -577,6 +648,8 @@ export type SubjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   tenantId?: boolean
   name?: boolean
+  isDeleted?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
@@ -586,11 +659,13 @@ export type SubjectSelectScalar = {
   id?: boolean
   tenantId?: boolean
   name?: boolean
+  isDeleted?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SubjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["subject"]>
+export type SubjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "isDeleted" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["subject"]>
 export type SubjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   classSubjects?: boolean | Prisma.Subject$classSubjectsArgs<ExtArgs>
@@ -613,6 +688,8 @@ export type $SubjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     id: string
     tenantId: string
     name: string
+    isDeleted: boolean
+    deletedAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["subject"]>
@@ -1043,6 +1120,8 @@ export interface SubjectFieldRefs {
   readonly id: Prisma.FieldRef<"Subject", 'String'>
   readonly tenantId: Prisma.FieldRef<"Subject", 'String'>
   readonly name: Prisma.FieldRef<"Subject", 'String'>
+  readonly isDeleted: Prisma.FieldRef<"Subject", 'Boolean'>
+  readonly deletedAt: Prisma.FieldRef<"Subject", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Subject", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Subject", 'DateTime'>
 }
