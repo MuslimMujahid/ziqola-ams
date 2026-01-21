@@ -5,6 +5,7 @@ import type {
   CreateSessionVars,
   DeleteSessionResponse,
   DeleteSessionVars,
+  GetSessionDetailResponse,
   GetSessionsResponse,
   GetSessionsVars,
   UpdateSessionResponse,
@@ -16,6 +17,13 @@ async function getSessions(params?: GetSessionsVars) {
     params,
   });
   return response.data;
+}
+
+async function getSessionById(id: string) {
+  const response = await clientApi.get<GetSessionDetailResponse>(
+    `/sessions/${id}`,
+  );
+  return response.data.data;
 }
 
 async function createSession(vars: CreateSessionVars) {
@@ -42,4 +50,10 @@ async function deleteSession(vars: DeleteSessionVars) {
   return response.data.data;
 }
 
-export { getSessions, createSession, updateSession, deleteSession };
+export {
+  getSessions,
+  getSessionById,
+  createSession,
+  updateSession,
+  deleteSession,
+};

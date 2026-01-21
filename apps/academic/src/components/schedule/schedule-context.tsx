@@ -2,7 +2,7 @@ import React from "react";
 
 export type ScheduleBase = {
   id: string;
-  dayOfWeek: number;
+  dateKey: string;
   startTime: string;
   endTime: string;
 };
@@ -17,7 +17,7 @@ export type ScheduleDateOption =
       type: "ellipsis";
     };
 
-export type ScheduleContextValue<T extends ScheduleBase = any> = {
+export type ScheduleContextValue<T extends ScheduleBase = ScheduleBase> = {
   today: Date;
   selectedDate: Date;
   setSelectedDate: (date: Date) => void;
@@ -26,7 +26,7 @@ export type ScheduleContextValue<T extends ScheduleBase = any> = {
   goNextWindow: () => void;
   dateOptions: ScheduleDateOption[];
   dateListRef: React.RefObject<HTMLDivElement | null>;
-  scheduleCountsByDay: Record<number, number>;
+  scheduleCountsByDate: Record<string, number>;
   selectedSchedules: T[];
   renderSchedule: (
     schedule: T,
@@ -37,16 +37,8 @@ export type ScheduleContextValue<T extends ScheduleBase = any> = {
   ) => (node: HTMLDivElement | null) => void;
 };
 
-const ScheduleContext = React.createContext<ScheduleContextValue<any> | null>(
-  null,
-);
-
-function normalizeDayIndex(day: number): number {
-  if (day === 7) return 0;
-  if (day >= 0 && day <= 6) return day;
-  const normalized = ((day % 7) + 7) % 7;
-  return normalized === 7 ? 0 : normalized;
-}
+const ScheduleContext =
+  React.createContext<ScheduleContextValue<ScheduleBase> | null>(null);
 
 function addDays(date: Date, amount: number): Date {
   const next = new Date(date);
@@ -58,6 +50,14 @@ function normalizeDate(date: Date): Date {
   const next = new Date(date);
   next.setHours(0, 0, 0, 0);
   return next;
+}
+
+export function formatDateKey(date: Date): string {
+  const normalized = normalizeDate(date);
+  const year = normalized.getFullYear();
+  const month = String(normalized.getMonth() + 1).padStart(2, "0");
+  const day = String(normalized.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 function buildDateStrip(startDate: Date, length: number): Date[] {
@@ -78,12 +78,18 @@ type ScheduleStateProps<T extends ScheduleBase> = {
     schedule: T,
     context: ScheduleContextValue<T>,
   ) => React.ReactNode;
+  onWindowShift?: (args: {
+    windowStart: Date;
+    windowEnd: Date;
+    direction: "prev" | "next";
+  }) => void;
 };
 
 export function useScheduleState<T extends ScheduleBase>({
   schedules,
   renderSchedule,
-}: ScheduleStateProps<T>): ScheduleContextValue {
+  onWindowShift,
+}: ScheduleStateProps<T>): ScheduleContextValue<T> {
   const today = React.useMemo(() => {
     const now = new Date();
     now.setHours(0, 0, 0, 0);
@@ -160,37 +166,51 @@ export function useScheduleState<T extends ScheduleBase>({
     });
   }, [today, windowStart, windowEnd]);
 
-  const scheduleCountsByDay = React.useMemo(() => {
-    const counts: Record<number, number> = {};
+  const scheduleCountsByDate = React.useMemo(() => {
+    const counts: Record<string, number> = {};
 
     schedules.forEach((schedule) => {
-      const dayIndex = normalizeDayIndex(schedule.dayOfWeek);
-      counts[dayIndex] = (counts[dayIndex] ?? 0) + 1;
+      counts[schedule.dateKey] = (counts[schedule.dateKey] ?? 0) + 1;
     });
 
     return counts;
   }, [schedules]);
 
-  const selectedDayIndex = selectedDate.getDay();
+  const selectedDateKey = formatDateKey(selectedDate);
 
   const selectedSchedules = React.useMemo(
     () =>
       schedules
-        .filter(
-          (schedule) =>
-            normalizeDayIndex(schedule.dayOfWeek) === selectedDayIndex,
-        )
+        .filter((schedule) => schedule.dateKey === selectedDateKey)
         .sort((a, b) => a.startTime.localeCompare(b.startTime)),
-    [schedules, selectedDayIndex],
+    [schedules, selectedDateKey],
   );
 
   const goPrevWindow = React.useCallback(() => {
-    setWindowStart((current) => addDays(current, -DATE_WINDOW_STEP));
-  }, []);
+    setWindowStart((current) => {
+      const nextStart = addDays(current, -DATE_WINDOW_STEP);
+      const nextEnd = addDays(nextStart, DATE_WINDOW_SIZE - 1);
+      onWindowShift?.({
+        windowStart: nextStart,
+        windowEnd: nextEnd,
+        direction: "prev",
+      });
+      return nextStart;
+    });
+  }, [onWindowShift]);
 
   const goNextWindow = React.useCallback(() => {
-    setWindowStart((current) => addDays(current, DATE_WINDOW_STEP));
-  }, []);
+    setWindowStart((current) => {
+      const nextStart = addDays(current, DATE_WINDOW_STEP);
+      const nextEnd = addDays(nextStart, DATE_WINDOW_SIZE - 1);
+      onWindowShift?.({
+        windowStart: nextStart,
+        windowEnd: nextEnd,
+        direction: "next",
+      });
+      return nextStart;
+    });
+  }, [onWindowShift]);
 
   return {
     today,
@@ -201,7 +221,7 @@ export function useScheduleState<T extends ScheduleBase>({
     goNextWindow,
     dateOptions,
     dateListRef,
-    scheduleCountsByDay,
+    scheduleCountsByDate,
     selectedSchedules,
     renderSchedule,
   };
@@ -213,29 +233,41 @@ type ScheduleProviderProps<T extends ScheduleBase> = {
     schedule: T,
     context: ScheduleContextValue<T>,
   ) => React.ReactNode;
+  onWindowShift?: (args: {
+    windowStart: Date;
+    windowEnd: Date;
+    direction: "prev" | "next";
+  }) => void;
   children: React.ReactNode;
 };
 
 export function ScheduleProvider<T extends ScheduleBase>({
   schedules,
   renderSchedule,
+  onWindowShift,
   children,
 }: ScheduleProviderProps<T>) {
-  const value = useScheduleState<T>({ schedules, renderSchedule });
+  const value = useScheduleState<T>({
+    schedules,
+    renderSchedule,
+    onWindowShift,
+  });
 
   return (
-    <ScheduleContext.Provider value={value}>
+    <ScheduleContext.Provider
+      value={value as unknown as ScheduleContextValue<ScheduleBase>}
+    >
       {children}
     </ScheduleContext.Provider>
   );
 }
 
-export function useScheduleContext<T extends ScheduleBase = any>() {
+export function useScheduleContext<T extends ScheduleBase = ScheduleBase>() {
   const context = React.useContext(ScheduleContext);
   if (!context) {
     throw new Error("useScheduleContext must be used within ScheduleProvider");
   }
-  return context as ScheduleContextValue<T>;
+  return context as unknown as ScheduleContextValue<T>;
 }
 
 type ScheduleAutoScrollArgs = {

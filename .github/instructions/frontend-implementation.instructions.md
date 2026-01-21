@@ -26,7 +26,7 @@ When implementing frontend features, adhere to the following guidelines to ensur
 - Use shadcn components as the base for all UI elements.
 - Ensure components are reusable and maintainable.
 - Use icons from Lucide Icons for consistency. Use the component with suffix "Icon", e.g. instead of <Home />, use <HomeIcon />.
-- Place page specific components co-located within the route folder (`e.g., src/routes/login.tsx, src/routes/login-form.tsx`).
+- Place page specific components co-located within the route folder (`e.g., src/routes/login.tsx, src/routes/-components/login-form.tsx`).
 - Place domain specific components within a domain folder under `src/components/[domain]` (e.g., `src/components/auth`).
 - AVOID long inline logic in components; extract to custom hooks or utility functions.
 - AVOID long files; split into smaller components or modules as needed.

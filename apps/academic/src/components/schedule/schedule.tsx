@@ -5,6 +5,7 @@ import {
   ScheduleBase,
   ScheduleContextValue,
   ScheduleProvider,
+  formatDateKey,
   useScheduleAutoScroll,
   useScheduleContext,
 } from "./schedule-context";
@@ -66,6 +67,11 @@ type ScheduleRootProps<T extends ScheduleBase> = {
   className?: string;
   stripClassName?: string;
   listClassName?: string;
+  onWindowShift?: (args: {
+    windowStart: Date;
+    windowEnd: Date;
+    direction: "prev" | "next";
+  }) => void;
   children?: React.ReactNode;
 };
 
@@ -73,10 +79,15 @@ export function ScheduleRoot<T extends ScheduleBase>({
   schedules,
   renderSchedule,
   className,
+  onWindowShift,
   children,
 }: ScheduleRootProps<T>) {
   return (
-    <ScheduleProvider schedules={schedules} renderSchedule={renderSchedule}>
+    <ScheduleProvider
+      schedules={schedules}
+      renderSchedule={renderSchedule}
+      onWindowShift={onWindowShift}
+    >
       <div className={cn("space-y-6", className)}>{children}</div>
     </ScheduleProvider>
   );
@@ -100,7 +111,7 @@ export function ScheduleDateStrip({
     dateListRef,
     selectedDate,
     setSelectedDate,
-    scheduleCountsByDay,
+    scheduleCountsByDate,
     goPrevWindow,
     goNextWindow,
   } = useScheduleContext();
@@ -140,8 +151,8 @@ export function ScheduleDateStrip({
 
           const date = option.date;
           const isActive = date.toDateString() === selectedDate.toDateString();
-          const dayIndex = date.getDay();
-          const hasSchedule = (scheduleCountsByDay[dayIndex] ?? 0) > 0;
+          const dateKey = formatDateKey(date);
+          const hasSchedule = (scheduleCountsByDate[dateKey] ?? 0) > 0;
 
           const dayLabel = option.isPinnedToday
             ? "HARI INI"
@@ -259,7 +270,6 @@ function ScheduleTimelineContent<T extends ScheduleBase>({
   context,
   registerScheduleItemRef,
 }: ScheduleTimelineContentProps<T>) {
-
   if (context.selectedSchedules.length === 0) {
     return (
       <ScheduleEmptyState
@@ -343,6 +353,7 @@ export function ScheduleTimeline<T extends ScheduleBase = ScheduleBase>({
 
 type ScheduleTimelineItemProps = {
   status: "completed" | "in_progress" | "not_started";
+  timeLabel?: string;
   children: React.ReactNode;
   className?: string;
 };
@@ -350,9 +361,10 @@ type ScheduleTimelineItemProps = {
 export const ScheduleTimelineItem = React.forwardRef<
   HTMLDivElement,
   ScheduleTimelineItemProps
->(function ScheduleTimelineItem({ status, children, className }, ref) {
-  const { selectedDate } = useScheduleContext();
-
+>(function ScheduleTimelineItem(
+  { status, timeLabel, children, className },
+  ref,
+) {
   return (
     <div ref={ref} className={cn("relative flex gap-4 pl-20", className)}>
       <div
@@ -373,7 +385,7 @@ export const ScheduleTimelineItem = React.forwardRef<
         ) : null}
       </div>
       <div className="absolute left-0 top-4 w-10 -translate-y-1/2 text-right text-xs font-medium leading-none text-ink-muted">
-        {DEFAULT_DAY_LABEL_FORMATTER.format(selectedDate)}
+        {timeLabel ?? ""}
       </div>
       {children}
     </div>

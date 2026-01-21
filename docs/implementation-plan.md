@@ -1,88 +1,97 @@
-# Teacher Dashboard Redesign (Mockup) — Implementation Plan
+# Implementation Plan: Refactor TeacherSessionDetailPage Attendance with useAppForm
+
+**Date:** January 22, 2026  
+**Status:** Planning Phase
 
 ## 1) Requirements Summary
 
-- Redesign the teacher dashboard using mock data where needed.
-- Remove sections: Aksi Cepat, Progress Penilaian, Kehadiran Hari Ini.
-- Keep sections: Jadwal Hari Ini, Tugas Tertunda.
-- Add new sections: My Classes, Personal Info, Tenant-level News, Tenant-level Schedule (include start and end time).
-- Preserve existing dashboard header and academic period badge.
-- Follow UI guidelines: flat surfaces (no borders/shadows), status colors, clean spacing, accessibility.
+- Refactor attendance state management in `TeacherSessionDetailPage` to use `useAppForm`.
+- Replace manual `draftAttendance` state, `attendanceChanges` memo, and `handleStatusChange` with form-driven state.
+- Preserve current UX and behaviors: attendance options, save action, optimistic UI safety, and summary counts.
+- Keep the page structure and existing non-attendance logic intact (materials, notes, session info).
 
-## 2) Existing Implementation Review
+## 2) Current Implementation Analysis
 
-- Route component: [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher.tsx).
-- Existing cards/components:
-  - [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/-components/quick-actions.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/-components/quick-actions.tsx)
-  - [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/-components/grading-progress-card.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/-components/grading-progress-card.tsx)
-  - [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/-components/attendance-summary-card.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/-components/attendance-summary-card.tsx)
-  - [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/-components/schedule-card.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/-components/schedule-card.tsx)
-  - [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/-components/pending-tasks-card.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/-components/pending-tasks-card.tsx)
-- Data is currently sourced from `useTeacherDashboard()` with a summary payload in [apps/academic/src/lib/services/api/teacher-dashboard](apps/academic/src/lib/services/api/teacher-dashboard).
+- Attendance state is stored in a `draftAttendance` object and updated per student.
+- Change detection uses `attendanceChanges` memo comparing original vs draft map.
+- Save action maps `draftAttendance` into `items` and submits via `useRecordAttendance`.
+- Summary counts use `draftAttendance` to compute totals.
 
-## 3) Redesign Approach (Mockup-first)
+## 3) Target Design (Form-Driven)
 
-1. **Introduce new card components** (route-level, in -components):
-   - `my-classes-card.tsx`
-   - `personal-info-card.tsx`
-   - `tenant-news-card.tsx`
-   - `tenant-schedule-card.tsx`
-     Each card should:
-   - Use shadcn/ui primitives (`Card`, `Button`, etc.) or existing flat card styling consistent with current cards.
-   - Use Lucide icons (component suffix `Icon`).
-   - Include skeleton/loading state parity (optional for mock, but consistent with current card patterns).
+### Form Shape
 
-2. **Remove deprecated sections**
-   - Delete `QuickActions`, `GradingProgressCard`, and `AttendanceSummaryCard` from the page layout.
-   - Keep the files temporarily unless referenced elsewhere (optional cleanup after redesign is stable).
+- Form values will use a single object:
+  - `attendance: Record<string, AttendanceStatus | null>`
 
-3. **Retain existing cards**
-   - Keep `ScheduleCard` (Jadwal Hari Ini) and `PendingTasksCard` (Tugas Tertunda) in the layout.
+### Form Lifecycle
 
-4. **Mock data strategy**
-   - For mockup, define local dummy data inside the route component or a dedicated mock file under the same route folder.
-   - Ensure mock data covers:
-     - My classes: class name, subject count, homeroom flag (optional), next session.
-     - Personal info: name, role, email, phone, main subject.
-     - Tenant news: title, summary, date, category (info/announcement).
-     - Tenant-level schedule: event title, date, start time, end time, location (optional).
-   - Keep `useTeacherDashboard()` for existing sections (schedule & tasks) or replace with mock data if the goal is fully static.
+- Initialize `useAppForm` with default values derived from `attendanceQuery.data`.
+- On `attendanceQuery.data` change or session change, reset form values to match server data.
+- Use `form.handleSubmit` for save action.
+- Use `form.Subscribe` to read `isDirty`/`isSubmitting` and drive Save button state.
 
-5. **Layout update (responsive)**
-   - Maintain top header + period badge.
-   - Use a two-column grid on desktop:
-     - Left column: My Classes → Jadwal Hari Ini → Tenant-level Schedule.
-     - Right column: Personal Info → Tenant-level News → Tugas Tertunda.
-   - For mobile, stack in a single column in priority order.
+### UI Binding
 
-## 4) File Changes (Planned)
+- Each student row will bind to `form.Field` keyed by `attendance.${studentId}`.
+- `Select` will read from `field.state.value` and call `field.handleChange`.
 
-- Update layout in [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher.tsx).
-- Add new components under [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/-components](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/-components):
-  - `my-classes-card.tsx`
-  - `personal-info-card.tsx`
-  - `tenant-news-card.tsx`
-  - `tenant-schedule-card.tsx`
-- Update component index exports if needed:
-  - [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/-components/index.ts](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/-components/index.ts)
+### Change Detection & Save
 
-## 5) UI/UX Notes
+- Remove `attendanceChanges` memo.
+- Save button uses `form.Subscribe` state (e.g., `isDirty` + not submitting).
+- `onSubmit` builds payload from `form` values.
 
-- Use flat surfaces and background separation (no borders or shadows).
-- Include status colors on badges and highlights (info/warning/success).
-- Use clear typography hierarchy and concise Indonesian labels.
-- Ensure consistent spacing (`p-6`, `gap-6`, `rounded-xl`) and accessible focus states.
+### Attendance Summary
+
+- Use form values as the canonical state for count calculations.
+- Fallback to server status only when form state has not been initialized.
+
+## 4) Implementation Steps
+
+1. **Add form setup**
+   - Import `useAppForm` into the page.
+   - Define `AttendanceFormValues` type.
+   - Create form instance with `defaultValues` derived from attendance query data.
+
+2. **Replace local state**
+   - Remove `draftAttendance` state and `setDraftAttendance` logic.
+   - Remove `attendanceChanges` memo and `handleStatusChange`.
+
+3. **Wire student selects to form**
+   - Wrap each row in `form.Field` for `attendance.${studentId}`.
+   - Use `field.state.value` and `field.handleChange` to control `Select`.
+
+4. **Update save handler**
+   - Convert to `form.handleSubmit` based handler.
+   - Build `items` from `values.attendance`.
+   - Keep success feedback unchanged.
+
+5. **Update save button state**
+   - Replace `attendanceChanges` with `form.Subscribe` for `isDirty` and `isSubmitting`.
+
+6. **Update summary counts**
+   - Use `form` state to compute counts.
+   - Ensure counts remain stable before data is loaded.
+
+7. **Clean up unused logic**
+   - Remove any no-longer-used refs, memoized values, and helpers.
+
+## 5) Files to Update
+
+- [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/sessions/$sessionId.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/sessions/$sessionId.tsx)
 
 ## 6) Testing Plan (Manual)
 
-- Verify layout order and responsiveness for desktop/tablet/mobile.
-- Confirm removed sections are no longer visible.
-- Validate mock data renders correctly in new cards.
-- Ensure `ScheduleCard` and `PendingTasksCard` still work with existing data fetching.
-- Check for accessibility: headings, link focus states, readable contrast.
+- Load the session page and confirm attendance statuses reflect server data.
+- Change one student status → Save button becomes enabled.
+- Save updates → success message appears; button disables while saving.
+- Change multiple statuses, save, then refresh → persisted values match.
+- Verify summary counts update immediately after selection changes.
+- Verify no changes → Save button remains disabled.
 
-## 7) Risks / Open Questions
+## 7) Risks / Considerations
 
-- Whether mock data should replace all API usage or only new sections (keep existing sections live).
-- If tenant-level schedule/news require existing APIs, decide on stubbing vs. new API endpoints.
-- Confirm desired data fields for “Personal Info” and “My Classes” to avoid mismatch with future backend payloads.
+- Ensure form is reset when switching `sessionId` to avoid stale values.
+- Ensure `Select` handles `null` values correctly (e.g., `undefined` for placeholder).
+- Avoid breaking TanStack Start SSR boundaries; keep client-side only logic in component scope.

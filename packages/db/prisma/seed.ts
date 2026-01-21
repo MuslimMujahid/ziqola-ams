@@ -445,30 +445,59 @@ async function main() {
 
   console.log(`✅ Created ${allClassSubjects.length} schedules\n`);
 
-  // 8.6 Create sample study sessions
-  console.log("🧪 Creating sample study sessions...");
-  const sessionSeeds = schedules.flatMap((schedule) => {
-    const lastDate = getPreviousDateForDayOfWeek(today, schedule.dayOfWeek);
-    const nextDate = getNextDateForDayOfWeek(today, schedule.dayOfWeek);
+  // 8.6 Create full sessions for work days (07:00 - 15:00) for a teacher
+  console.log(
+    "🧪 Creating full-day teacher sessions (Mon-Fri, 07:00-15:00)...",
+  );
 
-    const sessionDates = [lastDate, nextDate].filter((sessionDate) =>
-      activePeriod.startDate && activePeriod.endDate
-        ? sessionDate >= new Date(activePeriod.startDate) &&
-          sessionDate <= new Date(activePeriod.endDate)
-        : true,
-    );
+  const teacherProfileId = teachers[0].teacherProfile!.id;
+  const teacherClassSubject =
+    class10ASubjects.find(
+      (subject) => subject.teacherProfileId === teacherProfileId,
+    ) ?? class10ASubjects[0];
 
-    return sessionDates.map((sessionDate) => ({
-      tenantId: tenant.id,
-      classId: schedule.classId,
-      classSubjectId: schedule.classSubjectId,
-      academicPeriodId: schedule.academicPeriodId,
-      scheduleId: schedule.id,
-      date: sessionDate,
-      startTime: combineDateAndTime(sessionDate, schedule.startTime),
-      endTime: combineDateAndTime(sessionDate, schedule.endTime),
-    }));
+  const weekStart = (() => {
+    const base = new Date(today);
+    const day = base.getDay();
+    const diff = day === 0 ? -6 : 1 - day; // Monday start
+    base.setDate(base.getDate() + diff);
+    base.setHours(0, 0, 0, 0);
+    return base;
+  })();
+
+  const workDays = Array.from({ length: 5 }, (_, index) => {
+    const date = new Date(weekStart);
+    date.setDate(weekStart.getDate() + index);
+    return date;
   });
+
+  const withinActivePeriod = (date: Date) =>
+    activePeriod.startDate && activePeriod.endDate
+      ? date >= new Date(activePeriod.startDate) &&
+        date <= new Date(activePeriod.endDate)
+      : true;
+
+  const sessionSeeds = workDays
+    .filter(withinActivePeriod)
+    .flatMap((sessionDate) =>
+      Array.from({ length: 8 }, (_, slot) => {
+        const start = new Date(sessionDate);
+        start.setHours(7 + slot, 0, 0, 0);
+        const end = new Date(sessionDate);
+        end.setHours(8 + slot, 0, 0, 0);
+
+        return {
+          tenantId: tenant.id,
+          classId: teacherClassSubject.classId,
+          classSubjectId: teacherClassSubject.id,
+          academicPeriodId: activePeriod.id,
+          scheduleId: null,
+          date: sessionDate,
+          startTime: start,
+          endTime: end,
+        };
+      }),
+    );
 
   await Promise.all(
     sessionSeeds.map((session) =>

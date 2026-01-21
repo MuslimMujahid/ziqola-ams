@@ -115,6 +115,16 @@ export type Schedule = Prisma.ScheduleModel
  */
 export type Session = Prisma.SessionModel
 /**
+ * Model SessionMaterial
+ * 
+ */
+export type SessionMaterial = Prisma.SessionMaterialModel
+/**
+ * Model SessionMaterialAttachment
+ * 
+ */
+export type SessionMaterialAttachment = Prisma.SessionMaterialAttachmentModel
+/**
  * Model Attendance
  * 
  */

@@ -35,7 +35,11 @@ export type GetSessionsVars = QueryParams<{
   dateTo?: string;
 }>;
 
+export type GetSessionsFilters = Omit<GetSessionsVars, "offset" | "limit">;
+
 export type GetSessionsResponse = ApiListResponse<SessionItem>;
+
+export type GetSessionDetailResponse = ApiResponse<SessionItem>;
 
 export type CreateSessionVars = {
   academicPeriodId?: string;

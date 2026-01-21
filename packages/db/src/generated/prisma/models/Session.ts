@@ -236,6 +236,7 @@ export type SessionWhereInput = {
   classSubject?: Prisma.XOR<Prisma.ClassSubjectScalarRelationFilter, Prisma.ClassSubjectWhereInput>
   schedule?: Prisma.XOR<Prisma.ScheduleNullableScalarRelationFilter, Prisma.ScheduleWhereInput> | null
   attendance?: Prisma.AttendanceListRelationFilter
+  materials?: Prisma.SessionMaterialListRelationFilter
 }
 
 export type SessionOrderByWithRelationInput = {
@@ -256,6 +257,7 @@ export type SessionOrderByWithRelationInput = {
   classSubject?: Prisma.ClassSubjectOrderByWithRelationInput
   schedule?: Prisma.ScheduleOrderByWithRelationInput
   attendance?: Prisma.AttendanceOrderByRelationAggregateInput
+  materials?: Prisma.SessionMaterialOrderByRelationAggregateInput
 }
 
 export type SessionWhereUniqueInput = Prisma.AtLeast<{
@@ -279,6 +281,7 @@ export type SessionWhereUniqueInput = Prisma.AtLeast<{
   classSubject?: Prisma.XOR<Prisma.ClassSubjectScalarRelationFilter, Prisma.ClassSubjectWhereInput>
   schedule?: Prisma.XOR<Prisma.ScheduleNullableScalarRelationFilter, Prisma.ScheduleWhereInput> | null
   attendance?: Prisma.AttendanceListRelationFilter
+  materials?: Prisma.SessionMaterialListRelationFilter
 }, "id">
 
 export type SessionOrderByWithAggregationInput = {
@@ -328,6 +331,7 @@ export type SessionCreateInput = {
   classSubject: Prisma.ClassSubjectCreateNestedOneWithoutSessionsInput
   schedule?: Prisma.ScheduleCreateNestedOneWithoutSessionsInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutSessionInput
+  materials?: Prisma.SessionMaterialCreateNestedManyWithoutSessionInput
 }
 
 export type SessionUncheckedCreateInput = {
@@ -343,6 +347,7 @@ export type SessionUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   attendance?: Prisma.AttendanceUncheckedCreateNestedManyWithoutSessionInput
+  materials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type SessionUpdateInput = {
@@ -358,6 +363,7 @@ export type SessionUpdateInput = {
   classSubject?: Prisma.ClassSubjectUpdateOneRequiredWithoutSessionsNestedInput
   schedule?: Prisma.ScheduleUpdateOneWithoutSessionsNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutSessionNestedInput
+  materials?: Prisma.SessionMaterialUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateInput = {
@@ -373,6 +379,7 @@ export type SessionUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendance?: Prisma.AttendanceUncheckedUpdateManyWithoutSessionNestedInput
+  materials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionCreateManyInput = {
@@ -679,6 +686,20 @@ export type SessionUncheckedUpdateManyWithoutScheduleNestedInput = {
   deleteMany?: Prisma.SessionScalarWhereInput | Prisma.SessionScalarWhereInput[]
 }
 
+export type SessionCreateNestedOneWithoutMaterialsInput = {
+  create?: Prisma.XOR<Prisma.SessionCreateWithoutMaterialsInput, Prisma.SessionUncheckedCreateWithoutMaterialsInput>
+  connectOrCreate?: Prisma.SessionCreateOrConnectWithoutMaterialsInput
+  connect?: Prisma.SessionWhereUniqueInput
+}
+
+export type SessionUpdateOneRequiredWithoutMaterialsNestedInput = {
+  create?: Prisma.XOR<Prisma.SessionCreateWithoutMaterialsInput, Prisma.SessionUncheckedCreateWithoutMaterialsInput>
+  connectOrCreate?: Prisma.SessionCreateOrConnectWithoutMaterialsInput
+  upsert?: Prisma.SessionUpsertWithoutMaterialsInput
+  connect?: Prisma.SessionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SessionUpdateToOneWithWhereWithoutMaterialsInput, Prisma.SessionUpdateWithoutMaterialsInput>, Prisma.SessionUncheckedUpdateWithoutMaterialsInput>
+}
+
 export type SessionCreateNestedOneWithoutAttendanceInput = {
   create?: Prisma.XOR<Prisma.SessionCreateWithoutAttendanceInput, Prisma.SessionUncheckedCreateWithoutAttendanceInput>
   connectOrCreate?: Prisma.SessionCreateOrConnectWithoutAttendanceInput
@@ -705,6 +726,7 @@ export type SessionCreateWithoutTenantInput = {
   classSubject: Prisma.ClassSubjectCreateNestedOneWithoutSessionsInput
   schedule?: Prisma.ScheduleCreateNestedOneWithoutSessionsInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutSessionInput
+  materials?: Prisma.SessionMaterialCreateNestedManyWithoutSessionInput
 }
 
 export type SessionUncheckedCreateWithoutTenantInput = {
@@ -719,6 +741,7 @@ export type SessionUncheckedCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   attendance?: Prisma.AttendanceUncheckedCreateNestedManyWithoutSessionInput
+  materials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type SessionCreateOrConnectWithoutTenantInput = {
@@ -776,6 +799,7 @@ export type SessionCreateWithoutAcademicPeriodInput = {
   classSubject: Prisma.ClassSubjectCreateNestedOneWithoutSessionsInput
   schedule?: Prisma.ScheduleCreateNestedOneWithoutSessionsInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutSessionInput
+  materials?: Prisma.SessionMaterialCreateNestedManyWithoutSessionInput
 }
 
 export type SessionUncheckedCreateWithoutAcademicPeriodInput = {
@@ -790,6 +814,7 @@ export type SessionUncheckedCreateWithoutAcademicPeriodInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   attendance?: Prisma.AttendanceUncheckedCreateNestedManyWithoutSessionInput
+  materials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type SessionCreateOrConnectWithoutAcademicPeriodInput = {
@@ -830,6 +855,7 @@ export type SessionCreateWithoutClassInput = {
   classSubject: Prisma.ClassSubjectCreateNestedOneWithoutSessionsInput
   schedule?: Prisma.ScheduleCreateNestedOneWithoutSessionsInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutSessionInput
+  materials?: Prisma.SessionMaterialCreateNestedManyWithoutSessionInput
 }
 
 export type SessionUncheckedCreateWithoutClassInput = {
@@ -844,6 +870,7 @@ export type SessionUncheckedCreateWithoutClassInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   attendance?: Prisma.AttendanceUncheckedCreateNestedManyWithoutSessionInput
+  materials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type SessionCreateOrConnectWithoutClassInput = {
@@ -884,6 +911,7 @@ export type SessionCreateWithoutClassSubjectInput = {
   academicPeriod?: Prisma.AcademicPeriodCreateNestedOneWithoutSessionsInput
   schedule?: Prisma.ScheduleCreateNestedOneWithoutSessionsInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutSessionInput
+  materials?: Prisma.SessionMaterialCreateNestedManyWithoutSessionInput
 }
 
 export type SessionUncheckedCreateWithoutClassSubjectInput = {
@@ -898,6 +926,7 @@ export type SessionUncheckedCreateWithoutClassSubjectInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   attendance?: Prisma.AttendanceUncheckedCreateNestedManyWithoutSessionInput
+  materials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type SessionCreateOrConnectWithoutClassSubjectInput = {
@@ -938,6 +967,7 @@ export type SessionCreateWithoutScheduleInput = {
   academicPeriod?: Prisma.AcademicPeriodCreateNestedOneWithoutSessionsInput
   classSubject: Prisma.ClassSubjectCreateNestedOneWithoutSessionsInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutSessionInput
+  materials?: Prisma.SessionMaterialCreateNestedManyWithoutSessionInput
 }
 
 export type SessionUncheckedCreateWithoutScheduleInput = {
@@ -952,6 +982,7 @@ export type SessionUncheckedCreateWithoutScheduleInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   attendance?: Prisma.AttendanceUncheckedCreateNestedManyWithoutSessionInput
+  materials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type SessionCreateOrConnectWithoutScheduleInput = {
@@ -980,6 +1011,82 @@ export type SessionUpdateManyWithWhereWithoutScheduleInput = {
   data: Prisma.XOR<Prisma.SessionUpdateManyMutationInput, Prisma.SessionUncheckedUpdateManyWithoutScheduleInput>
 }
 
+export type SessionCreateWithoutMaterialsInput = {
+  id?: string
+  date: Date | string
+  startTime: Date | string
+  endTime: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutSessionsInput
+  class: Prisma.ClassCreateNestedOneWithoutSessionsInput
+  academicPeriod?: Prisma.AcademicPeriodCreateNestedOneWithoutSessionsInput
+  classSubject: Prisma.ClassSubjectCreateNestedOneWithoutSessionsInput
+  schedule?: Prisma.ScheduleCreateNestedOneWithoutSessionsInput
+  attendance?: Prisma.AttendanceCreateNestedManyWithoutSessionInput
+}
+
+export type SessionUncheckedCreateWithoutMaterialsInput = {
+  id?: string
+  tenantId: string
+  classId: string
+  academicPeriodId?: string | null
+  classSubjectId: string
+  scheduleId?: string | null
+  date: Date | string
+  startTime: Date | string
+  endTime: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  attendance?: Prisma.AttendanceUncheckedCreateNestedManyWithoutSessionInput
+}
+
+export type SessionCreateOrConnectWithoutMaterialsInput = {
+  where: Prisma.SessionWhereUniqueInput
+  create: Prisma.XOR<Prisma.SessionCreateWithoutMaterialsInput, Prisma.SessionUncheckedCreateWithoutMaterialsInput>
+}
+
+export type SessionUpsertWithoutMaterialsInput = {
+  update: Prisma.XOR<Prisma.SessionUpdateWithoutMaterialsInput, Prisma.SessionUncheckedUpdateWithoutMaterialsInput>
+  create: Prisma.XOR<Prisma.SessionCreateWithoutMaterialsInput, Prisma.SessionUncheckedCreateWithoutMaterialsInput>
+  where?: Prisma.SessionWhereInput
+}
+
+export type SessionUpdateToOneWithWhereWithoutMaterialsInput = {
+  where?: Prisma.SessionWhereInput
+  data: Prisma.XOR<Prisma.SessionUpdateWithoutMaterialsInput, Prisma.SessionUncheckedUpdateWithoutMaterialsInput>
+}
+
+export type SessionUpdateWithoutMaterialsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutSessionsNestedInput
+  class?: Prisma.ClassUpdateOneRequiredWithoutSessionsNestedInput
+  academicPeriod?: Prisma.AcademicPeriodUpdateOneWithoutSessionsNestedInput
+  classSubject?: Prisma.ClassSubjectUpdateOneRequiredWithoutSessionsNestedInput
+  schedule?: Prisma.ScheduleUpdateOneWithoutSessionsNestedInput
+  attendance?: Prisma.AttendanceUpdateManyWithoutSessionNestedInput
+}
+
+export type SessionUncheckedUpdateWithoutMaterialsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  classId?: Prisma.StringFieldUpdateOperationsInput | string
+  academicPeriodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classSubjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attendance?: Prisma.AttendanceUncheckedUpdateManyWithoutSessionNestedInput
+}
+
 export type SessionCreateWithoutAttendanceInput = {
   id?: string
   date: Date | string
@@ -992,6 +1099,7 @@ export type SessionCreateWithoutAttendanceInput = {
   academicPeriod?: Prisma.AcademicPeriodCreateNestedOneWithoutSessionsInput
   classSubject: Prisma.ClassSubjectCreateNestedOneWithoutSessionsInput
   schedule?: Prisma.ScheduleCreateNestedOneWithoutSessionsInput
+  materials?: Prisma.SessionMaterialCreateNestedManyWithoutSessionInput
 }
 
 export type SessionUncheckedCreateWithoutAttendanceInput = {
@@ -1006,6 +1114,7 @@ export type SessionUncheckedCreateWithoutAttendanceInput = {
   endTime: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  materials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type SessionCreateOrConnectWithoutAttendanceInput = {
@@ -1036,6 +1145,7 @@ export type SessionUpdateWithoutAttendanceInput = {
   academicPeriod?: Prisma.AcademicPeriodUpdateOneWithoutSessionsNestedInput
   classSubject?: Prisma.ClassSubjectUpdateOneRequiredWithoutSessionsNestedInput
   schedule?: Prisma.ScheduleUpdateOneWithoutSessionsNestedInput
+  materials?: Prisma.SessionMaterialUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateWithoutAttendanceInput = {
@@ -1050,6 +1160,7 @@ export type SessionUncheckedUpdateWithoutAttendanceInput = {
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  materials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionCreateManyTenantInput = {
@@ -1077,6 +1188,7 @@ export type SessionUpdateWithoutTenantInput = {
   classSubject?: Prisma.ClassSubjectUpdateOneRequiredWithoutSessionsNestedInput
   schedule?: Prisma.ScheduleUpdateOneWithoutSessionsNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutSessionNestedInput
+  materials?: Prisma.SessionMaterialUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateWithoutTenantInput = {
@@ -1091,6 +1203,7 @@ export type SessionUncheckedUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendance?: Prisma.AttendanceUncheckedUpdateManyWithoutSessionNestedInput
+  materials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateManyWithoutTenantInput = {
@@ -1131,6 +1244,7 @@ export type SessionUpdateWithoutAcademicPeriodInput = {
   classSubject?: Prisma.ClassSubjectUpdateOneRequiredWithoutSessionsNestedInput
   schedule?: Prisma.ScheduleUpdateOneWithoutSessionsNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutSessionNestedInput
+  materials?: Prisma.SessionMaterialUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateWithoutAcademicPeriodInput = {
@@ -1145,6 +1259,7 @@ export type SessionUncheckedUpdateWithoutAcademicPeriodInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendance?: Prisma.AttendanceUncheckedUpdateManyWithoutSessionNestedInput
+  materials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateManyWithoutAcademicPeriodInput = {
@@ -1185,6 +1300,7 @@ export type SessionUpdateWithoutClassInput = {
   classSubject?: Prisma.ClassSubjectUpdateOneRequiredWithoutSessionsNestedInput
   schedule?: Prisma.ScheduleUpdateOneWithoutSessionsNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutSessionNestedInput
+  materials?: Prisma.SessionMaterialUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateWithoutClassInput = {
@@ -1199,6 +1315,7 @@ export type SessionUncheckedUpdateWithoutClassInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendance?: Prisma.AttendanceUncheckedUpdateManyWithoutSessionNestedInput
+  materials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateManyWithoutClassInput = {
@@ -1239,6 +1356,7 @@ export type SessionUpdateWithoutClassSubjectInput = {
   academicPeriod?: Prisma.AcademicPeriodUpdateOneWithoutSessionsNestedInput
   schedule?: Prisma.ScheduleUpdateOneWithoutSessionsNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutSessionNestedInput
+  materials?: Prisma.SessionMaterialUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateWithoutClassSubjectInput = {
@@ -1253,6 +1371,7 @@ export type SessionUncheckedUpdateWithoutClassSubjectInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendance?: Prisma.AttendanceUncheckedUpdateManyWithoutSessionNestedInput
+  materials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateManyWithoutClassSubjectInput = {
@@ -1293,6 +1412,7 @@ export type SessionUpdateWithoutScheduleInput = {
   academicPeriod?: Prisma.AcademicPeriodUpdateOneWithoutSessionsNestedInput
   classSubject?: Prisma.ClassSubjectUpdateOneRequiredWithoutSessionsNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutSessionNestedInput
+  materials?: Prisma.SessionMaterialUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateWithoutScheduleInput = {
@@ -1307,6 +1427,7 @@ export type SessionUncheckedUpdateWithoutScheduleInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendance?: Prisma.AttendanceUncheckedUpdateManyWithoutSessionNestedInput
+  materials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateManyWithoutScheduleInput = {
@@ -1329,10 +1450,12 @@ export type SessionUncheckedUpdateManyWithoutScheduleInput = {
 
 export type SessionCountOutputType = {
   attendance: number
+  materials: number
 }
 
 export type SessionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   attendance?: boolean | SessionCountOutputTypeCountAttendanceArgs
+  materials?: boolean | SessionCountOutputTypeCountMaterialsArgs
 }
 
 /**
@@ -1350,6 +1473,13 @@ export type SessionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
  */
 export type SessionCountOutputTypeCountAttendanceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AttendanceWhereInput
+}
+
+/**
+ * SessionCountOutputType without action
+ */
+export type SessionCountOutputTypeCountMaterialsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionMaterialWhereInput
 }
 
 
@@ -1371,6 +1501,7 @@ export type SessionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   classSubject?: boolean | Prisma.ClassSubjectDefaultArgs<ExtArgs>
   schedule?: boolean | Prisma.Session$scheduleArgs<ExtArgs>
   attendance?: boolean | Prisma.Session$attendanceArgs<ExtArgs>
+  materials?: boolean | Prisma.Session$materialsArgs<ExtArgs>
   _count?: boolean | Prisma.SessionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["session"]>
 
@@ -1434,6 +1565,7 @@ export type SessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   classSubject?: boolean | Prisma.ClassSubjectDefaultArgs<ExtArgs>
   schedule?: boolean | Prisma.Session$scheduleArgs<ExtArgs>
   attendance?: boolean | Prisma.Session$attendanceArgs<ExtArgs>
+  materials?: boolean | Prisma.Session$materialsArgs<ExtArgs>
   _count?: boolean | Prisma.SessionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SessionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1460,6 +1592,7 @@ export type $SessionPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     classSubject: Prisma.$ClassSubjectPayload<ExtArgs>
     schedule: Prisma.$SchedulePayload<ExtArgs> | null
     attendance: Prisma.$AttendancePayload<ExtArgs>[]
+    materials: Prisma.$SessionMaterialPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1873,6 +2006,7 @@ export interface Prisma__SessionClient<T, Null = never, ExtArgs extends runtime.
   classSubject<T extends Prisma.ClassSubjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ClassSubjectDefaultArgs<ExtArgs>>): Prisma.Prisma__ClassSubjectClient<runtime.Types.Result.GetResult<Prisma.$ClassSubjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   schedule<T extends Prisma.Session$scheduleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Session$scheduleArgs<ExtArgs>>): Prisma.Prisma__ScheduleClient<runtime.Types.Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   attendance<T extends Prisma.Session$attendanceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Session$attendanceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  materials<T extends Prisma.Session$materialsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Session$materialsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionMaterialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2368,6 +2502,30 @@ export type Session$attendanceArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.AttendanceScalarFieldEnum | Prisma.AttendanceScalarFieldEnum[]
+}
+
+/**
+ * Session.materials
+ */
+export type Session$materialsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SessionMaterial
+   */
+  select?: Prisma.SessionMaterialSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SessionMaterial
+   */
+  omit?: Prisma.SessionMaterialOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SessionMaterialInclude<ExtArgs> | null
+  where?: Prisma.SessionMaterialWhereInput
+  orderBy?: Prisma.SessionMaterialOrderByWithRelationInput | Prisma.SessionMaterialOrderByWithRelationInput[]
+  cursor?: Prisma.SessionMaterialWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SessionMaterialScalarFieldEnum | Prisma.SessionMaterialScalarFieldEnum[]
 }
 
 /**

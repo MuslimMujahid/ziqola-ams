@@ -6,3 +6,4 @@ export * from "./textarea";
 export * from "./textfield";
 export * from "./password-field";
 export * from "./date-field";
+export * from "../rich-text-editor/rich-text-editor";

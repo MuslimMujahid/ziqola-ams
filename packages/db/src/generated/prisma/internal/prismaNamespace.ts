@@ -399,6 +399,8 @@ export const ModelName = {
   ClassSubject: 'ClassSubject',
   Schedule: 'Schedule',
   Session: 'Session',
+  SessionMaterial: 'SessionMaterial',
+  SessionMaterialAttachment: 'SessionMaterialAttachment',
   Attendance: 'Attendance',
   AssessmentComponent: 'AssessmentComponent',
   AssessmentScore: 'AssessmentScore',
@@ -420,7 +422,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "tenant" | "user" | "teacherProfile" | "studentProfile" | "academicYear" | "academicPeriod" | "class" | "homeroomAssignment" | "group" | "classGroup" | "classEnrollment" | "subject" | "classSubject" | "schedule" | "session" | "attendance" | "assessmentComponent" | "assessmentScore" | "reportCard" | "reportCardSubject" | "auditLog"
+    modelProps: "tenant" | "user" | "teacherProfile" | "studentProfile" | "academicYear" | "academicPeriod" | "class" | "homeroomAssignment" | "group" | "classGroup" | "classEnrollment" | "subject" | "classSubject" | "schedule" | "session" | "sessionMaterial" | "sessionMaterialAttachment" | "attendance" | "assessmentComponent" | "assessmentScore" | "reportCard" | "reportCardSubject" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1534,6 +1536,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SessionMaterial: {
+      payload: Prisma.$SessionMaterialPayload<ExtArgs>
+      fields: Prisma.SessionMaterialFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SessionMaterialFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SessionMaterialFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialPayload>
+        }
+        findFirst: {
+          args: Prisma.SessionMaterialFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SessionMaterialFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialPayload>
+        }
+        findMany: {
+          args: Prisma.SessionMaterialFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialPayload>[]
+        }
+        create: {
+          args: Prisma.SessionMaterialCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialPayload>
+        }
+        createMany: {
+          args: Prisma.SessionMaterialCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SessionMaterialCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialPayload>[]
+        }
+        delete: {
+          args: Prisma.SessionMaterialDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialPayload>
+        }
+        update: {
+          args: Prisma.SessionMaterialUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialPayload>
+        }
+        deleteMany: {
+          args: Prisma.SessionMaterialDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SessionMaterialUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SessionMaterialUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialPayload>[]
+        }
+        upsert: {
+          args: Prisma.SessionMaterialUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialPayload>
+        }
+        aggregate: {
+          args: Prisma.SessionMaterialAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSessionMaterial>
+        }
+        groupBy: {
+          args: Prisma.SessionMaterialGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SessionMaterialGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SessionMaterialCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SessionMaterialCountAggregateOutputType> | number
+        }
+      }
+    }
+    SessionMaterialAttachment: {
+      payload: Prisma.$SessionMaterialAttachmentPayload<ExtArgs>
+      fields: Prisma.SessionMaterialAttachmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SessionMaterialAttachmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialAttachmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SessionMaterialAttachmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialAttachmentPayload>
+        }
+        findFirst: {
+          args: Prisma.SessionMaterialAttachmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialAttachmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SessionMaterialAttachmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialAttachmentPayload>
+        }
+        findMany: {
+          args: Prisma.SessionMaterialAttachmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialAttachmentPayload>[]
+        }
+        create: {
+          args: Prisma.SessionMaterialAttachmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialAttachmentPayload>
+        }
+        createMany: {
+          args: Prisma.SessionMaterialAttachmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SessionMaterialAttachmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialAttachmentPayload>[]
+        }
+        delete: {
+          args: Prisma.SessionMaterialAttachmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialAttachmentPayload>
+        }
+        update: {
+          args: Prisma.SessionMaterialAttachmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialAttachmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.SessionMaterialAttachmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SessionMaterialAttachmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SessionMaterialAttachmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialAttachmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.SessionMaterialAttachmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionMaterialAttachmentPayload>
+        }
+        aggregate: {
+          args: Prisma.SessionMaterialAttachmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSessionMaterialAttachment>
+        }
+        groupBy: {
+          args: Prisma.SessionMaterialAttachmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SessionMaterialAttachmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SessionMaterialAttachmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SessionMaterialAttachmentCountAggregateOutputType> | number
+        }
+      }
+    }
     Attendance: {
       payload: Prisma.$AttendancePayload<ExtArgs>
       fields: Prisma.AttendanceFieldRefs
@@ -2233,6 +2383,34 @@ export const SessionScalarFieldEnum = {
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
 
 
+export const SessionMaterialScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  sessionId: 'sessionId',
+  content: 'content',
+  links: 'links',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SessionMaterialScalarFieldEnum = (typeof SessionMaterialScalarFieldEnum)[keyof typeof SessionMaterialScalarFieldEnum]
+
+
+export const SessionMaterialAttachmentScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  sessionMaterialId: 'sessionMaterialId',
+  fileKey: 'fileKey',
+  fileName: 'fileName',
+  mimeType: 'mimeType',
+  size: 'size',
+  createdAt: 'createdAt'
+} as const
+
+export type SessionMaterialAttachmentScalarFieldEnum = (typeof SessionMaterialAttachmentScalarFieldEnum)[keyof typeof SessionMaterialAttachmentScalarFieldEnum]
+
+
 export const AttendanceScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -2725,6 +2903,8 @@ export type GlobalOmitConfig = {
   classSubject?: Prisma.ClassSubjectOmit
   schedule?: Prisma.ScheduleOmit
   session?: Prisma.SessionOmit
+  sessionMaterial?: Prisma.SessionMaterialOmit
+  sessionMaterialAttachment?: Prisma.SessionMaterialAttachmentOmit
   attendance?: Prisma.AttendanceOmit
   assessmentComponent?: Prisma.AssessmentComponentOmit
   assessmentScore?: Prisma.AssessmentScoreOmit

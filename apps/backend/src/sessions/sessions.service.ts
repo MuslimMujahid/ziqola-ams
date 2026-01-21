@@ -5,7 +5,7 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { Role } from "@repo/db";
+import { AttendanceStatus, Role } from "@repo/db";
 
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateSessionDto } from "./dto/create-session.dto";
@@ -31,6 +31,22 @@ export type SessionSummary = {
   endTime: Date;
   createdAt: Date;
   updatedAt: Date;
+};
+
+type SessionAttendanceStudent = {
+  studentProfileId: string;
+  studentName: string;
+  studentNis: string | null;
+  studentNisn: string | null;
+  status: AttendanceStatus | null;
+  remarks: string | null;
+};
+
+export type SessionAttendanceSummary = {
+  sessionId: string;
+  classId: string;
+  date: Date;
+  students: SessionAttendanceStudent[];
 };
 
 type SessionActor = {
@@ -483,6 +499,66 @@ export class SessionsService {
     }
   }
 
+  private async ensureSessionAccess(
+    tenantId: string,
+    sessionId: string,
+    actor?: SessionActor,
+  ) {
+    const session = await this.prisma.client.session.findFirst({
+      where: { id: sessionId, tenantId },
+      select: this.sessionSelect,
+    });
+
+    if (!session) {
+      throw new NotFoundException("Session not found");
+    }
+
+    if (actor?.role === Role.TEACHER) {
+      const teacherProfileId = await this.resolveTeacherProfileId(
+        tenantId,
+        actor.sub,
+      );
+
+      if (session.classSubject.teacherProfileId !== teacherProfileId) {
+        throw new ForbiddenException("Teacher cannot access this session");
+      }
+    }
+
+    return session;
+  }
+
+  private async getSessionRoster(params: {
+    tenantId: string;
+    classId: string;
+    sessionDate: Date;
+  }) {
+    const { tenantId, classId, sessionDate } = params;
+
+    return this.prisma.client.classEnrollment.findMany({
+      where: {
+        tenantId,
+        classId,
+        startDate: { lte: sessionDate },
+        OR: [{ endDate: null }, { endDate: { gte: sessionDate } }],
+      },
+      select: {
+        studentProfileId: true,
+        studentProfile: {
+          select: {
+            nis: true,
+            nisn: true,
+            user: { select: { name: true } },
+          },
+        },
+      },
+      orderBy: {
+        studentProfile: {
+          user: { name: "asc" },
+        },
+      },
+    });
+  }
+
   async getSessions(
     tenantId: string,
     query: SessionQueryDto,
@@ -545,6 +621,122 @@ export class SessionsService {
       data: items.map((item) => this.mapSession(item)),
       total,
     };
+  }
+
+  async getSessionDetail(
+    tenantId: string,
+    sessionId: string,
+    actor?: SessionActor,
+  ) {
+    const session = await this.ensureSessionAccess(tenantId, sessionId, actor);
+    return this.mapSession(session);
+  }
+
+  async getSessionAttendance(
+    tenantId: string,
+    sessionId: string,
+    actor?: SessionActor,
+  ): Promise<SessionAttendanceSummary> {
+    const session = await this.ensureSessionAccess(tenantId, sessionId, actor);
+    const roster = await this.getSessionRoster({
+      tenantId,
+      classId: session.classId,
+      sessionDate: session.date,
+    });
+
+    const attendance = await this.prisma.client.attendance.findMany({
+      where: { tenantId, sessionId: session.id },
+      select: { studentProfileId: true, status: true, remarks: true },
+    });
+
+    const attendanceMap = new Map(
+      attendance.map((item) => [item.studentProfileId, item]),
+    );
+
+    const students = roster.map((item) => {
+      const current = attendanceMap.get(item.studentProfileId);
+      return {
+        studentProfileId: item.studentProfileId,
+        studentName: item.studentProfile.user.name,
+        studentNis: item.studentProfile.nis ?? null,
+        studentNisn: item.studentProfile.nisn ?? null,
+        status: current?.status ?? null,
+        remarks: current?.remarks ?? null,
+      };
+    });
+
+    return {
+      sessionId: session.id,
+      classId: session.classId,
+      date: session.date,
+      students,
+    };
+  }
+
+  async recordSessionAttendance(
+    tenantId: string,
+    sessionId: string,
+    items: {
+      studentProfileId: string;
+      status: AttendanceStatus;
+      remarks?: string | null;
+    }[],
+    actor: SessionActor,
+  ): Promise<SessionAttendanceSummary> {
+    const session = await this.ensureSessionAccess(tenantId, sessionId, actor);
+    const roster = await this.getSessionRoster({
+      tenantId,
+      classId: session.classId,
+      sessionDate: session.date,
+    });
+
+    const rosterIds = new Set(
+      roster.map((student) => student.studentProfileId),
+    );
+
+    const normalizedItems = Array.from(
+      new Map(
+        items.map((item) => [item.studentProfileId, item] as const),
+      ).values(),
+    );
+
+    const invalidStudents = normalizedItems.filter(
+      (item) => !rosterIds.has(item.studentProfileId),
+    );
+
+    if (invalidStudents.length > 0) {
+      throw new BadRequestException("Student not enrolled in this class");
+    }
+
+    if (normalizedItems.length === 0) {
+      throw new BadRequestException("Attendance payload is empty");
+    }
+
+    await this.prisma.client.$transaction(
+      normalizedItems.map((item) =>
+        this.prisma.client.attendance.upsert({
+          where: {
+            sessionId_studentProfileId: {
+              sessionId: session.id,
+              studentProfileId: item.studentProfileId,
+            },
+          },
+          update: {
+            status: item.status,
+            remarks: item.remarks ?? null,
+          },
+          create: {
+            tenantId,
+            sessionId: session.id,
+            studentProfileId: item.studentProfileId,
+            status: item.status,
+            remarks: item.remarks ?? null,
+          },
+        }),
+      ),
+    );
+
+    return this.getSessionAttendance(tenantId, session.id, actor);
   }
 
   async createSession(

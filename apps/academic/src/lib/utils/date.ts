@@ -68,3 +68,40 @@ export function formatDateLocalLong(value?: Date | string | null) {
     year: "numeric",
   }).format(date);
 }
+
+const DATE_FORMATTER_LONG = new Intl.DateTimeFormat("id-ID", {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+const TIME_FORMATTER_24 = new Intl.DateTimeFormat("id-ID", {
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+});
+
+/**
+ * Format a date to Indonesian long format with weekday.
+ */
+export function formatDateLongId(value?: Date | string | null) {
+  if (!value) return "-";
+  const date = typeof value === "string" ? new Date(value) : value;
+  if (Number.isNaN(date.getTime())) {
+    return typeof value === "string" ? value : "-";
+  }
+  return DATE_FORMATTER_LONG.format(date);
+}
+
+/**
+ * Format a time to Indonesian 24h format.
+ */
+export function formatTime24Id(value?: Date | string | null) {
+  if (!value) return "-";
+  const date = typeof value === "string" ? new Date(value) : value;
+  if (Number.isNaN(date.getTime())) {
+    return typeof value === "string" ? value : "-";
+  }
+  return TIME_FORMATTER_24.format(date);
+}

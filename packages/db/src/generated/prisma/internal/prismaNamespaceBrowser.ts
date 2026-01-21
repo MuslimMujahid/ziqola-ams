@@ -66,6 +66,8 @@ export const ModelName = {
   ClassSubject: 'ClassSubject',
   Schedule: 'Schedule',
   Session: 'Session',
+  SessionMaterial: 'SessionMaterial',
+  SessionMaterialAttachment: 'SessionMaterialAttachment',
   Attendance: 'Attendance',
   AssessmentComponent: 'AssessmentComponent',
   AssessmentScore: 'AssessmentScore',
@@ -304,6 +306,34 @@ export const SessionScalarFieldEnum = {
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+export const SessionMaterialScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  sessionId: 'sessionId',
+  content: 'content',
+  links: 'links',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SessionMaterialScalarFieldEnum = (typeof SessionMaterialScalarFieldEnum)[keyof typeof SessionMaterialScalarFieldEnum]
+
+
+export const SessionMaterialAttachmentScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  sessionMaterialId: 'sessionMaterialId',
+  fileKey: 'fileKey',
+  fileName: 'fileName',
+  mimeType: 'mimeType',
+  size: 'size',
+  createdAt: 'createdAt'
+} as const
+
+export type SessionMaterialAttachmentScalarFieldEnum = (typeof SessionMaterialAttachmentScalarFieldEnum)[keyof typeof SessionMaterialAttachmentScalarFieldEnum]
 
 
 export const AttendanceScalarFieldEnum = {

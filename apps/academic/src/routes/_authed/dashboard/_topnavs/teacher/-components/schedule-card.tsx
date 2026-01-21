@@ -7,13 +7,20 @@ import {
   ScheduleStatusBadge,
   ScheduleTimeline,
   ScheduleTimelineItem,
-} from "@/components/schedule/schedule";
-import { useScheduleContext } from "../../../../../../components/schedule/schedule-context";
+  useScheduleContext,
+} from "@/components/schedule";
 import type { TeacherScheduleItem } from "@/lib/services/api/teacher-dashboard";
 
+type TeacherScheduleWithDate = TeacherScheduleItem & { dateKey: string };
+
 type ScheduleCardProps = {
-  schedules: TeacherScheduleItem[];
+  schedules: TeacherScheduleWithDate[];
   isLoading?: boolean;
+  onWindowShift?: (args: {
+    windowStart: Date;
+    windowEnd: Date;
+    direction: "prev" | "next";
+  }) => void;
 };
 
 const FULL_DATE_FORMATTER = new Intl.DateTimeFormat("id-ID", {
@@ -22,10 +29,53 @@ const FULL_DATE_FORMATTER = new Intl.DateTimeFormat("id-ID", {
   month: "long",
 });
 
+function normalizeDate(value: Date) {
+  const next = new Date(value);
+  next.setHours(0, 0, 0, 0);
+  return next;
+}
+
+function parseDateKey(dateKey: string): Date | null {
+  const parsed = new Date(`${dateKey}T00:00:00.000`);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function getScheduleStartDateTime(
+  schedule: TeacherScheduleWithDate,
+): Date | null {
+  const scheduleDate = parseDateKey(schedule.dateKey);
+  if (!scheduleDate) return null;
+
+  const [startHours, startMinutes] = schedule.startTime
+    .trim()
+    .split(/[.:]/)
+    .map((value) => Number(value));
+
+  if (Number.isNaN(startHours) || Number.isNaN(startMinutes)) {
+    return null;
+  }
+
+  const startTime = new Date(scheduleDate);
+  startTime.setHours(startHours, startMinutes, 0, 0);
+  return startTime;
+}
+
 function getScheduleStatus(
-  schedule: TeacherScheduleItem,
+  schedule: TeacherScheduleWithDate,
   now: Date = new Date(),
 ): "completed" | "in_progress" | "not_started" {
+  const scheduleDate = parseDateKey(schedule.dateKey) ?? now;
+  const today = normalizeDate(now);
+  const scheduleDay = normalizeDate(scheduleDate);
+
+  if (scheduleDay.getTime() > today.getTime()) {
+    return "not_started";
+  }
+
+  if (scheduleDay.getTime() < today.getTime()) {
+    return "completed";
+  }
+
   const [startHours, startMinutes] = schedule.startTime
     .trim()
     .split(/[.:]/)
@@ -49,7 +99,11 @@ function getScheduleStatus(
   }
 }
 
-export function ScheduleCard({ schedules, isLoading }: ScheduleCardProps) {
+export function ScheduleCard({
+  schedules,
+  isLoading,
+  onWindowShift,
+}: ScheduleCardProps) {
   if (isLoading) {
     return (
       <div className="rounded-3xl bg-surface-contrast p-6">
@@ -80,9 +134,18 @@ export function ScheduleCard({ schedules, isLoading }: ScheduleCardProps) {
       renderSchedule={(schedule, context) => {
         const status = getScheduleStatus(schedule);
         const itemRef = context.registerScheduleItemRef?.(schedule.id);
+        const startTime = getScheduleStartDateTime(schedule);
+        const canStartSession = startTime
+          ? new Date().getTime() >= startTime.getTime() - 15 * 60 * 1000
+          : false;
+        const hasSession = Boolean(schedule.sessionId);
 
         return (
-          <ScheduleTimelineItem ref={itemRef} status={status}>
+          <ScheduleTimelineItem
+            ref={itemRef}
+            status={status}
+            timeLabel={schedule.startTime}
+          >
             <div className="flex-1 rounded-2xl bg-surface-1 p-4 transition-all">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
@@ -101,8 +164,8 @@ export function ScheduleCard({ schedules, isLoading }: ScheduleCardProps) {
                 <ScheduleStatusBadge status={status} />
               </div>
 
-              {status === "not_started" ? (
-                <div className="mt-3 flex gap-3 border-t border-surface-2 pt-3">
+              {status === "not_started" && canStartSession ? (
+                <div className="mt-3 flex flex-wrap gap-3 border-t border-surface-2 pt-3">
                   <Button
                     type="button"
                     size="sm"
@@ -117,13 +180,40 @@ export function ScheduleCard({ schedules, isLoading }: ScheduleCardProps) {
                       Mulai sesi
                     </Link>
                   </Button>
+                  {hasSession ? (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-4 text-xs font-medium text-ink-muted hover:text-ink-strong"
+                      asChild
+                    >
+                      <Link
+                        to="/dashboard/teacher/sessions/$sessionId"
+                        params={{ sessionId: schedule.sessionId ?? "" }}
+                      >
+                        Detail
+                      </Link>
+                    </Button>
+                  ) : null}
+                </div>
+              ) : null}
+
+              {status !== "not_started" && hasSession ? (
+                <div className="mt-3 flex gap-3 border-t border-surface-2 pt-3">
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
                     className="h-8 px-4 text-xs font-medium text-ink-muted hover:text-ink-strong"
+                    asChild
                   >
-                    Detail
+                    <Link
+                      to="/dashboard/teacher/sessions/$sessionId"
+                      params={{ sessionId: schedule.sessionId ?? "" }}
+                    >
+                      Detail
+                    </Link>
                   </Button>
                 </div>
               ) : null}
@@ -131,6 +221,7 @@ export function ScheduleCard({ schedules, isLoading }: ScheduleCardProps) {
           </ScheduleTimelineItem>
         );
       }}
+      onWindowShift={onWindowShift}
     >
       <ScheduleCardContent />
     </ScheduleRoot>

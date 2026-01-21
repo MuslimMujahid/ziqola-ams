@@ -125,6 +125,7 @@ export const DefaultRolePermissions: Record<string, Permission[]> = {
     Permission.SESSION_CREATE,
     Permission.SESSION_UPDATE,
     Permission.SESSION_DELETE,
+    Permission.ATTENDANCE_READ,
     Permission.ATTENDANCE_READ_ALL,
     Permission.ASSESSMENT_READ,
     Permission.GRADE_READ_ALL,
@@ -202,6 +203,7 @@ export const DefaultRolePermissions: Record<string, Permission[]> = {
     Permission.SESSION_UPDATE,
     Permission.SESSION_DELETE,
     // Read-only access to academic data
+    Permission.ATTENDANCE_READ,
     Permission.ATTENDANCE_READ_ALL,
     Permission.GRADE_READ_ALL,
     Permission.REPORT_CARD_READ_ALL,

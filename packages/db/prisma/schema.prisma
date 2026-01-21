@@ -110,6 +110,8 @@ model Tenant {
   homeroomAssignments  HomeroomAssignment[]
   schedules            Schedule[]
   sessions             Session[]
+  sessionMaterials     SessionMaterial[]
+  sessionMaterialAttachments SessionMaterialAttachment[]
   attendances          Attendance[]
   assessmentComponents AssessmentComponent[]
   assessmentScores     AssessmentScore[]
@@ -184,6 +186,7 @@ model TeacherProfile {
   classSubjects       ClassSubject[]        @relation("ClassSubjectTeacherProfile")
   schedules          Schedule[]             @relation("ScheduleTeacherProfile")
   compiledReportCards ReportCard[]          @relation("ReportCardCompiledByProfile")
+  sessionMaterials    SessionMaterial[]
 }
 
 model StudentProfile {
@@ -469,12 +472,52 @@ model Session {
   endTime        DateTime
 
   attendance     Attendance[]
+  materials      SessionMaterial[]
 
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
   @@index([tenantId, classId, classSubjectId])
   @@index([tenantId, date])
+}
+
+model SessionMaterial {
+  id             String                     @id @default(uuid())
+  tenantId       String
+  tenant         Tenant                     @relation(fields: [tenantId], references: [id])
+  sessionId      String
+  session        Session                    @relation(fields: [sessionId], references: [id])
+
+  content        Json?
+  links          String[]                   @default([])
+
+  createdById    String
+  createdBy      TeacherProfile             @relation(fields: [createdById], references: [id])
+
+  attachments    SessionMaterialAttachment[]
+
+  createdAt      DateTime                   @default(now())
+  updatedAt      DateTime                   @updatedAt
+
+  @@unique([tenantId, sessionId])
+  @@index([tenantId, createdById])
+}
+
+model SessionMaterialAttachment {
+  id                String          @id @default(uuid())
+  tenantId          String
+  tenant            Tenant          @relation(fields: [tenantId], references: [id])
+  sessionMaterialId String
+  sessionMaterial   SessionMaterial @relation(fields: [sessionMaterialId], references: [id])
+
+  fileKey           String
+  fileName          String
+  mimeType          String
+  size              Int
+
+  createdAt         DateTime        @default(now())
+
+  @@index([tenantId, sessionMaterialId])
 }
 
 model Attendance {

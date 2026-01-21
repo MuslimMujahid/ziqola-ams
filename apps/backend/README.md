@@ -52,6 +52,12 @@ DATABASE_URL=postgresql://postgres:postgres@localhost:5432/ams
 JWT_SECRET=change_me_in_prod
 JWT_EXPIRES_IN=1d
 PORT=3001
+MINIO_ENDPOINT=localhost
+MINIO_PORT=9000
+MINIO_USE_SSL=false
+MINIO_ACCESS_KEY=minioadmin
+MINIO_SECRET_KEY=minioadmin
+MINIO_BUCKET=session-materials
 ```
 
 For local Postgres, see docker compose at apps/backend/docker-compose.yml.

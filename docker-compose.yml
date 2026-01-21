@@ -31,8 +31,44 @@ services:
     networks:
       - appnet
 
+  minio:
+    image: minio/minio:latest
+    container_name: ziqola-minio
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    command: server /data --console-address ":9001"
+    ports:
+      - "${MINIO_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - appnet
+
+  sessions-cron:
+    image: alpine:3.20
+    container_name: ziqola-sessions-cron
+    restart: unless-stopped
+    environment:
+      BACKEND_URL: ${BACKEND_URL:-http://host.docker.internal:5000}
+      CRON_SECRET: ${CRON_SECRET}
+      SESSIONS_WINDOW_DAYS: ${SESSIONS_WINDOW_DAYS:-7}
+      SESSIONS_CRON_SCHEDULE: ${SESSIONS_CRON_SCHEDULE:-0 1 * * *}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command:
+      - /bin/sh
+      - -c
+      - |
+        apk add --no-cache curl > /dev/null
+        echo "${SESSIONS_CRON_SCHEDULE} curl -sS -X POST ${BACKEND_URL}/sessions/generate -H 'x-cron-secret: ${CRON_SECRET}' -H 'Content-Type: application/json' -d '{\"windowDays\": ${SESSIONS_WINDOW_DAYS}}'" > /etc/crontabs/root
+        crond -f -l 2
+
 volumes:
   postgres_data:
+  minio_data:
 
 networks:
   appnet:
