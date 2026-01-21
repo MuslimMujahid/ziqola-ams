@@ -14,14 +14,19 @@ export const Route = createFileRoute("/_authed")({
     }
 
     const role = user.role;
-    if (role && location.pathname.startsWith("/dashboard")) {
-      const context = await getAcademicContextFn();
-      const needsSetup = !context?.year;
+    const shouldCheckAcademicContext =
+      role === "ADMIN_STAFF" || role === "PRINCIPAL";
 
-      if (needsSetup) {
-        throw redirect({
-          to: "/onboarding/academic-setup",
-        });
+    if (role && location.pathname.startsWith("/dashboard")) {
+      if (shouldCheckAcademicContext) {
+        const context = await getAcademicContextFn();
+        const needsSetup = !context?.year;
+
+        if (needsSetup) {
+          throw redirect({
+            to: "/onboarding/academic-setup",
+          });
+        }
       }
 
       const dashboardRoute = getDashboardRoute(role);

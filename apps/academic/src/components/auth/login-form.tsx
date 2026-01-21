@@ -58,18 +58,24 @@ export function LoginForm() {
         });
         setServerError(null);
         workspace.resetWorkspace();
-        try {
-          const academicContext = await getAcademicContext();
-          if (academicContext?.year?.id) {
-            workspace.setAcademicYearId(academicContext.year.id);
-          }
-          if (academicContext?.period?.id) {
-            workspace.setAcademicPeriodId(academicContext.period.id);
-          }
-        } catch (contextError) {
-          console.warn("Failed to load academic context", contextError);
-        }
         const role = response.user.role;
+        const shouldLoadAcademicContext =
+          role === "ADMIN_STAFF" || role === "PRINCIPAL";
+
+        if (shouldLoadAcademicContext) {
+          try {
+            const academicContext = await getAcademicContext();
+            if (academicContext?.year?.id) {
+              workspace.setAcademicYearId(academicContext.year.id);
+            }
+            if (academicContext?.period?.id) {
+              workspace.setAcademicPeriodId(academicContext.period.id);
+            }
+          } catch (contextError) {
+            console.warn("Failed to load academic context", contextError);
+          }
+        }
+
         navigate({ to: getDashboardRoute(role), replace: true });
       } catch (error) {
         const message = error instanceof Error ? error.message : "";

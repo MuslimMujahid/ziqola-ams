@@ -1,77 +1,88 @@
-# Sessions Management — “Today” Calendar Tab Plan
+# Teacher Dashboard Redesign (Mockup) — Implementation Plan
 
 ## 1) Requirements Summary
 
-- Add a new tab in sessions management that shows the current day’s sessions for a class in a calendar view.
-- Keep the existing list view and filters intact.
-- Use existing session data and API endpoints; no new backend endpoint unless needed for timezone accuracy.
+- Redesign the teacher dashboard using mock data where needed.
+- Remove sections: Aksi Cepat, Progress Penilaian, Kehadiran Hari Ini.
+- Keep sections: Jadwal Hari Ini, Tugas Tertunda.
+- Add new sections: My Classes, Personal Info, Tenant-level News, Tenant-level Schedule (include start and end time).
+- Preserve existing dashboard header and academic period badge.
+- Follow UI guidelines: flat surfaces (no borders/shadows), status colors, clean spacing, accessibility.
 
 ## 2) Existing Implementation Review
 
-- Sessions management route exists at apps/academic/src/routes/\_authed/dashboard/\_sidenavs/admin-staff/sessions/index.tsx with list + filters and a “Sesi hari ini” quick filter button.
-- Sessions API already supports date range filtering via dateFrom/dateTo and classId in sessions query DTO.
-- Calendar UI primitives exist in apps/academic/src/components/calendar and a full schedule calendar is implemented in the teaching-assignments route.
+- Route component: [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher.tsx).
+- Existing cards/components:
+  - [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/-components/quick-actions.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/-components/quick-actions.tsx)
+  - [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/-components/grading-progress-card.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/-components/grading-progress-card.tsx)
+  - [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/-components/attendance-summary-card.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/-components/attendance-summary-card.tsx)
+  - [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/-components/schedule-card.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/-components/schedule-card.tsx)
+  - [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/-components/pending-tasks-card.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/-components/pending-tasks-card.tsx)
+- Data is currently sourced from `useTeacherDashboard()` with a summary payload in [apps/academic/src/lib/services/api/teacher-dashboard](apps/academic/src/lib/services/api/teacher-dashboard).
 
-## 3) Assumptions / Clarifications
+## 3) Redesign Approach (Mockup-first)
 
-- “Current day” is determined by Asia/Jakarta timezone.
-- “Sessions of current day of a class” means calendar view is scoped to a selected class (class selection required, not ALL).
-- Calendar tab should support clicking sessions to open the existing edit flow.
-- Clicking empty slots should prefill a new session form (date + start/end time).
+1. **Introduce new card components** (route-level, in -components):
+   - `my-classes-card.tsx`
+   - `personal-info-card.tsx`
+   - `tenant-news-card.tsx`
+   - `tenant-schedule-card.tsx`
+     Each card should:
+   - Use shadcn/ui primitives (`Card`, `Button`, etc.) or existing flat card styling consistent with current cards.
+   - Use Lucide icons (component suffix `Icon`).
+   - Include skeleton/loading state parity (optional for mock, but consistent with current card patterns).
 
-## 4) Functional Scope
+2. **Remove deprecated sections**
+   - Delete `QuickActions`, `GradingProgressCard`, and `AttendanceSummaryCard` from the page layout.
+   - Keep the files temporarily unless referenced elsewhere (optional cleanup after redesign is stable).
 
-### Frontend (Academic app)
+3. **Retain existing cards**
+   - Keep `ScheduleCard` (Jadwal Hari Ini) and `PendingTasksCard` (Tugas Tertunda) in the layout.
 
-1. **UI: Add Tabs**
-   - Introduce a tabs switch (e.g., list / today calendar) on the sessions page, following the teaching-assignments pattern (TabsRoot, TabsList, TabsTrigger).
-   - Default to list view; calendar view should only be enabled when a class is selected.
+4. **Mock data strategy**
+   - For mockup, define local dummy data inside the route component or a dedicated mock file under the same route folder.
+   - Ensure mock data covers:
+     - My classes: class name, subject count, homeroom flag (optional), next session.
+     - Personal info: name, role, email, phone, main subject.
+     - Tenant news: title, summary, date, category (info/announcement).
+     - Tenant-level schedule: event title, date, start time, end time, location (optional).
+   - Keep `useTeacherDashboard()` for existing sections (schedule & tasks) or replace with mock data if the goal is fully static.
 
-2. **Calendar View Component**
-   - Create a sessions calendar component under the sessions route folder (kebab-case file name).
-   - Reuse calendar primitives from apps/academic/src/components/calendar.
-   - Render a single-day column with half-hour time slots and session blocks positioned by start/end time.
-   - Provide loading skeleton and empty state; include a prompt to select a class when the class filter is ALL.
+5. **Layout update (responsive)**
+   - Maintain top header + period badge.
+   - Use a two-column grid on desktop:
+     - Left column: My Classes → Jadwal Hari Ini → Tenant-level Schedule.
+     - Right column: Personal Info → Tenant-level News → Tugas Tertunda.
+   - For mobile, stack in a single column in priority order.
 
-3. **Data Fetching**
-   - When calendar tab is active:
-   - Build query params using classId, academicPeriodId, and dateFrom/dateTo set to today’s date in Asia/Jakarta timezone.
-     - Use a larger limit (or no pagination) to load all sessions for the day.
-   - Continue using existing list query for list tab.
+## 4) File Changes (Planned)
 
-4. **Interactions**
-   - Clicking a session block opens edit mode using the existing session form modal (same as list actions).
-   - Clicking empty slots prefills a new session form with date + time boundaries.
+- Update layout in [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher.tsx).
+- Add new components under [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/-components](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/-components):
+  - `my-classes-card.tsx`
+  - `personal-info-card.tsx`
+  - `tenant-news-card.tsx`
+  - `tenant-schedule-card.tsx`
+- Update component index exports if needed:
+  - [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/-components/index.ts](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/-components/index.ts)
 
-### Backend
+## 5) UI/UX Notes
 
-- No changes required if current filters suffice.
-- If timezone correctness is a concern, consider a server-side “today” query parameter or tenant timezone settings.
+- Use flat surfaces and background separation (no borders or shadows).
+- Include status colors on badges and highlights (info/warning/success).
+- Use clear typography hierarchy and concise Indonesian labels.
+- Ensure consistent spacing (`p-6`, `gap-6`, `rounded-xl`) and accessible focus states.
 
-## 5) Data & UI Considerations
+## 6) Testing Plan (Manual)
 
-- Date boundaries should match the UI’s “today” filter logic; ensure the calendar and list use the same date formatting.
-- Use consistent visual language with existing schedule calendar (colors, labels, minimal borders).
-- Use status colors for different session types only if such fields exist; otherwise use neutral tones.
+- Verify layout order and responsiveness for desktop/tablet/mobile.
+- Confirm removed sections are no longer visible.
+- Validate mock data renders correctly in new cards.
+- Ensure `ScheduleCard` and `PendingTasksCard` still work with existing data fetching.
+- Check for accessibility: headings, link focus states, readable contrast.
 
-## 6) Implementation Steps (High-Level)
+## 7) Risks / Open Questions
 
-1. Review sessions management route and add tabs state (list vs calendar).
-2. Add a new calendar component scoped to “today” sessions, reusing calendar primitives.
-3. Add a dedicated sessions query for the calendar tab (dateFrom/dateTo = today, classId required).
-4. Wire calendar events to open the session edit modal; keep list actions unchanged.
-5. Add empty states and loading skeletons for the calendar tab.
-6. Validate UI behavior with class filter changes and tab switching.
-
-## 7) Testing Plan
-
-- Manual QA:
-  - Tab switching between list and calendar.
-  - Calendar view requires class selection; displays empty state if none.
-  - “Today” sessions show at correct times and order.
-  - Clicking session opens edit modal and updates after save.
-- Optional unit test for time-to-slot mapping utility if added.
-
-## 8) Open Questions
-
-- Confirm any Jakarta timezone utilities already in the codebase (or decide where to add one).
+- Whether mock data should replace all API usage or only new sections (keep existing sections live).
+- If tenant-level schedule/news require existing APIs, decide on stubbing vs. new API endpoints.
+- Confirm desired data fields for “Personal Info” and “My Classes” to avoid mismatch with future backend payloads.

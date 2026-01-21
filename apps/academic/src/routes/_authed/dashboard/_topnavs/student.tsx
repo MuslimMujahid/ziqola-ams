@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authed/dashboard/_topnavs/student")({
+  staticData: { topnavId: "student" },
   component: StudentDashboardPage,
   errorComponent: ({ error }: { error: Error }) => (
     <div className="p-6 text-error">Terjadi kesalahan: {error.message}</div>
