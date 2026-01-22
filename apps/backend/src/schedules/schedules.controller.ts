@@ -33,7 +33,7 @@ interface JwtUser {
 export class SchedulesController {
   constructor(private readonly schedules: SchedulesService) {}
 
-  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF, Role.TEACHER)
   @RequirePermissions(Permission.SCHEDULE_READ)
   @Get()
   async listSchedules(

@@ -225,7 +225,7 @@ function SessionMaterialPreview({
       ) : null}
 
       <Button type="button" className="h-9 px-4 text-sm" onClick={onEdit}>
-        Edit
+        Ubah
       </Button>
     </div>
   );
@@ -247,6 +247,13 @@ function TeacherSessionDetailPage() {
   const { uploadFiles, isUploading: isUploadingFiles } = useUploadFiles();
   const [isMaterialDialogOpen, setIsMaterialDialogOpen] = React.useState(false);
   const fileAccept = React.useMemo(() => getAllowedMimeTypesString(), []);
+  const session = sessionQuery.data;
+  const statusKey = getSessionStatus({
+    date: session?.date ?? null,
+    startTime: session?.startTime ?? null,
+    endTime: session?.endTime ?? null,
+  });
+  const isAttendanceEditable = statusKey !== "not_started";
 
   const attendanceDefaultValues = React.useMemo(
     () => getAttendanceDefaultValues(attendanceQuery.data),
@@ -259,6 +266,7 @@ function TeacherSessionDetailPage() {
     },
     onSubmit: async ({ value }) => {
       if (!attendanceQuery.data) return;
+      if (!isAttendanceEditable) return;
 
       const items = Object.entries(value.attendance)
         .filter(([, status]) => status)
@@ -404,7 +412,6 @@ function TeacherSessionDetailPage() {
     [deleteAttachment, sessionId, showFeedback],
   );
 
-  const session = sessionQuery.data;
   const attendance = attendanceQuery.data;
   const isSavingContent = upsertMaterial.isPending || isUploadingFiles;
   const editorResetKey = materialsQuery.data?.updatedAt ?? sessionId;
@@ -429,11 +436,6 @@ function TeacherSessionDetailPage() {
     !isRichTextEmpty(initialValues.content) ||
     initialValues.attachments.length > 0;
 
-  const statusKey = getSessionStatus({
-    date: session?.date ?? null,
-    startTime: session?.startTime ?? null,
-    endTime: session?.endTime ?? null,
-  });
   const statusMeta = STATUS_META[statusKey];
 
   const handleMaterialDialogChange = React.useCallback((isOpen: boolean) => {
@@ -447,12 +449,11 @@ function TeacherSessionDetailPage() {
           <Button
             type="button"
             variant="ghost"
-            className="h-9 px-3 text-sm text-ink-muted hover:text-ink-strong"
+            className="h-9 px-3 text-sm text-ink-muted hover:text-ink-strong bg-surface-1 rounded-full"
             asChild
           >
-            <Link to="/dashboard/teacher">
+            <Link to="..">
               <ArrowLeftIcon className="h-4 w-4" aria-hidden="true" />
-              Kembali
             </Link>
           </Button>
           <div>
@@ -480,13 +481,13 @@ function TeacherSessionDetailPage() {
                 <p className="text-xs font-medium text-ink-subtle">
                   Mata Pelajaran
                 </p>
-                <p className="text-base font-semibold text-ink-strong">
+                <p className="text-sm font-semibold text-ink-strong">
                   {session?.subjectName ?? "-"}
                 </p>
               </div>
               <div>
                 <p className="text-xs font-medium text-ink-subtle">Kelas</p>
-                <p className="text-base font-semibold text-ink-strong">
+                <p className="text-sm font-semibold text-ink-strong">
                   {session?.className ?? "-"}
                 </p>
               </div>
@@ -494,26 +495,26 @@ function TeacherSessionDetailPage() {
                 <p className="text-xs font-medium text-ink-subtle">
                   Periode Akademik
                 </p>
-                <p className="text-base font-semibold text-ink-strong">
+                <p className="text-sm font-semibold text-ink-strong">
                   {session?.academicPeriodName ?? "-"}
                 </p>
               </div>
               <div>
                 <p className="text-xs font-medium text-ink-subtle">Tanggal</p>
-                <p className="text-base font-semibold text-ink-strong">
+                <p className="text-sm font-semibold text-ink-strong">
                   {formatDateLongId(session?.date ?? null)}
                 </p>
               </div>
               <div>
                 <p className="text-xs font-medium text-ink-subtle">Jam</p>
-                <p className="text-base font-semibold text-ink-strong">
+                <p className="text-sm font-semibold text-ink-strong">
                   {formatTime24Id(session?.startTime ?? null)} -{" "}
                   {formatTime24Id(session?.endTime ?? null)}
                 </p>
               </div>
               <div>
                 <p className="text-xs font-medium text-ink-subtle">Pengajar</p>
-                <p className="text-base font-semibold text-ink-strong">
+                <p className="text-sm font-semibold text-ink-strong">
                   {session?.teacherName ?? "-"}
                 </p>
               </div>
@@ -535,18 +536,26 @@ function TeacherSessionDetailPage() {
                   [state.isDirty, state.isSubmitting] as const
                 }
               >
-                {([isDirty, isSubmitting]) => (
-                  <Button
-                    type="button"
-                    className="h-9 px-4 text-sm"
-                    disabled={!isDirty || isSubmitting}
-                    onClick={() => attendanceForm.handleSubmit()}
-                  >
-                    {isSubmitting ? "Menyimpan..." : "Simpan"}
-                  </Button>
-                )}
+                {isAttendanceEditable
+                  ? ([isDirty, isSubmitting]) => (
+                      <Button
+                        type="button"
+                        className="h-9 px-4 text-sm"
+                        disabled={!isDirty || isSubmitting}
+                        onClick={() => attendanceForm.handleSubmit()}
+                      >
+                        {isSubmitting ? "Menyimpan..." : "Simpan"}
+                      </Button>
+                    )
+                  : null}
               </attendanceForm.Subscribe>
             </div>
+
+            {!isAttendanceEditable ? (
+              <p className="mb-4 text-xs text-warning">
+                Kehadiran bisa diubah setelah sesi dimulai.
+              </p>
+            ) : null}
 
             <div className="space-y-3">
               {attendance?.students.map((student) => {
@@ -586,6 +595,7 @@ function TeacherSessionDetailPage() {
                             onValueChange={(value) =>
                               field.handleChange(value as AttendanceStatus)
                             }
+                            disabled={!isAttendanceEditable}
                           >
                             <SelectTrigger className="h-9 w-40 bg-surface-contrast text-sm">
                               <SelectValue

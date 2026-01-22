@@ -95,16 +95,9 @@ const STUDENT_NAV_ITEMS: TopnavNavItem[] = [
 const TEACHER_NAV_ITEMS: TopnavNavItem[] = [
   { label: "Beranda", to: "/dashboard/teacher", icon: HomeIcon },
   {
-    label: "Jadwal Mengajar",
+    label: "Jadwal",
     to: "/dashboard/teacher/schedule",
     icon: CalendarIcon,
-    subItems: [
-      { label: "Jadwal Mingguan", to: "/dashboard/teacher/schedule" },
-      {
-        label: "Kalender Akademik",
-        to: "/dashboard/teacher/schedule/calendar",
-      },
-    ],
   },
   {
     label: "Kelas Saya",

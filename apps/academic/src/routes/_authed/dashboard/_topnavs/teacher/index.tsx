@@ -4,11 +4,14 @@ import {
   type TeacherScheduleItem,
   useTeacherDashboard,
 } from "@/lib/services/api/teacher-dashboard";
+import { useTeacherProfileByUserId } from "@/lib/services/api/teachers";
 import {
   type SessionItem,
   useInfiniteSessions,
 } from "@/lib/services/api/sessions";
 import { formatDateKey } from "@/components/schedule/schedule-context";
+import { formatDateLongId } from "@/lib/utils/date";
+import { useAuthStore } from "@/stores/auth.store";
 import {
   AcademicPeriodBadge,
   MyClassesCard,
@@ -19,9 +22,7 @@ import {
   TenantScheduleCard,
 } from "./-components";
 
-export const Route = createFileRoute(
-  "/_authed/dashboard/_topnavs/teacher/",
-)({
+export const Route = createFileRoute("/_authed/dashboard/_topnavs/teacher/")({
   staticData: { topnavId: "teacher" },
   component: TeacherDashboardPage,
   errorComponent: ({ error }: { error: Error }) => (
@@ -70,17 +71,6 @@ const MOCK_CLASSES = [
     nextSession: null,
   },
 ];
-
-const MOCK_PERSONAL_INFO = {
-  name: "Rizky Aditya",
-  username: "@rizkyaditya",
-  birthDate: "12 Mei 1994",
-  roleLabel: "Guru Matematika",
-  email: "rizky.aditya@smabina.sch.id",
-  phone: "+62 812-3456-7890",
-  mainSubject: "Matematika",
-  avatarUrl: null,
-};
 
 const MOCK_TENANT_NEWS = [
   {
@@ -201,6 +191,7 @@ function mapSessionsToSchedule(
 }
 
 function TeacherDashboardPage() {
+  const user = useAuthStore((state) => state.user);
   const { data: dashboardData, isLoading: isDashboardLoading } =
     useTeacherDashboard();
   const today = React.useMemo(() => normalizeDate(new Date()), []);
@@ -219,14 +210,37 @@ function TeacherDashboardPage() {
   const sessionsQuery = useInfiniteSessions(sessionsParams, {
     pageSize: 25,
   });
+  const teacherProfileQuery = useTeacherProfileByUserId(user?.id ?? "", {
+    enabled: Boolean(user?.id),
+  });
+
   const sessionsData = React.useMemo(
     () => sessionsQuery.data?.pages.flatMap((page) => page.data) ?? [],
     [sessionsQuery.data?.pages],
   );
+
+  const personalInfo = React.useMemo(() => {
+    const profile = teacherProfileQuery.data?.data;
+    const profileUser = profile?.user;
+    const name = profileUser?.name ?? user?.name ?? "Guru";
+    const birthDate = profileUser?.dateOfBirth
+      ? formatDateLongId(profileUser.dateOfBirth)
+      : undefined;
+
+    return {
+      name,
+      birthDate,
+      email: user?.email,
+      phone: profileUser?.phoneNumber,
+      avatarUrl: null,
+    };
+  }, [teacherProfileQuery.data?.data, user?.email, user?.name]);
+
   const todaySchedule = React.useMemo(
     () => mapSessionsToSchedule(sessionsData),
     [sessionsData],
   );
+
   const pendingRangeFetch = React.useRef<"prev" | "next" | null>(null);
 
   const handleWindowShift = React.useCallback(
@@ -279,7 +293,10 @@ function TeacherDashboardPage() {
       {/* Top Row */}
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-1">
-          <PersonalInfoCard info={MOCK_PERSONAL_INFO} />
+          <PersonalInfoCard
+            info={personalInfo}
+            isLoading={teacherProfileQuery.isLoading}
+          />
           <TenantNewsCard items={MOCK_TENANT_NEWS} />
           <TenantScheduleCard items={MOCK_TENANT_SCHEDULE} />
         </div>

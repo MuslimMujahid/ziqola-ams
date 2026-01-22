@@ -12,7 +12,14 @@ type TeacherProfile = {
   nuptk?: string | null;
   hiredAt?: string | null;
   additionalIdentifiers?: Record<string, unknown> | null;
-  user: { id: string; name: string; email: string };
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    gender?: "MALE" | "FEMALE" | null;
+    dateOfBirth?: string | null;
+    phoneNumber?: string | null;
+  };
   createdAt?: string | null;
   updatedAt?: string | null;
 };

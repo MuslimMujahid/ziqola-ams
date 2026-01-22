@@ -32,6 +32,13 @@ async function getTeacherProfileById(id: string) {
   return response.data;
 }
 
+async function getTeacherProfileByUserId(userId: string) {
+  const response = await clientApi.get<GetTeacherProfileResponse>(
+    `/profiles/teacher/user/${userId}`,
+  );
+  return response.data;
+}
+
 async function updateTeacherProfile(vars: UpdateTeacherProfileVars) {
   const response = await clientApi.patch<UpdateTeacherProfileResponse>(
     `/profiles/teacher/${vars.id}`,
@@ -48,6 +55,7 @@ async function updateTeacherProfile(vars: UpdateTeacherProfileVars) {
 export {
   getTeacherProfiles,
   getTeacherProfileById,
+  getTeacherProfileByUserId,
   createTeacherProfile,
   updateTeacherProfile,
 };

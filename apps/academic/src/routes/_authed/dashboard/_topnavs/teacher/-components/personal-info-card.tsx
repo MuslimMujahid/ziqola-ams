@@ -1,21 +1,12 @@
 import React from "react";
 
-import {
-  CalendarIcon,
-  GraduationCapIcon,
-  MailIcon,
-  PhoneIcon,
-  UserIcon,
-} from "lucide-react";
+import { CalendarIcon, MailIcon, PhoneIcon } from "lucide-react";
 
 export type PersonalInfo = {
-  name: string;
-  username: string;
-  birthDate: string;
-  roleLabel: string;
-  email: string;
-  phone: string;
-  mainSubject: string;
+  name?: string;
+  birthDate?: string;
+  email?: string;
+  phone?: string | null;
   avatarUrl?: string | null;
 };
 
@@ -49,6 +40,7 @@ export function PersonalInfoCard({ info, isLoading }: PersonalInfoCardProps) {
   }
 
   const initials = React.useMemo(() => {
+    if (!info.name) return "";
     return info.name
       .split(" ")
       .map((part) => part.charAt(0))
@@ -76,17 +68,18 @@ export function PersonalInfoCard({ info, isLoading }: PersonalInfoCardProps) {
       <h2 className="mt-4 text-lg font-semibold text-ink-strong">
         {info.name}
       </h2>
-      <p className="text-sm text-ink-muted">{info.username}</p>
 
       <div className="my-4 h-px bg-surface-2" />
 
       <div className="space-y-3 text-left text-xs text-ink-muted">
-        <div className="flex items-center gap-3">
-          <span className="rounded-lg bg-warning/10 p-2 text-warning">
-            <CalendarIcon className="h-4 w-4" aria-hidden="true" />
-          </span>
-          <span className="text-ink">{info.birthDate}</span>
-        </div>
+        {info.birthDate ? (
+          <div className="flex items-center gap-3">
+            <span className="rounded-lg bg-warning/10 p-2 text-warning">
+              <CalendarIcon className="h-4 w-4" aria-hidden="true" />
+            </span>
+            <span className="text-ink">{info.birthDate}</span>
+          </div>
+        ) : null}
 
         <div className="flex items-center gap-3">
           <span className="rounded-lg bg-info/10 p-2 text-info">
@@ -95,26 +88,14 @@ export function PersonalInfoCard({ info, isLoading }: PersonalInfoCardProps) {
           <span className="text-ink">{info.email}</span>
         </div>
 
-        <div className="flex items-center gap-3">
-          <span className="rounded-lg bg-success/10 p-2 text-success">
-            <PhoneIcon className="h-4 w-4" aria-hidden="true" />
-          </span>
-          <span className="text-ink">{info.phone}</span>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <span className="rounded-lg bg-primary/10 p-2 text-primary">
-            <UserIcon className="h-4 w-4" aria-hidden="true" />
-          </span>
-          <span className="text-ink">{info.roleLabel}</span>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <span className="rounded-lg bg-success/10 p-2 text-success">
-            <GraduationCapIcon className="h-4 w-4" aria-hidden="true" />
-          </span>
-          <span className="text-ink">{info.mainSubject}</span>
-        </div>
+        {info.phone ? (
+          <div className="flex items-center gap-3">
+            <span className="rounded-lg bg-success/10 p-2 text-success">
+              <PhoneIcon className="h-4 w-4" aria-hidden="true" />
+            </span>
+            <span className="text-ink">{info.phone}</span>
+          </div>
+        ) : null}
       </div>
     </section>
   );
