@@ -12,6 +12,12 @@ import { ScheduleQueryDto } from "./dto/schedule-query.dto";
 import { CreateScheduleDto } from "./dto/create-schedule.dto";
 import { UpdateScheduleDto } from "./dto/update-schedule.dto";
 
+type ScheduleActor = {
+  sub: string;
+  tenantId: string;
+  role: Role;
+};
+
 export type ScheduleSummary = {
   id: string;
   tenantId: string;
@@ -309,16 +315,58 @@ export class SchedulesService {
     return schedule;
   }
 
-  async getSchedules(tenantId: string, query: ScheduleQueryDto) {
+  private async resolveStudentClassId(tenantId: string, userId: string) {
+    const studentProfile = await this.prisma.client.studentProfile.findFirst({
+      where: { tenantId, userId },
+      select: { id: true },
+    });
+
+    if (!studentProfile) {
+      return null;
+    }
+
+    const enrollment = await this.prisma.client.classEnrollment.findFirst({
+      where: {
+        tenantId,
+        studentProfileId: studentProfile.id,
+        endDate: null,
+      },
+      orderBy: { startDate: "desc" },
+      select: { classId: true },
+    });
+
+    return enrollment?.classId ?? null;
+  }
+
+  async getSchedules(
+    tenantId: string,
+    query: ScheduleQueryDto,
+    actor?: ScheduleActor,
+  ) {
     const offset = query.offset ?? 0;
     const limit = query.limit ?? 200;
+
+    let classIdFilter: string | undefined = query.classId;
+
+    if (actor?.role === Role.STUDENT) {
+      const studentClassId = await this.resolveStudentClassId(
+        tenantId,
+        actor.sub,
+      );
+
+      if (!studentClassId) {
+        return { data: [], total: 0 };
+      }
+
+      classIdFilter = studentClassId;
+    }
 
     const where = {
       tenantId,
       ...(query.academicPeriodId
         ? { academicPeriodId: query.academicPeriodId }
         : {}),
-      ...(query.classId ? { classId: query.classId } : {}),
+      ...(classIdFilter ? { classId: classIdFilter } : {}),
       ...(query.classSubjectId ? { classSubjectId: query.classSubjectId } : {}),
       ...(query.teacherProfileId
         ? { teacherProfileId: query.teacherProfileId }

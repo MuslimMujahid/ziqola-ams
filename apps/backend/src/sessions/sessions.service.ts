@@ -317,6 +317,29 @@ export class SessionsService {
     return teacherProfile.id;
   }
 
+  private async resolveStudentClassId(tenantId: string, userId: string) {
+    const studentProfile = await this.prisma.client.studentProfile.findFirst({
+      where: { tenantId, userId },
+      select: { id: true },
+    });
+
+    if (!studentProfile) {
+      return null;
+    }
+
+    const enrollment = await this.prisma.client.classEnrollment.findFirst({
+      where: {
+        tenantId,
+        studentProfileId: studentProfile.id,
+        endDate: null,
+      },
+      orderBy: { startDate: "desc" },
+      select: { classId: true },
+    });
+
+    return enrollment?.classId ?? null;
+  }
+
   private async validateTeacherProfile(tenantId: string, id: string) {
     const teacherProfile = await this.prisma.client.teacherProfile.findFirst({
       where: { id, tenantId },
@@ -568,12 +591,27 @@ export class SessionsService {
     const limit = query.limit ?? 200;
 
     let teacherProfileIdFilter: string | undefined = query.teacherProfileId;
+    let classIdFilter: string | undefined = query.classId;
 
     if (actor?.role === Role.TEACHER) {
       teacherProfileIdFilter = await this.resolveTeacherProfileId(
         tenantId,
         actor.sub,
       );
+    }
+
+    if (actor?.role === Role.STUDENT) {
+      const studentClassId = await this.resolveStudentClassId(
+        tenantId,
+        actor.sub,
+      );
+
+      if (!studentClassId) {
+        return { data: [], total: 0 };
+      }
+
+      classIdFilter = studentClassId;
+      teacherProfileIdFilter = undefined;
     }
 
     const dateFrom = query.dateFrom
@@ -587,7 +625,7 @@ export class SessionsService {
       ...(query.academicPeriodId
         ? { academicPeriodId: query.academicPeriodId }
         : {}),
-      ...(query.classId ? { classId: query.classId } : {}),
+      ...(classIdFilter ? { classId: classIdFilter } : {}),
       ...(query.classSubjectId ? { classSubjectId: query.classSubjectId } : {}),
       ...(query.scheduleId ? { scheduleId: query.scheduleId } : {}),
       ...(query.subjectId

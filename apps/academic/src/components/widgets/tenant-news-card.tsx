@@ -54,19 +54,21 @@ export function TenantNewsCard({ items, isLoading }: TenantNewsCardProps) {
 
   return (
     <section className="rounded-xl bg-surface-contrast p-4">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <h2 className="text-base font-semibold text-ink-strong">Berita</h2>
-          <p className="mt-0.5 text-[11px] text-ink-muted">
-            Kabar terbaru dari sekolah
-          </p>
+      <div className="space-y-3">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-base font-semibold text-ink-strong">Berita</h2>
+            <p className="mt-0.5 text-[11px] text-ink-muted">
+              Kabar terbaru dari sekolah
+            </p>
+          </div>
+          <span className="rounded-lg bg-warning/10 p-2 text-warning">
+            <MegaphoneIcon className="h-4 w-4" aria-hidden="true" />
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <span className="rounded-full bg-warning/10 px-2 py-1 text-[10px] font-semibold text-warning">
             {totalNews} update
-          </span>
-          <span className="rounded-lg bg-warning/10 p-2 text-warning">
-            <MegaphoneIcon className="h-4 w-4" aria-hidden="true" />
           </span>
         </div>
       </div>

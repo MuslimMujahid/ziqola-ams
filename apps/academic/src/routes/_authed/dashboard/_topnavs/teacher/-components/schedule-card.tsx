@@ -245,7 +245,7 @@ function ScheduleCardContent({}: ScheduleCardContentProps) {
           </p>
         </div>
         <Link
-          to="/dashboard/teacher/schedule/"
+          to="/dashboard/teacher/schedule"
           className="text-sm font-medium text-primary hover:underline"
         >
           Lihat semua

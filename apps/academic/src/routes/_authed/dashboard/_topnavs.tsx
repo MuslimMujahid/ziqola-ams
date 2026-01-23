@@ -70,13 +70,6 @@ const STUDENT_NAV_ITEMS: TopnavNavItem[] = [
     label: "Jadwal",
     to: "/dashboard/student/schedule",
     icon: CalendarIcon,
-    subItems: [
-      { label: "Jadwal Mingguan", to: "/dashboard/student/schedule" },
-      {
-        label: "Kalender Akademik",
-        to: "/dashboard/student/schedule/calendar",
-      },
-    ],
   },
   {
     label: "Nilai",

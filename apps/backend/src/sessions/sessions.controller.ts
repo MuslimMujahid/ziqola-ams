@@ -44,7 +44,7 @@ export class SessionsController {
     private readonly materials: SessionMaterialsService,
   ) {}
 
-  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF, Role.TEACHER)
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF, Role.TEACHER, Role.STUDENT)
   @RequirePermissions(Permission.SESSION_READ)
   @Get()
   async listSessions(

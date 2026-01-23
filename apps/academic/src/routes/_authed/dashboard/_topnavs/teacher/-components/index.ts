@@ -6,5 +6,3 @@ export { PendingTasksCard } from "./pending-tasks-card";
 export { PersonalInfoCard } from "./personal-info-card";
 export { QuickActions } from "./quick-actions";
 export { ScheduleCard } from "./schedule-card";
-export { TenantNewsCard } from "./tenant-news-card";
-export { TenantScheduleCard } from "./tenant-schedule-card";

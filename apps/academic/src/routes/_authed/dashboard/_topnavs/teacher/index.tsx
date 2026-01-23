@@ -12,14 +12,13 @@ import {
 import { formatDateKey } from "@/components/schedule/schedule-context";
 import { formatDateLongId } from "@/lib/utils/date";
 import { useAuthStore } from "@/stores/auth.store";
+import { TenantNewsCard, TenantScheduleCard } from "@/components/widgets";
 import {
   AcademicPeriodBadge,
   MyClassesCard,
   PendingTasksCard,
   PersonalInfoCard,
   ScheduleCard,
-  TenantNewsCard,
-  TenantScheduleCard,
 } from "./-components";
 
 export const Route = createFileRoute("/_authed/dashboard/_topnavs/teacher/")({

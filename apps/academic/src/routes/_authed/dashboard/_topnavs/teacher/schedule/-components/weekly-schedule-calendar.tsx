@@ -60,6 +60,8 @@ export type WeeklyScheduleItem = {
   subjectName: string;
   classSubjectId: string;
   sessionId: string | null;
+  teacherName?: string | null;
+  location?: string | null;
   source: "session" | "schedule";
 };
 
@@ -67,6 +69,8 @@ type WeeklyScheduleCalendarProps = {
   dates: Date[];
   itemsByDateKey: Record<string, WeeklyScheduleItem[]>;
   isLoading?: boolean;
+  onItemSelect?: (item: WeeklyScheduleItem) => void;
+  renderItemIndicator?: (item: WeeklyScheduleItem) => React.ReactNode;
 };
 
 function getMinutesFromTime(value: string): number | null {
@@ -105,6 +109,8 @@ export function WeeklyScheduleCalendar({
   dates,
   itemsByDateKey,
   isLoading,
+  onItemSelect,
+  renderItemIndicator,
 }: WeeklyScheduleCalendarProps) {
   const navigate = useNavigate();
 
@@ -246,6 +252,10 @@ export function WeeklyScheduleCalendar({
                             aria-disabled={!hasSession}
                             onClick={() => {
                               if (!item.sessionId) return;
+                              if (onItemSelect) {
+                                onItemSelect(item);
+                                return;
+                              }
                               navigate({
                                 to: "/dashboard/teacher/sessions/$sessionId",
                                 params: { sessionId: item.sessionId },
@@ -259,10 +269,12 @@ export function WeeklyScheduleCalendar({
                                 : "cursor-default opacity-90",
                             )}
                           >
+                            {renderItemIndicator ? (
+                              <div className="pointer-events-none absolute bottom-2 right-2">
+                                {renderItemIndicator(item)}
+                              </div>
+                            ) : null}
                             <div className="flex flex-col gap-1">
-                              <span className="truncate text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
-                                {item.className}
-                              </span>
                               <p className="truncate text-sm font-semibold text-ink-strong">
                                 {item.subjectName}
                               </p>

@@ -244,5 +244,6 @@ export const DefaultRolePermissions: Record<string, Permission[]> = {
     Permission.ATTENDANCE_READ,
     Permission.GRADE_READ,
     Permission.REPORT_CARD_READ,
+    Permission.SESSION_READ,
   ],
 };

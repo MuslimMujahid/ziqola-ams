@@ -19,7 +19,6 @@ import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashb
 import { Route as AuthedOnboardingAcademicSetupRouteImport } from './routes/_authed/onboarding/academic-setup'
 import { Route as AuthedDashboardTopnavsRouteImport } from './routes/_authed/dashboard/_topnavs'
 import { Route as AuthedDashboardSidenavsRouteImport } from './routes/_authed/dashboard/_sidenavs'
-import { Route as AuthedDashboardTopnavsStudentRouteImport } from './routes/_authed/dashboard/_topnavs/student'
 import { Route as AuthedDashboardTopnavsPrincipalRouteImport } from './routes/_authed/dashboard/_topnavs/principal'
 import { Route as AuthedDashboardSidenavsAdminStaffRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff'
 import { Route as AuthedDashboardTopnavsTeacherIndexRouteImport } from './routes/_authed/dashboard/_topnavs/teacher/index'
@@ -27,6 +26,7 @@ import { Route as AuthedDashboardTopnavsStudentIndexRouteImport } from './routes
 import { Route as AuthedDashboardSidenavsAdminStaffIndexRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff/index'
 import { Route as AuthedDashboardSidenavsAdminStaffAcademicPeriodsRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff/academic-periods'
 import { Route as AuthedDashboardTopnavsTeacherScheduleIndexRouteImport } from './routes/_authed/dashboard/_topnavs/teacher/schedule/index'
+import { Route as AuthedDashboardTopnavsStudentScheduleIndexRouteImport } from './routes/_authed/dashboard/_topnavs/student/schedule/index'
 import { Route as AuthedDashboardSidenavsAdminStaffTeachingAssignmentsIndexRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff/teaching-assignments/index'
 import { Route as AuthedDashboardSidenavsAdminStaffTeachersIndexRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff/teachers/index'
 import { Route as AuthedDashboardSidenavsAdminStaffSubjectsIndexRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff/subjects/index'
@@ -86,12 +86,6 @@ const AuthedDashboardSidenavsRoute = AuthedDashboardSidenavsRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthedRoute,
 } as any)
-const AuthedDashboardTopnavsStudentRoute =
-  AuthedDashboardTopnavsStudentRouteImport.update({
-    id: '/student',
-    path: '/student',
-    getParentRoute: () => AuthedDashboardTopnavsRoute,
-  } as any)
 const AuthedDashboardTopnavsPrincipalRoute =
   AuthedDashboardTopnavsPrincipalRouteImport.update({
     id: '/principal',
@@ -112,9 +106,9 @@ const AuthedDashboardTopnavsTeacherIndexRoute =
   } as any)
 const AuthedDashboardTopnavsStudentIndexRoute =
   AuthedDashboardTopnavsStudentIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthedDashboardTopnavsStudentRoute,
+    id: '/student/',
+    path: '/student/',
+    getParentRoute: () => AuthedDashboardTopnavsRoute,
   } as any)
 const AuthedDashboardSidenavsAdminStaffIndexRoute =
   AuthedDashboardSidenavsAdminStaffIndexRouteImport.update({
@@ -132,6 +126,12 @@ const AuthedDashboardTopnavsTeacherScheduleIndexRoute =
   AuthedDashboardTopnavsTeacherScheduleIndexRouteImport.update({
     id: '/teacher/schedule/',
     path: '/teacher/schedule/',
+    getParentRoute: () => AuthedDashboardTopnavsRoute,
+  } as any)
+const AuthedDashboardTopnavsStudentScheduleIndexRoute =
+  AuthedDashboardTopnavsStudentScheduleIndexRouteImport.update({
+    id: '/student/schedule/',
+    path: '/student/schedule/',
     getParentRoute: () => AuthedDashboardTopnavsRoute,
   } as any)
 const AuthedDashboardSidenavsAdminStaffTeachingAssignmentsIndexRoute =
@@ -198,10 +198,9 @@ export interface FileRoutesByFullPath {
   '/onboarding/academic-setup': typeof AuthedOnboardingAcademicSetupRoute
   '/dashboard/admin-staff': typeof AuthedDashboardSidenavsAdminStaffRouteWithChildren
   '/dashboard/principal': typeof AuthedDashboardTopnavsPrincipalRoute
-  '/dashboard/student': typeof AuthedDashboardTopnavsStudentRouteWithChildren
   '/dashboard/admin-staff/academic-periods': typeof AuthedDashboardSidenavsAdminStaffAcademicPeriodsRoute
   '/dashboard/admin-staff/': typeof AuthedDashboardSidenavsAdminStaffIndexRoute
-  '/dashboard/student/': typeof AuthedDashboardTopnavsStudentIndexRoute
+  '/dashboard/student': typeof AuthedDashboardTopnavsStudentIndexRoute
   '/dashboard/teacher': typeof AuthedDashboardTopnavsTeacherIndexRoute
   '/dashboard/teacher/sessions/$sessionId': typeof AuthedDashboardTopnavsTeacherSessionsSessionIdRoute
   '/dashboard/admin-staff/academic-years': typeof AuthedDashboardSidenavsAdminStaffAcademicYearsIndexRoute
@@ -212,6 +211,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin-staff/subjects': typeof AuthedDashboardSidenavsAdminStaffSubjectsIndexRoute
   '/dashboard/admin-staff/teachers': typeof AuthedDashboardSidenavsAdminStaffTeachersIndexRoute
   '/dashboard/admin-staff/teaching-assignments': typeof AuthedDashboardSidenavsAdminStaffTeachingAssignmentsIndexRoute
+  '/dashboard/student/schedule': typeof AuthedDashboardTopnavsStudentScheduleIndexRoute
   '/dashboard/teacher/schedule': typeof AuthedDashboardTopnavsTeacherScheduleIndexRoute
 }
 export interface FileRoutesByTo {
@@ -235,6 +235,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin-staff/subjects': typeof AuthedDashboardSidenavsAdminStaffSubjectsIndexRoute
   '/dashboard/admin-staff/teachers': typeof AuthedDashboardSidenavsAdminStaffTeachersIndexRoute
   '/dashboard/admin-staff/teaching-assignments': typeof AuthedDashboardSidenavsAdminStaffTeachingAssignmentsIndexRoute
+  '/dashboard/student/schedule': typeof AuthedDashboardTopnavsStudentScheduleIndexRoute
   '/dashboard/teacher/schedule': typeof AuthedDashboardTopnavsTeacherScheduleIndexRoute
 }
 export interface FileRoutesById {
@@ -251,7 +252,6 @@ export interface FileRoutesById {
   '/_authed/dashboard/': typeof AuthedDashboardIndexRoute
   '/_authed/dashboard/_sidenavs/admin-staff': typeof AuthedDashboardSidenavsAdminStaffRouteWithChildren
   '/_authed/dashboard/_topnavs/principal': typeof AuthedDashboardTopnavsPrincipalRoute
-  '/_authed/dashboard/_topnavs/student': typeof AuthedDashboardTopnavsStudentRouteWithChildren
   '/_authed/dashboard/_sidenavs/admin-staff/academic-periods': typeof AuthedDashboardSidenavsAdminStaffAcademicPeriodsRoute
   '/_authed/dashboard/_sidenavs/admin-staff/': typeof AuthedDashboardSidenavsAdminStaffIndexRoute
   '/_authed/dashboard/_topnavs/student/': typeof AuthedDashboardTopnavsStudentIndexRoute
@@ -265,6 +265,7 @@ export interface FileRoutesById {
   '/_authed/dashboard/_sidenavs/admin-staff/subjects/': typeof AuthedDashboardSidenavsAdminStaffSubjectsIndexRoute
   '/_authed/dashboard/_sidenavs/admin-staff/teachers/': typeof AuthedDashboardSidenavsAdminStaffTeachersIndexRoute
   '/_authed/dashboard/_sidenavs/admin-staff/teaching-assignments/': typeof AuthedDashboardSidenavsAdminStaffTeachingAssignmentsIndexRoute
+  '/_authed/dashboard/_topnavs/student/schedule/': typeof AuthedDashboardTopnavsStudentScheduleIndexRoute
   '/_authed/dashboard/_topnavs/teacher/schedule/': typeof AuthedDashboardTopnavsTeacherScheduleIndexRoute
 }
 export interface FileRouteTypes {
@@ -278,10 +279,9 @@ export interface FileRouteTypes {
     | '/onboarding/academic-setup'
     | '/dashboard/admin-staff'
     | '/dashboard/principal'
-    | '/dashboard/student'
     | '/dashboard/admin-staff/academic-periods'
     | '/dashboard/admin-staff/'
-    | '/dashboard/student/'
+    | '/dashboard/student'
     | '/dashboard/teacher'
     | '/dashboard/teacher/sessions/$sessionId'
     | '/dashboard/admin-staff/academic-years'
@@ -292,6 +292,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin-staff/subjects'
     | '/dashboard/admin-staff/teachers'
     | '/dashboard/admin-staff/teaching-assignments'
+    | '/dashboard/student/schedule'
     | '/dashboard/teacher/schedule'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -315,6 +316,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin-staff/subjects'
     | '/dashboard/admin-staff/teachers'
     | '/dashboard/admin-staff/teaching-assignments'
+    | '/dashboard/student/schedule'
     | '/dashboard/teacher/schedule'
   id:
     | '__root__'
@@ -330,7 +332,6 @@ export interface FileRouteTypes {
     | '/_authed/dashboard/'
     | '/_authed/dashboard/_sidenavs/admin-staff'
     | '/_authed/dashboard/_topnavs/principal'
-    | '/_authed/dashboard/_topnavs/student'
     | '/_authed/dashboard/_sidenavs/admin-staff/academic-periods'
     | '/_authed/dashboard/_sidenavs/admin-staff/'
     | '/_authed/dashboard/_topnavs/student/'
@@ -344,6 +345,7 @@ export interface FileRouteTypes {
     | '/_authed/dashboard/_sidenavs/admin-staff/subjects/'
     | '/_authed/dashboard/_sidenavs/admin-staff/teachers/'
     | '/_authed/dashboard/_sidenavs/admin-staff/teaching-assignments/'
+    | '/_authed/dashboard/_topnavs/student/schedule/'
     | '/_authed/dashboard/_topnavs/teacher/schedule/'
   fileRoutesById: FileRoutesById
 }
@@ -426,13 +428,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedDashboardSidenavsRouteImport
       parentRoute: typeof AuthedRoute
     }
-    '/_authed/dashboard/_topnavs/student': {
-      id: '/_authed/dashboard/_topnavs/student'
-      path: '/student'
-      fullPath: '/dashboard/student'
-      preLoaderRoute: typeof AuthedDashboardTopnavsStudentRouteImport
-      parentRoute: typeof AuthedDashboardTopnavsRoute
-    }
     '/_authed/dashboard/_topnavs/principal': {
       id: '/_authed/dashboard/_topnavs/principal'
       path: '/principal'
@@ -456,10 +451,10 @@ declare module '@tanstack/react-router' {
     }
     '/_authed/dashboard/_topnavs/student/': {
       id: '/_authed/dashboard/_topnavs/student/'
-      path: '/'
-      fullPath: '/dashboard/student/'
+      path: '/student'
+      fullPath: '/dashboard/student'
       preLoaderRoute: typeof AuthedDashboardTopnavsStudentIndexRouteImport
-      parentRoute: typeof AuthedDashboardTopnavsStudentRoute
+      parentRoute: typeof AuthedDashboardTopnavsRoute
     }
     '/_authed/dashboard/_sidenavs/admin-staff/': {
       id: '/_authed/dashboard/_sidenavs/admin-staff/'
@@ -480,6 +475,13 @@ declare module '@tanstack/react-router' {
       path: '/teacher/schedule'
       fullPath: '/dashboard/teacher/schedule'
       preLoaderRoute: typeof AuthedDashboardTopnavsTeacherScheduleIndexRouteImport
+      parentRoute: typeof AuthedDashboardTopnavsRoute
+    }
+    '/_authed/dashboard/_topnavs/student/schedule/': {
+      id: '/_authed/dashboard/_topnavs/student/schedule/'
+      path: '/student/schedule'
+      fullPath: '/dashboard/student/schedule'
+      preLoaderRoute: typeof AuthedDashboardTopnavsStudentScheduleIndexRouteImport
       parentRoute: typeof AuthedDashboardTopnavsRoute
     }
     '/_authed/dashboard/_sidenavs/admin-staff/teaching-assignments/': {
@@ -605,38 +607,26 @@ const AuthedDashboardSidenavsRouteWithChildren =
     AuthedDashboardSidenavsRouteChildren,
   )
 
-interface AuthedDashboardTopnavsStudentRouteChildren {
-  AuthedDashboardTopnavsStudentIndexRoute: typeof AuthedDashboardTopnavsStudentIndexRoute
-}
-
-const AuthedDashboardTopnavsStudentRouteChildren: AuthedDashboardTopnavsStudentRouteChildren =
-  {
-    AuthedDashboardTopnavsStudentIndexRoute:
-      AuthedDashboardTopnavsStudentIndexRoute,
-  }
-
-const AuthedDashboardTopnavsStudentRouteWithChildren =
-  AuthedDashboardTopnavsStudentRoute._addFileChildren(
-    AuthedDashboardTopnavsStudentRouteChildren,
-  )
-
 interface AuthedDashboardTopnavsRouteChildren {
   AuthedDashboardTopnavsPrincipalRoute: typeof AuthedDashboardTopnavsPrincipalRoute
-  AuthedDashboardTopnavsStudentRoute: typeof AuthedDashboardTopnavsStudentRouteWithChildren
+  AuthedDashboardTopnavsStudentIndexRoute: typeof AuthedDashboardTopnavsStudentIndexRoute
   AuthedDashboardTopnavsTeacherIndexRoute: typeof AuthedDashboardTopnavsTeacherIndexRoute
   AuthedDashboardTopnavsTeacherSessionsSessionIdRoute: typeof AuthedDashboardTopnavsTeacherSessionsSessionIdRoute
+  AuthedDashboardTopnavsStudentScheduleIndexRoute: typeof AuthedDashboardTopnavsStudentScheduleIndexRoute
   AuthedDashboardTopnavsTeacherScheduleIndexRoute: typeof AuthedDashboardTopnavsTeacherScheduleIndexRoute
 }
 
 const AuthedDashboardTopnavsRouteChildren: AuthedDashboardTopnavsRouteChildren =
   {
     AuthedDashboardTopnavsPrincipalRoute: AuthedDashboardTopnavsPrincipalRoute,
-    AuthedDashboardTopnavsStudentRoute:
-      AuthedDashboardTopnavsStudentRouteWithChildren,
+    AuthedDashboardTopnavsStudentIndexRoute:
+      AuthedDashboardTopnavsStudentIndexRoute,
     AuthedDashboardTopnavsTeacherIndexRoute:
       AuthedDashboardTopnavsTeacherIndexRoute,
     AuthedDashboardTopnavsTeacherSessionsSessionIdRoute:
       AuthedDashboardTopnavsTeacherSessionsSessionIdRoute,
+    AuthedDashboardTopnavsStudentScheduleIndexRoute:
+      AuthedDashboardTopnavsStudentScheduleIndexRoute,
     AuthedDashboardTopnavsTeacherScheduleIndexRoute:
       AuthedDashboardTopnavsTeacherScheduleIndexRoute,
   }

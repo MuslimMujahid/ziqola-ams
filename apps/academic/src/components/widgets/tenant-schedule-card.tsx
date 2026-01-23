@@ -40,19 +40,21 @@ export function TenantScheduleCard({
 
   return (
     <section className="rounded-xl bg-surface-contrast p-4">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <h2 className="text-base font-semibold text-ink-strong">Jadwal</h2>
-          <p className="mt-0.5 text-[11px] text-ink-muted">
-            Agenda sekolah yang akan datang
-          </p>
+      <div className="space-y-3">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-base font-semibold text-ink-strong">Jadwal</h2>
+            <p className="mt-0.5 text-[11px] text-ink-muted">
+              Agenda sekolah yang akan datang
+            </p>
+          </div>
+          <span className="rounded-lg bg-primary/10 p-2 text-primary">
+            <CalendarDaysIcon className="h-4 w-4" aria-hidden="true" />
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <span className="rounded-full bg-primary/10 px-2 py-1 text-[10px] font-semibold text-primary">
             {totalEvents} agenda
-          </span>
-          <span className="rounded-lg bg-primary/10 p-2 text-primary">
-            <CalendarDaysIcon className="h-4 w-4" aria-hidden="true" />
           </span>
         </div>
       </div>

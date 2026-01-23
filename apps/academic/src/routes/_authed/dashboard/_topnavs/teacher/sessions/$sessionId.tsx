@@ -1,5 +1,5 @@
 import React from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import {
   ArrowLeftIcon,
   CheckCircle2Icon,
@@ -236,6 +236,7 @@ type AttendanceFormValues = {
 };
 
 function TeacherSessionDetailPage() {
+  const router = useRouter();
   const { sessionId } = Route.useParams();
   const sessionQuery = useSessionDetail(sessionId);
   const attendanceQuery = useSessionAttendance(sessionId);
@@ -450,11 +451,10 @@ function TeacherSessionDetailPage() {
             type="button"
             variant="ghost"
             className="h-9 px-3 text-sm text-ink-muted hover:text-ink-strong bg-surface-1 rounded-full"
-            asChild
+            onClick={() => router.history.back()}
+            aria-label="Kembali"
           >
-            <Link to="..">
-              <ArrowLeftIcon className="h-4 w-4" aria-hidden="true" />
-            </Link>
+            <ArrowLeftIcon className="h-4 w-4" aria-hidden="true" />
           </Button>
           <div>
             <h1 className="text-2xl font-semibold text-ink-strong">
