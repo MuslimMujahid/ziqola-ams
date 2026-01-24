@@ -9,9 +9,13 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Tenant'
+export type * from './models/TenantConfiguration'
 export type * from './models/User'
 export type * from './models/TeacherProfile'
 export type * from './models/StudentProfile'
+export type * from './models/TenantProfileField'
+export type * from './models/StudentProfileFieldValue'
+export type * from './models/TeacherProfileFieldValue'
 export type * from './models/AcademicYear'
 export type * from './models/AcademicPeriod'
 export type * from './models/Class'

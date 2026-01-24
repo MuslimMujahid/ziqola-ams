@@ -27,4 +27,9 @@ export class ListStudentProfilesDto extends PaginationQueryDto {
   @Type(() => Boolean)
   @IsBoolean()
   withoutClass?: boolean;
+
+  @IsOptional()
+  @Type(() => Boolean)
+  @IsBoolean()
+  includeCustomFields?: boolean;
 }

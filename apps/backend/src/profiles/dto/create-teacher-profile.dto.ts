@@ -1,22 +1,8 @@
-import {
-  IsDateString,
-  IsObject,
-  IsOptional,
-  IsString,
-  IsUUID,
-} from "class-validator";
+import { IsDateString, IsObject, IsOptional, IsUUID } from "class-validator";
 
 export class CreateTeacherProfileDto {
   @IsUUID()
   userId: string;
-
-  @IsOptional()
-  @IsString()
-  nip?: string;
-
-  @IsOptional()
-  @IsString()
-  nuptk?: string;
 
   @IsOptional()
   @IsDateString()

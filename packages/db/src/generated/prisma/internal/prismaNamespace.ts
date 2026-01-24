@@ -385,9 +385,13 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Tenant: 'Tenant',
+  TenantConfiguration: 'TenantConfiguration',
   User: 'User',
   TeacherProfile: 'TeacherProfile',
   StudentProfile: 'StudentProfile',
+  TenantProfileField: 'TenantProfileField',
+  StudentProfileFieldValue: 'StudentProfileFieldValue',
+  TeacherProfileFieldValue: 'TeacherProfileFieldValue',
   AcademicYear: 'AcademicYear',
   AcademicPeriod: 'AcademicPeriod',
   Class: 'Class',
@@ -422,7 +426,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "tenant" | "user" | "teacherProfile" | "studentProfile" | "academicYear" | "academicPeriod" | "class" | "homeroomAssignment" | "group" | "classGroup" | "classEnrollment" | "subject" | "classSubject" | "schedule" | "session" | "sessionMaterial" | "sessionMaterialAttachment" | "attendance" | "assessmentComponent" | "assessmentScore" | "reportCard" | "reportCardSubject" | "auditLog"
+    modelProps: "tenant" | "tenantConfiguration" | "user" | "teacherProfile" | "studentProfile" | "tenantProfileField" | "studentProfileFieldValue" | "teacherProfileFieldValue" | "academicYear" | "academicPeriod" | "class" | "homeroomAssignment" | "group" | "classGroup" | "classEnrollment" | "subject" | "classSubject" | "schedule" | "session" | "sessionMaterial" | "sessionMaterialAttachment" | "attendance" | "assessmentComponent" | "assessmentScore" | "reportCard" | "reportCardSubject" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -497,6 +501,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TenantCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TenantCountAggregateOutputType> | number
+        }
+      }
+    }
+    TenantConfiguration: {
+      payload: Prisma.$TenantConfigurationPayload<ExtArgs>
+      fields: Prisma.TenantConfigurationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TenantConfigurationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantConfigurationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TenantConfigurationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantConfigurationPayload>
+        }
+        findFirst: {
+          args: Prisma.TenantConfigurationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantConfigurationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TenantConfigurationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantConfigurationPayload>
+        }
+        findMany: {
+          args: Prisma.TenantConfigurationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantConfigurationPayload>[]
+        }
+        create: {
+          args: Prisma.TenantConfigurationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantConfigurationPayload>
+        }
+        createMany: {
+          args: Prisma.TenantConfigurationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TenantConfigurationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantConfigurationPayload>[]
+        }
+        delete: {
+          args: Prisma.TenantConfigurationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantConfigurationPayload>
+        }
+        update: {
+          args: Prisma.TenantConfigurationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantConfigurationPayload>
+        }
+        deleteMany: {
+          args: Prisma.TenantConfigurationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TenantConfigurationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TenantConfigurationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantConfigurationPayload>[]
+        }
+        upsert: {
+          args: Prisma.TenantConfigurationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantConfigurationPayload>
+        }
+        aggregate: {
+          args: Prisma.TenantConfigurationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTenantConfiguration>
+        }
+        groupBy: {
+          args: Prisma.TenantConfigurationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TenantConfigurationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TenantConfigurationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TenantConfigurationCountAggregateOutputType> | number
         }
       }
     }
@@ -719,6 +797,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.StudentProfileCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.StudentProfileCountAggregateOutputType> | number
+        }
+      }
+    }
+    TenantProfileField: {
+      payload: Prisma.$TenantProfileFieldPayload<ExtArgs>
+      fields: Prisma.TenantProfileFieldFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TenantProfileFieldFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantProfileFieldPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TenantProfileFieldFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantProfileFieldPayload>
+        }
+        findFirst: {
+          args: Prisma.TenantProfileFieldFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantProfileFieldPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TenantProfileFieldFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantProfileFieldPayload>
+        }
+        findMany: {
+          args: Prisma.TenantProfileFieldFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantProfileFieldPayload>[]
+        }
+        create: {
+          args: Prisma.TenantProfileFieldCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantProfileFieldPayload>
+        }
+        createMany: {
+          args: Prisma.TenantProfileFieldCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TenantProfileFieldCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantProfileFieldPayload>[]
+        }
+        delete: {
+          args: Prisma.TenantProfileFieldDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantProfileFieldPayload>
+        }
+        update: {
+          args: Prisma.TenantProfileFieldUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantProfileFieldPayload>
+        }
+        deleteMany: {
+          args: Prisma.TenantProfileFieldDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TenantProfileFieldUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TenantProfileFieldUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantProfileFieldPayload>[]
+        }
+        upsert: {
+          args: Prisma.TenantProfileFieldUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantProfileFieldPayload>
+        }
+        aggregate: {
+          args: Prisma.TenantProfileFieldAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTenantProfileField>
+        }
+        groupBy: {
+          args: Prisma.TenantProfileFieldGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TenantProfileFieldGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TenantProfileFieldCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TenantProfileFieldCountAggregateOutputType> | number
+        }
+      }
+    }
+    StudentProfileFieldValue: {
+      payload: Prisma.$StudentProfileFieldValuePayload<ExtArgs>
+      fields: Prisma.StudentProfileFieldValueFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StudentProfileFieldValueFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentProfileFieldValuePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StudentProfileFieldValueFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentProfileFieldValuePayload>
+        }
+        findFirst: {
+          args: Prisma.StudentProfileFieldValueFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentProfileFieldValuePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StudentProfileFieldValueFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentProfileFieldValuePayload>
+        }
+        findMany: {
+          args: Prisma.StudentProfileFieldValueFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentProfileFieldValuePayload>[]
+        }
+        create: {
+          args: Prisma.StudentProfileFieldValueCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentProfileFieldValuePayload>
+        }
+        createMany: {
+          args: Prisma.StudentProfileFieldValueCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StudentProfileFieldValueCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentProfileFieldValuePayload>[]
+        }
+        delete: {
+          args: Prisma.StudentProfileFieldValueDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentProfileFieldValuePayload>
+        }
+        update: {
+          args: Prisma.StudentProfileFieldValueUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentProfileFieldValuePayload>
+        }
+        deleteMany: {
+          args: Prisma.StudentProfileFieldValueDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StudentProfileFieldValueUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StudentProfileFieldValueUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentProfileFieldValuePayload>[]
+        }
+        upsert: {
+          args: Prisma.StudentProfileFieldValueUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentProfileFieldValuePayload>
+        }
+        aggregate: {
+          args: Prisma.StudentProfileFieldValueAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStudentProfileFieldValue>
+        }
+        groupBy: {
+          args: Prisma.StudentProfileFieldValueGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentProfileFieldValueGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StudentProfileFieldValueCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentProfileFieldValueCountAggregateOutputType> | number
+        }
+      }
+    }
+    TeacherProfileFieldValue: {
+      payload: Prisma.$TeacherProfileFieldValuePayload<ExtArgs>
+      fields: Prisma.TeacherProfileFieldValueFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TeacherProfileFieldValueFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherProfileFieldValuePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TeacherProfileFieldValueFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherProfileFieldValuePayload>
+        }
+        findFirst: {
+          args: Prisma.TeacherProfileFieldValueFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherProfileFieldValuePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TeacherProfileFieldValueFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherProfileFieldValuePayload>
+        }
+        findMany: {
+          args: Prisma.TeacherProfileFieldValueFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherProfileFieldValuePayload>[]
+        }
+        create: {
+          args: Prisma.TeacherProfileFieldValueCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherProfileFieldValuePayload>
+        }
+        createMany: {
+          args: Prisma.TeacherProfileFieldValueCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TeacherProfileFieldValueCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherProfileFieldValuePayload>[]
+        }
+        delete: {
+          args: Prisma.TeacherProfileFieldValueDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherProfileFieldValuePayload>
+        }
+        update: {
+          args: Prisma.TeacherProfileFieldValueUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherProfileFieldValuePayload>
+        }
+        deleteMany: {
+          args: Prisma.TeacherProfileFieldValueDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TeacherProfileFieldValueUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TeacherProfileFieldValueUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherProfileFieldValuePayload>[]
+        }
+        upsert: {
+          args: Prisma.TeacherProfileFieldValueUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherProfileFieldValuePayload>
+        }
+        aggregate: {
+          args: Prisma.TeacherProfileFieldValueAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTeacherProfileFieldValue>
+        }
+        groupBy: {
+          args: Prisma.TeacherProfileFieldValueGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TeacherProfileFieldValueGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TeacherProfileFieldValueCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TeacherProfileFieldValueCountAggregateOutputType> | number
         }
       }
     }
@@ -2180,6 +2480,21 @@ export const TenantScalarFieldEnum = {
 export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
 
 
+export const TenantConfigurationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  configType: 'configType',
+  templateId: 'templateId',
+  isCustomized: 'isCustomized',
+  appliedAt: 'appliedAt',
+  templateHash: 'templateHash',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantConfigurationScalarFieldEnum = (typeof TenantConfigurationScalarFieldEnum)[keyof typeof TenantConfigurationScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -2201,8 +2516,6 @@ export const TeacherProfileScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   userId: 'userId',
-  nip: 'nip',
-  nuptk: 'nuptk',
   additionalIdentifiers: 'additionalIdentifiers',
   hiredAt: 'hiredAt',
   createdAt: 'createdAt',
@@ -2216,14 +2529,70 @@ export const StudentProfileScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   userId: 'userId',
-  nis: 'nis',
-  nisn: 'nisn',
   additionalIdentifiers: 'additionalIdentifiers',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type StudentProfileScalarFieldEnum = (typeof StudentProfileScalarFieldEnum)[keyof typeof StudentProfileScalarFieldEnum]
+
+
+export const TenantProfileFieldScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  role: 'role',
+  key: 'key',
+  label: 'label',
+  type: 'type',
+  helpText: 'helpText',
+  options: 'options',
+  validation: 'validation',
+  order: 'order',
+  isEnabled: 'isEnabled',
+  sourceTemplateId: 'sourceTemplateId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantProfileFieldScalarFieldEnum = (typeof TenantProfileFieldScalarFieldEnum)[keyof typeof TenantProfileFieldScalarFieldEnum]
+
+
+export const StudentProfileFieldValueScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  studentProfileId: 'studentProfileId',
+  fieldId: 'fieldId',
+  valueText: 'valueText',
+  valueNumber: 'valueNumber',
+  valueDate: 'valueDate',
+  valueBoolean: 'valueBoolean',
+  valueSelect: 'valueSelect',
+  valueMultiSelect: 'valueMultiSelect',
+  valueFile: 'valueFile',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudentProfileFieldValueScalarFieldEnum = (typeof StudentProfileFieldValueScalarFieldEnum)[keyof typeof StudentProfileFieldValueScalarFieldEnum]
+
+
+export const TeacherProfileFieldValueScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  teacherProfileId: 'teacherProfileId',
+  fieldId: 'fieldId',
+  valueText: 'valueText',
+  valueNumber: 'valueNumber',
+  valueDate: 'valueDate',
+  valueBoolean: 'valueBoolean',
+  valueSelect: 'valueSelect',
+  valueMultiSelect: 'valueMultiSelect',
+  valueFile: 'valueFile',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeacherProfileFieldValueScalarFieldEnum = (typeof TeacherProfileFieldValueScalarFieldEnum)[keyof typeof TeacherProfileFieldValueScalarFieldEnum]
 
 
 export const AcademicYearScalarFieldEnum = {
@@ -2578,6 +2947,27 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'TenantConfigurationType'
+ */
+export type EnumTenantConfigurationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TenantConfigurationType'>
+    
+
+
+/**
+ * Reference to a field of type 'TenantConfigurationType[]'
+ */
+export type ListEnumTenantConfigurationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TenantConfigurationType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'Role'
  */
 export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
@@ -2620,20 +3010,6 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
- * Reference to a field of type 'AcademicStatus'
- */
-export type EnumAcademicStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AcademicStatus'>
-    
-
-
-/**
- * Reference to a field of type 'AcademicStatus[]'
- */
-export type ListEnumAcademicStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AcademicStatus[]'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -2648,6 +3024,34 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'AcademicStatus'
+ */
+export type EnumAcademicStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AcademicStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AcademicStatus[]'
+ */
+export type ListEnumAcademicStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AcademicStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'PeriodStatus'
  */
 export type EnumPeriodStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PeriodStatus'>
@@ -2658,13 +3062,6 @@ export type EnumPeriodStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  * Reference to a field of type 'PeriodStatus[]'
  */
 export type ListEnumPeriodStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PeriodStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -2779,20 +3176,6 @@ export type EnumAuditActionFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
 export type ListEnumAuditActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuditAction[]'>
     
 
-
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2889,9 +3272,13 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   tenant?: Prisma.TenantOmit
+  tenantConfiguration?: Prisma.TenantConfigurationOmit
   user?: Prisma.UserOmit
   teacherProfile?: Prisma.TeacherProfileOmit
   studentProfile?: Prisma.StudentProfileOmit
+  tenantProfileField?: Prisma.TenantProfileFieldOmit
+  studentProfileFieldValue?: Prisma.StudentProfileFieldValueOmit
+  teacherProfileFieldValue?: Prisma.TeacherProfileFieldValueOmit
   academicYear?: Prisma.AcademicYearOmit
   academicPeriod?: Prisma.AcademicPeriodOmit
   class?: Prisma.ClassOmit

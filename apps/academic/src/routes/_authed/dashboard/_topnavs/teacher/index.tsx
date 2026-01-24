@@ -5,6 +5,8 @@ import {
   useTeacherDashboard,
 } from "@/lib/services/api/teacher-dashboard";
 import { useTeacherProfileByUserId } from "@/lib/services/api/teachers";
+import { Button } from "@repo/ui/button";
+import { CustomFieldsModal } from "@/components/profile/custom-fields-modal";
 import {
   type SessionItem,
   useInfiniteSessions,
@@ -191,6 +193,8 @@ function mapSessionsToSchedule(
 
 function TeacherDashboardPage() {
   const user = useAuthStore((state) => state.user);
+  const tenantId = user?.tenantId ?? "";
+  const [isCustomFieldsOpen, setIsCustomFieldsOpen] = React.useState(false);
   const { data: dashboardData, isLoading: isDashboardLoading } =
     useTeacherDashboard();
   const today = React.useMemo(() => normalizeDate(new Date()), []);
@@ -212,6 +216,7 @@ function TeacherDashboardPage() {
   const teacherProfileQuery = useTeacherProfileByUserId(user?.id ?? "", {
     enabled: Boolean(user?.id),
   });
+  const teacherProfileId = teacherProfileQuery.data?.data.id ?? "";
 
   const sessionsData = React.useMemo(
     () => sessionsQuery.data?.pages.flatMap((page) => page.data) ?? [],
@@ -296,6 +301,14 @@ function TeacherDashboardPage() {
             info={personalInfo}
             isLoading={teacherProfileQuery.isLoading}
           />
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => setIsCustomFieldsOpen(true)}
+            disabled={!teacherProfileId}
+          >
+            Lengkapi data tambahan
+          </Button>
           <TenantNewsCard items={MOCK_TENANT_NEWS} />
           <TenantScheduleCard items={MOCK_TENANT_SCHEDULE} />
         </div>
@@ -312,6 +325,17 @@ function TeacherDashboardPage() {
           />
         </div>
       </div>
+
+      {isCustomFieldsOpen && teacherProfileId ? (
+        <CustomFieldsModal
+          isOpen={isCustomFieldsOpen}
+          tenantId={tenantId}
+          role="teacher"
+          profileId={teacherProfileId}
+          profileName={personalInfo.name}
+          onClose={() => setIsCustomFieldsOpen(false)}
+        />
+      ) : null}
     </div>
   );
 }

@@ -43,8 +43,6 @@ async function updateTeacherProfile(vars: UpdateTeacherProfileVars) {
   const response = await clientApi.patch<UpdateTeacherProfileResponse>(
     `/profiles/teacher/${vars.id}`,
     {
-      nip: vars.nip,
-      nuptk: vars.nuptk,
       hiredAt: vars.hiredAt,
       additionalIdentifiers: vars.additionalIdentifiers,
     },

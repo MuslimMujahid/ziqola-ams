@@ -114,3 +114,10 @@ export const AuditAction = {
 } as const
 
 export type AuditAction = (typeof AuditAction)[keyof typeof AuditAction]
+
+
+export const TenantConfigurationType = {
+  PROFILE: 'PROFILE'
+} as const
+
+export type TenantConfigurationType = (typeof TenantConfigurationType)[keyof typeof TenantConfigurationType]

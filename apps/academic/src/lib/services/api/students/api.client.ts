@@ -4,6 +4,7 @@ import type {
   CreateStudentProfileVars,
   GetStudentsResponse,
   GetStudentsVars,
+  GetStudentProfileResponse,
   UpdateStudentProfileResponse,
   UpdateStudentProfileVars,
 } from "./students.types";
@@ -12,6 +13,13 @@ async function getStudents(params?: GetStudentsVars) {
   const response = await clientApi.get<GetStudentsResponse>(
     "/profiles/student",
     { params },
+  );
+  return response.data;
+}
+
+async function getStudentProfileByUserId(userId: string) {
+  const response = await clientApi.get<GetStudentProfileResponse>(
+    `/profiles/student/user/${userId}`,
   );
   return response.data;
 }
@@ -28,8 +36,6 @@ async function updateStudentProfile(vars: UpdateStudentProfileVars) {
   const response = await clientApi.patch<UpdateStudentProfileResponse>(
     `/profiles/student/${vars.id}`,
     {
-      nis: vars.nis,
-      nisn: vars.nisn,
       additionalIdentifiers: vars.additionalIdentifiers,
     },
   );
@@ -37,3 +43,4 @@ async function updateStudentProfile(vars: UpdateStudentProfileVars) {
 }
 
 export { getStudents, createStudentProfile, updateStudentProfile };
+export { getStudentProfileByUserId };

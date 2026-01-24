@@ -3,6 +3,7 @@ import type {
   ApiResponse,
   QueryParams,
 } from "@/lib/services/api/api.types";
+import type { ProfileFieldValue } from "@/lib/services/api/profile-custom-fields";
 
 type StudentClassSummary = {
   id: string;
@@ -15,8 +16,6 @@ type StudentListItem = {
   id: string;
   tenantId: string;
   userId: string;
-  nis?: string | null;
-  nisn?: string | null;
   createdAt?: string | null;
   updatedAt?: string | null;
   user: {
@@ -25,6 +24,7 @@ type StudentListItem = {
     email: string;
   };
   currentClass?: StudentClassSummary | null;
+  customFieldValues?: ProfileFieldValue[];
 };
 
 type GetStudentsVars = QueryParams<{
@@ -32,16 +32,16 @@ type GetStudentsVars = QueryParams<{
   classId?: string;
   withoutClass?: boolean;
   order?: "asc" | "desc";
+  includeCustomFields?: boolean;
 }>;
 
 type GetStudentsResponse = ApiListResponse<StudentListItem>;
+type GetStudentProfileResponse = ApiResponse<StudentProfile>;
 
 type StudentProfile = {
   id: string;
   tenantId: string;
   userId: string;
-  nis?: string | null;
-  nisn?: string | null;
   additionalIdentifiers?: Record<string, unknown> | null;
   createdAt?: string | null;
   updatedAt?: string | null;
@@ -49,15 +49,11 @@ type StudentProfile = {
 
 type CreateStudentProfileVars = {
   userId: string;
-  nis?: string;
-  nisn?: string;
   additionalIdentifiers?: Record<string, unknown>;
 };
 
 type UpdateStudentProfileVars = {
   id: string;
-  nis?: string;
-  nisn?: string;
   additionalIdentifiers?: Record<string, unknown>;
 };
 
@@ -70,6 +66,7 @@ export type {
   StudentListItem,
   GetStudentsVars,
   GetStudentsResponse,
+  GetStudentProfileResponse,
   StudentProfile,
   CreateStudentProfileVars,
   UpdateStudentProfileVars,

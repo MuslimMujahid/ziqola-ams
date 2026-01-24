@@ -19,6 +19,7 @@ import { ClassSubjectsModule } from "./class-subjects/class-subjects.module";
 import { SchedulesModule } from "./schedules/schedules.module";
 import { SessionsModule } from "./sessions/sessions.module";
 import { UploadsModule } from "./common/uploads/uploads.module";
+import { ConfigurationsModule } from "./configurations/configurations.module";
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { UploadsModule } from "./common/uploads/uploads.module";
     SessionsModule,
     EnrollmentsModule,
     UploadsModule,
+    ConfigurationsModule,
     ExamplesModule, // Example controller for RBAC patterns
   ],
   controllers: [AppController],

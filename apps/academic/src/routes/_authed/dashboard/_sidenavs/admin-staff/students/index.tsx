@@ -1,7 +1,16 @@
 import React from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import type { ColumnDef, PaginationState } from "@tanstack/react-table";
-import { Loader2Icon, PencilIcon, PlusIcon, RefreshCwIcon } from "lucide-react";
+import type {
+  ColumnDef,
+  PaginationState,
+  VisibilityState,
+} from "@tanstack/react-table";
+import {
+  ChevronDownIcon,
+  Loader2Icon,
+  PlusIcon,
+  RefreshCwIcon,
+} from "lucide-react";
 
 import { DataTable } from "@/components/data-table/data-table";
 import { Button } from "@repo/ui/button";
@@ -19,8 +28,14 @@ import {
   type StudentListItem,
   useCreateStudentProfile,
   useStudents,
-  useUpdateStudentProfile,
 } from "@/lib/services/api/students";
+import {
+  type ProfileFieldValue,
+  type TenantProfileField,
+  useExportProfiles,
+  useFilterProfiles,
+  useTenantProfileFields,
+} from "@/lib/services/api/profile-custom-fields";
 import {
   useAcademicPeriods,
   useAcademicYears,
@@ -29,12 +44,117 @@ import { useClasses } from "@/lib/services/api/classes";
 import { useRegisterUser } from "@/lib/services/api/auth";
 import { useCreateEnrollment } from "@/lib/services/api/enrollments";
 import { useWorkspaceStore } from "@/stores/workspace.store";
+import {
+  CustomFieldFilterBuilder,
+  type FilterInput,
+} from "@/components/profile/custom-field-filter-builder";
+import { CustomFieldsModal } from "@/components/profile/custom-fields-modal";
+import { formatProfileValue } from "@/lib/utils/profile-custom-fields";
+import { useDebouncedValue } from "@/lib/utils/use-debounced-value";
+import { useOnClickOutside } from "@/lib/utils/use-on-click-outside";
+import { cn } from "@/lib/utils";
+import { buildCustomFieldFilters } from "@/lib/utils/query";
 import { StudentsFormModal } from "./-components/-students-form-modal";
-import { StudentsEditModal } from "./-components/-students-edit-modal";
 import { StudentsEnrollmentModal } from "./-components/-students-enrollment-modal";
 
 const ALL_FILTER = "ALL" as const;
 const NO_CLASS_FILTER = "NO_CLASS" as const;
+const BASE_COLUMN_OPTIONS = [
+  { id: "student", label: "Siswa" },
+  { id: "class", label: "Kelas" },
+  { id: "actions", label: "Aksi", locked: true },
+] as const;
+
+type CustomFieldCellProps = {
+  field: TenantProfileField;
+  values?: ProfileFieldValue[];
+};
+
+type StudentColumnsParams = {
+  enabledCustomFields: TenantProfileField[];
+  onEnrollment: (student: StudentListItem, mode: "assign" | "change") => void;
+};
+
+function CustomFieldCell({ field, values }: CustomFieldCellProps) {
+  const valueMap = React.useMemo(
+    () =>
+      new Map((values ?? []).map((value) => [value.fieldId, value] as const)),
+    [values],
+  );
+
+  return (
+    <span className="text-sm text-ink">
+      {formatProfileValue(field, valueMap.get(field.id))}
+    </span>
+  );
+}
+
+function createStudentColumns({
+  enabledCustomFields,
+  onEnrollment,
+}: StudentColumnsParams): ColumnDef<StudentListItem>[] {
+  return [
+    {
+      id: "student",
+      header: "Siswa",
+      accessorKey: "user.name",
+      cell: ({ row }) => (
+        <div className="space-y-1">
+          <div className="font-medium text-ink-strong">
+            {row.original.user.name}
+          </div>
+          <p className="text-xs text-ink-muted">{row.original.user.email}</p>
+        </div>
+      ),
+    },
+    {
+      id: "class",
+      header: "Kelas",
+      cell: ({ row }) => (
+        <div className="text-sm text-ink">
+          {row.original.currentClass?.name ?? "Belum ada kelas"}
+        </div>
+      ),
+    },
+    ...enabledCustomFields.map<ColumnDef<StudentListItem>>((field) => ({
+      id: `custom:${field.key}`,
+      header: field.label,
+      cell: ({ row }) => (
+        <CustomFieldCell
+          field={field}
+          values={row.original.customFieldValues}
+        />
+      ),
+    })),
+    {
+      id: "actions",
+      header: "Aksi",
+      cell: ({ row }) => (
+        <div className="flex flex-wrap gap-2">
+          {row.original.currentClass ? (
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={() => onEnrollment(row.original, "change")}
+            >
+              Ganti kelas
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={() => onEnrollment(row.original, "assign")}
+            >
+              Tetapkan kelas
+            </Button>
+          )}
+        </div>
+      ),
+    },
+  ];
+}
 
 export const Route = createFileRoute(
   "/_authed/dashboard/_sidenavs/admin-staff/students/",
@@ -58,39 +178,44 @@ function StudentsPage() {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [isColumnMenuOpen, setIsColumnMenuOpen] = React.useState(false);
   const [classId, setClassId] = React.useState<
     string | typeof ALL_FILTER | typeof NO_CLASS_FILTER
   >(ALL_FILTER);
   const [isCreateOpen, setIsCreateOpen] = React.useState(false);
-  const [isEditOpen, setIsEditOpen] = React.useState(false);
   const [isEnrollOpen, setIsEnrollOpen] = React.useState(false);
+  const [isCustomFieldsOpen, setIsCustomFieldsOpen] = React.useState(false);
   const [enrollMode, setEnrollMode] = React.useState<"assign" | "change">(
     "assign",
   );
   const [selectedStudent, setSelectedStudent] =
     React.useState<StudentListItem | null>(null);
+  const [customFieldProfile, setCustomFieldProfile] =
+    React.useState<StudentListItem | null>(null);
+  const [customFilters, setCustomFilters] = React.useState<FilterInput[]>([]);
 
   const { showFeedback, FeedbackDialog } = useFeedbackDialog();
   const user = useAuthStore((state) => state.user);
+  const tenantId = user?.tenantId ?? "";
 
   const registerUser = useRegisterUser();
   const createProfile = useCreateStudentProfile();
-  const updateProfile = useUpdateStudentProfile();
   const createEnrollment = useCreateEnrollment();
+  const exportProfiles = useExportProfiles();
 
-  const debouncedSearchRef = React.useRef<number | undefined>(undefined);
+  const columnMenuRef = React.useRef<HTMLDivElement | null>(null);
+  const debouncedSearch = useDebouncedValue(searchInput, 300);
 
   React.useEffect(() => {
-    window.clearTimeout(debouncedSearchRef.current);
-    debouncedSearchRef.current = window.setTimeout(() => {
-      setSearch(searchInput.trim());
-      setPagination((prev) => ({ ...prev, pageIndex: 0 }));
-    }, 300);
+    setSearch(debouncedSearch.trim());
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [debouncedSearch]);
 
-    return () => {
-      window.clearTimeout(debouncedSearchRef.current);
-    };
-  }, [searchInput]);
+  useOnClickOutside([columnMenuRef], () => setIsColumnMenuOpen(false), {
+    enabled: isColumnMenuOpen,
+  });
 
   const workspace = useWorkspaceStore();
   const academicYearId = workspace.academicYearId ?? undefined;
@@ -125,6 +250,7 @@ function StudentsPage() {
           ? undefined
           : classId,
       withoutClass: classId === NO_CLASS_FILTER ? true : undefined,
+      includeCustomFields: true,
     }),
     [
       pagination.pageIndex,
@@ -135,19 +261,91 @@ function StudentsPage() {
     ],
   );
 
+  const tenantFieldsQuery = useTenantProfileFields(tenantId, "student", {
+    enabled: Boolean(tenantId),
+  });
+  const tenantFields = tenantFieldsQuery.data?.data ?? [];
+  const enabledCustomFields = React.useMemo(
+    () => tenantFields.filter((field) => field.isEnabled),
+    [tenantFields],
+  );
+
+  React.useEffect(() => {
+    if (enabledCustomFields.length === 0) return;
+    setColumnVisibility((prev) => {
+      const next = { ...prev };
+      enabledCustomFields.forEach((field) => {
+        const id = `custom:${field.key}`;
+        if (next[id] === undefined) {
+          next[id] = false;
+        }
+      });
+      return next;
+    });
+  }, [enabledCustomFields]);
+
+  const customFieldFiltersPayload = React.useMemo(
+    () => buildCustomFieldFilters(customFilters, tenantFields),
+    [customFilters, tenantFields],
+  );
+
+  const hasCustomFilters = customFieldFiltersPayload.length > 0;
+  const filtersKey = React.useMemo(
+    () =>
+      JSON.stringify({
+        customFieldFiltersPayload,
+        search,
+        academicYearId,
+        classId,
+        withoutClass: classId === NO_CLASS_FILTER,
+        pageIndex: pagination.pageIndex,
+        pageSize: pagination.pageSize,
+        includeCustomFields: true,
+      }),
+    [
+      academicYearId,
+      classId,
+      customFieldFiltersPayload,
+      pagination.pageIndex,
+      pagination.pageSize,
+      search,
+    ],
+  );
+
   const studentsQuery = useStudents(queryParams, {
-    enabled: Boolean(academicYearId),
+    enabled: Boolean(academicYearId) && !hasCustomFilters,
   });
 
-  const total = studentsQuery.data?.meta.total ?? 0;
+  const filteredStudentsQuery = useFilterProfiles<StudentListItem>(
+    {
+      tenantId,
+      role: "student",
+      filters: customFieldFiltersPayload,
+      search: search || undefined,
+      academicYearId,
+      classId:
+        classId === ALL_FILTER || classId === NO_CLASS_FILTER
+          ? undefined
+          : classId,
+      withoutClass: classId === NO_CLASS_FILTER ? true : undefined,
+      includeCustomFields: true,
+      pagination: {
+        page: pagination.pageIndex + 1,
+        pageSize: pagination.pageSize,
+      },
+    },
+    filtersKey,
+    {
+      enabled: Boolean(academicYearId) && hasCustomFilters && Boolean(tenantId),
+    },
+  );
+
+  const total = hasCustomFilters
+    ? (filteredStudentsQuery.data?.data.total ?? 0)
+    : (studentsQuery.data?.meta.total ?? 0);
   const pageCount = pagination.pageSize
     ? Math.max(Math.ceil(total / pagination.pageSize), 1)
     : 1;
-
-  const openEdit = React.useCallback((student: StudentListItem) => {
-    setSelectedStudent(student);
-    setIsEditOpen(true);
-  }, []);
 
   const openEnrollment = React.useCallback(
     (student: StudentListItem, mode: "assign" | "change") => {
@@ -175,8 +373,6 @@ function StudentsPage() {
       gender?: "MALE" | "FEMALE" | "none";
       dateOfBirth?: string;
       phoneNumber?: string;
-      nis?: string;
-      nisn?: string;
     }) => {
       if (!user?.tenantId || !academicYearId || !academicPeriodId) {
         return;
@@ -195,8 +391,6 @@ function StudentsPage() {
 
       const profile = await createProfile.mutateAsync({
         userId: registerResponse.data.user.id,
-        nis: normalizeOptional(values.nis),
-        nisn: normalizeOptional(values.nisn),
       });
 
       const selectedPeriod = academicPeriodsQuery.data?.data.find(
@@ -232,28 +426,6 @@ function StudentsPage() {
     ],
   );
 
-  const handleUpdate = React.useCallback(
-    async (values: { nis?: string; nisn?: string }) => {
-      if (!selectedStudent) {
-        return;
-      }
-
-      await updateProfile.mutateAsync({
-        id: selectedStudent.id,
-        nis: normalizeOptional(values.nis),
-        nisn: normalizeOptional(values.nisn),
-      });
-
-      setIsEditOpen(false);
-      showFeedback({
-        tone: "success",
-        title: "Identitas siswa diperbarui",
-        description: `${selectedStudent.user.name} berhasil diperbarui.`,
-      });
-    },
-    [normalizeOptional, selectedStudent, showFeedback, updateProfile],
-  );
-
   const handleEnrollment = React.useCallback(
     async (values: {
       classId: string;
@@ -287,81 +459,70 @@ function StudentsPage() {
     ],
   );
 
-  const columns = React.useMemo<ColumnDef<StudentListItem>[]>(
-    () => [
-      {
-        header: "Siswa",
-        accessorKey: "user.name",
-        cell: ({ row }) => (
-          <div className="space-y-1">
-            <div className="font-medium text-ink-strong">
-              {row.original.user.name}
-            </div>
-            <p className="text-xs text-ink-muted">{row.original.user.email}</p>
-          </div>
-        ),
-      },
-      {
-        header: "NIS / NISN",
-        cell: ({ row }) => (
-          <div className="text-sm text-ink">
-            <div>{row.original.nis ?? "-"}</div>
-            <div className="text-xs text-ink-muted">
-              {row.original.nisn ?? "-"}
-            </div>
-          </div>
-        ),
-      },
-      {
-        header: "Kelas",
-        cell: ({ row }) => (
-          <div className="text-sm text-ink">
-            {row.original.currentClass?.name ?? "Belum ada kelas"}
-          </div>
-        ),
-      },
-      {
-        header: "Aksi",
-        cell: ({ row }) => (
-          <div className="flex flex-wrap gap-2">
-            <Button
-              type="button"
-              size="sm"
-              variant="outline"
-              onClick={() => openEdit(row.original)}
-            >
-              <PencilIcon className="h-4 w-4" aria-hidden="true" />
-              Edit
-            </Button>
-            {row.original.currentClass ? (
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                onClick={() => openEnrollment(row.original, "change")}
-              >
-                Ganti kelas
-              </Button>
-            ) : (
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                onClick={() => openEnrollment(row.original, "assign")}
-              >
-                Tetapkan kelas
-              </Button>
-            )}
-          </div>
-        ),
-      },
-    ],
-    [openEdit, openEnrollment],
+  const handleExport = React.useCallback(async () => {
+    if (!tenantId) {
+      return;
+    }
+
+    const response = await exportProfiles.mutateAsync({
+      tenantId,
+      role: "student",
+      filters: customFieldFiltersPayload,
+      search: search || undefined,
+      academicYearId,
+      classId:
+        classId === ALL_FILTER || classId === NO_CLASS_FILTER
+          ? undefined
+          : classId,
+      withoutClass: classId === NO_CLASS_FILTER ? true : undefined,
+      format: "csv",
+    });
+
+    if (response.data.downloadUrl) {
+      window.open(response.data.downloadUrl, "_blank");
+    }
+  }, [
+    academicYearId,
+    classId,
+    customFieldFiltersPayload,
+    exportProfiles,
+    search,
+    tenantId,
+  ]);
+
+  const columns = React.useMemo(
+    () =>
+      createStudentColumns({
+        enabledCustomFields,
+        onEnrollment: openEnrollment,
+      }),
+    [enabledCustomFields, openEnrollment],
+  );
+
+  const handleColumnToggle = React.useCallback(
+    (columnId: string, isVisible: boolean) => {
+      setColumnVisibility((prev) => ({
+        ...prev,
+        [columnId]: isVisible,
+      }));
+    },
+    [],
   );
 
   const selectedYearLabel = academicYearsQuery.data?.data.find(
     (year) => year.id === academicYearId,
   )?.label;
+
+  const columnOptions = React.useMemo(
+    () => [
+      ...BASE_COLUMN_OPTIONS.filter((column) => column.id !== "actions"),
+      ...enabledCustomFields.map((field) => ({
+        id: `custom:${field.key}`,
+        label: field.label,
+      })),
+    ],
+    [enabledCustomFields],
+  );
 
   const isYearMissing = !academicYearId && !academicYearsQuery.isLoading;
   const isPeriodMissing = !academicPeriodId && !academicPeriodsQuery.isLoading;
@@ -397,11 +558,30 @@ function StudentsPage() {
           <Button
             type="button"
             variant="ghost"
-            onClick={() => studentsQuery.refetch()}
+            onClick={() =>
+              hasCustomFilters
+                ? filteredStudentsQuery.refetch()
+                : studentsQuery.refetch()
+            }
             className="gap-2"
           >
             <RefreshCwIcon className="h-4 w-4" aria-hidden="true" />
             Muat ulang
+          </Button>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={handleExport}
+            className="gap-2"
+            disabled={exportProfiles.isPending}
+          >
+            {exportProfiles.isPending && (
+              <Loader2Icon
+                className="h-4 w-4 animate-spin"
+                aria-hidden="true"
+              />
+            )}
+            Export
           </Button>
           <Button type="button" onClick={handleOpenCreate} className="gap-2">
             <PlusIcon className="h-4 w-4" aria-hidden="true" />
@@ -447,21 +627,96 @@ function StudentsPage() {
               </Select>
             </div>
 
-            <div className="text-xs text-ink-muted">Total: {total} siswa</div>
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="text-xs text-ink-muted">Total: {total} siswa</div>
+              <div className="relative" ref={columnMenuRef}>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="gap-2"
+                  aria-expanded={isColumnMenuOpen}
+                  aria-controls="student-columns-menu"
+                  onClick={() => setIsColumnMenuOpen((prev) => !prev)}
+                >
+                  Kolom
+                  <ChevronDownIcon className="h-4 w-4" aria-hidden="true" />
+                </Button>
+                {isColumnMenuOpen ? (
+                  <div
+                    id="student-columns-menu"
+                    role="menu"
+                    className="absolute right-0 z-10 mt-2 w-56 rounded-lg bg-surface-contrast p-3 shadow-sm"
+                  >
+                    <div className="mt-2 space-y-1">
+                      {columnOptions.map((column) => {
+                        const isVisible = columnVisibility[column.id] ?? true;
+                        return (
+                          <label
+                            key={column.id}
+                            className={cn(
+                              "flex items-center justify-between gap-3 rounded-md bg-surface-1 px-3 py-2 text-sm text-ink",
+                              "transition-colors hover:bg-surface-2",
+                            )}
+                          >
+                            <span>{column.label}</span>
+                            <input
+                              type="checkbox"
+                              className="h-4 w-4"
+                              checked={isVisible}
+                              onChange={(event) =>
+                                handleColumnToggle(
+                                  column.id,
+                                  event.target.checked,
+                                )
+                              }
+                            />
+                          </label>
+                        );
+                      })}
+                    </div>
+                    {enabledCustomFields.length === 0 ? (
+                      <p className="mt-1 text-xs text-ink-quiet">
+                        Belum ada kolom kustom yang aktif.
+                      </p>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+            </div>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-4 space-y-4">
+            <div className="h-px bg-surface-2" />
+
+            <CustomFieldFilterBuilder
+              fields={tenantFields}
+              filters={customFilters}
+              onChange={(next) => {
+                setCustomFilters(next);
+                setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+              }}
+            />
+
             <DataTable
-              data={studentsQuery.data?.data ?? []}
+              data={
+                hasCustomFilters
+                  ? (filteredStudentsQuery.data?.data.data ?? [])
+                  : (studentsQuery.data?.data ?? [])
+              }
               columns={columns}
               showToolbar={false}
               enableColumnFilters={false}
               enableGlobalFilter={false}
               enableRowSelection={false}
               showPagination
-              state={{ pagination }}
+              state={{ pagination, columnVisibility }}
               onPaginationChange={(updater) =>
                 setPagination((prev) =>
+                  typeof updater === "function" ? updater(prev) : updater,
+                )
+              }
+              onColumnVisibilityChange={(updater) =>
+                setColumnVisibility((prev) =>
                   typeof updater === "function" ? updater(prev) : updater,
                 )
               }
@@ -470,7 +725,13 @@ function StudentsPage() {
                 pageCount,
               }}
               emptyMessage={
-                studentsQuery.isLoading ? "Memuat data..." : "Belum ada siswa"
+                (
+                  hasCustomFilters
+                    ? filteredStudentsQuery.isLoading
+                    : studentsQuery.isLoading
+                )
+                  ? "Memuat data..."
+                  : "Belum ada siswa"
               }
             />
           </div>
@@ -493,17 +754,6 @@ function StudentsPage() {
         />
       ) : null}
 
-      {isEditOpen ? (
-        <StudentsEditModal
-          key={selectedStudent?.id ?? "student-edit"}
-          isOpen={isEditOpen}
-          student={selectedStudent}
-          isSubmitting={updateProfile.isPending}
-          onClose={() => setIsEditOpen(false)}
-          onSubmit={handleUpdate}
-        />
-      ) : null}
-
       {isEnrollOpen ? (
         <StudentsEnrollmentModal
           key={`${selectedStudent?.id ?? "student"}-enrollment`}
@@ -515,6 +765,17 @@ function StudentsPage() {
           isSubmitting={createEnrollment.isPending}
           onClose={() => setIsEnrollOpen(false)}
           onSubmit={handleEnrollment}
+        />
+      ) : null}
+
+      {isCustomFieldsOpen && customFieldProfile ? (
+        <CustomFieldsModal
+          isOpen={isCustomFieldsOpen}
+          tenantId={tenantId}
+          role="student"
+          profileId={customFieldProfile.id}
+          profileName={customFieldProfile.user.name}
+          onClose={() => setIsCustomFieldsOpen(false)}
         />
       ) : null}
 

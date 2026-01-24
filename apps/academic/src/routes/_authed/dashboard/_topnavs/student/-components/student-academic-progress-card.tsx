@@ -189,7 +189,7 @@ export function StudentAcademicProgressCard({
                 <div className="text-center text-sm">
                   <span
                     className={cn(
-                      "inline-flex min-w-[3.5rem] items-center justify-center gap-1.5 rounded-full px-2 py-1 text-sm font-semibold",
+                      "inline-flex min-w-14 items-center justify-center gap-1.5 rounded-full px-2 py-1 text-sm font-semibold",
                       subject.attendanceRate < 80
                         ? "bg-warning/10 text-warning"
                         : "text-ink-strong",

@@ -11,6 +11,11 @@ import {
 import { Button } from "@repo/ui/button";
 import { useAppForm } from "@/lib/utils/form";
 import { useTeacherProfiles } from "@/lib/services/api/teachers";
+import {
+  type ProfileFieldValue,
+  useTenantProfileFields,
+} from "@/lib/services/api/profile-custom-fields";
+import { formatProfileValue } from "@/lib/utils/profile-custom-fields";
 import type { ClassItem } from "@/lib/services/api/classes";
 
 const assignSchema = z.object({
@@ -36,13 +41,20 @@ export function AssignHomeroomModal({
   onClose,
   onSubmit,
 }: AssignHomeroomModalProps) {
+  const tenantId = classItem?.tenantId ?? "";
   const teacherProfilesQuery = useTeacherProfiles(
     {
       offset: 0,
       limit: 50,
+      includeCustomFields: true,
     },
     { enabled: isOpen },
   );
+
+  const tenantFieldsQuery = useTenantProfileFields(tenantId, "teacher", {
+    enabled: isOpen && Boolean(tenantId),
+  });
+  const tenantFields = tenantFieldsQuery.data?.data ?? [];
 
   const form = useAppForm({
     defaultValues: {
@@ -56,12 +68,32 @@ export function AssignHomeroomModal({
     },
   });
 
+  const resolveIdentifier = (
+    values: ProfileFieldValue[] | undefined,
+    key: string,
+  ) => {
+    const field = tenantFields.find((item) => item.key === key);
+    if (!field) return null;
+    const valueMap = new Map(
+      (values ?? []).map((value) => [value.fieldId, value] as const),
+    );
+    const formatted = formatProfileValue(field, valueMap.get(field.id));
+    return formatted === "-" ? null : formatted;
+  };
+
   const teacherOptions = (teacherProfilesQuery.data?.data ?? []).map(
-    (profile) => ({
-      label: profile.user.name,
-      value: profile.id,
-      helper: profile.nip ?? profile.nuptk ?? profile.user.email,
-    }),
+    (profile) => {
+      const helper =
+        resolveIdentifier(profile.customFieldValues, "nip") ??
+        resolveIdentifier(profile.customFieldValues, "nuptk") ??
+        profile.user.email;
+
+      return {
+        label: profile.user.name,
+        value: profile.id,
+        helper,
+      };
+    },
   );
 
   return (

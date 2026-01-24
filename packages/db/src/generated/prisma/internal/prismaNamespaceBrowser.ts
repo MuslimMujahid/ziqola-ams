@@ -52,9 +52,13 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Tenant: 'Tenant',
+  TenantConfiguration: 'TenantConfiguration',
   User: 'User',
   TeacherProfile: 'TeacherProfile',
   StudentProfile: 'StudentProfile',
+  TenantProfileField: 'TenantProfileField',
+  StudentProfileFieldValue: 'StudentProfileFieldValue',
+  TeacherProfileFieldValue: 'TeacherProfileFieldValue',
   AcademicYear: 'AcademicYear',
   AcademicPeriod: 'AcademicPeriod',
   Class: 'Class',
@@ -105,6 +109,21 @@ export const TenantScalarFieldEnum = {
 export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
 
 
+export const TenantConfigurationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  configType: 'configType',
+  templateId: 'templateId',
+  isCustomized: 'isCustomized',
+  appliedAt: 'appliedAt',
+  templateHash: 'templateHash',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantConfigurationScalarFieldEnum = (typeof TenantConfigurationScalarFieldEnum)[keyof typeof TenantConfigurationScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -126,8 +145,6 @@ export const TeacherProfileScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   userId: 'userId',
-  nip: 'nip',
-  nuptk: 'nuptk',
   additionalIdentifiers: 'additionalIdentifiers',
   hiredAt: 'hiredAt',
   createdAt: 'createdAt',
@@ -141,14 +158,70 @@ export const StudentProfileScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   userId: 'userId',
-  nis: 'nis',
-  nisn: 'nisn',
   additionalIdentifiers: 'additionalIdentifiers',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type StudentProfileScalarFieldEnum = (typeof StudentProfileScalarFieldEnum)[keyof typeof StudentProfileScalarFieldEnum]
+
+
+export const TenantProfileFieldScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  role: 'role',
+  key: 'key',
+  label: 'label',
+  type: 'type',
+  helpText: 'helpText',
+  options: 'options',
+  validation: 'validation',
+  order: 'order',
+  isEnabled: 'isEnabled',
+  sourceTemplateId: 'sourceTemplateId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantProfileFieldScalarFieldEnum = (typeof TenantProfileFieldScalarFieldEnum)[keyof typeof TenantProfileFieldScalarFieldEnum]
+
+
+export const StudentProfileFieldValueScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  studentProfileId: 'studentProfileId',
+  fieldId: 'fieldId',
+  valueText: 'valueText',
+  valueNumber: 'valueNumber',
+  valueDate: 'valueDate',
+  valueBoolean: 'valueBoolean',
+  valueSelect: 'valueSelect',
+  valueMultiSelect: 'valueMultiSelect',
+  valueFile: 'valueFile',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudentProfileFieldValueScalarFieldEnum = (typeof StudentProfileFieldValueScalarFieldEnum)[keyof typeof StudentProfileFieldValueScalarFieldEnum]
+
+
+export const TeacherProfileFieldValueScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  teacherProfileId: 'teacherProfileId',
+  fieldId: 'fieldId',
+  valueText: 'valueText',
+  valueNumber: 'valueNumber',
+  valueDate: 'valueDate',
+  valueBoolean: 'valueBoolean',
+  valueSelect: 'valueSelect',
+  valueMultiSelect: 'valueMultiSelect',
+  valueFile: 'valueFile',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeacherProfileFieldValueScalarFieldEnum = (typeof TeacherProfileFieldValueScalarFieldEnum)[keyof typeof TeacherProfileFieldValueScalarFieldEnum]
 
 
 export const AcademicYearScalarFieldEnum = {

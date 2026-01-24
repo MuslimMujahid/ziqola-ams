@@ -1,14 +1,6 @@
-import { IsDateString, IsObject, IsOptional, IsString } from "class-validator";
+import { IsDateString, IsObject, IsOptional } from "class-validator";
 
 export class UpdateTeacherProfileDto {
-  @IsOptional()
-  @IsString()
-  nip?: string;
-
-  @IsOptional()
-  @IsString()
-  nuptk?: string;
-
   @IsOptional()
   @IsDateString()
   hiredAt?: string;

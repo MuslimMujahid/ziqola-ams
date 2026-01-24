@@ -98,6 +98,14 @@ export enum Permission {
 
   // Audit Logs
   AUDIT_READ = "AUDIT_READ",
+
+  // Custom Profile Properties
+  PROFILE_TEMPLATE_READ = "PROFILE_TEMPLATE_READ",
+  PROFILE_TEMPLATE_APPLY = "PROFILE_TEMPLATE_APPLY",
+  PROFILE_FIELD_READ = "PROFILE_FIELD_READ",
+  PROFILE_FIELD_MANAGE = "PROFILE_FIELD_MANAGE",
+  PROFILE_CUSTOM_FIELD_READ = "PROFILE_CUSTOM_FIELD_READ",
+  PROFILE_CUSTOM_FIELD_UPDATE = "PROFILE_CUSTOM_FIELD_UPDATE",
 }
 
 /**
@@ -144,6 +152,13 @@ export const DefaultRolePermissions: Record<string, Permission[]> = {
     // Can update tenant settings
     Permission.TENANT_READ,
     Permission.TENANT_UPDATE,
+    // Custom profile properties
+    Permission.PROFILE_TEMPLATE_READ,
+    Permission.PROFILE_TEMPLATE_APPLY,
+    Permission.PROFILE_FIELD_READ,
+    Permission.PROFILE_FIELD_MANAGE,
+    Permission.PROFILE_CUSTOM_FIELD_READ,
+    Permission.PROFILE_CUSTOM_FIELD_UPDATE,
   ],
 
   ADMIN_STAFF: [
@@ -197,6 +212,13 @@ export const DefaultRolePermissions: Record<string, Permission[]> = {
     Permission.SCHEDULE_CREATE,
     Permission.SCHEDULE_UPDATE,
     Permission.SCHEDULE_DELETE,
+    // Custom profile properties
+    Permission.PROFILE_TEMPLATE_READ,
+    Permission.PROFILE_TEMPLATE_APPLY,
+    Permission.PROFILE_FIELD_READ,
+    Permission.PROFILE_FIELD_MANAGE,
+    Permission.PROFILE_CUSTOM_FIELD_READ,
+    Permission.PROFILE_CUSTOM_FIELD_UPDATE,
     // Session management
     Permission.SESSION_READ,
     Permission.SESSION_CREATE,
@@ -236,6 +258,9 @@ export const DefaultRolePermissions: Record<string, Permission[]> = {
     Permission.REPORT_CARD_READ,
     Permission.REPORT_CARD_GENERATE,
     // Note: REPORT_CARD_COMPILE is context-specific (Wali Kelas only)
+    // Custom profile properties
+    Permission.PROFILE_CUSTOM_FIELD_READ,
+    Permission.PROFILE_CUSTOM_FIELD_UPDATE,
   ],
 
   STUDENT: [
@@ -245,5 +270,8 @@ export const DefaultRolePermissions: Record<string, Permission[]> = {
     Permission.GRADE_READ,
     Permission.REPORT_CARD_READ,
     Permission.SESSION_READ,
+    // Custom profile properties
+    Permission.PROFILE_CUSTOM_FIELD_READ,
+    Permission.PROFILE_CUSTOM_FIELD_UPDATE,
   ],
 };

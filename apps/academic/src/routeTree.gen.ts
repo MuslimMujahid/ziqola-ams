@@ -31,11 +31,13 @@ import { Route as AuthedDashboardSidenavsAdminStaffTeachingAssignmentsIndexRoute
 import { Route as AuthedDashboardSidenavsAdminStaffTeachersIndexRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff/teachers/index'
 import { Route as AuthedDashboardSidenavsAdminStaffSubjectsIndexRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff/subjects/index'
 import { Route as AuthedDashboardSidenavsAdminStaffStudentsIndexRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff/students/index'
+import { Route as AuthedDashboardSidenavsAdminStaffSettingsIndexRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff/settings/index'
 import { Route as AuthedDashboardSidenavsAdminStaffSessionsIndexRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff/sessions/index'
 import { Route as AuthedDashboardSidenavsAdminStaffGroupsIndexRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff/groups/index'
 import { Route as AuthedDashboardSidenavsAdminStaffClassesIndexRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff/classes/index'
 import { Route as AuthedDashboardSidenavsAdminStaffAcademicYearsIndexRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff/academic-years/index'
 import { Route as AuthedDashboardTopnavsTeacherSessionsSessionIdRouteImport } from './routes/_authed/dashboard/_topnavs/teacher/sessions/$sessionId'
+import { Route as AuthedDashboardSidenavsAdminStaffSettingsCustomizationIndexRouteImport } from './routes/_authed/dashboard/_sidenavs/admin-staff/settings/customization/index'
 
 const AuthedRoute = AuthedRouteImport.update({
   id: '/_authed',
@@ -158,6 +160,12 @@ const AuthedDashboardSidenavsAdminStaffStudentsIndexRoute =
     path: '/students/',
     getParentRoute: () => AuthedDashboardSidenavsAdminStaffRoute,
   } as any)
+const AuthedDashboardSidenavsAdminStaffSettingsIndexRoute =
+  AuthedDashboardSidenavsAdminStaffSettingsIndexRouteImport.update({
+    id: '/settings/',
+    path: '/settings/',
+    getParentRoute: () => AuthedDashboardSidenavsAdminStaffRoute,
+  } as any)
 const AuthedDashboardSidenavsAdminStaffSessionsIndexRoute =
   AuthedDashboardSidenavsAdminStaffSessionsIndexRouteImport.update({
     id: '/sessions/',
@@ -188,6 +196,14 @@ const AuthedDashboardTopnavsTeacherSessionsSessionIdRoute =
     path: '/teacher/sessions/$sessionId',
     getParentRoute: () => AuthedDashboardTopnavsRoute,
   } as any)
+const AuthedDashboardSidenavsAdminStaffSettingsCustomizationIndexRoute =
+  AuthedDashboardSidenavsAdminStaffSettingsCustomizationIndexRouteImport.update(
+    {
+      id: '/settings/customization/',
+      path: '/settings/customization/',
+      getParentRoute: () => AuthedDashboardSidenavsAdminStaffRoute,
+    } as any,
+  )
 
 export interface FileRoutesByFullPath {
   '/auth': typeof AuthLayoutRoute
@@ -207,12 +223,14 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin-staff/classes': typeof AuthedDashboardSidenavsAdminStaffClassesIndexRoute
   '/dashboard/admin-staff/groups': typeof AuthedDashboardSidenavsAdminStaffGroupsIndexRoute
   '/dashboard/admin-staff/sessions': typeof AuthedDashboardSidenavsAdminStaffSessionsIndexRoute
+  '/dashboard/admin-staff/settings': typeof AuthedDashboardSidenavsAdminStaffSettingsIndexRoute
   '/dashboard/admin-staff/students': typeof AuthedDashboardSidenavsAdminStaffStudentsIndexRoute
   '/dashboard/admin-staff/subjects': typeof AuthedDashboardSidenavsAdminStaffSubjectsIndexRoute
   '/dashboard/admin-staff/teachers': typeof AuthedDashboardSidenavsAdminStaffTeachersIndexRoute
   '/dashboard/admin-staff/teaching-assignments': typeof AuthedDashboardSidenavsAdminStaffTeachingAssignmentsIndexRoute
   '/dashboard/student/schedule': typeof AuthedDashboardTopnavsStudentScheduleIndexRoute
   '/dashboard/teacher/schedule': typeof AuthedDashboardTopnavsTeacherScheduleIndexRoute
+  '/dashboard/admin-staff/settings/customization': typeof AuthedDashboardSidenavsAdminStaffSettingsCustomizationIndexRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthLayoutRoute
@@ -231,12 +249,14 @@ export interface FileRoutesByTo {
   '/dashboard/admin-staff/classes': typeof AuthedDashboardSidenavsAdminStaffClassesIndexRoute
   '/dashboard/admin-staff/groups': typeof AuthedDashboardSidenavsAdminStaffGroupsIndexRoute
   '/dashboard/admin-staff/sessions': typeof AuthedDashboardSidenavsAdminStaffSessionsIndexRoute
+  '/dashboard/admin-staff/settings': typeof AuthedDashboardSidenavsAdminStaffSettingsIndexRoute
   '/dashboard/admin-staff/students': typeof AuthedDashboardSidenavsAdminStaffStudentsIndexRoute
   '/dashboard/admin-staff/subjects': typeof AuthedDashboardSidenavsAdminStaffSubjectsIndexRoute
   '/dashboard/admin-staff/teachers': typeof AuthedDashboardSidenavsAdminStaffTeachersIndexRoute
   '/dashboard/admin-staff/teaching-assignments': typeof AuthedDashboardSidenavsAdminStaffTeachingAssignmentsIndexRoute
   '/dashboard/student/schedule': typeof AuthedDashboardTopnavsStudentScheduleIndexRoute
   '/dashboard/teacher/schedule': typeof AuthedDashboardTopnavsTeacherScheduleIndexRoute
+  '/dashboard/admin-staff/settings/customization': typeof AuthedDashboardSidenavsAdminStaffSettingsCustomizationIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -261,12 +281,14 @@ export interface FileRoutesById {
   '/_authed/dashboard/_sidenavs/admin-staff/classes/': typeof AuthedDashboardSidenavsAdminStaffClassesIndexRoute
   '/_authed/dashboard/_sidenavs/admin-staff/groups/': typeof AuthedDashboardSidenavsAdminStaffGroupsIndexRoute
   '/_authed/dashboard/_sidenavs/admin-staff/sessions/': typeof AuthedDashboardSidenavsAdminStaffSessionsIndexRoute
+  '/_authed/dashboard/_sidenavs/admin-staff/settings/': typeof AuthedDashboardSidenavsAdminStaffSettingsIndexRoute
   '/_authed/dashboard/_sidenavs/admin-staff/students/': typeof AuthedDashboardSidenavsAdminStaffStudentsIndexRoute
   '/_authed/dashboard/_sidenavs/admin-staff/subjects/': typeof AuthedDashboardSidenavsAdminStaffSubjectsIndexRoute
   '/_authed/dashboard/_sidenavs/admin-staff/teachers/': typeof AuthedDashboardSidenavsAdminStaffTeachersIndexRoute
   '/_authed/dashboard/_sidenavs/admin-staff/teaching-assignments/': typeof AuthedDashboardSidenavsAdminStaffTeachingAssignmentsIndexRoute
   '/_authed/dashboard/_topnavs/student/schedule/': typeof AuthedDashboardTopnavsStudentScheduleIndexRoute
   '/_authed/dashboard/_topnavs/teacher/schedule/': typeof AuthedDashboardTopnavsTeacherScheduleIndexRoute
+  '/_authed/dashboard/_sidenavs/admin-staff/settings/customization/': typeof AuthedDashboardSidenavsAdminStaffSettingsCustomizationIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -288,12 +310,14 @@ export interface FileRouteTypes {
     | '/dashboard/admin-staff/classes'
     | '/dashboard/admin-staff/groups'
     | '/dashboard/admin-staff/sessions'
+    | '/dashboard/admin-staff/settings'
     | '/dashboard/admin-staff/students'
     | '/dashboard/admin-staff/subjects'
     | '/dashboard/admin-staff/teachers'
     | '/dashboard/admin-staff/teaching-assignments'
     | '/dashboard/student/schedule'
     | '/dashboard/teacher/schedule'
+    | '/dashboard/admin-staff/settings/customization'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
@@ -312,12 +336,14 @@ export interface FileRouteTypes {
     | '/dashboard/admin-staff/classes'
     | '/dashboard/admin-staff/groups'
     | '/dashboard/admin-staff/sessions'
+    | '/dashboard/admin-staff/settings'
     | '/dashboard/admin-staff/students'
     | '/dashboard/admin-staff/subjects'
     | '/dashboard/admin-staff/teachers'
     | '/dashboard/admin-staff/teaching-assignments'
     | '/dashboard/student/schedule'
     | '/dashboard/teacher/schedule'
+    | '/dashboard/admin-staff/settings/customization'
   id:
     | '__root__'
     | '/_authed'
@@ -341,12 +367,14 @@ export interface FileRouteTypes {
     | '/_authed/dashboard/_sidenavs/admin-staff/classes/'
     | '/_authed/dashboard/_sidenavs/admin-staff/groups/'
     | '/_authed/dashboard/_sidenavs/admin-staff/sessions/'
+    | '/_authed/dashboard/_sidenavs/admin-staff/settings/'
     | '/_authed/dashboard/_sidenavs/admin-staff/students/'
     | '/_authed/dashboard/_sidenavs/admin-staff/subjects/'
     | '/_authed/dashboard/_sidenavs/admin-staff/teachers/'
     | '/_authed/dashboard/_sidenavs/admin-staff/teaching-assignments/'
     | '/_authed/dashboard/_topnavs/student/schedule/'
     | '/_authed/dashboard/_topnavs/teacher/schedule/'
+    | '/_authed/dashboard/_sidenavs/admin-staff/settings/customization/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -512,6 +540,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedDashboardSidenavsAdminStaffStudentsIndexRouteImport
       parentRoute: typeof AuthedDashboardSidenavsAdminStaffRoute
     }
+    '/_authed/dashboard/_sidenavs/admin-staff/settings/': {
+      id: '/_authed/dashboard/_sidenavs/admin-staff/settings/'
+      path: '/settings'
+      fullPath: '/dashboard/admin-staff/settings'
+      preLoaderRoute: typeof AuthedDashboardSidenavsAdminStaffSettingsIndexRouteImport
+      parentRoute: typeof AuthedDashboardSidenavsAdminStaffRoute
+    }
     '/_authed/dashboard/_sidenavs/admin-staff/sessions/': {
       id: '/_authed/dashboard/_sidenavs/admin-staff/sessions/'
       path: '/sessions'
@@ -547,6 +582,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedDashboardTopnavsTeacherSessionsSessionIdRouteImport
       parentRoute: typeof AuthedDashboardTopnavsRoute
     }
+    '/_authed/dashboard/_sidenavs/admin-staff/settings/customization/': {
+      id: '/_authed/dashboard/_sidenavs/admin-staff/settings/customization/'
+      path: '/settings/customization'
+      fullPath: '/dashboard/admin-staff/settings/customization'
+      preLoaderRoute: typeof AuthedDashboardSidenavsAdminStaffSettingsCustomizationIndexRouteImport
+      parentRoute: typeof AuthedDashboardSidenavsAdminStaffRoute
+    }
   }
 }
 
@@ -557,10 +599,12 @@ interface AuthedDashboardSidenavsAdminStaffRouteChildren {
   AuthedDashboardSidenavsAdminStaffClassesIndexRoute: typeof AuthedDashboardSidenavsAdminStaffClassesIndexRoute
   AuthedDashboardSidenavsAdminStaffGroupsIndexRoute: typeof AuthedDashboardSidenavsAdminStaffGroupsIndexRoute
   AuthedDashboardSidenavsAdminStaffSessionsIndexRoute: typeof AuthedDashboardSidenavsAdminStaffSessionsIndexRoute
+  AuthedDashboardSidenavsAdminStaffSettingsIndexRoute: typeof AuthedDashboardSidenavsAdminStaffSettingsIndexRoute
   AuthedDashboardSidenavsAdminStaffStudentsIndexRoute: typeof AuthedDashboardSidenavsAdminStaffStudentsIndexRoute
   AuthedDashboardSidenavsAdminStaffSubjectsIndexRoute: typeof AuthedDashboardSidenavsAdminStaffSubjectsIndexRoute
   AuthedDashboardSidenavsAdminStaffTeachersIndexRoute: typeof AuthedDashboardSidenavsAdminStaffTeachersIndexRoute
   AuthedDashboardSidenavsAdminStaffTeachingAssignmentsIndexRoute: typeof AuthedDashboardSidenavsAdminStaffTeachingAssignmentsIndexRoute
+  AuthedDashboardSidenavsAdminStaffSettingsCustomizationIndexRoute: typeof AuthedDashboardSidenavsAdminStaffSettingsCustomizationIndexRoute
 }
 
 const AuthedDashboardSidenavsAdminStaffRouteChildren: AuthedDashboardSidenavsAdminStaffRouteChildren =
@@ -577,6 +621,8 @@ const AuthedDashboardSidenavsAdminStaffRouteChildren: AuthedDashboardSidenavsAdm
       AuthedDashboardSidenavsAdminStaffGroupsIndexRoute,
     AuthedDashboardSidenavsAdminStaffSessionsIndexRoute:
       AuthedDashboardSidenavsAdminStaffSessionsIndexRoute,
+    AuthedDashboardSidenavsAdminStaffSettingsIndexRoute:
+      AuthedDashboardSidenavsAdminStaffSettingsIndexRoute,
     AuthedDashboardSidenavsAdminStaffStudentsIndexRoute:
       AuthedDashboardSidenavsAdminStaffStudentsIndexRoute,
     AuthedDashboardSidenavsAdminStaffSubjectsIndexRoute:
@@ -585,6 +631,8 @@ const AuthedDashboardSidenavsAdminStaffRouteChildren: AuthedDashboardSidenavsAdm
       AuthedDashboardSidenavsAdminStaffTeachersIndexRoute,
     AuthedDashboardSidenavsAdminStaffTeachingAssignmentsIndexRoute:
       AuthedDashboardSidenavsAdminStaffTeachingAssignmentsIndexRoute,
+    AuthedDashboardSidenavsAdminStaffSettingsCustomizationIndexRoute:
+      AuthedDashboardSidenavsAdminStaffSettingsCustomizationIndexRoute,
   }
 
 const AuthedDashboardSidenavsAdminStaffRouteWithChildren =

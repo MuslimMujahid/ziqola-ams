@@ -84,8 +84,6 @@ export class UsersService {
         teacherProfile: {
           select: {
             id: true,
-            nip: true,
-            nuptk: true,
             hiredAt: true,
             additionalIdentifiers: true,
           },
@@ -93,8 +91,6 @@ export class UsersService {
         studentProfile: {
           select: {
             id: true,
-            nis: true,
-            nisn: true,
             additionalIdentifiers: true,
           },
         },
@@ -112,7 +108,7 @@ export class UsersService {
     tenantId: string,
     id: string,
     dto: UpdateUserDto,
-    options: { allowRoleChange: boolean }
+    options: { allowRoleChange: boolean },
   ) {
     const existing = await this.prisma.client.user.findFirst({
       where: { id, tenantId },
@@ -196,7 +192,7 @@ export class UsersService {
     tenantId: string,
     id: string,
     currentPassword: string,
-    newPassword: string
+    newPassword: string,
   ) {
     const user = await this.prisma.client.user.findFirst({
       where: { id, tenantId },

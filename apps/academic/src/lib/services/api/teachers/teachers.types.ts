@@ -3,13 +3,12 @@ import type {
   ApiResponse,
   QueryParams,
 } from "@/lib/services/api/api.types";
+import type { ProfileFieldValue } from "@/lib/services/api/profile-custom-fields";
 
 type TeacherProfile = {
   id: string;
   tenantId: string;
   userId: string;
-  nip?: string | null;
-  nuptk?: string | null;
   hiredAt?: string | null;
   additionalIdentifiers?: Record<string, unknown> | null;
   user: {
@@ -22,11 +21,14 @@ type TeacherProfile = {
   };
   createdAt?: string | null;
   updatedAt?: string | null;
+  customFieldValues?: ProfileFieldValue[];
 };
 
 type TeacherProfileRecord = Omit<TeacherProfile, "user">;
 
-type GetTeacherProfilesVars = QueryParams<{}>;
+type GetTeacherProfilesVars = QueryParams<{
+  includeCustomFields?: boolean;
+}>;
 
 type GetTeacherProfilesResponse = ApiListResponse<TeacherProfile>;
 
@@ -34,16 +36,12 @@ type GetTeacherProfileResponse = ApiResponse<TeacherProfile>;
 
 type CreateTeacherProfileVars = {
   userId: string;
-  nip?: string;
-  nuptk?: string;
   hiredAt?: string;
   additionalIdentifiers?: Record<string, unknown>;
 };
 
 type UpdateTeacherProfileVars = {
   id: string;
-  nip?: string;
-  nuptk?: string;
   hiredAt?: string;
   additionalIdentifiers?: Record<string, unknown>;
 };

@@ -55,4 +55,30 @@ export class MinioService {
       expirySeconds,
     );
   }
+
+  async putObject(params: {
+    objectKey: string;
+    content: Buffer | string;
+    contentType?: string;
+  }) {
+    const metadata = params.contentType
+      ? { "Content-Type": params.contentType }
+      : undefined;
+
+    const client = this.client as unknown as {
+      putObject: (
+        bucket: string,
+        objectName: string,
+        stream: Buffer | string,
+        meta?: Record<string, string>,
+      ) => Promise<unknown>;
+    };
+
+    return client.putObject(
+      this.bucket,
+      params.objectKey,
+      params.content,
+      metadata,
+    );
+  }
 }

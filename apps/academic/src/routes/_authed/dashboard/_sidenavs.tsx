@@ -80,15 +80,15 @@ const ADMIN_STAFF_NAV_ITEMS: AdminStaffNavItem[] = [
         to: "/dashboard/admin-staff/teachers",
       },
       {
-        label: "Kelas",
-        to: "/dashboard/admin-staff/classes",
-      },
-      {
         type: "separator",
       },
       {
         label: "Rombongan Belajar",
         to: "/dashboard/admin-staff/groups",
+      },
+      {
+        label: "Kelas",
+        to: "/dashboard/admin-staff/classes",
       },
       {
         label: "Mata pelajaran",

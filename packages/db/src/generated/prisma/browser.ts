@@ -23,6 +23,11 @@ export * from './enums';
  */
 export type Tenant = Prisma.TenantModel
 /**
+ * Model TenantConfiguration
+ * 
+ */
+export type TenantConfiguration = Prisma.TenantConfigurationModel
+/**
  * Model User
  * 
  */
@@ -37,6 +42,21 @@ export type TeacherProfile = Prisma.TeacherProfileModel
  * 
  */
 export type StudentProfile = Prisma.StudentProfileModel
+/**
+ * Model TenantProfileField
+ * 
+ */
+export type TenantProfileField = Prisma.TenantProfileFieldModel
+/**
+ * Model StudentProfileFieldValue
+ * 
+ */
+export type StudentProfileFieldValue = Prisma.StudentProfileFieldValueModel
+/**
+ * Model TeacherProfileFieldValue
+ * 
+ */
+export type TeacherProfileFieldValue = Prisma.TeacherProfileFieldValueModel
 /**
  * Model AcademicYear
  * 

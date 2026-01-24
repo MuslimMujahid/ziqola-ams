@@ -221,7 +221,7 @@ function ClassesPage() {
             <Button
               type="button"
               size="sm"
-              variant="outline"
+              variant="secondary"
               onClick={() => openEdit(row.original)}
             >
               <PencilIcon className="h-4 w-4" aria-hidden="true" />
@@ -230,7 +230,7 @@ function ClassesPage() {
             <Button
               type="button"
               size="sm"
-              variant="outline"
+              variant="secondary"
               onClick={() => openHomeroom(row.original)}
             >
               <UserCheckIcon className="h-4 w-4" aria-hidden="true" />

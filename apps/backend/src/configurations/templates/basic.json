@@ -1,0 +1,90 @@
+{
+  "id": "default",
+  "name": "Default",
+  "description": "Template standar untuk profil siswa dan guru.",
+  "isActive": true,
+  "profile": {
+    "customFields": {
+      "student": [
+        {
+          "key": "nis",
+          "label": "NIS",
+          "type": "text",
+          "validation": { "required": false },
+          "order": 1
+        },
+        {
+          "key": "nisn",
+          "label": "NISN",
+          "type": "text",
+          "validation": { "required": false },
+          "order": 2
+        },
+        {
+          "key": "religion",
+          "label": "Agama",
+          "type": "select",
+          "options": [
+            { "label": "Islam", "value": "islam", "order": 1 },
+            { "label": "Kristen", "value": "kristen", "order": 2 },
+            { "label": "Katolik", "value": "katolik", "order": 3 },
+            { "label": "Hindu", "value": "hindu", "order": 4 },
+            { "label": "Buddha", "value": "buddha", "order": 5 },
+            { "label": "Konghucu", "value": "konghucu", "order": 6 }
+          ],
+          "validation": { "required": false },
+          "order": 3
+        },
+        {
+          "key": "address",
+          "label": "Alamat",
+          "type": "text",
+          "validation": { "required": false, "min": 3 },
+          "order": 4
+        },
+        {
+          "key": "guardianPhone",
+          "label": "No. HP Wali",
+          "type": "text",
+          "validation": { "required": false, "min": 6 },
+          "order": 5
+        }
+      ],
+      "teacher": [
+        {
+          "key": "nip",
+          "label": "NIP",
+          "type": "text",
+          "validation": { "required": false },
+          "order": 1
+        },
+        {
+          "key": "nuptk",
+          "label": "NUPTK",
+          "type": "text",
+          "validation": { "required": false },
+          "order": 2
+        },
+        {
+          "key": "employmentStatus",
+          "label": "Status Kepegawaian",
+          "type": "select",
+          "options": [
+            { "label": "PNS", "value": "pns", "order": 1 },
+            { "label": "Honorer", "value": "honorer", "order": 2 },
+            { "label": "Kontrak", "value": "kontrak", "order": 3 }
+          ],
+          "validation": { "required": false },
+          "order": 3
+        },
+        {
+          "key": "specialization",
+          "label": "Bidang Keahlian",
+          "type": "text",
+          "validation": { "required": false },
+          "order": 4
+        }
+      ]
+    }
+  }
+}

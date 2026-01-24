@@ -14,14 +14,10 @@ import { useAppForm } from "@/lib/utils/form";
 import type { TeacherProfile } from "@/lib/services/api/teachers";
 
 const EDIT_SCHEMA = z.object({
-  nip: z.string().optional(),
-  nuptk: z.string().optional(),
   hiredAt: z.string().optional(),
 });
 
 type TeacherEditValues = {
-  nip?: string;
-  nuptk?: string;
   hiredAt?: string;
 };
 
@@ -42,8 +38,6 @@ export function TeachersEditModal({
 }: TeachersEditModalProps) {
   const form = useAppForm({
     defaultValues: {
-      nip: teacher?.nip ?? "",
-      nuptk: teacher?.nuptk ?? "",
       hiredAt: teacher?.hiredAt ?? "",
     } as TeacherEditValues,
     validators: {
@@ -72,14 +66,6 @@ export function TeachersEditModal({
           }}
           noValidate
         >
-          <form.AppField name="nip">
-            {(field) => <field.TextField label="NIP" />}
-          </form.AppField>
-
-          <form.AppField name="nuptk">
-            {(field) => <field.TextField label="NUPTK" />}
-          </form.AppField>
-
           <form.AppField name="hiredAt">
             {(field) => <field.DateField label="Tanggal mulai bekerja" />}
           </form.AppField>

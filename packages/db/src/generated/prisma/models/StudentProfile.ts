@@ -28,8 +28,6 @@ export type StudentProfileMinAggregateOutputType = {
   id: string | null
   tenantId: string | null
   userId: string | null
-  nis: string | null
-  nisn: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -38,8 +36,6 @@ export type StudentProfileMaxAggregateOutputType = {
   id: string | null
   tenantId: string | null
   userId: string | null
-  nis: string | null
-  nisn: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,8 +44,6 @@ export type StudentProfileCountAggregateOutputType = {
   id: number
   tenantId: number
   userId: number
-  nis: number
-  nisn: number
   additionalIdentifiers: number
   createdAt: number
   updatedAt: number
@@ -61,8 +55,6 @@ export type StudentProfileMinAggregateInputType = {
   id?: true
   tenantId?: true
   userId?: true
-  nis?: true
-  nisn?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -71,8 +63,6 @@ export type StudentProfileMaxAggregateInputType = {
   id?: true
   tenantId?: true
   userId?: true
-  nis?: true
-  nisn?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -81,8 +71,6 @@ export type StudentProfileCountAggregateInputType = {
   id?: true
   tenantId?: true
   userId?: true
-  nis?: true
-  nisn?: true
   additionalIdentifiers?: true
   createdAt?: true
   updatedAt?: true
@@ -165,8 +153,6 @@ export type StudentProfileGroupByOutputType = {
   id: string
   tenantId: string
   userId: string
-  nis: string | null
-  nisn: string | null
   additionalIdentifiers: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
@@ -197,8 +183,6 @@ export type StudentProfileWhereInput = {
   id?: Prisma.StringFilter<"StudentProfile"> | string
   tenantId?: Prisma.StringFilter<"StudentProfile"> | string
   userId?: Prisma.StringFilter<"StudentProfile"> | string
-  nis?: Prisma.StringNullableFilter<"StudentProfile"> | string | null
-  nisn?: Prisma.StringNullableFilter<"StudentProfile"> | string | null
   additionalIdentifiers?: Prisma.JsonNullableFilter<"StudentProfile">
   createdAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
@@ -208,14 +192,13 @@ export type StudentProfileWhereInput = {
   attendances?: Prisma.AttendanceListRelationFilter
   assessmentScores?: Prisma.AssessmentScoreListRelationFilter
   reportCards?: Prisma.ReportCardListRelationFilter
+  customFieldValues?: Prisma.StudentProfileFieldValueListRelationFilter
 }
 
 export type StudentProfileOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  nis?: Prisma.SortOrderInput | Prisma.SortOrder
-  nisn?: Prisma.SortOrderInput | Prisma.SortOrder
   additionalIdentifiers?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -225,19 +208,16 @@ export type StudentProfileOrderByWithRelationInput = {
   attendances?: Prisma.AttendanceOrderByRelationAggregateInput
   assessmentScores?: Prisma.AssessmentScoreOrderByRelationAggregateInput
   reportCards?: Prisma.ReportCardOrderByRelationAggregateInput
+  customFieldValues?: Prisma.StudentProfileFieldValueOrderByRelationAggregateInput
 }
 
 export type StudentProfileWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   userId?: string
-  tenantId_nis?: Prisma.StudentProfileTenantIdNisCompoundUniqueInput
-  tenantId_nisn?: Prisma.StudentProfileTenantIdNisnCompoundUniqueInput
   AND?: Prisma.StudentProfileWhereInput | Prisma.StudentProfileWhereInput[]
   OR?: Prisma.StudentProfileWhereInput[]
   NOT?: Prisma.StudentProfileWhereInput | Prisma.StudentProfileWhereInput[]
   tenantId?: Prisma.StringFilter<"StudentProfile"> | string
-  nis?: Prisma.StringNullableFilter<"StudentProfile"> | string | null
-  nisn?: Prisma.StringNullableFilter<"StudentProfile"> | string | null
   additionalIdentifiers?: Prisma.JsonNullableFilter<"StudentProfile">
   createdAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
@@ -247,14 +227,13 @@ export type StudentProfileWhereUniqueInput = Prisma.AtLeast<{
   attendances?: Prisma.AttendanceListRelationFilter
   assessmentScores?: Prisma.AssessmentScoreListRelationFilter
   reportCards?: Prisma.ReportCardListRelationFilter
-}, "id" | "userId" | "tenantId_nis" | "tenantId_nisn">
+  customFieldValues?: Prisma.StudentProfileFieldValueListRelationFilter
+}, "id" | "userId">
 
 export type StudentProfileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  nis?: Prisma.SortOrderInput | Prisma.SortOrder
-  nisn?: Prisma.SortOrderInput | Prisma.SortOrder
   additionalIdentifiers?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -270,8 +249,6 @@ export type StudentProfileScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"StudentProfile"> | string
   tenantId?: Prisma.StringWithAggregatesFilter<"StudentProfile"> | string
   userId?: Prisma.StringWithAggregatesFilter<"StudentProfile"> | string
-  nis?: Prisma.StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
-  nisn?: Prisma.StringNullableWithAggregatesFilter<"StudentProfile"> | string | null
   additionalIdentifiers?: Prisma.JsonNullableWithAggregatesFilter<"StudentProfile">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
@@ -279,8 +256,6 @@ export type StudentProfileScalarWhereWithAggregatesInput = {
 
 export type StudentProfileCreateInput = {
   id?: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -290,14 +265,13 @@ export type StudentProfileCreateInput = {
   attendances?: Prisma.AttendanceCreateNestedManyWithoutStudentProfileInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutStudentProfileInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutStudentProfileInput
+  customFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileUncheckedCreateInput = {
   id?: string
   tenantId: string
   userId: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -305,12 +279,11 @@ export type StudentProfileUncheckedCreateInput = {
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutStudentProfileInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutStudentProfileInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutStudentProfileInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -320,14 +293,13 @@ export type StudentProfileUpdateInput = {
   attendances?: Prisma.AttendanceUpdateManyWithoutStudentProfileNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutStudentProfileNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutStudentProfileNestedInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -335,14 +307,13 @@ export type StudentProfileUncheckedUpdateInput = {
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutStudentProfileNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutStudentProfileNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutStudentProfileNestedInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileCreateManyInput = {
   id?: string
   tenantId: string
   userId: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -350,8 +321,6 @@ export type StudentProfileCreateManyInput = {
 
 export type StudentProfileUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -361,8 +330,6 @@ export type StudentProfileUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -383,22 +350,10 @@ export type StudentProfileNullableScalarRelationFilter = {
   isNot?: Prisma.StudentProfileWhereInput | null
 }
 
-export type StudentProfileTenantIdNisCompoundUniqueInput = {
-  tenantId: string
-  nis: string
-}
-
-export type StudentProfileTenantIdNisnCompoundUniqueInput = {
-  tenantId: string
-  nisn: string
-}
-
 export type StudentProfileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  nis?: Prisma.SortOrder
-  nisn?: Prisma.SortOrder
   additionalIdentifiers?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -408,8 +363,6 @@ export type StudentProfileMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  nis?: Prisma.SortOrder
-  nisn?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -418,8 +371,6 @@ export type StudentProfileMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  nis?: Prisma.SortOrder
-  nisn?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -503,6 +454,20 @@ export type StudentProfileUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StudentProfileUpdateToOneWithWhereWithoutUserInput, Prisma.StudentProfileUpdateWithoutUserInput>, Prisma.StudentProfileUncheckedUpdateWithoutUserInput>
 }
 
+export type StudentProfileCreateNestedOneWithoutCustomFieldValuesInput = {
+  create?: Prisma.XOR<Prisma.StudentProfileCreateWithoutCustomFieldValuesInput, Prisma.StudentProfileUncheckedCreateWithoutCustomFieldValuesInput>
+  connectOrCreate?: Prisma.StudentProfileCreateOrConnectWithoutCustomFieldValuesInput
+  connect?: Prisma.StudentProfileWhereUniqueInput
+}
+
+export type StudentProfileUpdateOneRequiredWithoutCustomFieldValuesNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentProfileCreateWithoutCustomFieldValuesInput, Prisma.StudentProfileUncheckedCreateWithoutCustomFieldValuesInput>
+  connectOrCreate?: Prisma.StudentProfileCreateOrConnectWithoutCustomFieldValuesInput
+  upsert?: Prisma.StudentProfileUpsertWithoutCustomFieldValuesInput
+  connect?: Prisma.StudentProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StudentProfileUpdateToOneWithWhereWithoutCustomFieldValuesInput, Prisma.StudentProfileUpdateWithoutCustomFieldValuesInput>, Prisma.StudentProfileUncheckedUpdateWithoutCustomFieldValuesInput>
+}
+
 export type StudentProfileCreateNestedOneWithoutClassEnrollmentsInput = {
   create?: Prisma.XOR<Prisma.StudentProfileCreateWithoutClassEnrollmentsInput, Prisma.StudentProfileUncheckedCreateWithoutClassEnrollmentsInput>
   connectOrCreate?: Prisma.StudentProfileCreateOrConnectWithoutClassEnrollmentsInput
@@ -561,8 +526,6 @@ export type StudentProfileUpdateOneRequiredWithoutReportCardsNestedInput = {
 
 export type StudentProfileCreateWithoutTenantInput = {
   id?: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -571,13 +534,12 @@ export type StudentProfileCreateWithoutTenantInput = {
   attendances?: Prisma.AttendanceCreateNestedManyWithoutStudentProfileInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutStudentProfileInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutStudentProfileInput
+  customFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileUncheckedCreateWithoutTenantInput = {
   id?: string
   userId: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -585,6 +547,7 @@ export type StudentProfileUncheckedCreateWithoutTenantInput = {
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutStudentProfileInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutStudentProfileInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutStudentProfileInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileCreateOrConnectWithoutTenantInput = {
@@ -620,8 +583,6 @@ export type StudentProfileScalarWhereInput = {
   id?: Prisma.StringFilter<"StudentProfile"> | string
   tenantId?: Prisma.StringFilter<"StudentProfile"> | string
   userId?: Prisma.StringFilter<"StudentProfile"> | string
-  nis?: Prisma.StringNullableFilter<"StudentProfile"> | string | null
-  nisn?: Prisma.StringNullableFilter<"StudentProfile"> | string | null
   additionalIdentifiers?: Prisma.JsonNullableFilter<"StudentProfile">
   createdAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
@@ -629,8 +590,6 @@ export type StudentProfileScalarWhereInput = {
 
 export type StudentProfileCreateWithoutUserInput = {
   id?: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -639,13 +598,12 @@ export type StudentProfileCreateWithoutUserInput = {
   attendances?: Prisma.AttendanceCreateNestedManyWithoutStudentProfileInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutStudentProfileInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutStudentProfileInput
+  customFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileUncheckedCreateWithoutUserInput = {
   id?: string
   tenantId: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -653,6 +611,7 @@ export type StudentProfileUncheckedCreateWithoutUserInput = {
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutStudentProfileInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutStudentProfileInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutStudentProfileInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileCreateOrConnectWithoutUserInput = {
@@ -673,8 +632,6 @@ export type StudentProfileUpdateToOneWithWhereWithoutUserInput = {
 
 export type StudentProfileUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -683,13 +640,81 @@ export type StudentProfileUpdateWithoutUserInput = {
   attendances?: Prisma.AttendanceUpdateManyWithoutStudentProfileNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutStudentProfileNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutStudentProfileNestedInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  classEnrollments?: Prisma.ClassEnrollmentUncheckedUpdateManyWithoutStudentProfileNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutStudentProfileNestedInput
+  assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutStudentProfileNestedInput
+  reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutStudentProfileNestedInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutStudentProfileNestedInput
+}
+
+export type StudentProfileCreateWithoutCustomFieldValuesInput = {
+  id?: string
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutStudentProfilesInput
+  user: Prisma.UserCreateNestedOneWithoutStudentProfileInput
+  classEnrollments?: Prisma.ClassEnrollmentCreateNestedManyWithoutStudentProfileInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutStudentProfileInput
+  assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutStudentProfileInput
+  reportCards?: Prisma.ReportCardCreateNestedManyWithoutStudentProfileInput
+}
+
+export type StudentProfileUncheckedCreateWithoutCustomFieldValuesInput = {
+  id?: string
+  tenantId: string
+  userId: string
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  classEnrollments?: Prisma.ClassEnrollmentUncheckedCreateNestedManyWithoutStudentProfileInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutStudentProfileInput
+  assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutStudentProfileInput
+  reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutStudentProfileInput
+}
+
+export type StudentProfileCreateOrConnectWithoutCustomFieldValuesInput = {
+  where: Prisma.StudentProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentProfileCreateWithoutCustomFieldValuesInput, Prisma.StudentProfileUncheckedCreateWithoutCustomFieldValuesInput>
+}
+
+export type StudentProfileUpsertWithoutCustomFieldValuesInput = {
+  update: Prisma.XOR<Prisma.StudentProfileUpdateWithoutCustomFieldValuesInput, Prisma.StudentProfileUncheckedUpdateWithoutCustomFieldValuesInput>
+  create: Prisma.XOR<Prisma.StudentProfileCreateWithoutCustomFieldValuesInput, Prisma.StudentProfileUncheckedCreateWithoutCustomFieldValuesInput>
+  where?: Prisma.StudentProfileWhereInput
+}
+
+export type StudentProfileUpdateToOneWithWhereWithoutCustomFieldValuesInput = {
+  where?: Prisma.StudentProfileWhereInput
+  data: Prisma.XOR<Prisma.StudentProfileUpdateWithoutCustomFieldValuesInput, Prisma.StudentProfileUncheckedUpdateWithoutCustomFieldValuesInput>
+}
+
+export type StudentProfileUpdateWithoutCustomFieldValuesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStudentProfilesNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutStudentProfileNestedInput
+  classEnrollments?: Prisma.ClassEnrollmentUpdateManyWithoutStudentProfileNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutStudentProfileNestedInput
+  assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutStudentProfileNestedInput
+  reportCards?: Prisma.ReportCardUpdateManyWithoutStudentProfileNestedInput
+}
+
+export type StudentProfileUncheckedUpdateWithoutCustomFieldValuesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -701,8 +726,6 @@ export type StudentProfileUncheckedUpdateWithoutUserInput = {
 
 export type StudentProfileCreateWithoutClassEnrollmentsInput = {
   id?: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -711,20 +734,20 @@ export type StudentProfileCreateWithoutClassEnrollmentsInput = {
   attendances?: Prisma.AttendanceCreateNestedManyWithoutStudentProfileInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutStudentProfileInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutStudentProfileInput
+  customFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileUncheckedCreateWithoutClassEnrollmentsInput = {
   id?: string
   tenantId: string
   userId: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutStudentProfileInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutStudentProfileInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutStudentProfileInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileCreateOrConnectWithoutClassEnrollmentsInput = {
@@ -745,8 +768,6 @@ export type StudentProfileUpdateToOneWithWhereWithoutClassEnrollmentsInput = {
 
 export type StudentProfileUpdateWithoutClassEnrollmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -755,26 +776,24 @@ export type StudentProfileUpdateWithoutClassEnrollmentsInput = {
   attendances?: Prisma.AttendanceUpdateManyWithoutStudentProfileNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutStudentProfileNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutStudentProfileNestedInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateWithoutClassEnrollmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutStudentProfileNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutStudentProfileNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutStudentProfileNestedInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileCreateWithoutAttendancesInput = {
   id?: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -783,20 +802,20 @@ export type StudentProfileCreateWithoutAttendancesInput = {
   classEnrollments?: Prisma.ClassEnrollmentCreateNestedManyWithoutStudentProfileInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutStudentProfileInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutStudentProfileInput
+  customFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileUncheckedCreateWithoutAttendancesInput = {
   id?: string
   tenantId: string
   userId: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   classEnrollments?: Prisma.ClassEnrollmentUncheckedCreateNestedManyWithoutStudentProfileInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutStudentProfileInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutStudentProfileInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileCreateOrConnectWithoutAttendancesInput = {
@@ -817,8 +836,6 @@ export type StudentProfileUpdateToOneWithWhereWithoutAttendancesInput = {
 
 export type StudentProfileUpdateWithoutAttendancesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -827,26 +844,24 @@ export type StudentProfileUpdateWithoutAttendancesInput = {
   classEnrollments?: Prisma.ClassEnrollmentUpdateManyWithoutStudentProfileNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutStudentProfileNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutStudentProfileNestedInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateWithoutAttendancesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classEnrollments?: Prisma.ClassEnrollmentUncheckedUpdateManyWithoutStudentProfileNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutStudentProfileNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutStudentProfileNestedInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileCreateWithoutAssessmentScoresInput = {
   id?: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -855,20 +870,20 @@ export type StudentProfileCreateWithoutAssessmentScoresInput = {
   classEnrollments?: Prisma.ClassEnrollmentCreateNestedManyWithoutStudentProfileInput
   attendances?: Prisma.AttendanceCreateNestedManyWithoutStudentProfileInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutStudentProfileInput
+  customFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileUncheckedCreateWithoutAssessmentScoresInput = {
   id?: string
   tenantId: string
   userId: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   classEnrollments?: Prisma.ClassEnrollmentUncheckedCreateNestedManyWithoutStudentProfileInput
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutStudentProfileInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutStudentProfileInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileCreateOrConnectWithoutAssessmentScoresInput = {
@@ -889,8 +904,6 @@ export type StudentProfileUpdateToOneWithWhereWithoutAssessmentScoresInput = {
 
 export type StudentProfileUpdateWithoutAssessmentScoresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -899,26 +912,24 @@ export type StudentProfileUpdateWithoutAssessmentScoresInput = {
   classEnrollments?: Prisma.ClassEnrollmentUpdateManyWithoutStudentProfileNestedInput
   attendances?: Prisma.AttendanceUpdateManyWithoutStudentProfileNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutStudentProfileNestedInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateWithoutAssessmentScoresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classEnrollments?: Prisma.ClassEnrollmentUncheckedUpdateManyWithoutStudentProfileNestedInput
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutStudentProfileNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutStudentProfileNestedInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileCreateWithoutReportCardsInput = {
   id?: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -927,20 +938,20 @@ export type StudentProfileCreateWithoutReportCardsInput = {
   classEnrollments?: Prisma.ClassEnrollmentCreateNestedManyWithoutStudentProfileInput
   attendances?: Prisma.AttendanceCreateNestedManyWithoutStudentProfileInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutStudentProfileInput
+  customFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileUncheckedCreateWithoutReportCardsInput = {
   id?: string
   tenantId: string
   userId: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   classEnrollments?: Prisma.ClassEnrollmentUncheckedCreateNestedManyWithoutStudentProfileInput
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutStudentProfileInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutStudentProfileInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutStudentProfileInput
 }
 
 export type StudentProfileCreateOrConnectWithoutReportCardsInput = {
@@ -961,8 +972,6 @@ export type StudentProfileUpdateToOneWithWhereWithoutReportCardsInput = {
 
 export type StudentProfileUpdateWithoutReportCardsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -971,27 +980,25 @@ export type StudentProfileUpdateWithoutReportCardsInput = {
   classEnrollments?: Prisma.ClassEnrollmentUpdateManyWithoutStudentProfileNestedInput
   attendances?: Prisma.AttendanceUpdateManyWithoutStudentProfileNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutStudentProfileNestedInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateWithoutReportCardsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classEnrollments?: Prisma.ClassEnrollmentUncheckedUpdateManyWithoutStudentProfileNestedInput
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutStudentProfileNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutStudentProfileNestedInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileCreateManyTenantInput = {
   id?: string
   userId: string
-  nis?: string | null
-  nisn?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -999,8 +1006,6 @@ export type StudentProfileCreateManyTenantInput = {
 
 export type StudentProfileUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1009,13 +1014,12 @@ export type StudentProfileUpdateWithoutTenantInput = {
   attendances?: Prisma.AttendanceUpdateManyWithoutStudentProfileNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutStudentProfileNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutStudentProfileNestedInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1023,13 +1027,12 @@ export type StudentProfileUncheckedUpdateWithoutTenantInput = {
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutStudentProfileNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutStudentProfileNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutStudentProfileNestedInput
+  customFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutStudentProfileNestedInput
 }
 
 export type StudentProfileUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nisn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1045,6 +1048,7 @@ export type StudentProfileCountOutputType = {
   attendances: number
   assessmentScores: number
   reportCards: number
+  customFieldValues: number
 }
 
 export type StudentProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1052,6 +1056,7 @@ export type StudentProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Ex
   attendances?: boolean | StudentProfileCountOutputTypeCountAttendancesArgs
   assessmentScores?: boolean | StudentProfileCountOutputTypeCountAssessmentScoresArgs
   reportCards?: boolean | StudentProfileCountOutputTypeCountReportCardsArgs
+  customFieldValues?: boolean | StudentProfileCountOutputTypeCountCustomFieldValuesArgs
 }
 
 /**
@@ -1092,13 +1097,18 @@ export type StudentProfileCountOutputTypeCountReportCardsArgs<ExtArgs extends ru
   where?: Prisma.ReportCardWhereInput
 }
 
+/**
+ * StudentProfileCountOutputType without action
+ */
+export type StudentProfileCountOutputTypeCountCustomFieldValuesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StudentProfileFieldValueWhereInput
+}
+
 
 export type StudentProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tenantId?: boolean
   userId?: boolean
-  nis?: boolean
-  nisn?: boolean
   additionalIdentifiers?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1108,6 +1118,7 @@ export type StudentProfileSelect<ExtArgs extends runtime.Types.Extensions.Intern
   attendances?: boolean | Prisma.StudentProfile$attendancesArgs<ExtArgs>
   assessmentScores?: boolean | Prisma.StudentProfile$assessmentScoresArgs<ExtArgs>
   reportCards?: boolean | Prisma.StudentProfile$reportCardsArgs<ExtArgs>
+  customFieldValues?: boolean | Prisma.StudentProfile$customFieldValuesArgs<ExtArgs>
   _count?: boolean | Prisma.StudentProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["studentProfile"]>
 
@@ -1115,8 +1126,6 @@ export type StudentProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   tenantId?: boolean
   userId?: boolean
-  nis?: boolean
-  nisn?: boolean
   additionalIdentifiers?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1128,8 +1137,6 @@ export type StudentProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   tenantId?: boolean
   userId?: boolean
-  nis?: boolean
-  nisn?: boolean
   additionalIdentifiers?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1141,14 +1148,12 @@ export type StudentProfileSelectScalar = {
   id?: boolean
   tenantId?: boolean
   userId?: boolean
-  nis?: boolean
-  nisn?: boolean
   additionalIdentifiers?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type StudentProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "userId" | "nis" | "nisn" | "additionalIdentifiers" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
+export type StudentProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "userId" | "additionalIdentifiers" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
 export type StudentProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1156,6 +1161,7 @@ export type StudentProfileInclude<ExtArgs extends runtime.Types.Extensions.Inter
   attendances?: boolean | Prisma.StudentProfile$attendancesArgs<ExtArgs>
   assessmentScores?: boolean | Prisma.StudentProfile$assessmentScoresArgs<ExtArgs>
   reportCards?: boolean | Prisma.StudentProfile$reportCardsArgs<ExtArgs>
+  customFieldValues?: boolean | Prisma.StudentProfile$customFieldValuesArgs<ExtArgs>
   _count?: boolean | Prisma.StudentProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StudentProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1176,13 +1182,12 @@ export type $StudentProfilePayload<ExtArgs extends runtime.Types.Extensions.Inte
     attendances: Prisma.$AttendancePayload<ExtArgs>[]
     assessmentScores: Prisma.$AssessmentScorePayload<ExtArgs>[]
     reportCards: Prisma.$ReportCardPayload<ExtArgs>[]
+    customFieldValues: Prisma.$StudentProfileFieldValuePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tenantId: string
     userId: string
-    nis: string | null
-    nisn: string | null
     additionalIdentifiers: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
@@ -1586,6 +1591,7 @@ export interface Prisma__StudentProfileClient<T, Null = never, ExtArgs extends r
   attendances<T extends Prisma.StudentProfile$attendancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentProfile$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assessmentScores<T extends Prisma.StudentProfile$assessmentScoresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentProfile$assessmentScoresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reportCards<T extends Prisma.StudentProfile$reportCardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentProfile$reportCardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportCardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  customFieldValues<T extends Prisma.StudentProfile$customFieldValuesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentProfile$customFieldValuesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentProfileFieldValuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1618,8 +1624,6 @@ export interface StudentProfileFieldRefs {
   readonly id: Prisma.FieldRef<"StudentProfile", 'String'>
   readonly tenantId: Prisma.FieldRef<"StudentProfile", 'String'>
   readonly userId: Prisma.FieldRef<"StudentProfile", 'String'>
-  readonly nis: Prisma.FieldRef<"StudentProfile", 'String'>
-  readonly nisn: Prisma.FieldRef<"StudentProfile", 'String'>
   readonly additionalIdentifiers: Prisma.FieldRef<"StudentProfile", 'Json'>
   readonly createdAt: Prisma.FieldRef<"StudentProfile", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"StudentProfile", 'DateTime'>
@@ -2112,6 +2116,30 @@ export type StudentProfile$reportCardsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.ReportCardScalarFieldEnum | Prisma.ReportCardScalarFieldEnum[]
+}
+
+/**
+ * StudentProfile.customFieldValues
+ */
+export type StudentProfile$customFieldValuesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StudentProfileFieldValue
+   */
+  select?: Prisma.StudentProfileFieldValueSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StudentProfileFieldValue
+   */
+  omit?: Prisma.StudentProfileFieldValueOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudentProfileFieldValueInclude<ExtArgs> | null
+  where?: Prisma.StudentProfileFieldValueWhereInput
+  orderBy?: Prisma.StudentProfileFieldValueOrderByWithRelationInput | Prisma.StudentProfileFieldValueOrderByWithRelationInput[]
+  cursor?: Prisma.StudentProfileFieldValueWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StudentProfileFieldValueScalarFieldEnum | Prisma.StudentProfileFieldValueScalarFieldEnum[]
 }
 
 /**

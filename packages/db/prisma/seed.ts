@@ -1,4 +1,7 @@
 import process from "node:process";
+import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { prisma } from "../src/client";
 import * as argon2 from "argon2";
 import {
@@ -8,6 +11,140 @@ import {
   Gender,
   GroupType,
 } from "../src/generated/prisma/enums";
+import type {
+  Prisma,
+  TenantProfileField,
+} from "../src/generated/prisma/client";
+
+type TemplateFieldOption = {
+  label: string;
+  value: string;
+  order?: number;
+};
+
+type TemplateField = {
+  key: string;
+  label: string;
+  type: string;
+  helpText?: string | null;
+  options?: TemplateFieldOption[] | null;
+  validation?: Record<string, unknown> | null;
+  order?: number | null;
+  isEnabled?: boolean | null;
+};
+
+type ProfileTemplate = {
+  id: string;
+  name: string;
+  description?: string;
+  isActive?: boolean;
+  profile: {
+    customFields: {
+      student: TemplateField[];
+      teacher: TemplateField[];
+    };
+  };
+};
+
+const resolveBasicTemplatePath = () => {
+  const cwd = process.cwd();
+  const candidates = [
+    path.join(
+      cwd,
+      "apps",
+      "backend",
+      "src",
+      "configurations",
+      "templates",
+      "basic.json",
+    ),
+    path.join(
+      cwd,
+      "..",
+      "..",
+      "apps",
+      "backend",
+      "src",
+      "configurations",
+      "templates",
+      "basic.json",
+    ),
+  ];
+
+  const resolved = candidates.find((candidate) => existsSync(candidate));
+  if (!resolved) {
+    throw new Error("Basic template file not found");
+  }
+
+  return resolved;
+};
+
+const loadBasicTemplate = async () => {
+  const templatePath = resolveBasicTemplatePath();
+  const raw = await readFile(templatePath, "utf-8");
+  return JSON.parse(raw) as ProfileTemplate;
+};
+
+const parseOptionValues = (options?: Prisma.JsonValue | null) => {
+  if (!options || !Array.isArray(options)) return [] as string[];
+  return options
+    .map((option) => {
+      if (typeof option === "string") return option;
+      if (option && typeof option === "object") {
+        const value = (option as { value?: unknown; label?: unknown }).value;
+        if (typeof value === "string") return value;
+        const label = (option as { label?: unknown }).label;
+        return typeof label === "string" ? label : "";
+      }
+      return "";
+    })
+    .filter((value) => Boolean(value));
+};
+
+const buildFieldValuePayload = (
+  field: TenantProfileField,
+  index: number,
+  baseDate: Date,
+) => {
+  const optionValues = parseOptionValues(field.options);
+
+  switch (field.type) {
+    case "text":
+      return { valueText: `${field.label} ${index + 1}` };
+    case "number":
+      return { valueNumber: 60 + (index % 40) };
+    case "date": {
+      const date = new Date(baseDate);
+      date.setMonth(index % 12);
+      date.setDate(1 + (index % 28));
+      return { valueDate: date };
+    }
+    case "boolean":
+      return { valueBoolean: index % 2 === 0 };
+    case "select":
+      return {
+        valueSelect: optionValues[index % optionValues.length] ?? "Pilihan 1",
+      };
+    case "multiSelect":
+      return {
+        valueMultiSelect:
+          optionValues.length > 0
+            ? optionValues.slice(0, Math.min(2, optionValues.length))
+            : [],
+      };
+    case "file":
+      return {
+        valueFile: {
+          name: "dokumen.pdf",
+          url: "https://example.com/dokumen.pdf",
+          size: 256000,
+          mimeType: "application/pdf",
+        } as Prisma.InputJsonValue,
+      };
+    default:
+      return { valueText: `${field.label} ${index + 1}` };
+  }
+};
 
 /**
  * Seed script for Ziqola AMS
@@ -46,6 +183,47 @@ async function main() {
   console.log(`✅ Created tenant: ${tenant.name} (${tenant.id})\n`);
   console.log(`   Tenant slug: ${tenant.slug}\n`);
 
+  // 1.1 Apply basic profile template fields
+  console.log("🧩 Applying basic profile template...");
+  const template = await loadBasicTemplate();
+  const studentFields = template.profile.customFields.student;
+  const teacherFields = template.profile.customFields.teacher;
+
+  const buildFieldSeeds = (
+    role: "student" | "teacher",
+    fields: TemplateField[],
+  ) =>
+    fields.map((field) => ({
+      tenantId: tenant.id,
+      role,
+      key: field.key,
+      label: field.label,
+      type: field.type,
+      helpText: field.helpText ?? undefined,
+      options: field.options
+        ? (field.options as Prisma.InputJsonValue)
+        : undefined,
+      validation: field.validation
+        ? (field.validation as Prisma.InputJsonValue)
+        : undefined,
+      order: field.order ?? undefined,
+      isEnabled: field.isEnabled ?? true,
+      sourceTemplateId: template.id,
+    }));
+
+  const templateFields = [
+    ...buildFieldSeeds("student", studentFields),
+    ...buildFieldSeeds("teacher", teacherFields),
+  ];
+
+  if (templateFields.length > 0) {
+    await prisma.tenantProfileField.createMany({
+      data: templateFields,
+      skipDuplicates: true,
+    });
+  }
+  console.log("✅ Applied basic profile template\n");
+
   // 2. Create users with different roles
   console.log("👥 Creating users...");
 
@@ -80,65 +258,54 @@ async function main() {
   console.log(`✅ Created admin: ${admin.email}`);
 
   // Teachers
-  const teachers = await Promise.all([
-    prisma.user.create({
-      data: {
-        tenantId: tenant.id,
-        email: "teacher1@demo.school",
-        name: "Siti Nurhayati",
-        passwordHash: defaultPassword,
-        role: Role.TEACHER,
-        gender: Gender.FEMALE,
-        teacherProfile: {
-          create: {
-            tenantId: tenant.id,
-            nip: "198501012010012001",
-            nuptk: "1234567890123456",
-            hiredAt: new Date("2010-01-01"),
+  const teacherSeeds = [
+    {
+      email: "teacher1@demo.school",
+      name: "Siti Nurhayati",
+      gender: Gender.FEMALE,
+      nip: "198501012010012001",
+      nuptk: "1234567890123456",
+      hiredAt: new Date("2010-01-01"),
+    },
+    {
+      email: "teacher2@demo.school",
+      name: "Budi Santoso",
+      gender: Gender.MALE,
+      nip: "198601012010012002",
+      nuptk: "1234567890123457",
+      hiredAt: new Date("2011-01-01"),
+    },
+    {
+      email: "teacher3@demo.school",
+      name: "Rina Handayani",
+      gender: Gender.FEMALE,
+      nip: "198701012012012003",
+      nuptk: "1234567890123458",
+      hiredAt: new Date("2012-01-01"),
+    },
+  ];
+
+  const teachers = await Promise.all(
+    teacherSeeds.map((seed) =>
+      prisma.user.create({
+        data: {
+          tenantId: tenant.id,
+          email: seed.email,
+          name: seed.name,
+          passwordHash: defaultPassword,
+          role: Role.TEACHER,
+          gender: seed.gender,
+          teacherProfile: {
+            create: {
+              tenantId: tenant.id,
+              hiredAt: seed.hiredAt,
+            },
           },
         },
-      },
-      include: { teacherProfile: true },
-    }),
-    prisma.user.create({
-      data: {
-        tenantId: tenant.id,
-        email: "teacher2@demo.school",
-        name: "Budi Santoso",
-        passwordHash: defaultPassword,
-        role: Role.TEACHER,
-        gender: Gender.MALE,
-        teacherProfile: {
-          create: {
-            tenantId: tenant.id,
-            nip: "198601012010012002",
-            nuptk: "1234567890123457",
-            hiredAt: new Date("2011-01-01"),
-          },
-        },
-      },
-      include: { teacherProfile: true },
-    }),
-    prisma.user.create({
-      data: {
-        tenantId: tenant.id,
-        email: "teacher3@demo.school",
-        name: "Rina Handayani",
-        passwordHash: defaultPassword,
-        role: Role.TEACHER,
-        gender: Gender.FEMALE,
-        teacherProfile: {
-          create: {
-            tenantId: tenant.id,
-            nip: "198701012012012003",
-            nuptk: "1234567890123458",
-            hiredAt: new Date("2012-01-01"),
-          },
-        },
-      },
-      include: { teacherProfile: true },
-    }),
-  ]);
+        include: { teacherProfile: true },
+      }),
+    ),
+  );
   console.log(`✅ Created ${teachers.length} teachers\n`);
 
   // Students
@@ -170,8 +337,6 @@ async function main() {
           studentProfile: {
             create: {
               tenantId: tenant.id,
-              nis: `202400${num}`,
-              nisn: `00${num}0000000`,
             },
           },
         },
@@ -180,6 +345,99 @@ async function main() {
     }),
   );
   console.log(`✅ Created ${students.length} students\n`);
+
+  // 2.1 Seed custom profile field values
+  console.log("🧩 Seeding custom profile field values...");
+  const tenantProfileFields = await prisma.tenantProfileField.findMany({
+    where: { tenantId: tenant.id, isEnabled: true },
+  });
+
+  const studentFieldsForValues = tenantProfileFields.filter(
+    (field) => field.role === "student",
+  );
+  const teacherFieldsForValues = tenantProfileFields.filter(
+    (field) => field.role === "teacher",
+  );
+
+  const studentIdentifierMap = new Map(
+    students
+      .filter((student) => student.studentProfile)
+      .map((student, index) => {
+        const num = (index + 1).toString().padStart(3, "0");
+        return [
+          student.studentProfile!.id,
+          {
+            nis: `202400${num}`,
+            nisn: `00${num}0000000`,
+          },
+        ] as const;
+      }),
+  );
+
+  const teacherIdentifierMap = new Map(
+    teachers
+      .filter((teacher) => teacher.teacherProfile)
+      .map(
+        (teacher, index) =>
+          [
+            teacher.teacherProfile!.id,
+            {
+              nip: teacherSeeds[index]?.nip ?? "",
+              nuptk: teacherSeeds[index]?.nuptk ?? "",
+            },
+          ] as const,
+      ),
+  );
+
+  const studentValueSeeds = students.flatMap((student, index) => {
+    const studentProfile = student.studentProfile;
+    if (!studentProfile) return [];
+
+    return studentFieldsForValues.map((field) => ({
+      tenantId: tenant.id,
+      studentProfileId: studentProfile.id,
+      fieldId: field.id,
+      ...(field.key === "nis"
+        ? { valueText: studentIdentifierMap.get(studentProfile.id)?.nis }
+        : field.key === "nisn"
+          ? { valueText: studentIdentifierMap.get(studentProfile.id)?.nisn }
+          : buildFieldValuePayload(field, index, new Date(2010, 0, 1))),
+    }));
+  });
+
+  const teacherValueSeeds = teachers.flatMap((teacher, index) => {
+    const teacherProfile = teacher.teacherProfile;
+    if (!teacherProfile) return [];
+
+    return teacherFieldsForValues.map((field) => ({
+      tenantId: tenant.id,
+      teacherProfileId: teacherProfile.id,
+      fieldId: field.id,
+      ...(field.key === "nip"
+        ? { valueText: teacherIdentifierMap.get(teacherProfile.id)?.nip }
+        : field.key === "nuptk"
+          ? { valueText: teacherIdentifierMap.get(teacherProfile.id)?.nuptk }
+          : buildFieldValuePayload(field, index, new Date(1985, 0, 1))),
+    }));
+  });
+
+  if (studentValueSeeds.length > 0) {
+    await prisma.studentProfileFieldValue.createMany({
+      data: studentValueSeeds,
+      skipDuplicates: true,
+    });
+  }
+
+  if (teacherValueSeeds.length > 0) {
+    await prisma.teacherProfileFieldValue.createMany({
+      data: teacherValueSeeds,
+      skipDuplicates: true,
+    });
+  }
+
+  console.log(
+    `✅ Seeded ${studentValueSeeds.length} student values and ${teacherValueSeeds.length} teacher values\n`,
+  );
 
   // 3. Create academic year with periods
   console.log("📅 Creating academic year...");

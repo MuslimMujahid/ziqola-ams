@@ -9,6 +9,10 @@
         "include": "src/assets/prisma-cjs-package.json",
         "outDir": "dist/generated/prisma",
         "rename": "package.json"
+      },
+      {
+        "include": "src/configurations/templates/*.json",
+        "outDir": "dist/configurations/templates"
       }
     ]
   }

@@ -557,10 +557,6 @@ export type HomeroomAssignmentUncheckedUpdateManyWithoutClassNestedInput = {
   deleteMany?: Prisma.HomeroomAssignmentScalarWhereInput | Prisma.HomeroomAssignmentScalarWhereInput[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type HomeroomAssignmentCreateWithoutTenantInput = {
   id?: string
   assignedAt?: Date | string

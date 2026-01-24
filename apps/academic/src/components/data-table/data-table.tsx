@@ -6,7 +6,7 @@ import {
   type PaginationState,
   type RowSelectionState,
   type SortingState,
-  type Table,
+  type Table as TableInstance,
   type TableOptions,
   type TableState,
   type VisibilityState,
@@ -33,6 +33,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableHeader,
+  TablePagination,
+  TableRow,
+  TableScroll,
+  TableToolbar,
+} from "@repo/ui/table";
 
 import { cn } from "@/lib/utils/cn";
 
@@ -53,8 +66,8 @@ type DataTableSharedProps<TData> = {
   searchColumnId?: string;
   globalFilterPlaceholder?: string;
   pageSizeOptions?: number[];
-  renderToolbar?: (table: Table<TData>) => React.ReactNode;
-  renderEmptyState?: (table: Table<TData>) => React.ReactNode;
+  renderToolbar?: (table: TableInstance<TData>) => React.ReactNode;
+  renderEmptyState?: (table: TableInstance<TData>) => React.ReactNode;
 };
 
 type DataTableStateHandlers = {
@@ -72,7 +85,7 @@ type DataTableControlledState = {
 };
 
 type DataTableViewProps<TData> = DataTableSharedProps<TData> & {
-  table: Table<TData>;
+  table: TableInstance<TData>;
 };
 
 type DataTableOptions<TData> = Omit<
@@ -138,12 +151,7 @@ function DataTableView<TData>({
   return (
     <div className={cn("flex flex-col gap-4", className)}>
       {showToolbar && (showSearchInput || renderToolbar) && (
-        <div
-          className={cn(
-            "flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-4 md:flex-row md:items-center md:justify-between",
-            toolbarClassName,
-          )}
-        >
+        <TableToolbar className={toolbarClassName}>
           {showSearchInput ? (
             <div className="w-full md:max-w-sm">
               <Input
@@ -172,28 +180,19 @@ function DataTableView<TData>({
               {renderToolbar(table)}
             </div>
           ) : null}
-        </div>
+        </TableToolbar>
       )}
 
-      <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
-        <div className="overflow-x-auto">
-          <table
-            className={cn(
-              "w-full border-collapse text-sm text-slate-700",
-              tableClassName,
-            )}
-          >
-            {caption ? (
-              <caption className="px-3 pb-3 text-left text-sm text-slate-500">
-                {caption}
-              </caption>
-            ) : null}
-            <thead className="bg-slate-50 text-slate-700">
+      <TableContainer>
+        <TableScroll>
+          <Table className={tableClassName}>
+            {caption ? <TableCaption>{caption}</TableCaption> : null}
+            <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id} className="border-b border-slate-200">
                   {headerGroup.headers.map((header) => {
                     if (header.isPlaceholder) {
-                      return <th key={header.id} className="px-3 py-2" />;
+                      return <TableHead key={header.id} />;
                     }
 
                     const canSort = enableSorting && header.column.getCanSort();
@@ -207,10 +206,7 @@ function DataTableView<TData>({
                           : ChevronsUpDownIcon;
 
                     return (
-                      <th
-                        key={header.id}
-                        className="px-3 py-2 text-left font-medium"
-                      >
+                      <TableHead key={header.id}>
                         {canSort ? (
                           <Button
                             type="button"
@@ -233,61 +229,50 @@ function DataTableView<TData>({
                             header.getContext(),
                           )
                         )}
-                      </th>
+                      </TableHead>
                     );
                   })}
                 </tr>
               ))}
-            </thead>
-            <tbody className="text-slate-800">
+            </TableHeader>
+            <TableBody>
               {table.getRowModel().rows.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <tr
+                  <TableRow
                     key={row.id}
                     data-state={
                       enableRowSelection && row.getIsSelected()
                         ? "selected"
                         : undefined
                     }
-                    className={cn(
-                      "border-b border-slate-100 transition-colors",
-                      enableRowSelection && row.getIsSelected()
-                        ? "bg-blue-50 border-blue-200"
-                        : "hover:bg-slate-50",
-                    )}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className="px-3 py-3 align-middle">
+                      <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext(),
                         )}
-                      </td>
+                      </TableCell>
                     ))}
-                  </tr>
+                  </TableRow>
                 ))
               ) : (
-                <tr className="border-b border-slate-100">
-                  <td
+                <TableRow>
+                  <TableCell
                     colSpan={table.getAllLeafColumns().length}
                     className="px-3 py-8 text-center text-sm text-slate-500"
                   >
                     {renderEmptyState ? renderEmptyState(table) : emptyMessage}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+            </TableBody>
+          </Table>
+        </TableScroll>
+      </TableContainer>
 
       {showPagination && enablePagination ? (
-        <div
-          className={cn(
-            "flex flex-col gap-3 rounded-lg bg-white md:flex-row md:items-center md:justify-between",
-            paginationClassName,
-          )}
-        >
+        <TablePagination className={paginationClassName}>
           <div className="flex items-center gap-2 text-sm text-slate-600">
             <span>Baris per halaman</span>
             <Select
@@ -337,7 +322,7 @@ function DataTableView<TData>({
               </Button>
             </div>
           </div>
-        </div>
+        </TablePagination>
       ) : null}
 
       {enableRowSelection ? (

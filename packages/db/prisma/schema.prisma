@@ -85,6 +85,10 @@ enum AuditAction {
   APPROVE
 }
 
+enum TenantConfigurationType {
+  PROFILE
+}
+
 // =============================
 // Core Tenant & Users
 // =============================
@@ -120,9 +124,31 @@ model Tenant {
   auditLogs            AuditLog[]
   teacherProfiles      TeacherProfile[]
   studentProfiles      StudentProfile[]
+  tenantProfileFields  TenantProfileField[]
+  studentProfileFieldValues StudentProfileFieldValue[]
+  teacherProfileFieldValues TeacherProfileFieldValue[]
+  tenantConfigurations TenantConfiguration[]
 
   createdAt            DateTime       @default(now())
   updatedAt            DateTime       @updatedAt
+}
+
+model TenantConfiguration {
+  id           String                  @id @default(uuid())
+  tenantId     String
+  tenant       Tenant                  @relation(fields: [tenantId], references: [id])
+
+  configType   TenantConfigurationType
+  templateId   String?
+  isCustomized Boolean                 @default(false)
+  appliedAt    DateTime?
+  templateHash String?
+
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+
+  @@unique([tenantId, configType])
+  @@index([tenantId, configType])
 }
 
 model User {
@@ -167,9 +193,6 @@ model TeacherProfile {
   userId      String  @unique
   user        User    @relation("TeacherProfileUser", fields: [userId], references: [id])
 
-  // Common Indonesian teacher identifiers (optional per tenant)
-  nip         String?
-  nuptk       String?
   additionalIdentifiers Json?
 
   hiredAt     DateTime?
@@ -178,8 +201,6 @@ model TeacherProfile {
   updatedAt   DateTime @updatedAt
 
   @@index([tenantId])
-  @@unique([tenantId, nip])
-  @@unique([tenantId, nuptk])
 
   // Back-relations (teacher context)
   homeroomAssignments HomeroomAssignment[] @relation("HomeroomAssignmentTeacherProfile")
@@ -187,6 +208,7 @@ model TeacherProfile {
   schedules          Schedule[]             @relation("ScheduleTeacherProfile")
   compiledReportCards ReportCard[]          @relation("ReportCardCompiledByProfile")
   sessionMaterials    SessionMaterial[]
+  customFieldValues   TeacherProfileFieldValue[]
 }
 
 model StudentProfile {
@@ -197,23 +219,104 @@ model StudentProfile {
   userId      String  @unique
   user        User    @relation("StudentProfileUser", fields: [userId], references: [id])
 
-  // Common Indonesian student identifiers (optional per tenant)
-  nis         String?
-  nisn        String?
   additionalIdentifiers Json?
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([tenantId])
-  @@unique([tenantId, nis])
-  @@unique([tenantId, nisn])
 
   // Back-relations (student context)
   classEnrollments ClassEnrollment[]     @relation("ClassEnrollmentStudentProfile")
   attendances      Attendance[]          @relation("AttendanceStudentProfile")
   assessmentScores AssessmentScore[]     @relation("AssessmentScoreStudentProfile")
   reportCards      ReportCard[]          @relation("ReportCardStudentProfile")
+  customFieldValues StudentProfileFieldValue[]
+}
+
+// =============================
+// Custom Profile Properties
+// =============================
+
+model TenantProfileField {
+  id          String   @id @default(uuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+
+  role        String
+  key         String
+  label       String
+  type        String
+  helpText    String?
+  options     Json?
+  validation  Json?
+  order       Int?
+  isEnabled   Boolean  @default(true)
+
+  sourceTemplateId      String?
+
+  studentValues StudentProfileFieldValue[]
+  teacherValues TeacherProfileFieldValue[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([tenantId, role, key])
+  @@index([tenantId, role])
+}
+
+model StudentProfileFieldValue {
+  id          String   @id @default(uuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+
+  studentProfileId String
+  studentProfile   StudentProfile @relation(fields: [studentProfileId], references: [id])
+
+  fieldId     String
+  field       TenantProfileField @relation(fields: [fieldId], references: [id])
+
+  valueText        String?
+  valueNumber      Float?
+  valueDate        DateTime?
+  valueBoolean     Boolean?
+  valueSelect      String?
+  valueMultiSelect String[]
+  valueFile        Json?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([studentProfileId, fieldId])
+  @@index([tenantId])
+  @@index([fieldId])
+}
+
+model TeacherProfileFieldValue {
+  id          String   @id @default(uuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+
+  teacherProfileId String
+  teacherProfile   TeacherProfile @relation(fields: [teacherProfileId], references: [id])
+
+  fieldId     String
+  field       TenantProfileField @relation(fields: [fieldId], references: [id])
+
+  valueText        String?
+  valueNumber      Float?
+  valueDate        DateTime?
+  valueBoolean     Boolean?
+  valueSelect      String?
+  valueMultiSelect String[]
+  valueFile        Json?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([teacherProfileId, fieldId])
+  @@index([tenantId])
+  @@index([fieldId])
 }
 
 // =============================

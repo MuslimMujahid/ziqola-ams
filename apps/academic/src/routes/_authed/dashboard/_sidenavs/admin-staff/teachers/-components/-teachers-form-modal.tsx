@@ -27,8 +27,6 @@ type TeacherFormValues = {
   gender?: Gender | "none";
   dateOfBirth?: string;
   phoneNumber?: string;
-  nip?: string;
-  nuptk?: string;
   hiredAt?: string;
 };
 
@@ -53,8 +51,6 @@ export function TeachersFormModal({
       gender: z.enum(["MALE", "FEMALE", "none"]).optional(),
       dateOfBirth: z.string().optional(),
       phoneNumber: z.string().optional(),
-      nip: z.string().optional(),
-      nuptk: z.string().optional(),
       hiredAt: z.string().optional(),
     });
   }, []);
@@ -67,8 +63,6 @@ export function TeachersFormModal({
       gender: "none",
       dateOfBirth: "",
       phoneNumber: "",
-      nip: "",
-      nuptk: "",
       hiredAt: "",
     } as TeacherFormValues,
     validators: {
@@ -85,7 +79,7 @@ export function TeachersFormModal({
         <DialogHeader>
           <DialogTitle>Tambah guru</DialogTitle>
           <DialogDescription>
-            Buat akun guru sekaligus identitas kepegawaian.
+            Buat akun guru dan lengkapi detail kepegawaian.
           </DialogDescription>
         </DialogHeader>
 
@@ -141,15 +135,6 @@ export function TeachersFormModal({
             </form.AppField>
             <form.AppField name="dateOfBirth">
               {(field) => <field.DateField label="Tanggal lahir" />}
-            </form.AppField>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            <form.AppField name="nip">
-              {(field) => <field.TextField label="NIP" />}
-            </form.AppField>
-            <form.AppField name="nuptk">
-              {(field) => <field.TextField label="NUPTK" />}
             </form.AppField>
           </div>
 

@@ -203,6 +203,49 @@ Identifier requirements may vary per tenant.
 
 ---
 
+### 4.3 Custom Profile Properties (Student & Teacher)
+
+The system supports **tenant-specific custom profile properties** for **Student** and **Teacher** profiles.
+
+**Key Principles:**
+
+- Student and Teacher custom fields are **separate** (no shared definitions).
+- Only **Admin Staff** can configure custom fields; other roles only **fill** data.
+- Custom fields are **tenant-scoped**; data and definitions are isolated by `tenant_id`.
+- Custom fields are **current-value only** (no historical versioning of values).
+
+**Global Templates (Versioned):**
+
+- Provide **global templates** for Student and Teacher fields.
+- Templates are **versioned** and can be **applied or upgraded** by tenants.
+- Upgrades are **explicit** and **non-destructive**.
+
+**Tenant Overrides:**
+
+- Tenants can **add, edit, disable** fields after applying a template.
+- Disabling a field **hides it** but **retains stored values**.
+
+**Supported Field Types:**
+
+- Text, Number, Date, Boolean
+- Select, Multi-select
+- File (stored in **MinIO**, max **5 MB** per file)
+
+**Validation Rules:**
+
+- Required/optional
+- Min/Max (length or numeric)
+- Regex pattern
+- Date range
+- File constraints (size, MIME types)
+
+**Filtering & Reporting (Phase 1):**
+
+- Custom fields must be **queryable** for filtering (e.g., religion, domicile, achievements).
+- Data storage must support **search and export** of custom field values.
+
+---
+
 ### 4.1 Roles (MVP)
 
 Roles represent a **user’s primary identity** within a tenant. Roles are global and not contextual.

@@ -10,26 +10,30 @@ export function Select({
   values,
   placeholder,
   id,
+  className,
 }: {
-  label: string;
+  label?: string;
   values: Array<{ label: string; value: string }>;
   placeholder?: string;
   id?: string;
+  className?: string;
 }) {
   const field = useFieldContext<string>();
   const errors = useStore(field.store, (state) => state.meta.errors);
   const inputId = id ?? label;
 
   return (
-    <div>
+    <div className={className}>
       <SelectBase.Select
         name={field.name}
         value={field.state.value}
         onValueChange={(value) => field.handleChange(value)}
       >
-        <Label htmlFor={inputId} className="mb-2 text-sm font-medium">
-          {label}
-        </Label>
+        {label ? (
+          <Label htmlFor={inputId} className="mb-2 text-sm font-medium">
+            {label}
+          </Label>
+        ) : null}
         <SelectBase.SelectTrigger className="w-full">
           <SelectBase.SelectValue placeholder={placeholder} />
         </SelectBase.SelectTrigger>

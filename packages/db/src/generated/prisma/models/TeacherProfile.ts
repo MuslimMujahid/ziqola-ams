@@ -28,8 +28,6 @@ export type TeacherProfileMinAggregateOutputType = {
   id: string | null
   tenantId: string | null
   userId: string | null
-  nip: string | null
-  nuptk: string | null
   hiredAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -39,8 +37,6 @@ export type TeacherProfileMaxAggregateOutputType = {
   id: string | null
   tenantId: string | null
   userId: string | null
-  nip: string | null
-  nuptk: string | null
   hiredAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -50,8 +46,6 @@ export type TeacherProfileCountAggregateOutputType = {
   id: number
   tenantId: number
   userId: number
-  nip: number
-  nuptk: number
   additionalIdentifiers: number
   hiredAt: number
   createdAt: number
@@ -64,8 +58,6 @@ export type TeacherProfileMinAggregateInputType = {
   id?: true
   tenantId?: true
   userId?: true
-  nip?: true
-  nuptk?: true
   hiredAt?: true
   createdAt?: true
   updatedAt?: true
@@ -75,8 +67,6 @@ export type TeacherProfileMaxAggregateInputType = {
   id?: true
   tenantId?: true
   userId?: true
-  nip?: true
-  nuptk?: true
   hiredAt?: true
   createdAt?: true
   updatedAt?: true
@@ -86,8 +76,6 @@ export type TeacherProfileCountAggregateInputType = {
   id?: true
   tenantId?: true
   userId?: true
-  nip?: true
-  nuptk?: true
   additionalIdentifiers?: true
   hiredAt?: true
   createdAt?: true
@@ -171,8 +159,6 @@ export type TeacherProfileGroupByOutputType = {
   id: string
   tenantId: string
   userId: string
-  nip: string | null
-  nuptk: string | null
   additionalIdentifiers: runtime.JsonValue | null
   hiredAt: Date | null
   createdAt: Date
@@ -204,8 +190,6 @@ export type TeacherProfileWhereInput = {
   id?: Prisma.StringFilter<"TeacherProfile"> | string
   tenantId?: Prisma.StringFilter<"TeacherProfile"> | string
   userId?: Prisma.StringFilter<"TeacherProfile"> | string
-  nip?: Prisma.StringNullableFilter<"TeacherProfile"> | string | null
-  nuptk?: Prisma.StringNullableFilter<"TeacherProfile"> | string | null
   additionalIdentifiers?: Prisma.JsonNullableFilter<"TeacherProfile">
   hiredAt?: Prisma.DateTimeNullableFilter<"TeacherProfile"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"TeacherProfile"> | Date | string
@@ -217,14 +201,13 @@ export type TeacherProfileWhereInput = {
   schedules?: Prisma.ScheduleListRelationFilter
   compiledReportCards?: Prisma.ReportCardListRelationFilter
   sessionMaterials?: Prisma.SessionMaterialListRelationFilter
+  customFieldValues?: Prisma.TeacherProfileFieldValueListRelationFilter
 }
 
 export type TeacherProfileOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  nip?: Prisma.SortOrderInput | Prisma.SortOrder
-  nuptk?: Prisma.SortOrderInput | Prisma.SortOrder
   additionalIdentifiers?: Prisma.SortOrderInput | Prisma.SortOrder
   hiredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -236,19 +219,16 @@ export type TeacherProfileOrderByWithRelationInput = {
   schedules?: Prisma.ScheduleOrderByRelationAggregateInput
   compiledReportCards?: Prisma.ReportCardOrderByRelationAggregateInput
   sessionMaterials?: Prisma.SessionMaterialOrderByRelationAggregateInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueOrderByRelationAggregateInput
 }
 
 export type TeacherProfileWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   userId?: string
-  tenantId_nip?: Prisma.TeacherProfileTenantIdNipCompoundUniqueInput
-  tenantId_nuptk?: Prisma.TeacherProfileTenantIdNuptkCompoundUniqueInput
   AND?: Prisma.TeacherProfileWhereInput | Prisma.TeacherProfileWhereInput[]
   OR?: Prisma.TeacherProfileWhereInput[]
   NOT?: Prisma.TeacherProfileWhereInput | Prisma.TeacherProfileWhereInput[]
   tenantId?: Prisma.StringFilter<"TeacherProfile"> | string
-  nip?: Prisma.StringNullableFilter<"TeacherProfile"> | string | null
-  nuptk?: Prisma.StringNullableFilter<"TeacherProfile"> | string | null
   additionalIdentifiers?: Prisma.JsonNullableFilter<"TeacherProfile">
   hiredAt?: Prisma.DateTimeNullableFilter<"TeacherProfile"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"TeacherProfile"> | Date | string
@@ -260,14 +240,13 @@ export type TeacherProfileWhereUniqueInput = Prisma.AtLeast<{
   schedules?: Prisma.ScheduleListRelationFilter
   compiledReportCards?: Prisma.ReportCardListRelationFilter
   sessionMaterials?: Prisma.SessionMaterialListRelationFilter
-}, "id" | "userId" | "tenantId_nip" | "tenantId_nuptk">
+  customFieldValues?: Prisma.TeacherProfileFieldValueListRelationFilter
+}, "id" | "userId">
 
 export type TeacherProfileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  nip?: Prisma.SortOrderInput | Prisma.SortOrder
-  nuptk?: Prisma.SortOrderInput | Prisma.SortOrder
   additionalIdentifiers?: Prisma.SortOrderInput | Prisma.SortOrder
   hiredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -284,8 +263,6 @@ export type TeacherProfileScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"TeacherProfile"> | string
   tenantId?: Prisma.StringWithAggregatesFilter<"TeacherProfile"> | string
   userId?: Prisma.StringWithAggregatesFilter<"TeacherProfile"> | string
-  nip?: Prisma.StringNullableWithAggregatesFilter<"TeacherProfile"> | string | null
-  nuptk?: Prisma.StringNullableWithAggregatesFilter<"TeacherProfile"> | string | null
   additionalIdentifiers?: Prisma.JsonNullableWithAggregatesFilter<"TeacherProfile">
   hiredAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TeacherProfile"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TeacherProfile"> | Date | string
@@ -294,8 +271,6 @@ export type TeacherProfileScalarWhereWithAggregatesInput = {
 
 export type TeacherProfileCreateInput = {
   id?: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -307,14 +282,13 @@ export type TeacherProfileCreateInput = {
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileUncheckedCreateInput = {
   id?: string
   tenantId: string
   userId: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -324,12 +298,11 @@ export type TeacherProfileUncheckedCreateInput = {
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -341,14 +314,13 @@ export type TeacherProfileUpdateInput = {
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -358,14 +330,13 @@ export type TeacherProfileUncheckedUpdateInput = {
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileCreateManyInput = {
   id?: string
   tenantId: string
   userId: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -374,8 +345,6 @@ export type TeacherProfileCreateManyInput = {
 
 export type TeacherProfileUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -386,8 +355,6 @@ export type TeacherProfileUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -409,22 +376,10 @@ export type TeacherProfileNullableScalarRelationFilter = {
   isNot?: Prisma.TeacherProfileWhereInput | null
 }
 
-export type TeacherProfileTenantIdNipCompoundUniqueInput = {
-  tenantId: string
-  nip: string
-}
-
-export type TeacherProfileTenantIdNuptkCompoundUniqueInput = {
-  tenantId: string
-  nuptk: string
-}
-
 export type TeacherProfileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  nip?: Prisma.SortOrder
-  nuptk?: Prisma.SortOrder
   additionalIdentifiers?: Prisma.SortOrder
   hiredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -435,8 +390,6 @@ export type TeacherProfileMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  nip?: Prisma.SortOrder
-  nuptk?: Prisma.SortOrder
   hiredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -446,8 +399,6 @@ export type TeacherProfileMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  nip?: Prisma.SortOrder
-  nuptk?: Prisma.SortOrder
   hiredAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -532,6 +483,20 @@ export type TeacherProfileUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TeacherProfileUpdateToOneWithWhereWithoutUserInput, Prisma.TeacherProfileUpdateWithoutUserInput>, Prisma.TeacherProfileUncheckedUpdateWithoutUserInput>
 }
 
+export type TeacherProfileCreateNestedOneWithoutCustomFieldValuesInput = {
+  create?: Prisma.XOR<Prisma.TeacherProfileCreateWithoutCustomFieldValuesInput, Prisma.TeacherProfileUncheckedCreateWithoutCustomFieldValuesInput>
+  connectOrCreate?: Prisma.TeacherProfileCreateOrConnectWithoutCustomFieldValuesInput
+  connect?: Prisma.TeacherProfileWhereUniqueInput
+}
+
+export type TeacherProfileUpdateOneRequiredWithoutCustomFieldValuesNestedInput = {
+  create?: Prisma.XOR<Prisma.TeacherProfileCreateWithoutCustomFieldValuesInput, Prisma.TeacherProfileUncheckedCreateWithoutCustomFieldValuesInput>
+  connectOrCreate?: Prisma.TeacherProfileCreateOrConnectWithoutCustomFieldValuesInput
+  upsert?: Prisma.TeacherProfileUpsertWithoutCustomFieldValuesInput
+  connect?: Prisma.TeacherProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TeacherProfileUpdateToOneWithWhereWithoutCustomFieldValuesInput, Prisma.TeacherProfileUpdateWithoutCustomFieldValuesInput>, Prisma.TeacherProfileUncheckedUpdateWithoutCustomFieldValuesInput>
+}
+
 export type TeacherProfileCreateNestedOneWithoutHomeroomAssignmentsInput = {
   create?: Prisma.XOR<Prisma.TeacherProfileCreateWithoutHomeroomAssignmentsInput, Prisma.TeacherProfileUncheckedCreateWithoutHomeroomAssignmentsInput>
   connectOrCreate?: Prisma.TeacherProfileCreateOrConnectWithoutHomeroomAssignmentsInput
@@ -606,8 +571,6 @@ export type TeacherProfileUpdateOneWithoutCompiledReportCardsNestedInput = {
 
 export type TeacherProfileCreateWithoutTenantInput = {
   id?: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -618,13 +581,12 @@ export type TeacherProfileCreateWithoutTenantInput = {
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileUncheckedCreateWithoutTenantInput = {
   id?: string
   userId: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -634,6 +596,7 @@ export type TeacherProfileUncheckedCreateWithoutTenantInput = {
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileCreateOrConnectWithoutTenantInput = {
@@ -669,8 +632,6 @@ export type TeacherProfileScalarWhereInput = {
   id?: Prisma.StringFilter<"TeacherProfile"> | string
   tenantId?: Prisma.StringFilter<"TeacherProfile"> | string
   userId?: Prisma.StringFilter<"TeacherProfile"> | string
-  nip?: Prisma.StringNullableFilter<"TeacherProfile"> | string | null
-  nuptk?: Prisma.StringNullableFilter<"TeacherProfile"> | string | null
   additionalIdentifiers?: Prisma.JsonNullableFilter<"TeacherProfile">
   hiredAt?: Prisma.DateTimeNullableFilter<"TeacherProfile"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"TeacherProfile"> | Date | string
@@ -679,8 +640,6 @@ export type TeacherProfileScalarWhereInput = {
 
 export type TeacherProfileCreateWithoutUserInput = {
   id?: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -691,13 +650,12 @@ export type TeacherProfileCreateWithoutUserInput = {
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileUncheckedCreateWithoutUserInput = {
   id?: string
   tenantId: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -707,6 +665,7 @@ export type TeacherProfileUncheckedCreateWithoutUserInput = {
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileCreateOrConnectWithoutUserInput = {
@@ -727,8 +686,6 @@ export type TeacherProfileUpdateToOneWithWhereWithoutUserInput = {
 
 export type TeacherProfileUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -739,13 +696,89 @@ export type TeacherProfileUpdateWithoutUserInput = {
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTeacherProfileNestedInput
+}
+
+export type TeacherProfileCreateWithoutCustomFieldValuesInput = {
+  id?: string
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  hiredAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutTeacherProfilesInput
+  user: Prisma.UserCreateNestedOneWithoutTeacherProfileInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTeacherProfileInput
+  classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
+  compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
+  sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
+}
+
+export type TeacherProfileUncheckedCreateWithoutCustomFieldValuesInput = {
+  id?: string
+  tenantId: string
+  userId: string
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  hiredAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTeacherProfileInput
+  classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
+  compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type TeacherProfileCreateOrConnectWithoutCustomFieldValuesInput = {
+  where: Prisma.TeacherProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.TeacherProfileCreateWithoutCustomFieldValuesInput, Prisma.TeacherProfileUncheckedCreateWithoutCustomFieldValuesInput>
+}
+
+export type TeacherProfileUpsertWithoutCustomFieldValuesInput = {
+  update: Prisma.XOR<Prisma.TeacherProfileUpdateWithoutCustomFieldValuesInput, Prisma.TeacherProfileUncheckedUpdateWithoutCustomFieldValuesInput>
+  create: Prisma.XOR<Prisma.TeacherProfileCreateWithoutCustomFieldValuesInput, Prisma.TeacherProfileUncheckedCreateWithoutCustomFieldValuesInput>
+  where?: Prisma.TeacherProfileWhereInput
+}
+
+export type TeacherProfileUpdateToOneWithWhereWithoutCustomFieldValuesInput = {
+  where?: Prisma.TeacherProfileWhereInput
+  data: Prisma.XOR<Prisma.TeacherProfileUpdateWithoutCustomFieldValuesInput, Prisma.TeacherProfileUncheckedUpdateWithoutCustomFieldValuesInput>
+}
+
+export type TeacherProfileUpdateWithoutCustomFieldValuesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutTeacherProfilesNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutTeacherProfileNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTeacherProfileNestedInput
+  classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
+  compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
+}
+
+export type TeacherProfileUncheckedUpdateWithoutCustomFieldValuesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -759,8 +792,6 @@ export type TeacherProfileUncheckedUpdateWithoutUserInput = {
 
 export type TeacherProfileCreateWithoutHomeroomAssignmentsInput = {
   id?: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -771,14 +802,13 @@ export type TeacherProfileCreateWithoutHomeroomAssignmentsInput = {
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileUncheckedCreateWithoutHomeroomAssignmentsInput = {
   id?: string
   tenantId: string
   userId: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -787,6 +817,7 @@ export type TeacherProfileUncheckedCreateWithoutHomeroomAssignmentsInput = {
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileCreateOrConnectWithoutHomeroomAssignmentsInput = {
@@ -807,8 +838,6 @@ export type TeacherProfileUpdateToOneWithWhereWithoutHomeroomAssignmentsInput = 
 
 export type TeacherProfileUpdateWithoutHomeroomAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -819,14 +848,13 @@ export type TeacherProfileUpdateWithoutHomeroomAssignmentsInput = {
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileUncheckedUpdateWithoutHomeroomAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -835,12 +863,11 @@ export type TeacherProfileUncheckedUpdateWithoutHomeroomAssignmentsInput = {
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileCreateWithoutClassSubjectsInput = {
   id?: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -851,14 +878,13 @@ export type TeacherProfileCreateWithoutClassSubjectsInput = {
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileUncheckedCreateWithoutClassSubjectsInput = {
   id?: string
   tenantId: string
   userId: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -867,6 +893,7 @@ export type TeacherProfileUncheckedCreateWithoutClassSubjectsInput = {
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileCreateOrConnectWithoutClassSubjectsInput = {
@@ -887,8 +914,6 @@ export type TeacherProfileUpdateToOneWithWhereWithoutClassSubjectsInput = {
 
 export type TeacherProfileUpdateWithoutClassSubjectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -899,14 +924,13 @@ export type TeacherProfileUpdateWithoutClassSubjectsInput = {
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileUncheckedUpdateWithoutClassSubjectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -915,12 +939,11 @@ export type TeacherProfileUncheckedUpdateWithoutClassSubjectsInput = {
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileCreateWithoutSchedulesInput = {
   id?: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -931,14 +954,13 @@ export type TeacherProfileCreateWithoutSchedulesInput = {
   classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileUncheckedCreateWithoutSchedulesInput = {
   id?: string
   tenantId: string
   userId: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -947,6 +969,7 @@ export type TeacherProfileUncheckedCreateWithoutSchedulesInput = {
   classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileCreateOrConnectWithoutSchedulesInput = {
@@ -967,8 +990,6 @@ export type TeacherProfileUpdateToOneWithWhereWithoutSchedulesInput = {
 
 export type TeacherProfileUpdateWithoutSchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -979,14 +1000,13 @@ export type TeacherProfileUpdateWithoutSchedulesInput = {
   classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileUncheckedUpdateWithoutSchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -995,12 +1015,11 @@ export type TeacherProfileUncheckedUpdateWithoutSchedulesInput = {
   classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileCreateWithoutSessionMaterialsInput = {
   id?: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -1011,14 +1030,13 @@ export type TeacherProfileCreateWithoutSessionMaterialsInput = {
   classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileUncheckedCreateWithoutSessionMaterialsInput = {
   id?: string
   tenantId: string
   userId: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -1027,6 +1045,7 @@ export type TeacherProfileUncheckedCreateWithoutSessionMaterialsInput = {
   classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileCreateOrConnectWithoutSessionMaterialsInput = {
@@ -1047,8 +1066,6 @@ export type TeacherProfileUpdateToOneWithWhereWithoutSessionMaterialsInput = {
 
 export type TeacherProfileUpdateWithoutSessionMaterialsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1059,14 +1076,13 @@ export type TeacherProfileUpdateWithoutSessionMaterialsInput = {
   classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileUncheckedUpdateWithoutSessionMaterialsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1075,12 +1091,11 @@ export type TeacherProfileUncheckedUpdateWithoutSessionMaterialsInput = {
   classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileCreateWithoutCompiledReportCardsInput = {
   id?: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -1091,14 +1106,13 @@ export type TeacherProfileCreateWithoutCompiledReportCardsInput = {
   classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileUncheckedCreateWithoutCompiledReportCardsInput = {
   id?: string
   tenantId: string
   userId: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -1107,6 +1121,7 @@ export type TeacherProfileUncheckedCreateWithoutCompiledReportCardsInput = {
   classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTeacherProfileInput
 }
 
 export type TeacherProfileCreateOrConnectWithoutCompiledReportCardsInput = {
@@ -1127,8 +1142,6 @@ export type TeacherProfileUpdateToOneWithWhereWithoutCompiledReportCardsInput = 
 
 export type TeacherProfileUpdateWithoutCompiledReportCardsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1139,14 +1152,13 @@ export type TeacherProfileUpdateWithoutCompiledReportCardsInput = {
   classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileUncheckedUpdateWithoutCompiledReportCardsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1155,13 +1167,12 @@ export type TeacherProfileUncheckedUpdateWithoutCompiledReportCardsInput = {
   classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileCreateManyTenantInput = {
   id?: string
   userId: string
-  nip?: string | null
-  nuptk?: string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Date | string | null
   createdAt?: Date | string
@@ -1170,8 +1181,6 @@ export type TeacherProfileCreateManyTenantInput = {
 
 export type TeacherProfileUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1182,13 +1191,12 @@ export type TeacherProfileUpdateWithoutTenantInput = {
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1198,13 +1206,12 @@ export type TeacherProfileUncheckedUpdateWithoutTenantInput = {
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTeacherProfileNestedInput
 }
 
 export type TeacherProfileUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  nip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nuptk?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1222,6 +1229,7 @@ export type TeacherProfileCountOutputType = {
   schedules: number
   compiledReportCards: number
   sessionMaterials: number
+  customFieldValues: number
 }
 
 export type TeacherProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1230,6 +1238,7 @@ export type TeacherProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Ex
   schedules?: boolean | TeacherProfileCountOutputTypeCountSchedulesArgs
   compiledReportCards?: boolean | TeacherProfileCountOutputTypeCountCompiledReportCardsArgs
   sessionMaterials?: boolean | TeacherProfileCountOutputTypeCountSessionMaterialsArgs
+  customFieldValues?: boolean | TeacherProfileCountOutputTypeCountCustomFieldValuesArgs
 }
 
 /**
@@ -1277,13 +1286,18 @@ export type TeacherProfileCountOutputTypeCountSessionMaterialsArgs<ExtArgs exten
   where?: Prisma.SessionMaterialWhereInput
 }
 
+/**
+ * TeacherProfileCountOutputType without action
+ */
+export type TeacherProfileCountOutputTypeCountCustomFieldValuesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TeacherProfileFieldValueWhereInput
+}
+
 
 export type TeacherProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tenantId?: boolean
   userId?: boolean
-  nip?: boolean
-  nuptk?: boolean
   additionalIdentifiers?: boolean
   hiredAt?: boolean
   createdAt?: boolean
@@ -1295,6 +1309,7 @@ export type TeacherProfileSelect<ExtArgs extends runtime.Types.Extensions.Intern
   schedules?: boolean | Prisma.TeacherProfile$schedulesArgs<ExtArgs>
   compiledReportCards?: boolean | Prisma.TeacherProfile$compiledReportCardsArgs<ExtArgs>
   sessionMaterials?: boolean | Prisma.TeacherProfile$sessionMaterialsArgs<ExtArgs>
+  customFieldValues?: boolean | Prisma.TeacherProfile$customFieldValuesArgs<ExtArgs>
   _count?: boolean | Prisma.TeacherProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["teacherProfile"]>
 
@@ -1302,8 +1317,6 @@ export type TeacherProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   tenantId?: boolean
   userId?: boolean
-  nip?: boolean
-  nuptk?: boolean
   additionalIdentifiers?: boolean
   hiredAt?: boolean
   createdAt?: boolean
@@ -1316,8 +1329,6 @@ export type TeacherProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   tenantId?: boolean
   userId?: boolean
-  nip?: boolean
-  nuptk?: boolean
   additionalIdentifiers?: boolean
   hiredAt?: boolean
   createdAt?: boolean
@@ -1330,15 +1341,13 @@ export type TeacherProfileSelectScalar = {
   id?: boolean
   tenantId?: boolean
   userId?: boolean
-  nip?: boolean
-  nuptk?: boolean
   additionalIdentifiers?: boolean
   hiredAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TeacherProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "userId" | "nip" | "nuptk" | "additionalIdentifiers" | "hiredAt" | "createdAt" | "updatedAt", ExtArgs["result"]["teacherProfile"]>
+export type TeacherProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "userId" | "additionalIdentifiers" | "hiredAt" | "createdAt" | "updatedAt", ExtArgs["result"]["teacherProfile"]>
 export type TeacherProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1347,6 +1356,7 @@ export type TeacherProfileInclude<ExtArgs extends runtime.Types.Extensions.Inter
   schedules?: boolean | Prisma.TeacherProfile$schedulesArgs<ExtArgs>
   compiledReportCards?: boolean | Prisma.TeacherProfile$compiledReportCardsArgs<ExtArgs>
   sessionMaterials?: boolean | Prisma.TeacherProfile$sessionMaterialsArgs<ExtArgs>
+  customFieldValues?: boolean | Prisma.TeacherProfile$customFieldValuesArgs<ExtArgs>
   _count?: boolean | Prisma.TeacherProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TeacherProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1368,13 +1378,12 @@ export type $TeacherProfilePayload<ExtArgs extends runtime.Types.Extensions.Inte
     schedules: Prisma.$SchedulePayload<ExtArgs>[]
     compiledReportCards: Prisma.$ReportCardPayload<ExtArgs>[]
     sessionMaterials: Prisma.$SessionMaterialPayload<ExtArgs>[]
+    customFieldValues: Prisma.$TeacherProfileFieldValuePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tenantId: string
     userId: string
-    nip: string | null
-    nuptk: string | null
     additionalIdentifiers: runtime.JsonValue | null
     hiredAt: Date | null
     createdAt: Date
@@ -1780,6 +1789,7 @@ export interface Prisma__TeacherProfileClient<T, Null = never, ExtArgs extends r
   schedules<T extends Prisma.TeacherProfile$schedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherProfile$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   compiledReportCards<T extends Prisma.TeacherProfile$compiledReportCardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherProfile$compiledReportCardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportCardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessionMaterials<T extends Prisma.TeacherProfile$sessionMaterialsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherProfile$sessionMaterialsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionMaterialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  customFieldValues<T extends Prisma.TeacherProfile$customFieldValuesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherProfile$customFieldValuesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherProfileFieldValuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1812,8 +1822,6 @@ export interface TeacherProfileFieldRefs {
   readonly id: Prisma.FieldRef<"TeacherProfile", 'String'>
   readonly tenantId: Prisma.FieldRef<"TeacherProfile", 'String'>
   readonly userId: Prisma.FieldRef<"TeacherProfile", 'String'>
-  readonly nip: Prisma.FieldRef<"TeacherProfile", 'String'>
-  readonly nuptk: Prisma.FieldRef<"TeacherProfile", 'String'>
   readonly additionalIdentifiers: Prisma.FieldRef<"TeacherProfile", 'Json'>
   readonly hiredAt: Prisma.FieldRef<"TeacherProfile", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"TeacherProfile", 'DateTime'>
@@ -2331,6 +2339,30 @@ export type TeacherProfile$sessionMaterialsArgs<ExtArgs extends runtime.Types.Ex
   take?: number
   skip?: number
   distinct?: Prisma.SessionMaterialScalarFieldEnum | Prisma.SessionMaterialScalarFieldEnum[]
+}
+
+/**
+ * TeacherProfile.customFieldValues
+ */
+export type TeacherProfile$customFieldValuesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TeacherProfileFieldValue
+   */
+  select?: Prisma.TeacherProfileFieldValueSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TeacherProfileFieldValue
+   */
+  omit?: Prisma.TeacherProfileFieldValueOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TeacherProfileFieldValueInclude<ExtArgs> | null
+  where?: Prisma.TeacherProfileFieldValueWhereInput
+  orderBy?: Prisma.TeacherProfileFieldValueOrderByWithRelationInput | Prisma.TeacherProfileFieldValueOrderByWithRelationInput[]
+  cursor?: Prisma.TeacherProfileFieldValueWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TeacherProfileFieldValueScalarFieldEnum | Prisma.TeacherProfileFieldValueScalarFieldEnum[]
 }
 
 /**

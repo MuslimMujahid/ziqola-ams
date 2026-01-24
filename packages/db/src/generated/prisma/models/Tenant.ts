@@ -221,6 +221,10 @@ export type TenantWhereInput = {
   auditLogs?: Prisma.AuditLogListRelationFilter
   teacherProfiles?: Prisma.TeacherProfileListRelationFilter
   studentProfiles?: Prisma.StudentProfileListRelationFilter
+  tenantProfileFields?: Prisma.TenantProfileFieldListRelationFilter
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueListRelationFilter
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueListRelationFilter
+  tenantConfigurations?: Prisma.TenantConfigurationListRelationFilter
 }
 
 export type TenantOrderByWithRelationInput = {
@@ -254,6 +258,10 @@ export type TenantOrderByWithRelationInput = {
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
   teacherProfiles?: Prisma.TeacherProfileOrderByRelationAggregateInput
   studentProfiles?: Prisma.StudentProfileOrderByRelationAggregateInput
+  tenantProfileFields?: Prisma.TenantProfileFieldOrderByRelationAggregateInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueOrderByRelationAggregateInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueOrderByRelationAggregateInput
+  tenantConfigurations?: Prisma.TenantConfigurationOrderByRelationAggregateInput
 }
 
 export type TenantWhereUniqueInput = Prisma.AtLeast<{
@@ -290,6 +298,10 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   auditLogs?: Prisma.AuditLogListRelationFilter
   teacherProfiles?: Prisma.TeacherProfileListRelationFilter
   studentProfiles?: Prisma.StudentProfileListRelationFilter
+  tenantProfileFields?: Prisma.TenantProfileFieldListRelationFilter
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueListRelationFilter
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueListRelationFilter
+  tenantConfigurations?: Prisma.TenantConfigurationListRelationFilter
 }, "id" | "slug" | "activeAcademicYearId">
 
 export type TenantOrderByWithAggregationInput = {
@@ -348,6 +360,10 @@ export type TenantCreateInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateInput = {
@@ -380,6 +396,10 @@ export type TenantUncheckedCreateInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUpdateInput = {
@@ -412,6 +432,10 @@ export type TenantUpdateInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateInput = {
@@ -444,6 +468,10 @@ export type TenantUncheckedUpdateInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateManyInput = {
@@ -527,6 +555,20 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type TenantCreateNestedOneWithoutTenantConfigurationsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutTenantConfigurationsInput, Prisma.TenantUncheckedCreateWithoutTenantConfigurationsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutTenantConfigurationsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutTenantConfigurationsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutTenantConfigurationsInput, Prisma.TenantUncheckedCreateWithoutTenantConfigurationsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutTenantConfigurationsInput
+  upsert?: Prisma.TenantUpsertWithoutTenantConfigurationsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutTenantConfigurationsInput, Prisma.TenantUpdateWithoutTenantConfigurationsInput>, Prisma.TenantUncheckedUpdateWithoutTenantConfigurationsInput>
+}
+
 export type TenantCreateNestedOneWithoutUsersInput = {
   create?: Prisma.XOR<Prisma.TenantCreateWithoutUsersInput, Prisma.TenantUncheckedCreateWithoutUsersInput>
   connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUsersInput
@@ -567,6 +609,48 @@ export type TenantUpdateOneRequiredWithoutStudentProfilesNestedInput = {
   upsert?: Prisma.TenantUpsertWithoutStudentProfilesInput
   connect?: Prisma.TenantWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutStudentProfilesInput, Prisma.TenantUpdateWithoutStudentProfilesInput>, Prisma.TenantUncheckedUpdateWithoutStudentProfilesInput>
+}
+
+export type TenantCreateNestedOneWithoutTenantProfileFieldsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutTenantProfileFieldsInput, Prisma.TenantUncheckedCreateWithoutTenantProfileFieldsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutTenantProfileFieldsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutTenantProfileFieldsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutTenantProfileFieldsInput, Prisma.TenantUncheckedCreateWithoutTenantProfileFieldsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutTenantProfileFieldsInput
+  upsert?: Prisma.TenantUpsertWithoutTenantProfileFieldsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutTenantProfileFieldsInput, Prisma.TenantUpdateWithoutTenantProfileFieldsInput>, Prisma.TenantUncheckedUpdateWithoutTenantProfileFieldsInput>
+}
+
+export type TenantCreateNestedOneWithoutStudentProfileFieldValuesInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutStudentProfileFieldValuesInput, Prisma.TenantUncheckedCreateWithoutStudentProfileFieldValuesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStudentProfileFieldValuesInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutStudentProfileFieldValuesNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutStudentProfileFieldValuesInput, Prisma.TenantUncheckedCreateWithoutStudentProfileFieldValuesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStudentProfileFieldValuesInput
+  upsert?: Prisma.TenantUpsertWithoutStudentProfileFieldValuesInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutStudentProfileFieldValuesInput, Prisma.TenantUpdateWithoutStudentProfileFieldValuesInput>, Prisma.TenantUncheckedUpdateWithoutStudentProfileFieldValuesInput>
+}
+
+export type TenantCreateNestedOneWithoutTeacherProfileFieldValuesInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutTeacherProfileFieldValuesInput, Prisma.TenantUncheckedCreateWithoutTeacherProfileFieldValuesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutTeacherProfileFieldValuesInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutTeacherProfileFieldValuesNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutTeacherProfileFieldValuesInput, Prisma.TenantUncheckedCreateWithoutTeacherProfileFieldValuesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutTeacherProfileFieldValuesInput
+  upsert?: Prisma.TenantUpsertWithoutTeacherProfileFieldValuesInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutTeacherProfileFieldValuesInput, Prisma.TenantUpdateWithoutTeacherProfileFieldValuesInput>, Prisma.TenantUncheckedUpdateWithoutTeacherProfileFieldValuesInput>
 }
 
 export type TenantCreateNestedOneWithoutAcademicYearsInput = {
@@ -867,6 +951,162 @@ export type TenantUpdateOneRequiredWithoutAuditLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutAuditLogsInput, Prisma.TenantUpdateWithoutAuditLogsInput>, Prisma.TenantUncheckedUpdateWithoutAuditLogsInput>
 }
 
+export type TenantCreateWithoutTenantConfigurationsInput = {
+  id?: string
+  name: string
+  slug: string
+  educationLevel?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
+  academicPeriods?: Prisma.AcademicPeriodCreateNestedManyWithoutTenantInput
+  groups?: Prisma.GroupCreateNestedManyWithoutTenantInput
+  subjects?: Prisma.SubjectCreateNestedManyWithoutTenantInput
+  classes?: Prisma.ClassCreateNestedManyWithoutTenantInput
+  classEnrollments?: Prisma.ClassEnrollmentCreateNestedManyWithoutTenantInput
+  classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTenantInput
+  classGroups?: Prisma.ClassGroupCreateNestedManyWithoutTenantInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTenantInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutTenantInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
+  sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutTenantInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentCreateNestedManyWithoutTenantInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutTenantInput
+  assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
+  assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
+  reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
+  studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutTenantConfigurationsInput = {
+  id?: string
+  name: string
+  slug: string
+  educationLevel?: string | null
+  activeAcademicYearId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
+  academicPeriods?: Prisma.AcademicPeriodUncheckedCreateNestedManyWithoutTenantInput
+  groups?: Prisma.GroupUncheckedCreateNestedManyWithoutTenantInput
+  subjects?: Prisma.SubjectUncheckedCreateNestedManyWithoutTenantInput
+  classes?: Prisma.ClassUncheckedCreateNestedManyWithoutTenantInput
+  classEnrollments?: Prisma.ClassEnrollmentUncheckedCreateNestedManyWithoutTenantInput
+  classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTenantInput
+  classGroups?: Prisma.ClassGroupUncheckedCreateNestedManyWithoutTenantInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTenantInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTenantInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutTenantInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTenantInput
+  assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
+  studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutTenantConfigurationsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutTenantConfigurationsInput, Prisma.TenantUncheckedCreateWithoutTenantConfigurationsInput>
+}
+
+export type TenantUpsertWithoutTenantConfigurationsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutTenantConfigurationsInput, Prisma.TenantUncheckedUpdateWithoutTenantConfigurationsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutTenantConfigurationsInput, Prisma.TenantUncheckedCreateWithoutTenantConfigurationsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutTenantConfigurationsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutTenantConfigurationsInput, Prisma.TenantUncheckedUpdateWithoutTenantConfigurationsInput>
+}
+
+export type TenantUpdateWithoutTenantConfigurationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
+  academicPeriods?: Prisma.AcademicPeriodUpdateManyWithoutTenantNestedInput
+  groups?: Prisma.GroupUpdateManyWithoutTenantNestedInput
+  subjects?: Prisma.SubjectUpdateManyWithoutTenantNestedInput
+  classes?: Prisma.ClassUpdateManyWithoutTenantNestedInput
+  classEnrollments?: Prisma.ClassEnrollmentUpdateManyWithoutTenantNestedInput
+  classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTenantNestedInput
+  classGroups?: Prisma.ClassGroupUpdateManyWithoutTenantNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTenantNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutTenantNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutTenantNestedInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUpdateManyWithoutTenantNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutTenantNestedInput
+  assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
+  assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
+  studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutTenantConfigurationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
+  academicPeriods?: Prisma.AcademicPeriodUncheckedUpdateManyWithoutTenantNestedInput
+  groups?: Prisma.GroupUncheckedUpdateManyWithoutTenantNestedInput
+  subjects?: Prisma.SubjectUncheckedUpdateManyWithoutTenantNestedInput
+  classes?: Prisma.ClassUncheckedUpdateManyWithoutTenantNestedInput
+  classEnrollments?: Prisma.ClassEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
+  classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  classGroups?: Prisma.ClassGroupUncheckedUpdateManyWithoutTenantNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTenantNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTenantNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutTenantNestedInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+}
+
 export type TenantCreateWithoutUsersInput = {
   id?: string
   name: string
@@ -896,6 +1136,10 @@ export type TenantCreateWithoutUsersInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutUsersInput = {
@@ -927,6 +1171,10 @@ export type TenantUncheckedCreateWithoutUsersInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutUsersInput = {
@@ -974,6 +1222,10 @@ export type TenantUpdateWithoutUsersInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutUsersInput = {
@@ -1005,6 +1257,10 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutTeacherProfilesInput = {
@@ -1036,6 +1292,10 @@ export type TenantCreateWithoutTeacherProfilesInput = {
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutTeacherProfilesInput = {
@@ -1067,6 +1327,10 @@ export type TenantUncheckedCreateWithoutTeacherProfilesInput = {
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutTeacherProfilesInput = {
@@ -1114,6 +1378,10 @@ export type TenantUpdateWithoutTeacherProfilesInput = {
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutTeacherProfilesInput = {
@@ -1145,6 +1413,10 @@ export type TenantUncheckedUpdateWithoutTeacherProfilesInput = {
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutStudentProfilesInput = {
@@ -1176,6 +1448,10 @@ export type TenantCreateWithoutStudentProfilesInput = {
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutStudentProfilesInput = {
@@ -1207,6 +1483,10 @@ export type TenantUncheckedCreateWithoutStudentProfilesInput = {
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutStudentProfilesInput = {
@@ -1254,6 +1534,10 @@ export type TenantUpdateWithoutStudentProfilesInput = {
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutStudentProfilesInput = {
@@ -1285,6 +1569,478 @@ export type TenantUncheckedUpdateWithoutStudentProfilesInput = {
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutTenantProfileFieldsInput = {
+  id?: string
+  name: string
+  slug: string
+  educationLevel?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
+  academicPeriods?: Prisma.AcademicPeriodCreateNestedManyWithoutTenantInput
+  groups?: Prisma.GroupCreateNestedManyWithoutTenantInput
+  subjects?: Prisma.SubjectCreateNestedManyWithoutTenantInput
+  classes?: Prisma.ClassCreateNestedManyWithoutTenantInput
+  classEnrollments?: Prisma.ClassEnrollmentCreateNestedManyWithoutTenantInput
+  classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTenantInput
+  classGroups?: Prisma.ClassGroupCreateNestedManyWithoutTenantInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTenantInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutTenantInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
+  sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutTenantInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentCreateNestedManyWithoutTenantInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutTenantInput
+  assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
+  assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
+  reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
+  studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutTenantProfileFieldsInput = {
+  id?: string
+  name: string
+  slug: string
+  educationLevel?: string | null
+  activeAcademicYearId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
+  academicPeriods?: Prisma.AcademicPeriodUncheckedCreateNestedManyWithoutTenantInput
+  groups?: Prisma.GroupUncheckedCreateNestedManyWithoutTenantInput
+  subjects?: Prisma.SubjectUncheckedCreateNestedManyWithoutTenantInput
+  classes?: Prisma.ClassUncheckedCreateNestedManyWithoutTenantInput
+  classEnrollments?: Prisma.ClassEnrollmentUncheckedCreateNestedManyWithoutTenantInput
+  classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTenantInput
+  classGroups?: Prisma.ClassGroupUncheckedCreateNestedManyWithoutTenantInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTenantInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTenantInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutTenantInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTenantInput
+  assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
+  studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutTenantProfileFieldsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutTenantProfileFieldsInput, Prisma.TenantUncheckedCreateWithoutTenantProfileFieldsInput>
+}
+
+export type TenantUpsertWithoutTenantProfileFieldsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutTenantProfileFieldsInput, Prisma.TenantUncheckedUpdateWithoutTenantProfileFieldsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutTenantProfileFieldsInput, Prisma.TenantUncheckedCreateWithoutTenantProfileFieldsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutTenantProfileFieldsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutTenantProfileFieldsInput, Prisma.TenantUncheckedUpdateWithoutTenantProfileFieldsInput>
+}
+
+export type TenantUpdateWithoutTenantProfileFieldsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
+  academicPeriods?: Prisma.AcademicPeriodUpdateManyWithoutTenantNestedInput
+  groups?: Prisma.GroupUpdateManyWithoutTenantNestedInput
+  subjects?: Prisma.SubjectUpdateManyWithoutTenantNestedInput
+  classes?: Prisma.ClassUpdateManyWithoutTenantNestedInput
+  classEnrollments?: Prisma.ClassEnrollmentUpdateManyWithoutTenantNestedInput
+  classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTenantNestedInput
+  classGroups?: Prisma.ClassGroupUpdateManyWithoutTenantNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTenantNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutTenantNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutTenantNestedInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUpdateManyWithoutTenantNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutTenantNestedInput
+  assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
+  assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
+  studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutTenantProfileFieldsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
+  academicPeriods?: Prisma.AcademicPeriodUncheckedUpdateManyWithoutTenantNestedInput
+  groups?: Prisma.GroupUncheckedUpdateManyWithoutTenantNestedInput
+  subjects?: Prisma.SubjectUncheckedUpdateManyWithoutTenantNestedInput
+  classes?: Prisma.ClassUncheckedUpdateManyWithoutTenantNestedInput
+  classEnrollments?: Prisma.ClassEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
+  classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  classGroups?: Prisma.ClassGroupUncheckedUpdateManyWithoutTenantNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTenantNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTenantNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutTenantNestedInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutStudentProfileFieldValuesInput = {
+  id?: string
+  name: string
+  slug: string
+  educationLevel?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
+  academicPeriods?: Prisma.AcademicPeriodCreateNestedManyWithoutTenantInput
+  groups?: Prisma.GroupCreateNestedManyWithoutTenantInput
+  subjects?: Prisma.SubjectCreateNestedManyWithoutTenantInput
+  classes?: Prisma.ClassCreateNestedManyWithoutTenantInput
+  classEnrollments?: Prisma.ClassEnrollmentCreateNestedManyWithoutTenantInput
+  classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTenantInput
+  classGroups?: Prisma.ClassGroupCreateNestedManyWithoutTenantInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTenantInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutTenantInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
+  sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutTenantInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentCreateNestedManyWithoutTenantInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutTenantInput
+  assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
+  assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
+  reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
+  studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutStudentProfileFieldValuesInput = {
+  id?: string
+  name: string
+  slug: string
+  educationLevel?: string | null
+  activeAcademicYearId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
+  academicPeriods?: Prisma.AcademicPeriodUncheckedCreateNestedManyWithoutTenantInput
+  groups?: Prisma.GroupUncheckedCreateNestedManyWithoutTenantInput
+  subjects?: Prisma.SubjectUncheckedCreateNestedManyWithoutTenantInput
+  classes?: Prisma.ClassUncheckedCreateNestedManyWithoutTenantInput
+  classEnrollments?: Prisma.ClassEnrollmentUncheckedCreateNestedManyWithoutTenantInput
+  classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTenantInput
+  classGroups?: Prisma.ClassGroupUncheckedCreateNestedManyWithoutTenantInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTenantInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTenantInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutTenantInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTenantInput
+  assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
+  studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutStudentProfileFieldValuesInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutStudentProfileFieldValuesInput, Prisma.TenantUncheckedCreateWithoutStudentProfileFieldValuesInput>
+}
+
+export type TenantUpsertWithoutStudentProfileFieldValuesInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutStudentProfileFieldValuesInput, Prisma.TenantUncheckedUpdateWithoutStudentProfileFieldValuesInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutStudentProfileFieldValuesInput, Prisma.TenantUncheckedCreateWithoutStudentProfileFieldValuesInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutStudentProfileFieldValuesInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutStudentProfileFieldValuesInput, Prisma.TenantUncheckedUpdateWithoutStudentProfileFieldValuesInput>
+}
+
+export type TenantUpdateWithoutStudentProfileFieldValuesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
+  academicPeriods?: Prisma.AcademicPeriodUpdateManyWithoutTenantNestedInput
+  groups?: Prisma.GroupUpdateManyWithoutTenantNestedInput
+  subjects?: Prisma.SubjectUpdateManyWithoutTenantNestedInput
+  classes?: Prisma.ClassUpdateManyWithoutTenantNestedInput
+  classEnrollments?: Prisma.ClassEnrollmentUpdateManyWithoutTenantNestedInput
+  classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTenantNestedInput
+  classGroups?: Prisma.ClassGroupUpdateManyWithoutTenantNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTenantNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutTenantNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutTenantNestedInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUpdateManyWithoutTenantNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutTenantNestedInput
+  assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
+  assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
+  studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutStudentProfileFieldValuesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
+  academicPeriods?: Prisma.AcademicPeriodUncheckedUpdateManyWithoutTenantNestedInput
+  groups?: Prisma.GroupUncheckedUpdateManyWithoutTenantNestedInput
+  subjects?: Prisma.SubjectUncheckedUpdateManyWithoutTenantNestedInput
+  classes?: Prisma.ClassUncheckedUpdateManyWithoutTenantNestedInput
+  classEnrollments?: Prisma.ClassEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
+  classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  classGroups?: Prisma.ClassGroupUncheckedUpdateManyWithoutTenantNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTenantNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTenantNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutTenantNestedInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutTeacherProfileFieldValuesInput = {
+  id?: string
+  name: string
+  slug: string
+  educationLevel?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
+  academicPeriods?: Prisma.AcademicPeriodCreateNestedManyWithoutTenantInput
+  groups?: Prisma.GroupCreateNestedManyWithoutTenantInput
+  subjects?: Prisma.SubjectCreateNestedManyWithoutTenantInput
+  classes?: Prisma.ClassCreateNestedManyWithoutTenantInput
+  classEnrollments?: Prisma.ClassEnrollmentCreateNestedManyWithoutTenantInput
+  classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTenantInput
+  classGroups?: Prisma.ClassGroupCreateNestedManyWithoutTenantInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTenantInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutTenantInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
+  sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutTenantInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentCreateNestedManyWithoutTenantInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutTenantInput
+  assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
+  assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
+  reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
+  studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutTeacherProfileFieldValuesInput = {
+  id?: string
+  name: string
+  slug: string
+  educationLevel?: string | null
+  activeAcademicYearId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
+  academicPeriods?: Prisma.AcademicPeriodUncheckedCreateNestedManyWithoutTenantInput
+  groups?: Prisma.GroupUncheckedCreateNestedManyWithoutTenantInput
+  subjects?: Prisma.SubjectUncheckedCreateNestedManyWithoutTenantInput
+  classes?: Prisma.ClassUncheckedCreateNestedManyWithoutTenantInput
+  classEnrollments?: Prisma.ClassEnrollmentUncheckedCreateNestedManyWithoutTenantInput
+  classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTenantInput
+  classGroups?: Prisma.ClassGroupUncheckedCreateNestedManyWithoutTenantInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTenantInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTenantInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutTenantInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTenantInput
+  assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
+  studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutTeacherProfileFieldValuesInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutTeacherProfileFieldValuesInput, Prisma.TenantUncheckedCreateWithoutTeacherProfileFieldValuesInput>
+}
+
+export type TenantUpsertWithoutTeacherProfileFieldValuesInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutTeacherProfileFieldValuesInput, Prisma.TenantUncheckedUpdateWithoutTeacherProfileFieldValuesInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutTeacherProfileFieldValuesInput, Prisma.TenantUncheckedCreateWithoutTeacherProfileFieldValuesInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutTeacherProfileFieldValuesInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutTeacherProfileFieldValuesInput, Prisma.TenantUncheckedUpdateWithoutTeacherProfileFieldValuesInput>
+}
+
+export type TenantUpdateWithoutTeacherProfileFieldValuesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
+  academicPeriods?: Prisma.AcademicPeriodUpdateManyWithoutTenantNestedInput
+  groups?: Prisma.GroupUpdateManyWithoutTenantNestedInput
+  subjects?: Prisma.SubjectUpdateManyWithoutTenantNestedInput
+  classes?: Prisma.ClassUpdateManyWithoutTenantNestedInput
+  classEnrollments?: Prisma.ClassEnrollmentUpdateManyWithoutTenantNestedInput
+  classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTenantNestedInput
+  classGroups?: Prisma.ClassGroupUpdateManyWithoutTenantNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTenantNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutTenantNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutTenantNestedInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUpdateManyWithoutTenantNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutTenantNestedInput
+  assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
+  assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
+  studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutTeacherProfileFieldValuesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
+  academicPeriods?: Prisma.AcademicPeriodUncheckedUpdateManyWithoutTenantNestedInput
+  groups?: Prisma.GroupUncheckedUpdateManyWithoutTenantNestedInput
+  subjects?: Prisma.SubjectUncheckedUpdateManyWithoutTenantNestedInput
+  classes?: Prisma.ClassUncheckedUpdateManyWithoutTenantNestedInput
+  classEnrollments?: Prisma.ClassEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
+  classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  classGroups?: Prisma.ClassGroupUncheckedUpdateManyWithoutTenantNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTenantNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTenantNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutTenantNestedInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAcademicYearsInput = {
@@ -1316,6 +2072,10 @@ export type TenantCreateWithoutAcademicYearsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAcademicYearsInput = {
@@ -1347,6 +2107,10 @@ export type TenantUncheckedCreateWithoutAcademicYearsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAcademicYearsInput = {
@@ -1383,6 +2147,10 @@ export type TenantCreateWithoutActiveAcademicYearInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutActiveAcademicYearInput = {
@@ -1414,6 +2182,10 @@ export type TenantUncheckedCreateWithoutActiveAcademicYearInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutActiveAcademicYearInput = {
@@ -1461,6 +2233,10 @@ export type TenantUpdateWithoutAcademicYearsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAcademicYearsInput = {
@@ -1492,6 +2268,10 @@ export type TenantUncheckedUpdateWithoutAcademicYearsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUpsertWithoutActiveAcademicYearInput = {
@@ -1534,6 +2314,10 @@ export type TenantUpdateWithoutActiveAcademicYearInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutActiveAcademicYearInput = {
@@ -1565,6 +2349,10 @@ export type TenantUncheckedUpdateWithoutActiveAcademicYearInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAcademicPeriodsInput = {
@@ -1596,6 +2384,10 @@ export type TenantCreateWithoutAcademicPeriodsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAcademicPeriodsInput = {
@@ -1627,6 +2419,10 @@ export type TenantUncheckedCreateWithoutAcademicPeriodsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAcademicPeriodsInput = {
@@ -1674,6 +2470,10 @@ export type TenantUpdateWithoutAcademicPeriodsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAcademicPeriodsInput = {
@@ -1705,6 +2505,10 @@ export type TenantUncheckedUpdateWithoutAcademicPeriodsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutClassesInput = {
@@ -1736,6 +2540,10 @@ export type TenantCreateWithoutClassesInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutClassesInput = {
@@ -1767,6 +2575,10 @@ export type TenantUncheckedCreateWithoutClassesInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutClassesInput = {
@@ -1814,6 +2626,10 @@ export type TenantUpdateWithoutClassesInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutClassesInput = {
@@ -1845,6 +2661,10 @@ export type TenantUncheckedUpdateWithoutClassesInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutHomeroomAssignmentsInput = {
@@ -1876,6 +2696,10 @@ export type TenantCreateWithoutHomeroomAssignmentsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutHomeroomAssignmentsInput = {
@@ -1907,6 +2731,10 @@ export type TenantUncheckedCreateWithoutHomeroomAssignmentsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutHomeroomAssignmentsInput = {
@@ -1954,6 +2782,10 @@ export type TenantUpdateWithoutHomeroomAssignmentsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutHomeroomAssignmentsInput = {
@@ -1985,6 +2817,10 @@ export type TenantUncheckedUpdateWithoutHomeroomAssignmentsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutGroupsInput = {
@@ -2016,6 +2852,10 @@ export type TenantCreateWithoutGroupsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutGroupsInput = {
@@ -2047,6 +2887,10 @@ export type TenantUncheckedCreateWithoutGroupsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutGroupsInput = {
@@ -2094,6 +2938,10 @@ export type TenantUpdateWithoutGroupsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutGroupsInput = {
@@ -2125,6 +2973,10 @@ export type TenantUncheckedUpdateWithoutGroupsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutClassGroupsInput = {
@@ -2156,6 +3008,10 @@ export type TenantCreateWithoutClassGroupsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutClassGroupsInput = {
@@ -2187,6 +3043,10 @@ export type TenantUncheckedCreateWithoutClassGroupsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutClassGroupsInput = {
@@ -2234,6 +3094,10 @@ export type TenantUpdateWithoutClassGroupsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutClassGroupsInput = {
@@ -2265,6 +3129,10 @@ export type TenantUncheckedUpdateWithoutClassGroupsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutClassEnrollmentsInput = {
@@ -2296,6 +3164,10 @@ export type TenantCreateWithoutClassEnrollmentsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutClassEnrollmentsInput = {
@@ -2327,6 +3199,10 @@ export type TenantUncheckedCreateWithoutClassEnrollmentsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutClassEnrollmentsInput = {
@@ -2374,6 +3250,10 @@ export type TenantUpdateWithoutClassEnrollmentsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutClassEnrollmentsInput = {
@@ -2405,6 +3285,10 @@ export type TenantUncheckedUpdateWithoutClassEnrollmentsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSubjectsInput = {
@@ -2436,6 +3320,10 @@ export type TenantCreateWithoutSubjectsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSubjectsInput = {
@@ -2467,6 +3355,10 @@ export type TenantUncheckedCreateWithoutSubjectsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSubjectsInput = {
@@ -2514,6 +3406,10 @@ export type TenantUpdateWithoutSubjectsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSubjectsInput = {
@@ -2545,6 +3441,10 @@ export type TenantUncheckedUpdateWithoutSubjectsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutClassSubjectsInput = {
@@ -2576,6 +3476,10 @@ export type TenantCreateWithoutClassSubjectsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutClassSubjectsInput = {
@@ -2607,6 +3511,10 @@ export type TenantUncheckedCreateWithoutClassSubjectsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutClassSubjectsInput = {
@@ -2654,6 +3562,10 @@ export type TenantUpdateWithoutClassSubjectsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutClassSubjectsInput = {
@@ -2685,6 +3597,10 @@ export type TenantUncheckedUpdateWithoutClassSubjectsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSchedulesInput = {
@@ -2716,6 +3632,10 @@ export type TenantCreateWithoutSchedulesInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSchedulesInput = {
@@ -2747,6 +3667,10 @@ export type TenantUncheckedCreateWithoutSchedulesInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSchedulesInput = {
@@ -2794,6 +3718,10 @@ export type TenantUpdateWithoutSchedulesInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSchedulesInput = {
@@ -2825,6 +3753,10 @@ export type TenantUncheckedUpdateWithoutSchedulesInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSessionsInput = {
@@ -2856,6 +3788,10 @@ export type TenantCreateWithoutSessionsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSessionsInput = {
@@ -2887,6 +3823,10 @@ export type TenantUncheckedCreateWithoutSessionsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSessionsInput = {
@@ -2934,6 +3874,10 @@ export type TenantUpdateWithoutSessionsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSessionsInput = {
@@ -2965,6 +3909,10 @@ export type TenantUncheckedUpdateWithoutSessionsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSessionMaterialsInput = {
@@ -2996,6 +3944,10 @@ export type TenantCreateWithoutSessionMaterialsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSessionMaterialsInput = {
@@ -3027,6 +3979,10 @@ export type TenantUncheckedCreateWithoutSessionMaterialsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSessionMaterialsInput = {
@@ -3074,6 +4030,10 @@ export type TenantUpdateWithoutSessionMaterialsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSessionMaterialsInput = {
@@ -3105,6 +4065,10 @@ export type TenantUncheckedUpdateWithoutSessionMaterialsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSessionMaterialAttachmentsInput = {
@@ -3136,6 +4100,10 @@ export type TenantCreateWithoutSessionMaterialAttachmentsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSessionMaterialAttachmentsInput = {
@@ -3167,6 +4135,10 @@ export type TenantUncheckedCreateWithoutSessionMaterialAttachmentsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSessionMaterialAttachmentsInput = {
@@ -3214,6 +4186,10 @@ export type TenantUpdateWithoutSessionMaterialAttachmentsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSessionMaterialAttachmentsInput = {
@@ -3245,6 +4221,10 @@ export type TenantUncheckedUpdateWithoutSessionMaterialAttachmentsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAttendancesInput = {
@@ -3276,6 +4256,10 @@ export type TenantCreateWithoutAttendancesInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAttendancesInput = {
@@ -3307,6 +4291,10 @@ export type TenantUncheckedCreateWithoutAttendancesInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAttendancesInput = {
@@ -3354,6 +4342,10 @@ export type TenantUpdateWithoutAttendancesInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAttendancesInput = {
@@ -3385,6 +4377,10 @@ export type TenantUncheckedUpdateWithoutAttendancesInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAssessmentComponentsInput = {
@@ -3416,6 +4412,10 @@ export type TenantCreateWithoutAssessmentComponentsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAssessmentComponentsInput = {
@@ -3447,6 +4447,10 @@ export type TenantUncheckedCreateWithoutAssessmentComponentsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAssessmentComponentsInput = {
@@ -3494,6 +4498,10 @@ export type TenantUpdateWithoutAssessmentComponentsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAssessmentComponentsInput = {
@@ -3525,6 +4533,10 @@ export type TenantUncheckedUpdateWithoutAssessmentComponentsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAssessmentScoresInput = {
@@ -3556,6 +4568,10 @@ export type TenantCreateWithoutAssessmentScoresInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAssessmentScoresInput = {
@@ -3587,6 +4603,10 @@ export type TenantUncheckedCreateWithoutAssessmentScoresInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAssessmentScoresInput = {
@@ -3634,6 +4654,10 @@ export type TenantUpdateWithoutAssessmentScoresInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAssessmentScoresInput = {
@@ -3665,6 +4689,10 @@ export type TenantUncheckedUpdateWithoutAssessmentScoresInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutReportCardsInput = {
@@ -3696,6 +4724,10 @@ export type TenantCreateWithoutReportCardsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutReportCardsInput = {
@@ -3727,6 +4759,10 @@ export type TenantUncheckedCreateWithoutReportCardsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutReportCardsInput = {
@@ -3774,6 +4810,10 @@ export type TenantUpdateWithoutReportCardsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutReportCardsInput = {
@@ -3805,6 +4845,10 @@ export type TenantUncheckedUpdateWithoutReportCardsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutReportCardSubjectsInput = {
@@ -3836,6 +4880,10 @@ export type TenantCreateWithoutReportCardSubjectsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutReportCardSubjectsInput = {
@@ -3867,6 +4915,10 @@ export type TenantUncheckedCreateWithoutReportCardSubjectsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutReportCardSubjectsInput = {
@@ -3914,6 +4966,10 @@ export type TenantUpdateWithoutReportCardSubjectsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutReportCardSubjectsInput = {
@@ -3945,6 +5001,10 @@ export type TenantUncheckedUpdateWithoutReportCardSubjectsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAuditLogsInput = {
@@ -3976,6 +5036,10 @@ export type TenantCreateWithoutAuditLogsInput = {
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAuditLogsInput = {
@@ -4007,6 +5071,10 @@ export type TenantUncheckedCreateWithoutAuditLogsInput = {
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
   studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAuditLogsInput = {
@@ -4054,6 +5122,10 @@ export type TenantUpdateWithoutAuditLogsInput = {
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAuditLogsInput = {
@@ -4085,6 +5157,10 @@ export type TenantUncheckedUpdateWithoutAuditLogsInput = {
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
   studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 
@@ -4115,6 +5191,10 @@ export type TenantCountOutputType = {
   auditLogs: number
   teacherProfiles: number
   studentProfiles: number
+  tenantProfileFields: number
+  studentProfileFieldValues: number
+  teacherProfileFieldValues: number
+  tenantConfigurations: number
 }
 
 export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4140,6 +5220,10 @@ export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   auditLogs?: boolean | TenantCountOutputTypeCountAuditLogsArgs
   teacherProfiles?: boolean | TenantCountOutputTypeCountTeacherProfilesArgs
   studentProfiles?: boolean | TenantCountOutputTypeCountStudentProfilesArgs
+  tenantProfileFields?: boolean | TenantCountOutputTypeCountTenantProfileFieldsArgs
+  studentProfileFieldValues?: boolean | TenantCountOutputTypeCountStudentProfileFieldValuesArgs
+  teacherProfileFieldValues?: boolean | TenantCountOutputTypeCountTeacherProfileFieldValuesArgs
+  tenantConfigurations?: boolean | TenantCountOutputTypeCountTenantConfigurationsArgs
 }
 
 /**
@@ -4306,6 +5390,34 @@ export type TenantCountOutputTypeCountStudentProfilesArgs<ExtArgs extends runtim
   where?: Prisma.StudentProfileWhereInput
 }
 
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountTenantProfileFieldsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TenantProfileFieldWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountStudentProfileFieldValuesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StudentProfileFieldValueWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountTeacherProfileFieldValuesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TeacherProfileFieldValueWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountTenantConfigurationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TenantConfigurationWhereInput
+}
+
 
 export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -4338,6 +5450,10 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   auditLogs?: boolean | Prisma.Tenant$auditLogsArgs<ExtArgs>
   teacherProfiles?: boolean | Prisma.Tenant$teacherProfilesArgs<ExtArgs>
   studentProfiles?: boolean | Prisma.Tenant$studentProfilesArgs<ExtArgs>
+  tenantProfileFields?: boolean | Prisma.Tenant$tenantProfileFieldsArgs<ExtArgs>
+  studentProfileFieldValues?: boolean | Prisma.Tenant$studentProfileFieldValuesArgs<ExtArgs>
+  teacherProfileFieldValues?: boolean | Prisma.Tenant$teacherProfileFieldValuesArgs<ExtArgs>
+  tenantConfigurations?: boolean | Prisma.Tenant$tenantConfigurationsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
@@ -4398,6 +5514,10 @@ export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   auditLogs?: boolean | Prisma.Tenant$auditLogsArgs<ExtArgs>
   teacherProfiles?: boolean | Prisma.Tenant$teacherProfilesArgs<ExtArgs>
   studentProfiles?: boolean | Prisma.Tenant$studentProfilesArgs<ExtArgs>
+  tenantProfileFields?: boolean | Prisma.Tenant$tenantProfileFieldsArgs<ExtArgs>
+  studentProfileFieldValues?: boolean | Prisma.Tenant$studentProfileFieldValuesArgs<ExtArgs>
+  teacherProfileFieldValues?: boolean | Prisma.Tenant$teacherProfileFieldValuesArgs<ExtArgs>
+  tenantConfigurations?: boolean | Prisma.Tenant$tenantConfigurationsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TenantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4433,6 +5553,10 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     teacherProfiles: Prisma.$TeacherProfilePayload<ExtArgs>[]
     studentProfiles: Prisma.$StudentProfilePayload<ExtArgs>[]
+    tenantProfileFields: Prisma.$TenantProfileFieldPayload<ExtArgs>[]
+    studentProfileFieldValues: Prisma.$StudentProfileFieldValuePayload<ExtArgs>[]
+    teacherProfileFieldValues: Prisma.$TeacherProfileFieldValuePayload<ExtArgs>[]
+    tenantConfigurations: Prisma.$TenantConfigurationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4859,6 +5983,10 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
   auditLogs<T extends Prisma.Tenant$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   teacherProfiles<T extends Prisma.Tenant$teacherProfilesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$teacherProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   studentProfiles<T extends Prisma.Tenant$studentProfilesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$studentProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tenantProfileFields<T extends Prisma.Tenant$tenantProfileFieldsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$tenantProfileFieldsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantProfileFieldPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  studentProfileFieldValues<T extends Prisma.Tenant$studentProfileFieldValuesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$studentProfileFieldValuesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentProfileFieldValuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  teacherProfileFieldValues<T extends Prisma.Tenant$teacherProfileFieldValuesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$teacherProfileFieldValuesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherProfileFieldValuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tenantConfigurations<T extends Prisma.Tenant$tenantConfigurationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$tenantConfigurationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantConfigurationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5835,6 +6963,102 @@ export type Tenant$studentProfilesArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.StudentProfileScalarFieldEnum | Prisma.StudentProfileScalarFieldEnum[]
+}
+
+/**
+ * Tenant.tenantProfileFields
+ */
+export type Tenant$tenantProfileFieldsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TenantProfileField
+   */
+  select?: Prisma.TenantProfileFieldSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TenantProfileField
+   */
+  omit?: Prisma.TenantProfileFieldOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenantProfileFieldInclude<ExtArgs> | null
+  where?: Prisma.TenantProfileFieldWhereInput
+  orderBy?: Prisma.TenantProfileFieldOrderByWithRelationInput | Prisma.TenantProfileFieldOrderByWithRelationInput[]
+  cursor?: Prisma.TenantProfileFieldWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TenantProfileFieldScalarFieldEnum | Prisma.TenantProfileFieldScalarFieldEnum[]
+}
+
+/**
+ * Tenant.studentProfileFieldValues
+ */
+export type Tenant$studentProfileFieldValuesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StudentProfileFieldValue
+   */
+  select?: Prisma.StudentProfileFieldValueSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StudentProfileFieldValue
+   */
+  omit?: Prisma.StudentProfileFieldValueOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudentProfileFieldValueInclude<ExtArgs> | null
+  where?: Prisma.StudentProfileFieldValueWhereInput
+  orderBy?: Prisma.StudentProfileFieldValueOrderByWithRelationInput | Prisma.StudentProfileFieldValueOrderByWithRelationInput[]
+  cursor?: Prisma.StudentProfileFieldValueWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StudentProfileFieldValueScalarFieldEnum | Prisma.StudentProfileFieldValueScalarFieldEnum[]
+}
+
+/**
+ * Tenant.teacherProfileFieldValues
+ */
+export type Tenant$teacherProfileFieldValuesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TeacherProfileFieldValue
+   */
+  select?: Prisma.TeacherProfileFieldValueSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TeacherProfileFieldValue
+   */
+  omit?: Prisma.TeacherProfileFieldValueOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TeacherProfileFieldValueInclude<ExtArgs> | null
+  where?: Prisma.TeacherProfileFieldValueWhereInput
+  orderBy?: Prisma.TeacherProfileFieldValueOrderByWithRelationInput | Prisma.TeacherProfileFieldValueOrderByWithRelationInput[]
+  cursor?: Prisma.TeacherProfileFieldValueWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TeacherProfileFieldValueScalarFieldEnum | Prisma.TeacherProfileFieldValueScalarFieldEnum[]
+}
+
+/**
+ * Tenant.tenantConfigurations
+ */
+export type Tenant$tenantConfigurationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TenantConfiguration
+   */
+  select?: Prisma.TenantConfigurationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TenantConfiguration
+   */
+  omit?: Prisma.TenantConfigurationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenantConfigurationInclude<ExtArgs> | null
+  where?: Prisma.TenantConfigurationWhereInput
+  orderBy?: Prisma.TenantConfigurationOrderByWithRelationInput | Prisma.TenantConfigurationOrderByWithRelationInput[]
+  cursor?: Prisma.TenantConfigurationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TenantConfigurationScalarFieldEnum | Prisma.TenantConfigurationScalarFieldEnum[]
 }
 
 /**

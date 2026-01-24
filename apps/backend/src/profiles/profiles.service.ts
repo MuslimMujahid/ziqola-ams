@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ConflictException,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
@@ -21,6 +20,7 @@ export class ProfilesService {
     const offset = query.offset ?? 0;
     const limit = query.limit ?? 10;
     const order = query.order ?? "desc";
+    const includeCustomFields = query.includeCustomFields ?? false;
 
     const where: Prisma.TeacherProfileWhereInput = { tenantId };
 
@@ -43,8 +43,6 @@ export class ProfilesService {
           id: true,
           tenantId: true,
           userId: true,
-          nip: true,
-          nuptk: true,
           user: { select: { id: true, name: true, email: true } },
           createdAt: true,
           updatedAt: true,
@@ -53,8 +51,112 @@ export class ProfilesService {
       this.prisma.client.teacherProfile.count({ where }),
     ]);
 
+    if (!includeCustomFields) {
+      return {
+        data,
+        total,
+      };
+    }
+
+    const profileIds = data.map((profile) => profile.id);
+    if (profileIds.length === 0) {
+      return {
+        data: data.map((profile) => ({
+          ...profile,
+          customFieldValues: [],
+        })),
+        total,
+      };
+    }
+
+    const enabledFields = await this.prisma.client.tenantProfileField.findMany({
+      where: {
+        tenantId,
+        role: "teacher",
+        isEnabled: true,
+      },
+      select: { id: true },
+    });
+
+    const enabledFieldIds = enabledFields.map((field) => field.id);
+    if (enabledFieldIds.length === 0) {
+      return {
+        data: data.map((profile) => ({
+          ...profile,
+          customFieldValues: [],
+        })),
+        total,
+      };
+    }
+
+    const values = await this.prisma.client.teacherProfileFieldValue.findMany({
+      where: {
+        tenantId,
+        teacherProfileId: { in: profileIds },
+        fieldId: { in: enabledFieldIds },
+      },
+      select: {
+        id: true,
+        tenantId: true,
+        teacherProfileId: true,
+        fieldId: true,
+        valueText: true,
+        valueNumber: true,
+        valueDate: true,
+        valueBoolean: true,
+        valueSelect: true,
+        valueMultiSelect: true,
+        valueFile: true,
+        updatedAt: true,
+      },
+    });
+
+    type CustomFieldValue = {
+      id: string;
+      tenantId: string;
+      role: "teacher";
+      profileId: string;
+      fieldId: string;
+      valueText: string | null;
+      valueNumber: number | null;
+      valueDate: string | null;
+      valueBoolean: boolean | null;
+      valueSelect: string | null;
+      valueMultiSelect: string[] | null;
+      valueFile: Prisma.JsonValue | null;
+      updatedAt: string;
+    };
+
+    const valueMap = new Map<string, CustomFieldValue[]>();
+
+    for (const value of values) {
+      const profileId = value.teacherProfileId;
+      if (!valueMap.has(profileId)) {
+        valueMap.set(profileId, []);
+      }
+
+      valueMap.get(profileId)?.push({
+        id: value.id,
+        tenantId: value.tenantId,
+        role: "teacher",
+        profileId: value.teacherProfileId,
+        fieldId: value.fieldId,
+        valueText: value.valueText,
+        valueNumber: value.valueNumber,
+        valueDate: value.valueDate ? value.valueDate.toISOString() : null,
+        valueBoolean: value.valueBoolean,
+        valueSelect: value.valueSelect,
+        valueMultiSelect: value.valueMultiSelect ?? null,
+        valueFile: value.valueFile,
+        updatedAt: value.updatedAt.toISOString(),
+      });
+    }
+
     return {
-      data,
+      data: data.map((profile) => ({
+        ...profile,
+        customFieldValues: valueMap.get(profile.id) ?? [],
+      })),
       total,
     };
   }
@@ -63,6 +165,7 @@ export class ProfilesService {
     const offset = query.offset ?? 0;
     const limit = query.limit ?? 10;
     const order = query.order ?? "desc";
+    const includeCustomFields = query.includeCustomFields ?? false;
 
     const where: Prisma.StudentProfileWhereInput = { tenantId };
     const andFilters: Prisma.StudentProfileWhereInput[] = [];
@@ -72,8 +175,6 @@ export class ProfilesService {
         OR: [
           { user: { name: { contains: query.search, mode: "insensitive" } } },
           { user: { email: { contains: query.search, mode: "insensitive" } } },
-          { nis: { contains: query.search, mode: "insensitive" } },
-          { nisn: { contains: query.search, mode: "insensitive" } },
         ],
       });
     }
@@ -116,8 +217,6 @@ export class ProfilesService {
           id: true,
           tenantId: true,
           userId: true,
-          nis: true,
-          nisn: true,
           createdAt: true,
           updatedAt: true,
           user: { select: { id: true, name: true, email: true } },
@@ -164,8 +263,6 @@ export class ProfilesService {
         id: profile.id,
         tenantId: profile.tenantId,
         userId: profile.userId,
-        nis: profile.nis,
-        nisn: profile.nisn,
         createdAt: profile.createdAt,
         updatedAt: profile.updatedAt,
         user: profile.user,
@@ -173,8 +270,112 @@ export class ProfilesService {
       };
     });
 
+    if (!includeCustomFields) {
+      return {
+        data: mapped,
+        total,
+      };
+    }
+
+    const profileIds = mapped.map((profile) => profile.id);
+    if (profileIds.length === 0) {
+      return {
+        data: mapped.map((profile) => ({
+          ...profile,
+          customFieldValues: [],
+        })),
+        total,
+      };
+    }
+
+    const enabledFields = await this.prisma.client.tenantProfileField.findMany({
+      where: {
+        tenantId,
+        role: "student",
+        isEnabled: true,
+      },
+      select: { id: true },
+    });
+
+    const enabledFieldIds = enabledFields.map((field) => field.id);
+    if (enabledFieldIds.length === 0) {
+      return {
+        data: mapped.map((profile) => ({
+          ...profile,
+          customFieldValues: [],
+        })),
+        total,
+      };
+    }
+
+    const values = await this.prisma.client.studentProfileFieldValue.findMany({
+      where: {
+        tenantId,
+        studentProfileId: { in: profileIds },
+        fieldId: { in: enabledFieldIds },
+      },
+      select: {
+        id: true,
+        tenantId: true,
+        studentProfileId: true,
+        fieldId: true,
+        valueText: true,
+        valueNumber: true,
+        valueDate: true,
+        valueBoolean: true,
+        valueSelect: true,
+        valueMultiSelect: true,
+        valueFile: true,
+        updatedAt: true,
+      },
+    });
+
+    type CustomFieldValue = {
+      id: string;
+      tenantId: string;
+      role: "student";
+      profileId: string;
+      fieldId: string;
+      valueText: string | null;
+      valueNumber: number | null;
+      valueDate: string | null;
+      valueBoolean: boolean | null;
+      valueSelect: string | null;
+      valueMultiSelect: string[] | null;
+      valueFile: Prisma.JsonValue | null;
+      updatedAt: string;
+    };
+
+    const valueMap = new Map<string, CustomFieldValue[]>();
+
+    for (const value of values) {
+      const profileId = value.studentProfileId;
+      if (!valueMap.has(profileId)) {
+        valueMap.set(profileId, []);
+      }
+
+      valueMap.get(profileId)?.push({
+        id: value.id,
+        tenantId: value.tenantId,
+        role: "student",
+        profileId: value.studentProfileId,
+        fieldId: value.fieldId,
+        valueText: value.valueText,
+        valueNumber: value.valueNumber,
+        valueDate: value.valueDate ? value.valueDate.toISOString() : null,
+        valueBoolean: value.valueBoolean,
+        valueSelect: value.valueSelect,
+        valueMultiSelect: value.valueMultiSelect ?? null,
+        valueFile: value.valueFile,
+        updatedAt: value.updatedAt.toISOString(),
+      });
+    }
+
     return {
-      data: mapped,
+      data: mapped.map((profile) => ({
+        ...profile,
+        customFieldValues: valueMap.get(profile.id) ?? [],
+      })),
       total,
     };
   }
@@ -202,32 +403,10 @@ export class ProfilesService {
       throw new BadRequestException("User already has a teacher profile");
     }
 
-    if (dto.nip) {
-      const nipExists = await this.prisma.client.teacherProfile.findFirst({
-        where: { tenantId, nip: dto.nip },
-        select: { id: true },
-      });
-      if (nipExists) {
-        throw new ConflictException("NIP already exists");
-      }
-    }
-
-    if (dto.nuptk) {
-      const nuptkExists = await this.prisma.client.teacherProfile.findFirst({
-        where: { tenantId, nuptk: dto.nuptk },
-        select: { id: true },
-      });
-      if (nuptkExists) {
-        throw new ConflictException("NUPTK already exists");
-      }
-    }
-
     return this.prisma.client.teacherProfile.create({
       data: {
         tenantId,
         userId: dto.userId,
-        nip: dto.nip,
-        nuptk: dto.nuptk,
         hiredAt: dto.hiredAt ? new Date(dto.hiredAt) : undefined,
         additionalIdentifiers: dto.additionalIdentifiers
           ? (dto.additionalIdentifiers as Prisma.InputJsonValue)
@@ -237,8 +416,6 @@ export class ProfilesService {
         id: true,
         tenantId: true,
         userId: true,
-        nip: true,
-        nuptk: true,
         hiredAt: true,
         additionalIdentifiers: true,
         createdAt: true,
@@ -264,8 +441,6 @@ export class ProfilesService {
             phoneNumber: true,
           },
         },
-        nip: true,
-        nuptk: true,
         hiredAt: true,
         additionalIdentifiers: true,
         createdAt: true,
@@ -297,8 +472,6 @@ export class ProfilesService {
             phoneNumber: true,
           },
         },
-        nip: true,
-        nuptk: true,
         hiredAt: true,
         additionalIdentifiers: true,
         createdAt: true,
@@ -320,38 +493,16 @@ export class ProfilesService {
   ) {
     const existing = await this.prisma.client.teacherProfile.findFirst({
       where: { id, tenantId },
-      select: { id: true, nip: true, nuptk: true },
+      select: { id: true },
     });
 
     if (!existing) {
       throw new NotFoundException("Teacher profile not found");
     }
 
-    if (dto.nip && dto.nip !== existing.nip) {
-      const nipExists = await this.prisma.client.teacherProfile.findFirst({
-        where: { tenantId, nip: dto.nip },
-        select: { id: true },
-      });
-      if (nipExists) {
-        throw new ConflictException("NIP already exists");
-      }
-    }
-
-    if (dto.nuptk && dto.nuptk !== existing.nuptk) {
-      const nuptkExists = await this.prisma.client.teacherProfile.findFirst({
-        where: { tenantId, nuptk: dto.nuptk },
-        select: { id: true },
-      });
-      if (nuptkExists) {
-        throw new ConflictException("NUPTK already exists");
-      }
-    }
-
     return this.prisma.client.teacherProfile.update({
       where: { id },
       data: {
-        ...(dto.nip ? { nip: dto.nip } : {}),
-        ...(dto.nuptk ? { nuptk: dto.nuptk } : {}),
         ...(dto.hiredAt ? { hiredAt: new Date(dto.hiredAt) } : {}),
         ...(dto.additionalIdentifiers
           ? {
@@ -364,8 +515,6 @@ export class ProfilesService {
         id: true,
         tenantId: true,
         userId: true,
-        nip: true,
-        nuptk: true,
         hiredAt: true,
         additionalIdentifiers: true,
         updatedAt: true,
@@ -396,32 +545,10 @@ export class ProfilesService {
       throw new BadRequestException("User already has a student profile");
     }
 
-    if (dto.nis) {
-      const nisExists = await this.prisma.client.studentProfile.findFirst({
-        where: { tenantId, nis: dto.nis },
-        select: { id: true },
-      });
-      if (nisExists) {
-        throw new ConflictException("NIS already exists");
-      }
-    }
-
-    if (dto.nisn) {
-      const nisnExists = await this.prisma.client.studentProfile.findFirst({
-        where: { tenantId, nisn: dto.nisn },
-        select: { id: true },
-      });
-      if (nisnExists) {
-        throw new ConflictException("NISN already exists");
-      }
-    }
-
     return this.prisma.client.studentProfile.create({
       data: {
         tenantId,
         userId: dto.userId,
-        nis: dto.nis,
-        nisn: dto.nisn,
         additionalIdentifiers: dto.additionalIdentifiers
           ? (dto.additionalIdentifiers as Prisma.InputJsonValue)
           : undefined,
@@ -430,8 +557,6 @@ export class ProfilesService {
         id: true,
         tenantId: true,
         userId: true,
-        nis: true,
-        nisn: true,
         additionalIdentifiers: true,
         createdAt: true,
         updatedAt: true,
@@ -456,8 +581,6 @@ export class ProfilesService {
             phoneNumber: true,
           },
         },
-        nis: true,
-        nisn: true,
         additionalIdentifiers: true,
         createdAt: true,
         updatedAt: true,
@@ -488,8 +611,6 @@ export class ProfilesService {
             phoneNumber: true,
           },
         },
-        nis: true,
-        nisn: true,
         additionalIdentifiers: true,
         createdAt: true,
         updatedAt: true,
@@ -510,38 +631,16 @@ export class ProfilesService {
   ) {
     const existing = await this.prisma.client.studentProfile.findFirst({
       where: { id, tenantId },
-      select: { id: true, nis: true, nisn: true },
+      select: { id: true },
     });
 
     if (!existing) {
       throw new NotFoundException("Student profile not found");
     }
 
-    if (dto.nis && dto.nis !== existing.nis) {
-      const nisExists = await this.prisma.client.studentProfile.findFirst({
-        where: { tenantId, nis: dto.nis },
-        select: { id: true },
-      });
-      if (nisExists) {
-        throw new ConflictException("NIS already exists");
-      }
-    }
-
-    if (dto.nisn && dto.nisn !== existing.nisn) {
-      const nisnExists = await this.prisma.client.studentProfile.findFirst({
-        where: { tenantId, nisn: dto.nisn },
-        select: { id: true },
-      });
-      if (nisnExists) {
-        throw new ConflictException("NISN already exists");
-      }
-    }
-
     return this.prisma.client.studentProfile.update({
       where: { id },
       data: {
-        ...(dto.nis ? { nis: dto.nis } : {}),
-        ...(dto.nisn ? { nisn: dto.nisn } : {}),
         ...(dto.additionalIdentifiers
           ? {
               additionalIdentifiers:
@@ -553,8 +652,6 @@ export class ProfilesService {
         id: true,
         tenantId: true,
         userId: true,
-        nis: true,
-        nisn: true,
         additionalIdentifiers: true,
         updatedAt: true,
       },

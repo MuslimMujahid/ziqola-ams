@@ -438,11 +438,11 @@ function TeachingAssignmentsPage() {
             <Button
               type="button"
               size="sm"
-              variant="outline"
+              variant="secondary"
               onClick={() => openScheduleEdit(row.original)}
             >
               <PencilIcon className="h-4 w-4" aria-hidden="true" />
-              Ubah jadwal
+              Edit
             </Button>
             <Button
               type="button"

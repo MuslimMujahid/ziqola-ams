@@ -30,8 +30,6 @@ type StudentFormValues = {
   gender?: Gender | "none";
   dateOfBirth?: string;
   phoneNumber?: string;
-  nis?: string;
-  nisn?: string;
 };
 
 type StudentsFormModalProps = {
@@ -60,8 +58,6 @@ export function StudentsFormModal({
       gender: z.enum(["MALE", "FEMALE", "none"]).optional(),
       dateOfBirth: z.string().optional(),
       phoneNumber: z.string().optional(),
-      nis: z.string().optional(),
-      nisn: z.string().optional(),
     });
   }, []);
 
@@ -74,8 +70,6 @@ export function StudentsFormModal({
       gender: "none",
       dateOfBirth: "",
       phoneNumber: "",
-      nis: "",
-      nisn: "",
     } as StudentFormValues,
     validators: {
       onChange: formSchema,
@@ -91,7 +85,7 @@ export function StudentsFormModal({
         <DialogHeader>
           <DialogTitle>Tambah siswa</DialogTitle>
           <DialogDescription>
-            Buat akun siswa sekaligus identitas akademik.
+            Buat akun siswa dan tetapkan kelas awal.
           </DialogDescription>
         </DialogHeader>
 
@@ -163,19 +157,6 @@ export function StudentsFormModal({
             </form.AppField>
             <form.AppField name="dateOfBirth">
               {(field) => <field.DateField label="Tanggal lahir" />}
-            </form.AppField>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            <form.AppField name="nis">
-              {(field) => (
-                <field.TextField label="NIS" placeholder="Nomor induk" />
-              )}
-            </form.AppField>
-            <form.AppField name="nisn">
-              {(field) => (
-                <field.TextField label="NISN" placeholder="Nomor nasional" />
-              )}
             </form.AppField>
           </div>
 

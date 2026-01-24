@@ -23,6 +23,11 @@ import {
 } from "./-components";
 import { useInfiniteSessions } from "@/lib/services/api/sessions";
 import { type ScheduleItem, useSchedules } from "@/lib/services/api/schedules";
+import { Button } from "@repo/ui/button";
+import { CustomFieldsModal } from "@/components/profile/custom-fields-modal";
+import { useStudentProfileByUserId } from "@/lib/services/api/students";
+import { useProfileFieldsValues } from "@/lib/services/api/profile-custom-fields";
+import { formatProfileValue } from "@/lib/utils/profile-custom-fields";
 
 const TIME_FORMATTER = new Intl.DateTimeFormat("id-ID", {
   hour: "2-digit",
@@ -119,6 +124,20 @@ export const Route = createFileRoute("/_authed/dashboard/_topnavs/student/")({
 
 function StudentDashboardPage() {
   const user = useAuthStore((state) => state.user);
+  const tenantId = user?.tenantId ?? "";
+  const [isCustomFieldsOpen, setIsCustomFieldsOpen] = React.useState(false);
+  const studentProfileQuery = useStudentProfileByUserId(user?.id ?? "", {
+    enabled: Boolean(user?.id),
+  });
+  const studentProfileId = studentProfileQuery.data?.data.id ?? "";
+  const profileFieldsQuery = useProfileFieldsValues(
+    tenantId,
+    "student",
+    studentProfileId,
+    {
+      enabled: Boolean(tenantId) && Boolean(studentProfileId),
+    },
+  );
 
   const today = React.useMemo(() => normalizeDate(new Date()), []);
   const [range, setRange] = React.useState(() => {
@@ -141,16 +160,31 @@ function StudentDashboardPage() {
   const scheduleParams = React.useMemo(() => ({}), []);
   const schedulesQuery = useSchedules(scheduleParams, { enabled: true });
 
-  const profileInfo = React.useMemo(
-    () => ({
+  const profileInfo = React.useMemo(() => {
+    const fields = profileFieldsQuery.data?.data.fields ?? [];
+    const values = profileFieldsQuery.data?.data.values ?? [];
+    const nisField = fields.find((field) => field.key === "nis");
+    const nisValue = nisField
+      ? values.find((value) => value.fieldId === nisField.id)
+      : undefined;
+
+    const formattedNis = nisField
+      ? formatProfileValue(nisField, nisValue)
+      : "-";
+
+    return {
       name: user?.name ?? "Siswa",
       className: "XI IPA 1",
-      nis: "202301234",
+      nis: formattedNis === "-" ? null : formattedNis,
       email: user?.email ?? "siswa@ziqola.sch.id",
       avatarUrl: null,
-    }),
-    [user?.email, user?.name],
-  );
+    };
+  }, [
+    profileFieldsQuery.data?.data.fields,
+    profileFieldsQuery.data?.data.values,
+    user?.email,
+    user?.name,
+  ]);
 
   const scheduleItems = React.useMemo<StudentScheduleItem[]>(
     () =>
@@ -377,6 +411,14 @@ function StudentDashboardPage() {
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-1">
           <StudentProfileCard info={profileInfo} />
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => setIsCustomFieldsOpen(true)}
+            disabled={!studentProfileId}
+          >
+            Lengkapi data tambahan
+          </Button>
           <StudentTasksCard tasks={studentTasks} />
           <TenantNewsCard items={tenantNewsItems} />
           <TenantScheduleCard items={tenantScheduleItems} />
@@ -394,6 +436,17 @@ function StudentDashboardPage() {
           />
         </div>
       </div>
+
+      {isCustomFieldsOpen && studentProfileId ? (
+        <CustomFieldsModal
+          isOpen={isCustomFieldsOpen}
+          tenantId={tenantId}
+          role="student"
+          profileId={studentProfileId}
+          profileName={profileInfo.name}
+          onClose={() => setIsCustomFieldsOpen(false)}
+        />
+      ) : null}
     </div>
   );
 }
