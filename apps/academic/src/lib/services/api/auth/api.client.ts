@@ -1,5 +1,7 @@
 import { clientApi } from "@/lib/services/api/api";
 import type {
+  AcceptInviteResponse,
+  AcceptInviteVars,
   LoginResponse,
   LoginVars,
   LogoutResponse,
@@ -28,6 +30,16 @@ export async function registerUser(
 ): Promise<RegisterResponse> {
   const response = await clientApi.post<RegisterResponse>(
     "/auth/register",
+    data,
+  );
+  return response.data;
+}
+
+export async function acceptInvite(
+  data: AcceptInviteVars,
+): Promise<AcceptInviteResponse> {
+  const response = await clientApi.post<AcceptInviteResponse>(
+    "/auth/accept-invite",
     data,
   );
   return response.data;

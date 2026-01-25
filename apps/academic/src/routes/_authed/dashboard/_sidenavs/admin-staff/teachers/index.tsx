@@ -19,7 +19,7 @@ import { Input } from "@repo/ui/input";
 import { cn } from "@/lib/utils";
 import { useFeedbackDialog } from "@/lib/utils/use-feedback-dialog";
 import { useAuthStore } from "@/stores/auth.store";
-import { useRegisterUser } from "@/lib/services/api/auth";
+import { useInviteUser } from "@/lib/services/api/users";
 import {
   type ProfileFieldValue,
   type TenantProfileField,
@@ -110,19 +110,6 @@ function CustomFieldCell({ field, values }: CustomFieldCellProps) {
   );
 }
 
-function resolveFieldValueByKey(
-  fields: TenantProfileField[],
-  values: ProfileFieldValue[] | undefined,
-  key: string,
-) {
-  const field = fields.find((item) => item.key === key);
-  if (!field) return "-";
-  const valueMap = new Map(
-    (values ?? []).map((value) => [value.fieldId, value] as const),
-  );
-  return formatProfileValue(field, valueMap.get(field.id));
-}
-
 export const Route = createFileRoute(
   "/_authed/dashboard/_sidenavs/admin-staff/teachers/",
 )({
@@ -161,7 +148,7 @@ function TeachersPage() {
   const user = useAuthStore((state) => state.user);
   const tenantId = user?.tenantId ?? "";
 
-  const registerUser = useRegisterUser();
+  const inviteUser = useInviteUser();
   const createProfile = useCreateTeacherProfile();
   const updateProfile = useUpdateTeacherProfile();
   const exportProfiles = useExportProfiles();
@@ -330,7 +317,6 @@ function TeachersPage() {
     async (values: {
       name: string;
       email: string;
-      password: string;
       gender?: "MALE" | "FEMALE" | "none";
       dateOfBirth?: string;
       phoneNumber?: string;
@@ -348,12 +334,10 @@ function TeachersPage() {
       let createdUserEmail: string | null = null;
 
       try {
-        const registerResponse = await registerUser.mutateAsync({
-          tenantId: user.tenantId,
+        const registerResponse = await inviteUser.mutateAsync({
           role: "TEACHER",
           name: values.name.trim(),
           email: values.email.trim(),
-          password: values.password,
           gender: values.gender === "none" ? undefined : values.gender,
           dateOfBirth: normalizeOptional(values.dateOfBirth),
           phoneNumber: normalizeOptional(values.phoneNumber),
@@ -369,8 +353,8 @@ function TeachersPage() {
         setIsCreateOpen(false);
         showFeedback({
           tone: "success",
-          title: "Guru berhasil dibuat",
-          description: `${values.name} sudah ditambahkan ke daftar guru.`,
+          title: "Undangan guru terkirim",
+          description: `Email undangan sudah dikirim ke ${values.email}.`,
         });
       } catch (error) {
         if (createdUserEmail) {
@@ -397,7 +381,7 @@ function TeachersPage() {
       createProfile,
       getErrorMessage,
       normalizeOptional,
-      registerUser,
+      inviteUser,
       showFeedback,
       user?.tenantId,
     ],
@@ -682,7 +666,7 @@ function TeachersPage() {
       {isCreateOpen ? (
         <TeachersFormModal
           isOpen={isCreateOpen}
-          isSubmitting={registerUser.isPending || createProfile.isPending}
+          isSubmitting={inviteUser.isPending || createProfile.isPending}
           onClose={() => setIsCreateOpen(false)}
           onSubmit={handleCreate}
         />

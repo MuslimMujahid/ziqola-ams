@@ -1,24 +1,31 @@
 import {
   Injectable,
   UnauthorizedException,
-  ConflictException,
   NotFoundException,
+  BadRequestException,
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import * as argon2 from "argon2";
+import crypto from "crypto";
 import { PrismaService } from "../prisma/prisma.service";
 import { RegisterDto } from "./dto/register.dto";
 import { LoginDto } from "./dto/login.dto";
 import { JwtPayload } from "./strategies/jwt.strategy";
+import { AcceptInviteDto } from "./dto/accept-invite.dto";
+import { UsersService } from "../users/users.service";
+
+const STATUS_ACTIVE = "ACTIVE";
+const STATUS_INVITED = "INVITED";
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
+    private readonly users: UsersService,
   ) {}
 
-  async register(dto: RegisterDto) {
+  async register(dto: RegisterDto, invitedBy: { sub: string; email: string }) {
     const tenant = await this.prisma.client.tenant.findFirst({
       where: { id: dto.tenantId },
       select: { id: true },
@@ -28,25 +35,20 @@ export class AuthService {
       throw new NotFoundException("Tenant not found");
     }
 
-    const existing = await this.prisma.client.user.findFirst({
-      where: { tenantId: dto.tenantId, email: dto.email },
-    });
-    if (existing) {
-      throw new ConflictException("Email already registered for this tenant");
-    }
+    const { tenantId, ...invitePayload } = dto;
+    const result = await this.users.createInviteUser(
+      tenantId,
+      invitePayload,
+      invitedBy,
+    );
 
-    const passwordHash = await argon2.hash(dto.password);
-    const user = await this.prisma.client.user.create({
-      data: {
-        tenantId: dto.tenantId,
-        email: dto.email,
-        name: dto.name,
-        passwordHash,
-        role: dto.role,
-        gender: dto.gender,
-        dateOfBirth: dto.dateOfBirth ? new Date(dto.dateOfBirth) : undefined,
-        phoneNumber: dto.phoneNumber,
-      },
+    return result;
+  }
+
+  async login(dto: LoginDto) {
+    const tenantId = await this.resolveTenantId(dto);
+    const user = await this.prisma.client.user.findFirst({
+      where: { tenantId, email: dto.email, role: dto.role },
       select: {
         id: true,
         tenantId: true,
@@ -57,23 +59,15 @@ export class AuthService {
         dateOfBirth: true,
         phoneNumber: true,
         createdAt: true,
+        passwordHash: true,
+        status: true,
       },
     });
-    const token = await this.signToken(
-      user.id,
-      user.tenantId,
-      user.email,
-      user.role,
-    );
-    return { user, accessToken: token };
-  }
-
-  async login(dto: LoginDto) {
-    const tenantId = await this.resolveTenantId(dto);
-    const user = await this.prisma.client.user.findFirst({
-      where: { tenantId, email: dto.email, role: dto.role },
-    });
     if (!user) throw new UnauthorizedException("Invalid credentials");
+
+    if (user.status !== STATUS_ACTIVE) {
+      throw new UnauthorizedException("Account is not active");
+    }
 
     const valid = await argon2.verify(user.passwordHash, dto.password);
     if (!valid) throw new UnauthorizedException("Invalid credentials");
@@ -125,6 +119,55 @@ export class AuthService {
     return this.jwt.signAsync({ sub, tenantId, email, role });
   }
 
+  async acceptInvite(dto: AcceptInviteDto) {
+    const tokenHash = this.hashToken(dto.token);
+    const user = await this.prisma.client.user.findFirst({
+      where: { inviteTokenHash: tokenHash },
+      select: {
+        id: true,
+        tenantId: true,
+        email: true,
+        name: true,
+        role: true,
+        status: true,
+        inviteExpiresAt: true,
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException("Invite token invalid");
+    }
+
+    if (user.status !== STATUS_INVITED) {
+      throw new BadRequestException("Invite is no longer valid");
+    }
+
+    if (!user.inviteExpiresAt || user.inviteExpiresAt < new Date()) {
+      throw new UnauthorizedException("Invite has expired");
+    }
+
+    const passwordHash = await argon2.hash(dto.password);
+    const updated = await this.prisma.client.user.update({
+      where: { id: user.id },
+      data: {
+        passwordHash,
+        status: STATUS_ACTIVE,
+        inviteTokenHash: null,
+        inviteExpiresAt: null,
+      },
+      select: {
+        id: true,
+        tenantId: true,
+        email: true,
+        name: true,
+        role: true,
+        status: true,
+      },
+    });
+
+    return { user: updated };
+  }
+
   private async resolveTenantId(dto: LoginDto): Promise<string> {
     if (dto.tenantId) {
       return dto.tenantId;
@@ -144,5 +187,9 @@ export class AuthService {
     }
 
     return tenant.id;
+  }
+
+  private hashToken(token: string) {
+    return crypto.createHash("sha256").update(token).digest("hex");
   }
 }

@@ -5,10 +5,13 @@ import {
   Get,
   HttpCode,
   Post,
+  UseGuards,
 } from "@nestjs/common";
+import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
 import { AuthService } from "./auth.service";
 import { RegisterDto } from "./dto/register.dto";
 import { LoginDto } from "./dto/login.dto";
+import { AcceptInviteDto } from "./dto/accept-invite.dto";
 import { User as UserDecorator } from "../common/decorators/user.decorator";
 import type { JwtPayload } from "./strategies/jwt.strategy";
 import {
@@ -31,8 +34,17 @@ export class AuthController {
     if (user?.tenantId && user.tenantId !== dto.tenantId) {
       throw new ForbiddenException("Tenant access denied");
     }
-    const result = await this.auth.register(dto);
-    return successResponse(result, "User registered successfully", 201);
+    const result = await this.auth.register(dto, user);
+    return successResponse(result, "Invite created successfully", 201);
+  }
+
+  @Public()
+  @UseGuards(ThrottlerGuard)
+  @Throttle({ default: { limit: 10, ttl: 60 } })
+  @Post("accept-invite")
+  async acceptInvite(@Body() dto: AcceptInviteDto) {
+    const result = await this.auth.acceptInvite(dto);
+    return successResponse(result, "Invite accepted successfully", 200);
   }
 
   @Public()

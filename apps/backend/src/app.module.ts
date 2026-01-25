@@ -11,6 +11,7 @@ import { TenantsModule } from "./tenants/tenants.module";
 import { ProfilesModule } from "./profiles/profiles.module";
 import { AcademicModule } from "./academic/academic.module";
 import { ThrottlerModule } from "@nestjs/throttler";
+import { ScheduleModule } from "@nestjs/schedule";
 import { GroupsModule } from "./groups/groups.module";
 import { ClassesModule } from "./classes/classes.module";
 import { EnrollmentsModule } from "./enrollments/enrollments.module";
@@ -24,6 +25,7 @@ import { ConfigurationsModule } from "./configurations/configurations.module";
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ScheduleModule.forRoot(),
     ThrottlerModule.forRoot({
       throttlers: [
         {

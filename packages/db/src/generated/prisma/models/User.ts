@@ -20,8 +20,18 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  inviteSentCount: number | null
+}
+
+export type UserSumAggregateOutputType = {
+  inviteSentCount: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -31,6 +41,13 @@ export type UserMinAggregateOutputType = {
   name: string | null
   passwordHash: string | null
   role: $Enums.Role | null
+  status: $Enums.UserStatus | null
+  inviteTokenHash: string | null
+  inviteExpiresAt: Date | null
+  invitedAt: Date | null
+  lastInviteSentAt: Date | null
+  inviteSentCount: number | null
+  invitedById: string | null
   gender: $Enums.Gender | null
   dateOfBirth: Date | null
   phoneNumber: string | null
@@ -45,6 +62,13 @@ export type UserMaxAggregateOutputType = {
   name: string | null
   passwordHash: string | null
   role: $Enums.Role | null
+  status: $Enums.UserStatus | null
+  inviteTokenHash: string | null
+  inviteExpiresAt: Date | null
+  invitedAt: Date | null
+  lastInviteSentAt: Date | null
+  inviteSentCount: number | null
+  invitedById: string | null
   gender: $Enums.Gender | null
   dateOfBirth: Date | null
   phoneNumber: string | null
@@ -59,6 +83,13 @@ export type UserCountAggregateOutputType = {
   name: number
   passwordHash: number
   role: number
+  status: number
+  inviteTokenHash: number
+  inviteExpiresAt: number
+  invitedAt: number
+  lastInviteSentAt: number
+  inviteSentCount: number
+  invitedById: number
   gender: number
   dateOfBirth: number
   phoneNumber: number
@@ -68,6 +99,14 @@ export type UserCountAggregateOutputType = {
 }
 
 
+export type UserAvgAggregateInputType = {
+  inviteSentCount?: true
+}
+
+export type UserSumAggregateInputType = {
+  inviteSentCount?: true
+}
+
 export type UserMinAggregateInputType = {
   id?: true
   tenantId?: true
@@ -75,6 +114,13 @@ export type UserMinAggregateInputType = {
   name?: true
   passwordHash?: true
   role?: true
+  status?: true
+  inviteTokenHash?: true
+  inviteExpiresAt?: true
+  invitedAt?: true
+  lastInviteSentAt?: true
+  inviteSentCount?: true
+  invitedById?: true
   gender?: true
   dateOfBirth?: true
   phoneNumber?: true
@@ -89,6 +135,13 @@ export type UserMaxAggregateInputType = {
   name?: true
   passwordHash?: true
   role?: true
+  status?: true
+  inviteTokenHash?: true
+  inviteExpiresAt?: true
+  invitedAt?: true
+  lastInviteSentAt?: true
+  inviteSentCount?: true
+  invitedById?: true
   gender?: true
   dateOfBirth?: true
   phoneNumber?: true
@@ -103,6 +156,13 @@ export type UserCountAggregateInputType = {
   name?: true
   passwordHash?: true
   role?: true
+  status?: true
+  inviteTokenHash?: true
+  inviteExpiresAt?: true
+  invitedAt?: true
+  lastInviteSentAt?: true
+  inviteSentCount?: true
+  invitedById?: true
   gender?: true
   dateOfBirth?: true
   phoneNumber?: true
@@ -149,6 +209,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -179,6 +251,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -190,12 +264,21 @@ export type UserGroupByOutputType = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status: $Enums.UserStatus
+  inviteTokenHash: string | null
+  inviteExpiresAt: Date | null
+  invitedAt: Date | null
+  lastInviteSentAt: Date | null
+  inviteSentCount: number
+  invitedById: string | null
   gender: $Enums.Gender | null
   dateOfBirth: Date | null
   phoneNumber: string | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -225,6 +308,13 @@ export type UserWhereInput = {
   name?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  inviteTokenHash?: Prisma.StringNullableFilter<"User"> | string | null
+  inviteExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  invitedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  lastInviteSentAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  inviteSentCount?: Prisma.IntFilter<"User"> | number
+  invitedById?: Prisma.StringNullableFilter<"User"> | string | null
   gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
   dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
@@ -244,6 +334,13 @@ export type UserOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  inviteTokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  inviteExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  invitedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastInviteSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  inviteSentCount?: Prisma.SortOrder
+  invitedById?: Prisma.SortOrderInput | Prisma.SortOrder
   gender?: Prisma.SortOrderInput | Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
   phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -267,6 +364,13 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  inviteTokenHash?: Prisma.StringNullableFilter<"User"> | string | null
+  inviteExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  invitedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  lastInviteSentAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  inviteSentCount?: Prisma.IntFilter<"User"> | number
+  invitedById?: Prisma.StringNullableFilter<"User"> | string | null
   gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
   dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
@@ -286,14 +390,23 @@ export type UserOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  inviteTokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  inviteExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  invitedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastInviteSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  inviteSentCount?: Prisma.SortOrder
+  invitedById?: Prisma.SortOrderInput | Prisma.SortOrder
   gender?: Prisma.SortOrderInput | Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
   phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -306,6 +419,13 @@ export type UserScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"User"> | string
   passwordHash?: Prisma.StringWithAggregatesFilter<"User"> | string
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+  status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
+  inviteTokenHash?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  inviteExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  invitedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  lastInviteSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  inviteSentCount?: Prisma.IntWithAggregatesFilter<"User"> | number
+  invitedById?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   gender?: Prisma.EnumGenderNullableWithAggregatesFilter<"User"> | $Enums.Gender | null
   dateOfBirth?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   phoneNumber?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -319,6 +439,13 @@ export type UserCreateInput = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status?: $Enums.UserStatus
+  inviteTokenHash?: string | null
+  inviteExpiresAt?: Date | string | null
+  invitedAt?: Date | string | null
+  lastInviteSentAt?: Date | string | null
+  inviteSentCount?: number
+  invitedById?: string | null
   gender?: $Enums.Gender | null
   dateOfBirth?: Date | string | null
   phoneNumber?: string | null
@@ -338,6 +465,13 @@ export type UserUncheckedCreateInput = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status?: $Enums.UserStatus
+  inviteTokenHash?: string | null
+  inviteExpiresAt?: Date | string | null
+  invitedAt?: Date | string | null
+  lastInviteSentAt?: Date | string | null
+  inviteSentCount?: number
+  invitedById?: string | null
   gender?: $Enums.Gender | null
   dateOfBirth?: Date | string | null
   phoneNumber?: string | null
@@ -355,6 +489,13 @@ export type UserUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -374,6 +515,13 @@ export type UserUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -392,6 +540,13 @@ export type UserCreateManyInput = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status?: $Enums.UserStatus
+  inviteTokenHash?: string | null
+  inviteExpiresAt?: Date | string | null
+  invitedAt?: Date | string | null
+  lastInviteSentAt?: Date | string | null
+  inviteSentCount?: number
+  invitedById?: string | null
   gender?: $Enums.Gender | null
   dateOfBirth?: Date | string | null
   phoneNumber?: string | null
@@ -405,6 +560,13 @@ export type UserUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -419,6 +581,13 @@ export type UserUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -448,11 +617,22 @@ export type UserCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  inviteTokenHash?: Prisma.SortOrder
+  inviteExpiresAt?: Prisma.SortOrder
+  invitedAt?: Prisma.SortOrder
+  lastInviteSentAt?: Prisma.SortOrder
+  inviteSentCount?: Prisma.SortOrder
+  invitedById?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserAvgOrderByAggregateInput = {
+  inviteSentCount?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -462,6 +642,13 @@ export type UserMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  inviteTokenHash?: Prisma.SortOrder
+  inviteExpiresAt?: Prisma.SortOrder
+  invitedAt?: Prisma.SortOrder
+  lastInviteSentAt?: Prisma.SortOrder
+  inviteSentCount?: Prisma.SortOrder
+  invitedById?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
@@ -476,11 +663,22 @@ export type UserMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  inviteTokenHash?: Prisma.SortOrder
+  inviteExpiresAt?: Prisma.SortOrder
+  invitedAt?: Prisma.SortOrder
+  lastInviteSentAt?: Prisma.SortOrder
+  inviteSentCount?: Prisma.SortOrder
+  invitedById?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserSumOrderByAggregateInput = {
+  inviteSentCount?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -537,6 +735,18 @@ export type UserUncheckedUpdateManyWithoutTenantNestedInput = {
 
 export type EnumRoleFieldUpdateOperationsInput = {
   set?: $Enums.Role
+}
+
+export type EnumUserStatusFieldUpdateOperationsInput = {
+  set?: $Enums.UserStatus
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type NullableEnumGenderFieldUpdateOperationsInput = {
@@ -607,6 +817,13 @@ export type UserCreateWithoutTenantInput = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status?: $Enums.UserStatus
+  inviteTokenHash?: string | null
+  inviteExpiresAt?: Date | string | null
+  invitedAt?: Date | string | null
+  lastInviteSentAt?: Date | string | null
+  inviteSentCount?: number
+  invitedById?: string | null
   gender?: $Enums.Gender | null
   dateOfBirth?: Date | string | null
   phoneNumber?: string | null
@@ -624,6 +841,13 @@ export type UserUncheckedCreateWithoutTenantInput = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status?: $Enums.UserStatus
+  inviteTokenHash?: string | null
+  inviteExpiresAt?: Date | string | null
+  invitedAt?: Date | string | null
+  lastInviteSentAt?: Date | string | null
+  inviteSentCount?: number
+  invitedById?: string | null
   gender?: $Enums.Gender | null
   dateOfBirth?: Date | string | null
   phoneNumber?: string | null
@@ -671,6 +895,13 @@ export type UserScalarWhereInput = {
   name?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  inviteTokenHash?: Prisma.StringNullableFilter<"User"> | string | null
+  inviteExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  invitedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  lastInviteSentAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  inviteSentCount?: Prisma.IntFilter<"User"> | number
+  invitedById?: Prisma.StringNullableFilter<"User"> | string | null
   gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
   dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
@@ -684,6 +915,13 @@ export type UserCreateWithoutTeacherProfileInput = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status?: $Enums.UserStatus
+  inviteTokenHash?: string | null
+  inviteExpiresAt?: Date | string | null
+  invitedAt?: Date | string | null
+  lastInviteSentAt?: Date | string | null
+  inviteSentCount?: number
+  invitedById?: string | null
   gender?: $Enums.Gender | null
   dateOfBirth?: Date | string | null
   phoneNumber?: string | null
@@ -702,6 +940,13 @@ export type UserUncheckedCreateWithoutTeacherProfileInput = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status?: $Enums.UserStatus
+  inviteTokenHash?: string | null
+  inviteExpiresAt?: Date | string | null
+  invitedAt?: Date | string | null
+  lastInviteSentAt?: Date | string | null
+  inviteSentCount?: number
+  invitedById?: string | null
   gender?: $Enums.Gender | null
   dateOfBirth?: Date | string | null
   phoneNumber?: string | null
@@ -734,6 +979,13 @@ export type UserUpdateWithoutTeacherProfileInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -752,6 +1004,13 @@ export type UserUncheckedUpdateWithoutTeacherProfileInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -768,6 +1027,13 @@ export type UserCreateWithoutStudentProfileInput = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status?: $Enums.UserStatus
+  inviteTokenHash?: string | null
+  inviteExpiresAt?: Date | string | null
+  invitedAt?: Date | string | null
+  lastInviteSentAt?: Date | string | null
+  inviteSentCount?: number
+  invitedById?: string | null
   gender?: $Enums.Gender | null
   dateOfBirth?: Date | string | null
   phoneNumber?: string | null
@@ -786,6 +1052,13 @@ export type UserUncheckedCreateWithoutStudentProfileInput = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status?: $Enums.UserStatus
+  inviteTokenHash?: string | null
+  inviteExpiresAt?: Date | string | null
+  invitedAt?: Date | string | null
+  lastInviteSentAt?: Date | string | null
+  inviteSentCount?: number
+  invitedById?: string | null
   gender?: $Enums.Gender | null
   dateOfBirth?: Date | string | null
   phoneNumber?: string | null
@@ -818,6 +1091,13 @@ export type UserUpdateWithoutStudentProfileInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -836,6 +1116,13 @@ export type UserUncheckedUpdateWithoutStudentProfileInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -852,6 +1139,13 @@ export type UserCreateWithoutApprovedReportCardsInput = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status?: $Enums.UserStatus
+  inviteTokenHash?: string | null
+  inviteExpiresAt?: Date | string | null
+  invitedAt?: Date | string | null
+  lastInviteSentAt?: Date | string | null
+  inviteSentCount?: number
+  invitedById?: string | null
   gender?: $Enums.Gender | null
   dateOfBirth?: Date | string | null
   phoneNumber?: string | null
@@ -870,6 +1164,13 @@ export type UserUncheckedCreateWithoutApprovedReportCardsInput = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status?: $Enums.UserStatus
+  inviteTokenHash?: string | null
+  inviteExpiresAt?: Date | string | null
+  invitedAt?: Date | string | null
+  lastInviteSentAt?: Date | string | null
+  inviteSentCount?: number
+  invitedById?: string | null
   gender?: $Enums.Gender | null
   dateOfBirth?: Date | string | null
   phoneNumber?: string | null
@@ -902,6 +1203,13 @@ export type UserUpdateWithoutApprovedReportCardsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -920,6 +1228,13 @@ export type UserUncheckedUpdateWithoutApprovedReportCardsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -936,6 +1251,13 @@ export type UserCreateWithoutAuditLogsInput = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status?: $Enums.UserStatus
+  inviteTokenHash?: string | null
+  inviteExpiresAt?: Date | string | null
+  invitedAt?: Date | string | null
+  lastInviteSentAt?: Date | string | null
+  inviteSentCount?: number
+  invitedById?: string | null
   gender?: $Enums.Gender | null
   dateOfBirth?: Date | string | null
   phoneNumber?: string | null
@@ -954,6 +1276,13 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status?: $Enums.UserStatus
+  inviteTokenHash?: string | null
+  inviteExpiresAt?: Date | string | null
+  invitedAt?: Date | string | null
+  lastInviteSentAt?: Date | string | null
+  inviteSentCount?: number
+  invitedById?: string | null
   gender?: $Enums.Gender | null
   dateOfBirth?: Date | string | null
   phoneNumber?: string | null
@@ -986,6 +1315,13 @@ export type UserUpdateWithoutAuditLogsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1004,6 +1340,13 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1020,6 +1363,13 @@ export type UserCreateManyTenantInput = {
   name: string
   passwordHash: string
   role: $Enums.Role
+  status?: $Enums.UserStatus
+  inviteTokenHash?: string | null
+  inviteExpiresAt?: Date | string | null
+  invitedAt?: Date | string | null
+  lastInviteSentAt?: Date | string | null
+  inviteSentCount?: number
+  invitedById?: string | null
   gender?: $Enums.Gender | null
   dateOfBirth?: Date | string | null
   phoneNumber?: string | null
@@ -1033,6 +1383,13 @@ export type UserUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1050,6 +1407,13 @@ export type UserUncheckedUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1067,6 +1431,13 @@ export type UserUncheckedUpdateManyWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  inviteTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inviteExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastInviteSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  inviteSentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  invitedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1121,6 +1492,13 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   name?: boolean
   passwordHash?: boolean
   role?: boolean
+  status?: boolean
+  inviteTokenHash?: boolean
+  inviteExpiresAt?: boolean
+  invitedAt?: boolean
+  lastInviteSentAt?: boolean
+  inviteSentCount?: boolean
+  invitedById?: boolean
   gender?: boolean
   dateOfBirth?: boolean
   phoneNumber?: boolean
@@ -1141,6 +1519,13 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   passwordHash?: boolean
   role?: boolean
+  status?: boolean
+  inviteTokenHash?: boolean
+  inviteExpiresAt?: boolean
+  invitedAt?: boolean
+  lastInviteSentAt?: boolean
+  inviteSentCount?: boolean
+  invitedById?: boolean
   gender?: boolean
   dateOfBirth?: boolean
   phoneNumber?: boolean
@@ -1156,6 +1541,13 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   passwordHash?: boolean
   role?: boolean
+  status?: boolean
+  inviteTokenHash?: boolean
+  inviteExpiresAt?: boolean
+  invitedAt?: boolean
+  lastInviteSentAt?: boolean
+  inviteSentCount?: boolean
+  invitedById?: boolean
   gender?: boolean
   dateOfBirth?: boolean
   phoneNumber?: boolean
@@ -1171,6 +1563,13 @@ export type UserSelectScalar = {
   name?: boolean
   passwordHash?: boolean
   role?: boolean
+  status?: boolean
+  inviteTokenHash?: boolean
+  inviteExpiresAt?: boolean
+  invitedAt?: boolean
+  lastInviteSentAt?: boolean
+  inviteSentCount?: boolean
+  invitedById?: boolean
   gender?: boolean
   dateOfBirth?: boolean
   phoneNumber?: boolean
@@ -1178,7 +1577,7 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "email" | "name" | "passwordHash" | "role" | "gender" | "dateOfBirth" | "phoneNumber" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "email" | "name" | "passwordHash" | "role" | "status" | "inviteTokenHash" | "inviteExpiresAt" | "invitedAt" | "lastInviteSentAt" | "inviteSentCount" | "invitedById" | "gender" | "dateOfBirth" | "phoneNumber" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   approvedReportCards?: boolean | Prisma.User$approvedReportCardsArgs<ExtArgs>
@@ -1210,6 +1609,13 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     name: string
     passwordHash: string
     role: $Enums.Role
+    status: $Enums.UserStatus
+    inviteTokenHash: string | null
+    inviteExpiresAt: Date | null
+    invitedAt: Date | null
+    lastInviteSentAt: Date | null
+    inviteSentCount: number
+    invitedById: string | null
     gender: $Enums.Gender | null
     dateOfBirth: Date | null
     phoneNumber: string | null
@@ -1649,6 +2055,13 @@ export interface UserFieldRefs {
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly passwordHash: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
+  readonly status: Prisma.FieldRef<"User", 'UserStatus'>
+  readonly inviteTokenHash: Prisma.FieldRef<"User", 'String'>
+  readonly inviteExpiresAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly invitedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly lastInviteSentAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly inviteSentCount: Prisma.FieldRef<"User", 'Int'>
+  readonly invitedById: Prisma.FieldRef<"User", 'String'>
   readonly gender: Prisma.FieldRef<"User", 'Gender'>
   readonly dateOfBirth: Prisma.FieldRef<"User", 'DateTime'>
   readonly phoneNumber: Prisma.FieldRef<"User", 'String'>

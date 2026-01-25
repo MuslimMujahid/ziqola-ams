@@ -15,6 +15,8 @@ import { ListUsersDto } from "./dto/list-users.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { ResetPasswordDto } from "./dto/reset-password.dto";
 import { ChangePasswordDto } from "./dto/change-password.dto";
+import { CreateUserInviteDto } from "./dto/create-user-invite.dto";
+import { BulkCreateUsersDto } from "./dto/bulk-create-users.dto";
 import {
   Permission,
   RequirePermissions,
@@ -44,6 +46,36 @@ export class UsersController {
     return paginatedResponse(users, query, "Users retrieved successfully", 200);
   }
 
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
+  @RequirePermissions(Permission.USER_CREATE)
+  @Post()
+  async createInvite(
+    @Body() dto: CreateUserInviteDto,
+    @UserDecorator() user: JwtUser,
+  ) {
+    const result = await this.users.createInviteUser(user.tenantId, dto, user);
+    return successResponse(result, "Invite created successfully", 201);
+  }
+
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
+  @RequirePermissions(Permission.USER_CREATE)
+  @Post("bulk")
+  async bulkCreate(
+    @Body() dto: BulkCreateUsersDto,
+    @UserDecorator() user: JwtUser,
+  ) {
+    const result = await this.users.bulkCreateInvites(user.tenantId, dto, user);
+    return successResponse(result, "Invites processed successfully", 201);
+  }
+
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
+  @RequirePermissions(Permission.USER_UPDATE)
+  @Post(":id/invite")
+  async resendInvite(@Param("id") id: string, @UserDecorator() user: JwtUser) {
+    const result = await this.users.resendInvite(user.tenantId, id, user);
+    return successResponse(result, "Invite resent successfully", 200);
+  }
+
   @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF, Role.TEACHER, Role.STUDENT)
   @Get(":id")
   async findOne(@Param("id") id: string, @UserDecorator() user: JwtUser) {
@@ -63,7 +95,7 @@ export class UsersController {
   async update(
     @Param("id") id: string,
     @Body() dto: UpdateUserDto,
-    @UserDecorator() user: JwtUser
+    @UserDecorator() user: JwtUser,
   ) {
     const isSelf = user.sub === id;
     const isAdmin = [Role.PRINCIPAL, Role.ADMIN_STAFF].includes(user.role);
@@ -106,7 +138,7 @@ export class UsersController {
   async resetPassword(
     @Param("id") id: string,
     @Body() dto: ResetPasswordDto,
-    @UserDecorator() user: JwtUser
+    @UserDecorator() user: JwtUser,
   ) {
     if (user.sub === id) {
       throw new BadRequestException("Cannot reset own password");
@@ -121,7 +153,7 @@ export class UsersController {
   async changePassword(
     @Param("id") id: string,
     @Body() dto: ChangePasswordDto,
-    @UserDecorator() user: JwtUser
+    @UserDecorator() user: JwtUser,
   ) {
     if (user.sub !== id) {
       throw new ForbiddenException("Insufficient permissions");
@@ -131,7 +163,7 @@ export class UsersController {
       user.tenantId,
       id,
       dto.currentPassword,
-      dto.newPassword
+      dto.newPassword,
     );
     return successResponse(null, "Password changed successfully", 200);
   }

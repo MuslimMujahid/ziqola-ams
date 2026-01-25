@@ -41,7 +41,7 @@ import {
   useAcademicYears,
 } from "@/lib/services/api/academic";
 import { useClasses } from "@/lib/services/api/classes";
-import { useRegisterUser } from "@/lib/services/api/auth";
+import { useInviteUser } from "@/lib/services/api/users";
 import { useCreateEnrollment } from "@/lib/services/api/enrollments";
 import { useWorkspaceStore } from "@/stores/workspace.store";
 import {
@@ -200,7 +200,7 @@ function StudentsPage() {
   const user = useAuthStore((state) => state.user);
   const tenantId = user?.tenantId ?? "";
 
-  const registerUser = useRegisterUser();
+  const inviteUser = useInviteUser();
   const createProfile = useCreateStudentProfile();
   const createEnrollment = useCreateEnrollment();
   const exportProfiles = useExportProfiles();
@@ -364,11 +364,16 @@ function StudentsPage() {
     return trimmed.length > 0 ? trimmed : undefined;
   }, []);
 
+  const getErrorMessage = React.useCallback(
+    (error: unknown, fallback: string) =>
+      error instanceof Error ? error.message : fallback,
+    [],
+  );
+
   const handleCreate = React.useCallback(
     async (values: {
       name: string;
       email: string;
-      password: string;
       classId: string;
       gender?: "MALE" | "FEMALE" | "none";
       dateOfBirth?: string;
@@ -377,41 +382,49 @@ function StudentsPage() {
       if (!user?.tenantId || !academicYearId || !academicPeriodId) {
         return;
       }
+      try {
+        const registerResponse = await inviteUser.mutateAsync({
+          role: "STUDENT",
+          name: values.name.trim(),
+          email: values.email.trim(),
+          gender: values.gender === "none" ? undefined : values.gender,
+          dateOfBirth: normalizeOptional(values.dateOfBirth),
+          phoneNumber: normalizeOptional(values.phoneNumber),
+        });
 
-      const registerResponse = await registerUser.mutateAsync({
-        tenantId: user.tenantId,
-        role: "STUDENT",
-        name: values.name.trim(),
-        email: values.email.trim(),
-        password: values.password,
-        gender: values.gender === "none" ? undefined : values.gender,
-        dateOfBirth: normalizeOptional(values.dateOfBirth),
-        phoneNumber: normalizeOptional(values.phoneNumber),
-      });
+        const profile = await createProfile.mutateAsync({
+          userId: registerResponse.data.user.id,
+        });
 
-      const profile = await createProfile.mutateAsync({
-        userId: registerResponse.data.user.id,
-      });
+        const selectedPeriod = academicPeriodsQuery.data?.data.find(
+          (period) => period.id === academicPeriodId,
+        );
 
-      const selectedPeriod = academicPeriodsQuery.data?.data.find(
-        (period) => period.id === academicPeriodId,
-      );
+        const startDate =
+          selectedPeriod?.startDate ?? new Date().toISOString().slice(0, 10);
 
-      const startDate =
-        selectedPeriod?.startDate ?? new Date().toISOString().slice(0, 10);
+        await createEnrollment.mutateAsync({
+          studentProfileId: profile.id,
+          classId: values.classId,
+          startDate,
+        });
 
-      await createEnrollment.mutateAsync({
-        studentProfileId: profile.id,
-        classId: values.classId,
-        startDate,
-      });
-
-      setIsCreateOpen(false);
-      showFeedback({
-        tone: "success",
-        title: "Siswa berhasil dibuat",
-        description: `${values.name} sudah ditambahkan ke daftar siswa.`,
-      });
+        setIsCreateOpen(false);
+        showFeedback({
+          tone: "success",
+          title: "Undangan siswa terkirim",
+          description: `Email undangan sudah dikirim ke ${values.email}.`,
+        });
+      } catch (error) {
+        showFeedback({
+          tone: "error",
+          title: "Gagal menambah siswa",
+          description: getErrorMessage(
+            error,
+            "Periksa kembali data yang diisi lalu coba lagi.",
+          ),
+        });
+      }
     },
     [
       academicPeriodId,
@@ -419,8 +432,9 @@ function StudentsPage() {
       academicYearId,
       createEnrollment,
       createProfile,
+      getErrorMessage,
       normalizeOptional,
-      registerUser,
+      inviteUser,
       showFeedback,
       user?.tenantId,
     ],
@@ -743,7 +757,7 @@ function StudentsPage() {
           key={`student-create-${defaultClassId || "empty"}`}
           isOpen={isCreateOpen}
           isSubmitting={
-            registerUser.isPending ||
+            inviteUser.isPending ||
             createProfile.isPending ||
             createEnrollment.isPending
           }
@@ -775,7 +789,10 @@ function StudentsPage() {
           role="student"
           profileId={customFieldProfile.id}
           profileName={customFieldProfile.user.name}
-          onClose={() => setIsCustomFieldsOpen(false)}
+          onClose={() => {
+            setIsCustomFieldsOpen(false);
+            setCustomFieldProfile(null);
+          }}
         />
       ) : null}
 

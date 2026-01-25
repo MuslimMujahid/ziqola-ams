@@ -25,7 +25,6 @@ const GENDER_OPTIONS: Array<{ label: string; value: Gender | "none" }> = [
 type StudentFormValues = {
   name: string;
   email: string;
-  password: string;
   classId: string;
   gender?: Gender | "none";
   dateOfBirth?: string;
@@ -53,7 +52,6 @@ export function StudentsFormModal({
     return z.object({
       name: z.string().trim().min(2, "Minimal 2 karakter").max(100),
       email: z.string().trim().email("Email tidak valid"),
-      password: z.string().min(8, "Minimal 8 karakter"),
       classId: z.string().min(1, "Kelas wajib dipilih"),
       gender: z.enum(["MALE", "FEMALE", "none"]).optional(),
       dateOfBirth: z.string().optional(),
@@ -65,7 +63,6 @@ export function StudentsFormModal({
     defaultValues: {
       name: "",
       email: "",
-      password: "",
       classId: defaultClassId,
       gender: "none",
       dateOfBirth: "",
@@ -85,7 +82,7 @@ export function StudentsFormModal({
         <DialogHeader>
           <DialogTitle>Tambah siswa</DialogTitle>
           <DialogDescription>
-            Buat akun siswa dan tetapkan kelas awal.
+            Undangan akun siswa akan dikirim melalui email dan berlaku 72 jam.
           </DialogDescription>
         </DialogHeader>
 
@@ -126,24 +123,14 @@ export function StudentsFormModal({
             )}
           </form.AppField>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <form.AppField name="password">
-              {(field) => (
-                <field.PasswordField
-                  label="Password"
-                  placeholder="Minimal 8 karakter"
-                />
-              )}
-            </form.AppField>
-            <form.AppField name="phoneNumber">
-              {(field) => (
-                <field.TextField
-                  label="Nomor telepon"
-                  placeholder="08xxxxxxxxxx"
-                />
-              )}
-            </form.AppField>
-          </div>
+          <form.AppField name="phoneNumber">
+            {(field) => (
+              <field.TextField
+                label="Nomor telepon"
+                placeholder="08xxxxxxxxxx"
+              />
+            )}
+          </form.AppField>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <form.AppField name="gender">

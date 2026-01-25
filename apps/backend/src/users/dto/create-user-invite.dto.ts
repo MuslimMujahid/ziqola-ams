@@ -8,11 +8,7 @@ import {
 } from "class-validator";
 import { Gender, Role } from "@repo/db";
 
-export class RegisterDto {
-  @IsString()
-  @IsNotEmpty()
-  tenantId: string;
-
+export class CreateUserInviteDto {
   @IsEmail()
   email: string;
 

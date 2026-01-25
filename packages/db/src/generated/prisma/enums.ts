@@ -84,6 +84,14 @@ export const Gender = {
 export type Gender = (typeof Gender)[keyof typeof Gender]
 
 
+export const UserStatus = {
+  INVITED: 'INVITED',
+  ACTIVE: 'ACTIVE'
+} as const
+
+export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
+
+
 export const GradeLetter = {
   A: 'A',
   B: 'B',

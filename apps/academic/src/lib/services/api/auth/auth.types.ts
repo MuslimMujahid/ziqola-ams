@@ -34,7 +34,6 @@ export type LogoutResponse = EmptyResponse;
 export type RegisterVars = {
   tenantId: string;
   email: string;
-  password: string;
   name: string;
   role: AuthRole;
   gender?: Gender;
@@ -49,7 +48,17 @@ export type RegisterResponse = ApiResponse<{
     phoneNumber?: string | null;
     createdAt?: string | null;
   };
-  accessToken: string;
+}>;
+
+export type AcceptInviteVars = {
+  token: string;
+  password: string;
+};
+
+export type AcceptInviteResponse = ApiResponse<{
+  user: AuthUser & {
+    status?: string | null;
+  };
 }>;
 
 export type { Gender };

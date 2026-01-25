@@ -10,6 +10,7 @@ import {
   PeriodStatus,
   Gender,
   GroupType,
+  UserStatus,
 } from "../src/generated/prisma/enums";
 import type {
   Prisma,
@@ -237,6 +238,7 @@ async function main() {
       name: "Dr. Sarah Principal",
       passwordHash: defaultPassword,
       role: Role.PRINCIPAL,
+      status: UserStatus.ACTIVE,
       gender: Gender.FEMALE,
       phoneNumber: "+62-812-3456-7890",
     },
@@ -251,6 +253,7 @@ async function main() {
       name: "John Admin",
       passwordHash: defaultPassword,
       role: Role.ADMIN_STAFF,
+      status: UserStatus.ACTIVE,
       gender: Gender.MALE,
       phoneNumber: "+62-813-4567-8901",
     },
@@ -294,6 +297,7 @@ async function main() {
           name: seed.name,
           passwordHash: defaultPassword,
           role: Role.TEACHER,
+          status: UserStatus.ACTIVE,
           gender: seed.gender,
           teacherProfile: {
             create: {
@@ -332,6 +336,7 @@ async function main() {
           name: studentNames[i] ?? `Siswa ${num}`,
           passwordHash: defaultPassword,
           role: Role.STUDENT,
+          status: UserStatus.ACTIVE,
           gender: i % 2 === 0 ? Gender.MALE : Gender.FEMALE,
           dateOfBirth: new Date(2010 + (i % 3), i % 12, 15),
           studentProfile: {

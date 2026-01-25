@@ -13,6 +13,7 @@ import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as AuthedIndexRouteImport } from './routes/_authed/index'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AuthAcceptInviteRouteImport } from './routes/auth/accept-invite'
 import { Route as AuthLayoutRouteImport } from './routes/auth/_layout'
 import { Route as AuthedLayoutRouteImport } from './routes/_authed/_layout'
 import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashboard/index'
@@ -56,6 +57,11 @@ const AuthRegisterRoute = AuthRegisterRouteImport.update({
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/auth/login',
   path: '/auth/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthAcceptInviteRoute = AuthAcceptInviteRouteImport.update({
+  id: '/auth/accept-invite',
+  path: '/auth/accept-invite',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthLayoutRoute = AuthLayoutRouteImport.update({
@@ -207,6 +213,7 @@ const AuthedDashboardSidenavsAdminStaffSettingsCustomizationIndexRoute =
 
 export interface FileRoutesByFullPath {
   '/auth': typeof AuthLayoutRoute
+  '/auth/accept-invite': typeof AuthAcceptInviteRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/': typeof AuthedIndexRoute
@@ -234,6 +241,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthLayoutRoute
+  '/auth/accept-invite': typeof AuthAcceptInviteRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/': typeof AuthedIndexRoute
@@ -263,6 +271,7 @@ export interface FileRoutesById {
   '/_authed': typeof AuthedRouteWithChildren
   '/_authed/_layout': typeof AuthedLayoutRoute
   '/auth/_layout': typeof AuthLayoutRoute
+  '/auth/accept-invite': typeof AuthAcceptInviteRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/_authed/': typeof AuthedIndexRoute
@@ -294,6 +303,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/auth'
+    | '/auth/accept-invite'
     | '/auth/login'
     | '/auth/register'
     | '/'
@@ -321,6 +331,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
+    | '/auth/accept-invite'
     | '/auth/login'
     | '/auth/register'
     | '/'
@@ -349,6 +360,7 @@ export interface FileRouteTypes {
     | '/_authed'
     | '/_authed/_layout'
     | '/auth/_layout'
+    | '/auth/accept-invite'
     | '/auth/login'
     | '/auth/register'
     | '/_authed/'
@@ -380,6 +392,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthedRoute: typeof AuthedRouteWithChildren
   AuthLayoutRoute: typeof AuthLayoutRoute
+  AuthAcceptInviteRoute: typeof AuthAcceptInviteRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
 }
@@ -412,6 +425,13 @@ declare module '@tanstack/react-router' {
       path: '/auth/login'
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/accept-invite': {
+      id: '/auth/accept-invite'
+      path: '/auth/accept-invite'
+      fullPath: '/auth/accept-invite'
+      preLoaderRoute: typeof AuthAcceptInviteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/_layout': {
@@ -708,6 +728,7 @@ const AuthedRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   AuthedRoute: AuthedRouteWithChildren,
   AuthLayoutRoute: AuthLayoutRoute,
+  AuthAcceptInviteRoute: AuthAcceptInviteRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
 }

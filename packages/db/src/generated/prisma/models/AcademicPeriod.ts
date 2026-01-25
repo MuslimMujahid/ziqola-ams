@@ -618,14 +618,6 @@ export type AcademicPeriodUncheckedUpdateManyWithoutAcademicYearNestedInput = {
   deleteMany?: Prisma.AcademicPeriodScalarWhereInput | Prisma.AcademicPeriodScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type EnumPeriodStatusFieldUpdateOperationsInput = {
   set?: $Enums.PeriodStatus
 }
