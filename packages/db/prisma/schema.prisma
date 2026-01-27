@@ -42,13 +42,6 @@ enum AttendanceStatus {
   ABSENT
 }
 
-enum AssessmentType {
-  ASSIGNMENT
-  QUIZ
-  MIDTERM
-  FINAL_EXAM
-  PRACTICAL
-}
 
 enum ReportCardStatus {
   DRAFT
@@ -123,7 +116,9 @@ model Tenant {
   sessionMaterialAttachments SessionMaterialAttachment[]
   attendances          Attendance[]
   assessmentComponents AssessmentComponent[]
+  assessmentTypeWeights AssessmentTypeWeight[]
   assessmentScores     AssessmentScore[]
+  tenantAssessmentTypes TenantAssessmentType[]
   reportCards          ReportCard[]
   reportCardSubjects   ReportCardSubject[]
   auditLogs            AuditLog[]
@@ -133,9 +128,33 @@ model Tenant {
   studentProfileFieldValues StudentProfileFieldValue[]
   teacherProfileFieldValues TeacherProfileFieldValue[]
   tenantConfigurations TenantConfiguration[]
+  teacherSubjects      TeacherSubject[]
 
   createdAt            DateTime       @default(now())
   updatedAt            DateTime       @updatedAt
+}
+
+model TenantAssessmentType {
+  id          String   @id @default(uuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+
+  key         String
+  label       String
+  description String?
+  order       Int?
+  isEnabled   Boolean  @default(true)
+
+  sourceTemplateId String?
+
+  components  AssessmentComponent[]
+  typeWeights AssessmentTypeWeight[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([tenantId, key])
+  @@index([tenantId, isEnabled])
 }
 
 model TenantConfiguration {
@@ -219,6 +238,7 @@ model TeacherProfile {
   // Back-relations (teacher context)
   homeroomAssignments HomeroomAssignment[] @relation("HomeroomAssignmentTeacherProfile")
   classSubjects       ClassSubject[]        @relation("ClassSubjectTeacherProfile")
+  teacherSubjects      TeacherSubject[]
   schedules          Schedule[]             @relation("ScheduleTeacherProfile")
   compiledReportCards ReportCard[]          @relation("ReportCardCompiledByProfile")
   sessionMaterials    SessionMaterial[]
@@ -385,6 +405,7 @@ model AcademicPeriod {
   schedules     Schedule[]
   sessions      Session[]
   assessments   AssessmentComponent[]
+  assessmentTypeWeights AssessmentTypeWeight[]
   reportCards   ReportCard[]
 
   createdAt     DateTime       @default(now())
@@ -502,6 +523,7 @@ model Subject {
   tenant    Tenant  @relation(fields: [tenantId], references: [id])
   name      String
   classSubjects ClassSubject[]
+  teacherSubjects TeacherSubject[]
   isDeleted Boolean @default(false)
   deletedAt DateTime?
   createdAt DateTime @default(now())
@@ -537,6 +559,25 @@ model ClassSubject {
 
   @@unique([classId, academicYearId, subjectId, isDeleted])
   @@index([tenantId, teacherProfileId, isDeleted])
+}
+
+model TeacherSubject {
+  id               String          @id @default(uuid())
+  tenantId         String
+  tenant           Tenant          @relation(fields: [tenantId], references: [id])
+  teacherProfileId String
+  teacherProfile   TeacherProfile  @relation(fields: [teacherProfileId], references: [id])
+  subjectId        String
+  subject          Subject         @relation(fields: [subjectId], references: [id])
+
+  typeWeights      AssessmentTypeWeight[]
+
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@unique([tenantId, teacherProfileId, subjectId])
+  @@index([tenantId, teacherProfileId])
+  @@index([tenantId, subjectId])
 }
 
 // =============================
@@ -668,16 +709,37 @@ model AssessmentComponent {
   academicPeriodId String
   academicPeriod   AcademicPeriod  @relation(fields: [academicPeriodId], references: [id])
 
-  type             AssessmentType
-  name             String          // Optional descriptor override
-  weight           Int             // Percentage weight, must total 100 per classSubject+period (app-level validation)
+  assessmentTypeId String
+  assessmentType   TenantAssessmentType @relation(fields: [assessmentTypeId], references: [id])
+  name             String
+  weight           Int             @default(0) // Legacy component weight (unused; use AssessmentTypeWeight)
 
   scores           AssessmentScore[]
 
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
 
-  @@unique([classSubjectId, academicPeriodId, type])
+  @@index([tenantId, assessmentTypeId])
+}
+
+model AssessmentTypeWeight {
+  id               String          @id @default(uuid())
+  tenantId         String
+  tenant           Tenant          @relation(fields: [tenantId], references: [id])
+  teacherSubjectId String
+  teacherSubject   TeacherSubject  @relation(fields: [teacherSubjectId], references: [id])
+  academicPeriodId String
+  academicPeriod   AcademicPeriod  @relation(fields: [academicPeriodId], references: [id])
+  assessmentTypeId String
+  assessmentType   TenantAssessmentType @relation(fields: [assessmentTypeId], references: [id])
+  weight           Int             // Percentage weight per assessment type
+
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@unique([teacherSubjectId, academicPeriodId, assessmentTypeId])
+  @@index([tenantId, teacherSubjectId, academicPeriodId])
+  @@index([tenantId, assessmentTypeId])
 }
 
 model AssessmentScore {

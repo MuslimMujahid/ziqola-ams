@@ -10,6 +10,8 @@ import type {
   ExportProfilesVars,
   FilterProfilesResponse,
   FilterProfilesVars,
+  ListTenantAssessmentTypesResponse,
+  ListTenantAssessmentTypesVars,
   ProfileFieldsResponse,
   ProfileFieldsValuesResponse,
   TenantProfileConfigurationResponse,
@@ -155,6 +157,14 @@ async function exportProfiles(vars: ExportProfilesVars) {
   return response.data;
 }
 
+async function listTenantAssessmentTypes(vars: ListTenantAssessmentTypesVars) {
+  const response = await clientApi.get<ListTenantAssessmentTypesResponse>(
+    `/configurations/tenants/${vars.tenantId}/assessment-types`,
+    { params: { includeDisabled: vars.includeDisabled } },
+  );
+  return response.data;
+}
+
 export {
   listProfileTemplates,
   getProfileTemplate,
@@ -170,4 +180,5 @@ export {
   upsertProfileValues,
   filterProfiles,
   exportProfiles,
+  listTenantAssessmentTypes,
 };

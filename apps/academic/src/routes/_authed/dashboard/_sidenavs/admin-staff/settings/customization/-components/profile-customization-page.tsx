@@ -5,6 +5,7 @@ import { Loader2Icon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { Button } from "@repo/ui/button";
 import * as SelectBase from "@repo/ui/select";
 import { Switch } from "@repo/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/tabs";
 import {
   Table,
   TableBody,
@@ -20,6 +21,7 @@ import { useConfirm } from "@/lib/utils/use-confirm";
 import { useFeedbackDialog } from "@/lib/utils/use-feedback-dialog";
 import { useAppForm, withForm } from "@/lib/utils/form";
 import {
+  type AssessmentTypeConfiguration,
   type ConfigurationField,
   type FieldOption,
   type FieldType,
@@ -27,6 +29,7 @@ import {
   type ProfileRole,
   type ProfileTemplateDetail,
   type ProfileTemplateSummary,
+  type TenantAssessmentType,
   type TenantProfileField,
   useApplyProfileTemplate,
   useProfileTemplate,
@@ -34,6 +37,7 @@ import {
   useSuspenseTenantConfigurationsBatch,
 } from "@/lib/services/api/profile-custom-fields";
 import { ProfileFieldEditorModal } from "./profile-field-editor-modal";
+import { AssessmentTypeEditorModal } from "./assessment-type-editor-modal";
 
 const CUSTOM_TEMPLATE_VALUE = "custom";
 
@@ -59,16 +63,27 @@ type ProfileFieldFormValue = {
   isEnabled: boolean;
 };
 
+type AssessmentTypeFormValue = {
+  id: string;
+  key: string;
+  label: string;
+  description?: string | null;
+  order?: number | null;
+  isEnabled: boolean;
+};
+
 type ProfileCustomizationFormValues = {
   templateId: string;
   studentFields: ProfileFieldFormValue[];
   teacherFields: ProfileFieldFormValue[];
+  assessmentTypes: AssessmentTypeFormValue[];
 };
 
 const profileCustomizationDefaults: ProfileCustomizationFormValues = {
   templateId: CUSTOM_TEMPLATE_VALUE,
   studentFields: [],
   teacherFields: [],
+  assessmentTypes: [],
 };
 
 const profileCustomizationFormOptions = formOptions({
@@ -98,7 +113,7 @@ const TemplateSectionForm = withForm({
     isTemplateLoading,
   }) {
     return (
-      <section className="rounded-xl bg-surface-contrast p-6">
+      <div>
         <div className="mb-4 flex items-center justify-between">
           <div>
             <h2 className="text-base font-semibold text-ink-strong">
@@ -181,7 +196,7 @@ const TemplateSectionForm = withForm({
             }
           </form.Subscribe>
         </div>
-      </section>
+      </div>
     );
   },
 });
@@ -359,6 +374,144 @@ const ProfileFieldsSectionForm = withForm({
   },
 });
 
+type AssessmentTypesSectionProps = {
+  onAddType: () => void;
+  onEditType: (type: AssessmentTypeFormValue) => void;
+  onRemoveType: (type: AssessmentTypeFormValue) => void;
+  isLoading: boolean;
+};
+
+const AssessmentTypesSectionForm = withForm({
+  ...profileCustomizationFormOptions,
+  props: {
+    onAddType: () => {},
+    onEditType: (_type: AssessmentTypeFormValue) => {},
+    onRemoveType: (_type: AssessmentTypeFormValue) => {},
+    isLoading: false,
+  } as AssessmentTypesSectionProps,
+  render: function Render({
+    form,
+    onAddType,
+    onEditType,
+    onRemoveType,
+    isLoading,
+  }) {
+    return (
+      <section className="rounded-xl bg-surface-contrast p-6">
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            <h2 className="text-base font-semibold text-ink-strong">
+              Tipe penilaian
+            </h2>
+            <p className="text-sm text-ink-muted">
+              Kelola kategori penilaian yang digunakan guru.
+            </p>
+          </div>
+          <Button type="button" variant="secondary" onClick={onAddType}>
+            <PlusIcon className="h-4 w-4" aria-hidden="true" />
+            Tambah tipe
+          </Button>
+        </div>
+
+        {isLoading ? (
+          <div className="flex items-center gap-2 text-sm text-ink-muted">
+            <Loader2Icon className="h-4 w-4 animate-spin" aria-hidden="true" />
+            Memuat tipe penilaian...
+          </div>
+        ) : null}
+
+        <form.Field name="assessmentTypes" mode="array">
+          {(arrayField) =>
+            arrayField.state.value.length > 0 ? (
+              <TableContainer>
+                <TableScroll>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Tipe</TableHead>
+                        <TableHead>Deskripsi</TableHead>
+                        <TableHead>Aktif</TableHead>
+                        <TableHead className="text-right">Aksi</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {arrayField.state.value.map((type, index) => {
+                        const fieldPath = `assessmentTypes[${index}]` as const;
+                        const isEnabledPath = `${fieldPath}.isEnabled` as const;
+
+                        return (
+                          <TableRow key={`${type.id}-${index}`}>
+                            <TableCell>
+                              <p className="text-sm font-semibold text-ink-strong">
+                                {type.label}
+                              </p>
+                            </TableCell>
+                            <TableCell className="text-sm text-ink-muted">
+                              {type.description ? type.description : "-"}
+                            </TableCell>
+                            <TableCell>
+                              <form.Field name={isEnabledPath}>
+                                {(formField) => (
+                                  <Switch
+                                    checked={formField.state.value}
+                                    onCheckedChange={(checked) => {
+                                      if (checked !== formField.state.value) {
+                                        formField.handleChange(checked);
+                                      }
+                                    }}
+                                    aria-label={`Aktifkan tipe ${type.label}`}
+                                  />
+                                )}
+                              </form.Field>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex items-center justify-end gap-2">
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  className="hover:bg-surface-2"
+                                  onClick={() => onEditType(type)}
+                                >
+                                  <PencilIcon
+                                    className="h-4 w-4"
+                                    aria-hidden="true"
+                                  />
+                                  Edit
+                                </Button>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  className="text-destructive hover:text-destructive hover:bg-surface-2"
+                                  onClick={() => onRemoveType(type)}
+                                  disabled={!type.isEnabled}
+                                >
+                                  <Trash2Icon
+                                    className="h-4 w-4"
+                                    aria-hidden="true"
+                                  />
+                                  Nonaktifkan
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </TableScroll>
+              </TableContainer>
+            ) : (
+              <div className="rounded-lg bg-surface-1 p-4 text-sm text-ink-muted">
+                Belum ada tipe penilaian.
+              </div>
+            )
+          }
+        </form.Field>
+      </section>
+    );
+  },
+});
+
 function createLocalId() {
   return (
     globalThis.crypto?.randomUUID?.() ??
@@ -391,6 +544,44 @@ function mapTemplateField(field: ConfigurationField): ProfileFieldFormValue {
     validation: field.validation ?? null,
     order: field.order ?? null,
     isEnabled: field.isEnabled ?? true,
+  };
+}
+
+function mapTenantAssessmentType(
+  type: TenantAssessmentType,
+): AssessmentTypeFormValue {
+  return {
+    id: type.id,
+    key: type.key,
+    label: type.label,
+    description: type.description ?? null,
+    order: type.order ?? null,
+    isEnabled: type.isEnabled,
+  };
+}
+
+function mapTemplateAssessmentType(
+  type: AssessmentTypeConfiguration,
+): AssessmentTypeFormValue {
+  return {
+    id: createLocalId(),
+    key: type.key,
+    label: type.label,
+    description: type.description ?? null,
+    order: type.order ?? null,
+    isEnabled: type.isEnabled ?? true,
+  };
+}
+
+function mapToAssessmentTypeConfiguration(
+  type: AssessmentTypeFormValue,
+): AssessmentTypeConfiguration {
+  return {
+    key: type.key,
+    label: type.label,
+    description: type.description ?? null,
+    order: type.order ?? null,
+    isEnabled: type.isEnabled,
   };
 }
 
@@ -469,16 +660,21 @@ function ProfileCustomizationContent({
     const teacherFields = (
       profileConfigurationPayload?.teacherFields ?? []
     ).map(mapTenantField);
+    const assessmentTypes = (
+      profileConfigurationPayload?.assessmentTypes ?? []
+    ).map(mapTenantAssessmentType);
 
     return {
       templateId: appliedTemplateId ?? CUSTOM_TEMPLATE_VALUE,
       studentFields,
       teacherFields,
+      assessmentTypes,
     } satisfies ProfileCustomizationFormValues;
   }, [
     appliedTemplateId,
     profileConfigurationPayload?.studentFields,
     profileConfigurationPayload?.teacherFields,
+    profileConfigurationPayload?.assessmentTypes,
   ]);
 
   const form = useAppForm({
@@ -492,6 +688,13 @@ function ProfileCustomizationContent({
 
         const currentTemplateId = formApi.state.values.templateId;
         if (currentTemplateId !== CUSTOM_TEMPLATE_VALUE) {
+          <TemplateSectionForm
+            form={form}
+            templates={templates}
+            onTemplateChange={handleTemplateChange}
+            onReset={handleReset}
+            isTemplateLoading={templateDetailQuery.isFetching}
+          />;
           formApi.setFieldValue("templateId", CUSTOM_TEMPLATE_VALUE);
         }
       },
@@ -502,7 +705,8 @@ function ProfileCustomizationContent({
       if (value.templateId === CUSTOM_TEMPLATE_VALUE) {
         if (
           value.studentFields.length === 0 &&
-          value.teacherFields.length === 0
+          value.teacherFields.length === 0 &&
+          value.assessmentTypes.length === 0
         ) {
           showFeedback({
             tone: "warning",
@@ -521,6 +725,9 @@ function ProfileCustomizationContent({
                 teacher: value.teacherFields.map(mapToConfigurationField),
               },
             },
+            assessmentTypes: value.assessmentTypes.map(
+              mapToAssessmentTypeConfiguration,
+            ),
           },
         });
 
@@ -559,6 +766,14 @@ function ProfileCustomizationContent({
   const [editorRole, setEditorRole] = React.useState<ProfileRole>("student");
   const [editingField, setEditingField] =
     React.useState<ProfileFieldFormValue | null>(null);
+
+  const [isAssessmentEditorOpen, setIsAssessmentEditorOpen] =
+    React.useState(false);
+  const [assessmentEditorMode, setAssessmentEditorMode] = React.useState<
+    "create" | "edit"
+  >("create");
+  const [editingAssessmentType, setEditingAssessmentType] =
+    React.useState<AssessmentTypeFormValue | null>(null);
 
   const openCreate = React.useCallback((nextRole: ProfileRole) => {
     setEditorMode("create");
@@ -704,10 +919,14 @@ function ProfileCustomizationContent({
         template.profile.customFields.student.map(mapTemplateField);
       const teacherFields =
         template.profile.customFields.teacher.map(mapTemplateField);
+      const assessmentTypes = (template.assessmentTypes ?? []).map(
+        mapTemplateAssessmentType,
+      );
 
       isSyncingTemplateRef.current = true;
       form.setFieldValue("studentFields", studentFields);
       form.setFieldValue("teacherFields", teacherFields);
+      form.setFieldValue("assessmentTypes", assessmentTypes);
       isSyncingTemplateRef.current = false;
     },
     [form],
@@ -722,6 +941,93 @@ function ProfileCustomizationContent({
     applyTemplateToForm(template);
     setPendingTemplateId(null);
   }, [applyTemplateToForm, pendingTemplateId, templateDetailQuery.data]);
+
+  const openAssessmentCreate = React.useCallback(() => {
+    setAssessmentEditorMode("create");
+    setEditingAssessmentType(null);
+    setIsAssessmentEditorOpen(true);
+  }, []);
+
+  const openAssessmentEdit = React.useCallback(
+    (type: AssessmentTypeFormValue) => {
+      setAssessmentEditorMode("edit");
+      setEditingAssessmentType(type);
+      setIsAssessmentEditorOpen(true);
+    },
+    [],
+  );
+
+  const handleSubmitAssessmentType = React.useCallback(
+    async (values: {
+      key: string;
+      label: string;
+      description?: string;
+      order?: number;
+    }) => {
+      const types = form.state.values.assessmentTypes;
+
+      if (assessmentEditorMode === "create") {
+        if (types.some((type) => type.key === values.key)) {
+          showFeedback({
+            tone: "warning",
+            title: "Key sudah ada",
+            description: "Gunakan label lain untuk tipe baru.",
+          });
+          return;
+        }
+
+        const nextType: AssessmentTypeFormValue = {
+          id: createLocalId(),
+          key: values.key,
+          label: values.label,
+          description: values.description ?? null,
+          order: values.order ?? null,
+          isEnabled: true,
+        };
+
+        form.setFieldValue("assessmentTypes", [...types, nextType]);
+      } else if (editingAssessmentType) {
+        const nextTypes = types.map((type) =>
+          type.id === editingAssessmentType.id
+            ? {
+                ...type,
+                label: values.label,
+                description: values.description ?? null,
+                order: values.order ?? null,
+              }
+            : type,
+        );
+
+        form.setFieldValue("assessmentTypes", nextTypes);
+      }
+
+      setIsAssessmentEditorOpen(false);
+    },
+    [assessmentEditorMode, editingAssessmentType, form, showFeedback],
+  );
+
+  const handleRemoveAssessmentType = React.useCallback(
+    async (type: AssessmentTypeFormValue) => {
+      if (!type.isEnabled) return;
+
+      const shouldDisable = await confirm({
+        title: "Nonaktifkan tipe penilaian?",
+        description: `Tipe ${type.label} akan dinonaktifkan dan tidak dapat dipilih lagi.`,
+        confirmText: "Nonaktifkan",
+        cancelText: "Batal",
+        confirmVariant: "destructive",
+      });
+
+      if (!shouldDisable) return;
+
+      const nextTypes = form.state.values.assessmentTypes.map((item) =>
+        item.id === type.id ? { ...item, isEnabled: false } : item,
+      );
+
+      form.setFieldValue("assessmentTypes", nextTypes);
+    },
+    [confirm, form],
+  );
 
   return (
     <form
@@ -739,35 +1045,58 @@ function ProfileCustomizationContent({
         </p>
       </div>
 
-      <TemplateSectionForm
-        form={form}
-        templates={templates}
-        onTemplateChange={handleTemplateChange}
-        onReset={handleReset}
-        isTemplateLoading={templateDetailQuery.isFetching}
-      />
+      <Tabs defaultValue="profile" className="gap-6">
+        <section className="rounded-xl bg-surface-contrast pt-6 px-6">
+          <div className="space-y-6">
+            <TemplateSectionForm
+              form={form}
+              templates={templates}
+              onTemplateChange={handleTemplateChange}
+              onReset={handleReset}
+              isTemplateLoading={templateDetailQuery.isFetching}
+            />
+            <TabsList className="w-full sm:w-fit">
+              <TabsTrigger value="profile">Profil</TabsTrigger>
+              <TabsTrigger value="assessment">Tipe penilaian</TabsTrigger>
+            </TabsList>
+          </div>
+        </section>
 
-      <ProfileFieldsSectionForm
-        form={form}
-        role="student"
-        title="Profil siswa"
-        description="Kelola kolom tambahan untuk data siswa."
-        onAddField={openCreate}
-        onEditField={openEdit}
-        onRemoveField={handleRemoveField}
-        isLoading={configurationIsLoading}
-      />
+        <TabsContent value="profile">
+          <div className="space-y-4">
+            <ProfileFieldsSectionForm
+              form={form}
+              role="student"
+              title="Profil siswa"
+              description="Kelola kolom tambahan untuk data siswa."
+              onAddField={openCreate}
+              onEditField={openEdit}
+              onRemoveField={handleRemoveField}
+              isLoading={configurationIsLoading}
+            />
+            <ProfileFieldsSectionForm
+              form={form}
+              role="teacher"
+              title="Profil guru"
+              description="Kelola kolom tambahan untuk data guru."
+              onAddField={openCreate}
+              onEditField={openEdit}
+              onRemoveField={handleRemoveField}
+              isLoading={configurationIsLoading}
+            />
+          </div>
+        </TabsContent>
 
-      <ProfileFieldsSectionForm
-        form={form}
-        role="teacher"
-        title="Profil guru"
-        description="Kelola kolom tambahan untuk data guru."
-        onAddField={openCreate}
-        onEditField={openEdit}
-        onRemoveField={handleRemoveField}
-        isLoading={configurationIsLoading}
-      />
+        <TabsContent value="assessment">
+          <AssessmentTypesSectionForm
+            form={form}
+            onAddType={openAssessmentCreate}
+            onEditType={openAssessmentEdit}
+            onRemoveType={handleRemoveAssessmentType}
+            isLoading={configurationIsLoading}
+          />
+        </TabsContent>
+      </Tabs>
 
       <ProfileFieldEditorModal
         isOpen={isEditorOpen}
@@ -777,6 +1106,15 @@ function ProfileCustomizationContent({
         isSubmitting={false}
         onClose={() => setIsEditorOpen(false)}
         onSubmit={handleSubmitField}
+      />
+
+      <AssessmentTypeEditorModal
+        isOpen={isAssessmentEditorOpen}
+        mode={assessmentEditorMode}
+        type={editingAssessmentType}
+        isSubmitting={false}
+        onClose={() => setIsAssessmentEditorOpen(false)}
+        onSubmit={handleSubmitAssessmentType}
       />
 
       <FeedbackDialog />

@@ -1,110 +1,69 @@
-# User Creation Invite Flow — Implementation Plan
+## Implementation Plan — Teacher Assessment Scores Skeletons + Suspense Query
 
-## Summary of the conversation
+### Goal
 
-- Agreed to replace password-based user creation with an email invite flow.
-- Invite tokens expire after 72 hours.
-- Resend invite allowed, rate-limited to 15 minutes.
-- Duplicate emails are rejected (no merge).
-- Expired invites are recoverable via resend.
-- Expired, unaccepted invites are pruned (deleted), not kept for audit.
-- SMTP is available; no SSO.
-- Bulk imports should create invited users and send invites in batches.
-- Requirement to update the Create Student and Create Teacher forms to align with invite flow.
+Add proper loading skeletons to the teacher assessment scores page and migrate its data fetching to `useSuspenseQuery` for a smoother loading experience.
 
-## Requirements and scope
+### Scope
 
-- **User creation** (single + bulk) should no longer accept passwords.
-- **Invite flow**: generate token + expiry; send email invite; accept invite sets password and activates account.
-- **Resend invite**: regenerate token + expiry; invalidate old token; enforce 15-minute cooldown.
-- **Prune**: delete invited users with expired tokens.
-- **Forms**: update Create Student and Create Teacher forms to remove password fields and messaging.
+- Frontend (academic app): update the teacher assessment scores route to use suspense-driven data fetching and skeleton fallbacks.
+- API hooks: add a suspense variant for the assessment scores query hook used on the page.
 
-## Existing implementation review (to be confirmed)
+### Out of Scope
 
-- Locate current user creation endpoints and services (NestJS) handling student/teacher creation.
-- Find frontend forms for student/teacher creation and their validation schemas.
-- Identify any existing email service or auth flows for password setup.
-- Confirm Prisma user model fields and any existing status/invite fields.
+- Backend changes or new endpoints.
+- UI redesign beyond skeletons and suspense boundaries.
 
-## High-level design
+### Existing Implementation Review
 
-- **User status**: `invited` → `active`.
-- **Invite token**: store hash and expiry on user (or a dedicated invite table if preferred).
-- **Acceptance**: password set on accept; token cleared.
-- **Resend**: rate-limited by `lastInviteSentAt` (or equivalent).
-- **Prune**: scheduled job deletes expired invites.
+- Teacher assessment scores page is in [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/assessments/scores/$componentId.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/assessments/scores/$componentId.tsx).
+- The page uses `useAssessmentScores` with `enabled: true`, a manual `isLoading` empty message, and a route-level `pendingComponent` spinner.
+- Suspense patterns exist elsewhere with skeleton fallbacks (e.g., [apps/academic/src/routes/\_authed/dashboard/\_sidenavs/admin-staff/settings/customization/index.tsx](apps/academic/src/routes/_authed/dashboard/_sidenavs/admin-staff/settings/customization/index.tsx)).
+- Query hooks are located under [apps/academic/src/lib/services/api/assessment-scores](apps/academic/src/lib/services/api/assessment-scores).
 
-## API surface (conceptual)
+### Requirements
 
-- `POST /users` (create single user, no password)
-- `POST /users/bulk` (bulk create, no password)
-- `POST /users/:id/invite` (resend invite)
-- `POST /auth/accept-invite` (set password using token)
+- Use `useSuspenseQuery` for the assessment scores data.
+- Add skeleton UI that follows design guidelines (flat surfaces, no shadows/borders, surface backgrounds, animate-pulse).
+- Preserve existing UX, error handling, and form behavior.
 
-## Tasks
+### Implementation Plan
 
-1. **Backend: Data model**
+1. **Add Suspense Query Hook**
 
-- Add fields for invite flow: `status`, `inviteTokenHash`, `inviteExpiresAt`, `invitedAt`, `lastInviteSentAt`, `inviteSentCount`, `invitedBy` (if not present).
-- Confirm unique constraints on email to enforce reject on duplicates.
+- Create `useSuspenseAssessmentScores` alongside the current `useAssessmentScores` hook in the assessment scores API module.
+- Reuse existing query options and query keys to keep cache behavior consistent.
+- Export the suspense hook from the assessment scores index barrel.
 
-2. **Backend: Invite flow endpoints**
+2. **Introduce Skeleton Component**
 
-- Implement create user (single/bulk) without password; set `status=invited` and create token.
-- Implement resend invite with 15-minute cooldown; regenerate token and expiry.
-- Implement accept invite endpoint to set password and activate user.
+- Add a route-local skeleton component (e.g., `-components/teacher-assessment-scores-skeleton.tsx`).
+- Skeleton should cover:
+  - Page header and back button area
+  - Component/class/subject summary card
+  - Data table toolbar placeholder and several rows with input placeholders
+- Use `animate-pulse` with surface backgrounds to match the UI system.
 
-3. **Backend: Email delivery**
+3. **Refactor the Route to Use Suspense**
 
-- Add/extend email service to send invite links via SMTP.
-- Ensure tokens are hashed at rest; invite link includes token only.
+- Split the page into a small wrapper that reads `componentId` and renders a `React.Suspense` boundary.
+- Move data fetching into a child component that calls `useSuspenseAssessmentScores`.
+- Replace the route `pendingComponent` spinner with the new skeleton to keep a consistent loading experience.
+- Remove `isLoading` fallback strings and rely on suspense loading state.
 
-4. **Backend: Prune job**
+4. **Maintain Accessibility and Errors**
 
-- Add scheduled job to delete users with `status=invited` and `inviteExpiresAt < now()`.
+- Keep existing `errorComponent` behavior on the route.
+- Ensure skeleton uses semantic structure without extra ARIA unless necessary.
+- Preserve current error messaging and feedback dialog usage for submit errors.
 
-5. **Frontend: Create Student form update**
+### Testing Plan
 
-- Remove password fields and validation.
-- Update copy to explain invite email and 72-hour expiry.
-- Provide feedback for invite sent and duplicate email rejection.
+- Open the assessment scores page and confirm the skeleton appears until data resolves.
+- Verify the table renders and inputs populate after loading.
+- Save scores and confirm success/error feedback still works.
+- Confirm no Suspense or React Query warnings in the console.
 
-6. **Frontend: Create Teacher form update**
+### Open Decisions
 
-- Mirror student changes: remove password fields/validation.
-- Update copy and success/failure states.
-
-7. **Frontend: Bulk import UI (if present)**
-
-- Ensure bulk import creates invited users only.
-- Present invalid/duplicate rows results clearly.
-
-8. **Security & audit**
-
-- Rate limit resend and invite acceptance endpoints.
-- Avoid returning token in any response body.
-
-## Open questions
-
-- Confirm existing email templates or whether new template is needed.
-- Confirm location/format of bulk import (CSV upload or server-side batch).
-
-## Testing plan
-
-- **Unit tests**
-  - Token generation and hashing.
-  - Resend cooldown logic.
-  - Accept invite transitions status and clears token.
-  - Reject duplicate email creation.
-
-- **Integration tests**
-  - Create invited user (single and bulk).
-  - Resend invite success and rate-limited case.
-  - Accept invite with valid/expired token.
-  - Prune job removes expired invites.
-
-- **Frontend tests (if applicable)**
-  - Form validation removed for password fields.
-  - Error states for duplicate email.
-  - Success state indicates invite sent.
+- None identified; the page has a single query dependency so a single suspense boundary should suffice.

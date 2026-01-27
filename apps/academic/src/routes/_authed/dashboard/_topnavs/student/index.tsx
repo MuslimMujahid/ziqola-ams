@@ -23,8 +23,6 @@ import {
 } from "./-components";
 import { useInfiniteSessions } from "@/lib/services/api/sessions";
 import { type ScheduleItem, useSchedules } from "@/lib/services/api/schedules";
-import { Button } from "@repo/ui/button";
-import { CustomFieldsModal } from "@/components/profile/custom-fields-modal";
 import { useStudentProfileByUserId } from "@/lib/services/api/students";
 import { useProfileFieldsValues } from "@/lib/services/api/profile-custom-fields";
 import { formatProfileValue } from "@/lib/utils/profile-custom-fields";
@@ -125,7 +123,6 @@ export const Route = createFileRoute("/_authed/dashboard/_topnavs/student/")({
 function StudentDashboardPage() {
   const user = useAuthStore((state) => state.user);
   const tenantId = user?.tenantId ?? "";
-  const [isCustomFieldsOpen, setIsCustomFieldsOpen] = React.useState(false);
   const studentProfileQuery = useStudentProfileByUserId(user?.id ?? "", {
     enabled: Boolean(user?.id),
   });
@@ -411,14 +408,6 @@ function StudentDashboardPage() {
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-1">
           <StudentProfileCard info={profileInfo} />
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => setIsCustomFieldsOpen(true)}
-            disabled={!studentProfileId}
-          >
-            Lengkapi data tambahan
-          </Button>
           <StudentTasksCard tasks={studentTasks} />
           <TenantNewsCard items={tenantNewsItems} />
           <TenantScheduleCard items={tenantScheduleItems} />
@@ -436,17 +425,6 @@ function StudentDashboardPage() {
           />
         </div>
       </div>
-
-      {isCustomFieldsOpen && studentProfileId ? (
-        <CustomFieldsModal
-          isOpen={isCustomFieldsOpen}
-          tenantId={tenantId}
-          role="student"
-          profileId={studentProfileId}
-          profileName={profileInfo.name}
-          onClose={() => setIsCustomFieldsOpen(false)}
-        />
-      ) : null}
     </div>
   );
 }

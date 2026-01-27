@@ -39,7 +39,7 @@ export type AssessmentComponentMinAggregateOutputType = {
   tenantId: string | null
   classSubjectId: string | null
   academicPeriodId: string | null
-  type: $Enums.AssessmentType | null
+  assessmentTypeId: string | null
   name: string | null
   weight: number | null
   createdAt: Date | null
@@ -51,7 +51,7 @@ export type AssessmentComponentMaxAggregateOutputType = {
   tenantId: string | null
   classSubjectId: string | null
   academicPeriodId: string | null
-  type: $Enums.AssessmentType | null
+  assessmentTypeId: string | null
   name: string | null
   weight: number | null
   createdAt: Date | null
@@ -63,7 +63,7 @@ export type AssessmentComponentCountAggregateOutputType = {
   tenantId: number
   classSubjectId: number
   academicPeriodId: number
-  type: number
+  assessmentTypeId: number
   name: number
   weight: number
   createdAt: number
@@ -85,7 +85,7 @@ export type AssessmentComponentMinAggregateInputType = {
   tenantId?: true
   classSubjectId?: true
   academicPeriodId?: true
-  type?: true
+  assessmentTypeId?: true
   name?: true
   weight?: true
   createdAt?: true
@@ -97,7 +97,7 @@ export type AssessmentComponentMaxAggregateInputType = {
   tenantId?: true
   classSubjectId?: true
   academicPeriodId?: true
-  type?: true
+  assessmentTypeId?: true
   name?: true
   weight?: true
   createdAt?: true
@@ -109,7 +109,7 @@ export type AssessmentComponentCountAggregateInputType = {
   tenantId?: true
   classSubjectId?: true
   academicPeriodId?: true
-  type?: true
+  assessmentTypeId?: true
   name?: true
   weight?: true
   createdAt?: true
@@ -208,7 +208,7 @@ export type AssessmentComponentGroupByOutputType = {
   tenantId: string
   classSubjectId: string
   academicPeriodId: string
-  type: $Enums.AssessmentType
+  assessmentTypeId: string
   name: string
   weight: number
   createdAt: Date
@@ -243,7 +243,7 @@ export type AssessmentComponentWhereInput = {
   tenantId?: Prisma.StringFilter<"AssessmentComponent"> | string
   classSubjectId?: Prisma.StringFilter<"AssessmentComponent"> | string
   academicPeriodId?: Prisma.StringFilter<"AssessmentComponent"> | string
-  type?: Prisma.EnumAssessmentTypeFilter<"AssessmentComponent"> | $Enums.AssessmentType
+  assessmentTypeId?: Prisma.StringFilter<"AssessmentComponent"> | string
   name?: Prisma.StringFilter<"AssessmentComponent"> | string
   weight?: Prisma.IntFilter<"AssessmentComponent"> | number
   createdAt?: Prisma.DateTimeFilter<"AssessmentComponent"> | Date | string
@@ -251,6 +251,7 @@ export type AssessmentComponentWhereInput = {
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   classSubject?: Prisma.XOR<Prisma.ClassSubjectScalarRelationFilter, Prisma.ClassSubjectWhereInput>
   academicPeriod?: Prisma.XOR<Prisma.AcademicPeriodScalarRelationFilter, Prisma.AcademicPeriodWhereInput>
+  assessmentType?: Prisma.XOR<Prisma.TenantAssessmentTypeScalarRelationFilter, Prisma.TenantAssessmentTypeWhereInput>
   scores?: Prisma.AssessmentScoreListRelationFilter
 }
 
@@ -259,7 +260,7 @@ export type AssessmentComponentOrderByWithRelationInput = {
   tenantId?: Prisma.SortOrder
   classSubjectId?: Prisma.SortOrder
   academicPeriodId?: Prisma.SortOrder
-  type?: Prisma.SortOrder
+  assessmentTypeId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -267,19 +268,19 @@ export type AssessmentComponentOrderByWithRelationInput = {
   tenant?: Prisma.TenantOrderByWithRelationInput
   classSubject?: Prisma.ClassSubjectOrderByWithRelationInput
   academicPeriod?: Prisma.AcademicPeriodOrderByWithRelationInput
+  assessmentType?: Prisma.TenantAssessmentTypeOrderByWithRelationInput
   scores?: Prisma.AssessmentScoreOrderByRelationAggregateInput
 }
 
 export type AssessmentComponentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  classSubjectId_academicPeriodId_type?: Prisma.AssessmentComponentClassSubjectIdAcademicPeriodIdTypeCompoundUniqueInput
   AND?: Prisma.AssessmentComponentWhereInput | Prisma.AssessmentComponentWhereInput[]
   OR?: Prisma.AssessmentComponentWhereInput[]
   NOT?: Prisma.AssessmentComponentWhereInput | Prisma.AssessmentComponentWhereInput[]
   tenantId?: Prisma.StringFilter<"AssessmentComponent"> | string
   classSubjectId?: Prisma.StringFilter<"AssessmentComponent"> | string
   academicPeriodId?: Prisma.StringFilter<"AssessmentComponent"> | string
-  type?: Prisma.EnumAssessmentTypeFilter<"AssessmentComponent"> | $Enums.AssessmentType
+  assessmentTypeId?: Prisma.StringFilter<"AssessmentComponent"> | string
   name?: Prisma.StringFilter<"AssessmentComponent"> | string
   weight?: Prisma.IntFilter<"AssessmentComponent"> | number
   createdAt?: Prisma.DateTimeFilter<"AssessmentComponent"> | Date | string
@@ -287,15 +288,16 @@ export type AssessmentComponentWhereUniqueInput = Prisma.AtLeast<{
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   classSubject?: Prisma.XOR<Prisma.ClassSubjectScalarRelationFilter, Prisma.ClassSubjectWhereInput>
   academicPeriod?: Prisma.XOR<Prisma.AcademicPeriodScalarRelationFilter, Prisma.AcademicPeriodWhereInput>
+  assessmentType?: Prisma.XOR<Prisma.TenantAssessmentTypeScalarRelationFilter, Prisma.TenantAssessmentTypeWhereInput>
   scores?: Prisma.AssessmentScoreListRelationFilter
-}, "id" | "classSubjectId_academicPeriodId_type">
+}, "id">
 
 export type AssessmentComponentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   classSubjectId?: Prisma.SortOrder
   academicPeriodId?: Prisma.SortOrder
-  type?: Prisma.SortOrder
+  assessmentTypeId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -315,7 +317,7 @@ export type AssessmentComponentScalarWhereWithAggregatesInput = {
   tenantId?: Prisma.StringWithAggregatesFilter<"AssessmentComponent"> | string
   classSubjectId?: Prisma.StringWithAggregatesFilter<"AssessmentComponent"> | string
   academicPeriodId?: Prisma.StringWithAggregatesFilter<"AssessmentComponent"> | string
-  type?: Prisma.EnumAssessmentTypeWithAggregatesFilter<"AssessmentComponent"> | $Enums.AssessmentType
+  assessmentTypeId?: Prisma.StringWithAggregatesFilter<"AssessmentComponent"> | string
   name?: Prisma.StringWithAggregatesFilter<"AssessmentComponent"> | string
   weight?: Prisma.IntWithAggregatesFilter<"AssessmentComponent"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AssessmentComponent"> | Date | string
@@ -324,14 +326,14 @@ export type AssessmentComponentScalarWhereWithAggregatesInput = {
 
 export type AssessmentComponentCreateInput = {
   id?: string
-  type: $Enums.AssessmentType
   name: string
-  weight: number
+  weight?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutAssessmentComponentsInput
   classSubject: Prisma.ClassSubjectCreateNestedOneWithoutAssessmentsInput
   academicPeriod: Prisma.AcademicPeriodCreateNestedOneWithoutAssessmentsInput
+  assessmentType: Prisma.TenantAssessmentTypeCreateNestedOneWithoutComponentsInput
   scores?: Prisma.AssessmentScoreCreateNestedManyWithoutComponentInput
 }
 
@@ -340,9 +342,9 @@ export type AssessmentComponentUncheckedCreateInput = {
   tenantId: string
   classSubjectId: string
   academicPeriodId: string
-  type: $Enums.AssessmentType
+  assessmentTypeId: string
   name: string
-  weight: number
+  weight?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   scores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutComponentInput
@@ -350,7 +352,6 @@ export type AssessmentComponentUncheckedCreateInput = {
 
 export type AssessmentComponentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -358,6 +359,7 @@ export type AssessmentComponentUpdateInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutAssessmentComponentsNestedInput
   classSubject?: Prisma.ClassSubjectUpdateOneRequiredWithoutAssessmentsNestedInput
   academicPeriod?: Prisma.AcademicPeriodUpdateOneRequiredWithoutAssessmentsNestedInput
+  assessmentType?: Prisma.TenantAssessmentTypeUpdateOneRequiredWithoutComponentsNestedInput
   scores?: Prisma.AssessmentScoreUpdateManyWithoutComponentNestedInput
 }
 
@@ -366,7 +368,7 @@ export type AssessmentComponentUncheckedUpdateInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   classSubjectId?: Prisma.StringFieldUpdateOperationsInput | string
   academicPeriodId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+  assessmentTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -379,16 +381,15 @@ export type AssessmentComponentCreateManyInput = {
   tenantId: string
   classSubjectId: string
   academicPeriodId: string
-  type: $Enums.AssessmentType
+  assessmentTypeId: string
   name: string
-  weight: number
+  weight?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type AssessmentComponentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -400,7 +401,7 @@ export type AssessmentComponentUncheckedUpdateManyInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   classSubjectId?: Prisma.StringFieldUpdateOperationsInput | string
   academicPeriodId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+  assessmentTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -417,18 +418,12 @@ export type AssessmentComponentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type AssessmentComponentClassSubjectIdAcademicPeriodIdTypeCompoundUniqueInput = {
-  classSubjectId: string
-  academicPeriodId: string
-  type: $Enums.AssessmentType
-}
-
 export type AssessmentComponentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   classSubjectId?: Prisma.SortOrder
   academicPeriodId?: Prisma.SortOrder
-  type?: Prisma.SortOrder
+  assessmentTypeId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -444,7 +439,7 @@ export type AssessmentComponentMaxOrderByAggregateInput = {
   tenantId?: Prisma.SortOrder
   classSubjectId?: Prisma.SortOrder
   academicPeriodId?: Prisma.SortOrder
-  type?: Prisma.SortOrder
+  assessmentTypeId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -456,7 +451,7 @@ export type AssessmentComponentMinOrderByAggregateInput = {
   tenantId?: Prisma.SortOrder
   classSubjectId?: Prisma.SortOrder
   academicPeriodId?: Prisma.SortOrder
-  type?: Prisma.SortOrder
+  assessmentTypeId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -511,6 +506,48 @@ export type AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput = {
   connect?: Prisma.AssessmentComponentWhereUniqueInput | Prisma.AssessmentComponentWhereUniqueInput[]
   update?: Prisma.AssessmentComponentUpdateWithWhereUniqueWithoutTenantInput | Prisma.AssessmentComponentUpdateWithWhereUniqueWithoutTenantInput[]
   updateMany?: Prisma.AssessmentComponentUpdateManyWithWhereWithoutTenantInput | Prisma.AssessmentComponentUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.AssessmentComponentScalarWhereInput | Prisma.AssessmentComponentScalarWhereInput[]
+}
+
+export type AssessmentComponentCreateNestedManyWithoutAssessmentTypeInput = {
+  create?: Prisma.XOR<Prisma.AssessmentComponentCreateWithoutAssessmentTypeInput, Prisma.AssessmentComponentUncheckedCreateWithoutAssessmentTypeInput> | Prisma.AssessmentComponentCreateWithoutAssessmentTypeInput[] | Prisma.AssessmentComponentUncheckedCreateWithoutAssessmentTypeInput[]
+  connectOrCreate?: Prisma.AssessmentComponentCreateOrConnectWithoutAssessmentTypeInput | Prisma.AssessmentComponentCreateOrConnectWithoutAssessmentTypeInput[]
+  createMany?: Prisma.AssessmentComponentCreateManyAssessmentTypeInputEnvelope
+  connect?: Prisma.AssessmentComponentWhereUniqueInput | Prisma.AssessmentComponentWhereUniqueInput[]
+}
+
+export type AssessmentComponentUncheckedCreateNestedManyWithoutAssessmentTypeInput = {
+  create?: Prisma.XOR<Prisma.AssessmentComponentCreateWithoutAssessmentTypeInput, Prisma.AssessmentComponentUncheckedCreateWithoutAssessmentTypeInput> | Prisma.AssessmentComponentCreateWithoutAssessmentTypeInput[] | Prisma.AssessmentComponentUncheckedCreateWithoutAssessmentTypeInput[]
+  connectOrCreate?: Prisma.AssessmentComponentCreateOrConnectWithoutAssessmentTypeInput | Prisma.AssessmentComponentCreateOrConnectWithoutAssessmentTypeInput[]
+  createMany?: Prisma.AssessmentComponentCreateManyAssessmentTypeInputEnvelope
+  connect?: Prisma.AssessmentComponentWhereUniqueInput | Prisma.AssessmentComponentWhereUniqueInput[]
+}
+
+export type AssessmentComponentUpdateManyWithoutAssessmentTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.AssessmentComponentCreateWithoutAssessmentTypeInput, Prisma.AssessmentComponentUncheckedCreateWithoutAssessmentTypeInput> | Prisma.AssessmentComponentCreateWithoutAssessmentTypeInput[] | Prisma.AssessmentComponentUncheckedCreateWithoutAssessmentTypeInput[]
+  connectOrCreate?: Prisma.AssessmentComponentCreateOrConnectWithoutAssessmentTypeInput | Prisma.AssessmentComponentCreateOrConnectWithoutAssessmentTypeInput[]
+  upsert?: Prisma.AssessmentComponentUpsertWithWhereUniqueWithoutAssessmentTypeInput | Prisma.AssessmentComponentUpsertWithWhereUniqueWithoutAssessmentTypeInput[]
+  createMany?: Prisma.AssessmentComponentCreateManyAssessmentTypeInputEnvelope
+  set?: Prisma.AssessmentComponentWhereUniqueInput | Prisma.AssessmentComponentWhereUniqueInput[]
+  disconnect?: Prisma.AssessmentComponentWhereUniqueInput | Prisma.AssessmentComponentWhereUniqueInput[]
+  delete?: Prisma.AssessmentComponentWhereUniqueInput | Prisma.AssessmentComponentWhereUniqueInput[]
+  connect?: Prisma.AssessmentComponentWhereUniqueInput | Prisma.AssessmentComponentWhereUniqueInput[]
+  update?: Prisma.AssessmentComponentUpdateWithWhereUniqueWithoutAssessmentTypeInput | Prisma.AssessmentComponentUpdateWithWhereUniqueWithoutAssessmentTypeInput[]
+  updateMany?: Prisma.AssessmentComponentUpdateManyWithWhereWithoutAssessmentTypeInput | Prisma.AssessmentComponentUpdateManyWithWhereWithoutAssessmentTypeInput[]
+  deleteMany?: Prisma.AssessmentComponentScalarWhereInput | Prisma.AssessmentComponentScalarWhereInput[]
+}
+
+export type AssessmentComponentUncheckedUpdateManyWithoutAssessmentTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.AssessmentComponentCreateWithoutAssessmentTypeInput, Prisma.AssessmentComponentUncheckedCreateWithoutAssessmentTypeInput> | Prisma.AssessmentComponentCreateWithoutAssessmentTypeInput[] | Prisma.AssessmentComponentUncheckedCreateWithoutAssessmentTypeInput[]
+  connectOrCreate?: Prisma.AssessmentComponentCreateOrConnectWithoutAssessmentTypeInput | Prisma.AssessmentComponentCreateOrConnectWithoutAssessmentTypeInput[]
+  upsert?: Prisma.AssessmentComponentUpsertWithWhereUniqueWithoutAssessmentTypeInput | Prisma.AssessmentComponentUpsertWithWhereUniqueWithoutAssessmentTypeInput[]
+  createMany?: Prisma.AssessmentComponentCreateManyAssessmentTypeInputEnvelope
+  set?: Prisma.AssessmentComponentWhereUniqueInput | Prisma.AssessmentComponentWhereUniqueInput[]
+  disconnect?: Prisma.AssessmentComponentWhereUniqueInput | Prisma.AssessmentComponentWhereUniqueInput[]
+  delete?: Prisma.AssessmentComponentWhereUniqueInput | Prisma.AssessmentComponentWhereUniqueInput[]
+  connect?: Prisma.AssessmentComponentWhereUniqueInput | Prisma.AssessmentComponentWhereUniqueInput[]
+  update?: Prisma.AssessmentComponentUpdateWithWhereUniqueWithoutAssessmentTypeInput | Prisma.AssessmentComponentUpdateWithWhereUniqueWithoutAssessmentTypeInput[]
+  updateMany?: Prisma.AssessmentComponentUpdateManyWithWhereWithoutAssessmentTypeInput | Prisma.AssessmentComponentUpdateManyWithWhereWithoutAssessmentTypeInput[]
   deleteMany?: Prisma.AssessmentComponentScalarWhereInput | Prisma.AssessmentComponentScalarWhereInput[]
 }
 
@@ -598,10 +635,6 @@ export type AssessmentComponentUncheckedUpdateManyWithoutClassSubjectNestedInput
   deleteMany?: Prisma.AssessmentComponentScalarWhereInput | Prisma.AssessmentComponentScalarWhereInput[]
 }
 
-export type EnumAssessmentTypeFieldUpdateOperationsInput = {
-  set?: $Enums.AssessmentType
-}
-
 export type AssessmentComponentCreateNestedOneWithoutScoresInput = {
   create?: Prisma.XOR<Prisma.AssessmentComponentCreateWithoutScoresInput, Prisma.AssessmentComponentUncheckedCreateWithoutScoresInput>
   connectOrCreate?: Prisma.AssessmentComponentCreateOrConnectWithoutScoresInput
@@ -618,13 +651,13 @@ export type AssessmentComponentUpdateOneRequiredWithoutScoresNestedInput = {
 
 export type AssessmentComponentCreateWithoutTenantInput = {
   id?: string
-  type: $Enums.AssessmentType
   name: string
-  weight: number
+  weight?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   classSubject: Prisma.ClassSubjectCreateNestedOneWithoutAssessmentsInput
   academicPeriod: Prisma.AcademicPeriodCreateNestedOneWithoutAssessmentsInput
+  assessmentType: Prisma.TenantAssessmentTypeCreateNestedOneWithoutComponentsInput
   scores?: Prisma.AssessmentScoreCreateNestedManyWithoutComponentInput
 }
 
@@ -632,9 +665,9 @@ export type AssessmentComponentUncheckedCreateWithoutTenantInput = {
   id?: string
   classSubjectId: string
   academicPeriodId: string
-  type: $Enums.AssessmentType
+  assessmentTypeId: string
   name: string
-  weight: number
+  weight?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   scores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutComponentInput
@@ -674,22 +707,72 @@ export type AssessmentComponentScalarWhereInput = {
   tenantId?: Prisma.StringFilter<"AssessmentComponent"> | string
   classSubjectId?: Prisma.StringFilter<"AssessmentComponent"> | string
   academicPeriodId?: Prisma.StringFilter<"AssessmentComponent"> | string
-  type?: Prisma.EnumAssessmentTypeFilter<"AssessmentComponent"> | $Enums.AssessmentType
+  assessmentTypeId?: Prisma.StringFilter<"AssessmentComponent"> | string
   name?: Prisma.StringFilter<"AssessmentComponent"> | string
   weight?: Prisma.IntFilter<"AssessmentComponent"> | number
   createdAt?: Prisma.DateTimeFilter<"AssessmentComponent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AssessmentComponent"> | Date | string
 }
 
-export type AssessmentComponentCreateWithoutAcademicPeriodInput = {
+export type AssessmentComponentCreateWithoutAssessmentTypeInput = {
   id?: string
-  type: $Enums.AssessmentType
   name: string
-  weight: number
+  weight?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutAssessmentComponentsInput
   classSubject: Prisma.ClassSubjectCreateNestedOneWithoutAssessmentsInput
+  academicPeriod: Prisma.AcademicPeriodCreateNestedOneWithoutAssessmentsInput
+  scores?: Prisma.AssessmentScoreCreateNestedManyWithoutComponentInput
+}
+
+export type AssessmentComponentUncheckedCreateWithoutAssessmentTypeInput = {
+  id?: string
+  tenantId: string
+  classSubjectId: string
+  academicPeriodId: string
+  name: string
+  weight?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  scores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutComponentInput
+}
+
+export type AssessmentComponentCreateOrConnectWithoutAssessmentTypeInput = {
+  where: Prisma.AssessmentComponentWhereUniqueInput
+  create: Prisma.XOR<Prisma.AssessmentComponentCreateWithoutAssessmentTypeInput, Prisma.AssessmentComponentUncheckedCreateWithoutAssessmentTypeInput>
+}
+
+export type AssessmentComponentCreateManyAssessmentTypeInputEnvelope = {
+  data: Prisma.AssessmentComponentCreateManyAssessmentTypeInput | Prisma.AssessmentComponentCreateManyAssessmentTypeInput[]
+  skipDuplicates?: boolean
+}
+
+export type AssessmentComponentUpsertWithWhereUniqueWithoutAssessmentTypeInput = {
+  where: Prisma.AssessmentComponentWhereUniqueInput
+  update: Prisma.XOR<Prisma.AssessmentComponentUpdateWithoutAssessmentTypeInput, Prisma.AssessmentComponentUncheckedUpdateWithoutAssessmentTypeInput>
+  create: Prisma.XOR<Prisma.AssessmentComponentCreateWithoutAssessmentTypeInput, Prisma.AssessmentComponentUncheckedCreateWithoutAssessmentTypeInput>
+}
+
+export type AssessmentComponentUpdateWithWhereUniqueWithoutAssessmentTypeInput = {
+  where: Prisma.AssessmentComponentWhereUniqueInput
+  data: Prisma.XOR<Prisma.AssessmentComponentUpdateWithoutAssessmentTypeInput, Prisma.AssessmentComponentUncheckedUpdateWithoutAssessmentTypeInput>
+}
+
+export type AssessmentComponentUpdateManyWithWhereWithoutAssessmentTypeInput = {
+  where: Prisma.AssessmentComponentScalarWhereInput
+  data: Prisma.XOR<Prisma.AssessmentComponentUpdateManyMutationInput, Prisma.AssessmentComponentUncheckedUpdateManyWithoutAssessmentTypeInput>
+}
+
+export type AssessmentComponentCreateWithoutAcademicPeriodInput = {
+  id?: string
+  name: string
+  weight?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutAssessmentComponentsInput
+  classSubject: Prisma.ClassSubjectCreateNestedOneWithoutAssessmentsInput
+  assessmentType: Prisma.TenantAssessmentTypeCreateNestedOneWithoutComponentsInput
   scores?: Prisma.AssessmentScoreCreateNestedManyWithoutComponentInput
 }
 
@@ -697,9 +780,9 @@ export type AssessmentComponentUncheckedCreateWithoutAcademicPeriodInput = {
   id?: string
   tenantId: string
   classSubjectId: string
-  type: $Enums.AssessmentType
+  assessmentTypeId: string
   name: string
-  weight: number
+  weight?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   scores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutComponentInput
@@ -733,13 +816,13 @@ export type AssessmentComponentUpdateManyWithWhereWithoutAcademicPeriodInput = {
 
 export type AssessmentComponentCreateWithoutClassSubjectInput = {
   id?: string
-  type: $Enums.AssessmentType
   name: string
-  weight: number
+  weight?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutAssessmentComponentsInput
   academicPeriod: Prisma.AcademicPeriodCreateNestedOneWithoutAssessmentsInput
+  assessmentType: Prisma.TenantAssessmentTypeCreateNestedOneWithoutComponentsInput
   scores?: Prisma.AssessmentScoreCreateNestedManyWithoutComponentInput
 }
 
@@ -747,9 +830,9 @@ export type AssessmentComponentUncheckedCreateWithoutClassSubjectInput = {
   id?: string
   tenantId: string
   academicPeriodId: string
-  type: $Enums.AssessmentType
+  assessmentTypeId: string
   name: string
-  weight: number
+  weight?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   scores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutComponentInput
@@ -783,14 +866,14 @@ export type AssessmentComponentUpdateManyWithWhereWithoutClassSubjectInput = {
 
 export type AssessmentComponentCreateWithoutScoresInput = {
   id?: string
-  type: $Enums.AssessmentType
   name: string
-  weight: number
+  weight?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutAssessmentComponentsInput
   classSubject: Prisma.ClassSubjectCreateNestedOneWithoutAssessmentsInput
   academicPeriod: Prisma.AcademicPeriodCreateNestedOneWithoutAssessmentsInput
+  assessmentType: Prisma.TenantAssessmentTypeCreateNestedOneWithoutComponentsInput
 }
 
 export type AssessmentComponentUncheckedCreateWithoutScoresInput = {
@@ -798,9 +881,9 @@ export type AssessmentComponentUncheckedCreateWithoutScoresInput = {
   tenantId: string
   classSubjectId: string
   academicPeriodId: string
-  type: $Enums.AssessmentType
+  assessmentTypeId: string
   name: string
-  weight: number
+  weight?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -823,7 +906,6 @@ export type AssessmentComponentUpdateToOneWithWhereWithoutScoresInput = {
 
 export type AssessmentComponentUpdateWithoutScoresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -831,6 +913,7 @@ export type AssessmentComponentUpdateWithoutScoresInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutAssessmentComponentsNestedInput
   classSubject?: Prisma.ClassSubjectUpdateOneRequiredWithoutAssessmentsNestedInput
   academicPeriod?: Prisma.AcademicPeriodUpdateOneRequiredWithoutAssessmentsNestedInput
+  assessmentType?: Prisma.TenantAssessmentTypeUpdateOneRequiredWithoutComponentsNestedInput
 }
 
 export type AssessmentComponentUncheckedUpdateWithoutScoresInput = {
@@ -838,7 +921,7 @@ export type AssessmentComponentUncheckedUpdateWithoutScoresInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   classSubjectId?: Prisma.StringFieldUpdateOperationsInput | string
   academicPeriodId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+  assessmentTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -849,22 +932,22 @@ export type AssessmentComponentCreateManyTenantInput = {
   id?: string
   classSubjectId: string
   academicPeriodId: string
-  type: $Enums.AssessmentType
+  assessmentTypeId: string
   name: string
-  weight: number
+  weight?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type AssessmentComponentUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classSubject?: Prisma.ClassSubjectUpdateOneRequiredWithoutAssessmentsNestedInput
   academicPeriod?: Prisma.AcademicPeriodUpdateOneRequiredWithoutAssessmentsNestedInput
+  assessmentType?: Prisma.TenantAssessmentTypeUpdateOneRequiredWithoutComponentsNestedInput
   scores?: Prisma.AssessmentScoreUpdateManyWithoutComponentNestedInput
 }
 
@@ -872,7 +955,7 @@ export type AssessmentComponentUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   classSubjectId?: Prisma.StringFieldUpdateOperationsInput | string
   academicPeriodId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+  assessmentTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -884,7 +967,53 @@ export type AssessmentComponentUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   classSubjectId?: Prisma.StringFieldUpdateOperationsInput | string
   academicPeriodId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+  assessmentTypeId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  weight?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type AssessmentComponentCreateManyAssessmentTypeInput = {
+  id?: string
+  tenantId: string
+  classSubjectId: string
+  academicPeriodId: string
+  name: string
+  weight?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type AssessmentComponentUpdateWithoutAssessmentTypeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  weight?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutAssessmentComponentsNestedInput
+  classSubject?: Prisma.ClassSubjectUpdateOneRequiredWithoutAssessmentsNestedInput
+  academicPeriod?: Prisma.AcademicPeriodUpdateOneRequiredWithoutAssessmentsNestedInput
+  scores?: Prisma.AssessmentScoreUpdateManyWithoutComponentNestedInput
+}
+
+export type AssessmentComponentUncheckedUpdateWithoutAssessmentTypeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  classSubjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  academicPeriodId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  weight?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutComponentNestedInput
+}
+
+export type AssessmentComponentUncheckedUpdateManyWithoutAssessmentTypeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  classSubjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  academicPeriodId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -895,22 +1024,22 @@ export type AssessmentComponentCreateManyAcademicPeriodInput = {
   id?: string
   tenantId: string
   classSubjectId: string
-  type: $Enums.AssessmentType
+  assessmentTypeId: string
   name: string
-  weight: number
+  weight?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type AssessmentComponentUpdateWithoutAcademicPeriodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutAssessmentComponentsNestedInput
   classSubject?: Prisma.ClassSubjectUpdateOneRequiredWithoutAssessmentsNestedInput
+  assessmentType?: Prisma.TenantAssessmentTypeUpdateOneRequiredWithoutComponentsNestedInput
   scores?: Prisma.AssessmentScoreUpdateManyWithoutComponentNestedInput
 }
 
@@ -918,7 +1047,7 @@ export type AssessmentComponentUncheckedUpdateWithoutAcademicPeriodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   classSubjectId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+  assessmentTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -930,7 +1059,7 @@ export type AssessmentComponentUncheckedUpdateManyWithoutAcademicPeriodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   classSubjectId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+  assessmentTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -941,22 +1070,22 @@ export type AssessmentComponentCreateManyClassSubjectInput = {
   id?: string
   tenantId: string
   academicPeriodId: string
-  type: $Enums.AssessmentType
+  assessmentTypeId: string
   name: string
-  weight: number
+  weight?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type AssessmentComponentUpdateWithoutClassSubjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutAssessmentComponentsNestedInput
   academicPeriod?: Prisma.AcademicPeriodUpdateOneRequiredWithoutAssessmentsNestedInput
+  assessmentType?: Prisma.TenantAssessmentTypeUpdateOneRequiredWithoutComponentsNestedInput
   scores?: Prisma.AssessmentScoreUpdateManyWithoutComponentNestedInput
 }
 
@@ -964,7 +1093,7 @@ export type AssessmentComponentUncheckedUpdateWithoutClassSubjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   academicPeriodId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+  assessmentTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -976,7 +1105,7 @@ export type AssessmentComponentUncheckedUpdateManyWithoutClassSubjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   academicPeriodId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+  assessmentTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1019,7 +1148,7 @@ export type AssessmentComponentSelect<ExtArgs extends runtime.Types.Extensions.I
   tenantId?: boolean
   classSubjectId?: boolean
   academicPeriodId?: boolean
-  type?: boolean
+  assessmentTypeId?: boolean
   name?: boolean
   weight?: boolean
   createdAt?: boolean
@@ -1027,6 +1156,7 @@ export type AssessmentComponentSelect<ExtArgs extends runtime.Types.Extensions.I
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   classSubject?: boolean | Prisma.ClassSubjectDefaultArgs<ExtArgs>
   academicPeriod?: boolean | Prisma.AcademicPeriodDefaultArgs<ExtArgs>
+  assessmentType?: boolean | Prisma.TenantAssessmentTypeDefaultArgs<ExtArgs>
   scores?: boolean | Prisma.AssessmentComponent$scoresArgs<ExtArgs>
   _count?: boolean | Prisma.AssessmentComponentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assessmentComponent"]>
@@ -1036,7 +1166,7 @@ export type AssessmentComponentSelectCreateManyAndReturn<ExtArgs extends runtime
   tenantId?: boolean
   classSubjectId?: boolean
   academicPeriodId?: boolean
-  type?: boolean
+  assessmentTypeId?: boolean
   name?: boolean
   weight?: boolean
   createdAt?: boolean
@@ -1044,6 +1174,7 @@ export type AssessmentComponentSelectCreateManyAndReturn<ExtArgs extends runtime
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   classSubject?: boolean | Prisma.ClassSubjectDefaultArgs<ExtArgs>
   academicPeriod?: boolean | Prisma.AcademicPeriodDefaultArgs<ExtArgs>
+  assessmentType?: boolean | Prisma.TenantAssessmentTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assessmentComponent"]>
 
 export type AssessmentComponentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1051,7 +1182,7 @@ export type AssessmentComponentSelectUpdateManyAndReturn<ExtArgs extends runtime
   tenantId?: boolean
   classSubjectId?: boolean
   academicPeriodId?: boolean
-  type?: boolean
+  assessmentTypeId?: boolean
   name?: boolean
   weight?: boolean
   createdAt?: boolean
@@ -1059,6 +1190,7 @@ export type AssessmentComponentSelectUpdateManyAndReturn<ExtArgs extends runtime
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   classSubject?: boolean | Prisma.ClassSubjectDefaultArgs<ExtArgs>
   academicPeriod?: boolean | Prisma.AcademicPeriodDefaultArgs<ExtArgs>
+  assessmentType?: boolean | Prisma.TenantAssessmentTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assessmentComponent"]>
 
 export type AssessmentComponentSelectScalar = {
@@ -1066,18 +1198,19 @@ export type AssessmentComponentSelectScalar = {
   tenantId?: boolean
   classSubjectId?: boolean
   academicPeriodId?: boolean
-  type?: boolean
+  assessmentTypeId?: boolean
   name?: boolean
   weight?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AssessmentComponentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "classSubjectId" | "academicPeriodId" | "type" | "name" | "weight" | "createdAt" | "updatedAt", ExtArgs["result"]["assessmentComponent"]>
+export type AssessmentComponentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "classSubjectId" | "academicPeriodId" | "assessmentTypeId" | "name" | "weight" | "createdAt" | "updatedAt", ExtArgs["result"]["assessmentComponent"]>
 export type AssessmentComponentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   classSubject?: boolean | Prisma.ClassSubjectDefaultArgs<ExtArgs>
   academicPeriod?: boolean | Prisma.AcademicPeriodDefaultArgs<ExtArgs>
+  assessmentType?: boolean | Prisma.TenantAssessmentTypeDefaultArgs<ExtArgs>
   scores?: boolean | Prisma.AssessmentComponent$scoresArgs<ExtArgs>
   _count?: boolean | Prisma.AssessmentComponentCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1085,11 +1218,13 @@ export type AssessmentComponentIncludeCreateManyAndReturn<ExtArgs extends runtim
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   classSubject?: boolean | Prisma.ClassSubjectDefaultArgs<ExtArgs>
   academicPeriod?: boolean | Prisma.AcademicPeriodDefaultArgs<ExtArgs>
+  assessmentType?: boolean | Prisma.TenantAssessmentTypeDefaultArgs<ExtArgs>
 }
 export type AssessmentComponentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   classSubject?: boolean | Prisma.ClassSubjectDefaultArgs<ExtArgs>
   academicPeriod?: boolean | Prisma.AcademicPeriodDefaultArgs<ExtArgs>
+  assessmentType?: boolean | Prisma.TenantAssessmentTypeDefaultArgs<ExtArgs>
 }
 
 export type $AssessmentComponentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1098,6 +1233,7 @@ export type $AssessmentComponentPayload<ExtArgs extends runtime.Types.Extensions
     tenant: Prisma.$TenantPayload<ExtArgs>
     classSubject: Prisma.$ClassSubjectPayload<ExtArgs>
     academicPeriod: Prisma.$AcademicPeriodPayload<ExtArgs>
+    assessmentType: Prisma.$TenantAssessmentTypePayload<ExtArgs>
     scores: Prisma.$AssessmentScorePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1105,7 +1241,7 @@ export type $AssessmentComponentPayload<ExtArgs extends runtime.Types.Extensions
     tenantId: string
     classSubjectId: string
     academicPeriodId: string
-    type: $Enums.AssessmentType
+    assessmentTypeId: string
     name: string
     weight: number
     createdAt: Date
@@ -1507,6 +1643,7 @@ export interface Prisma__AssessmentComponentClient<T, Null = never, ExtArgs exte
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   classSubject<T extends Prisma.ClassSubjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ClassSubjectDefaultArgs<ExtArgs>>): Prisma.Prisma__ClassSubjectClient<runtime.Types.Result.GetResult<Prisma.$ClassSubjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   academicPeriod<T extends Prisma.AcademicPeriodDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AcademicPeriodDefaultArgs<ExtArgs>>): Prisma.Prisma__AcademicPeriodClient<runtime.Types.Result.GetResult<Prisma.$AcademicPeriodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  assessmentType<T extends Prisma.TenantAssessmentTypeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantAssessmentTypeDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantAssessmentTypeClient<runtime.Types.Result.GetResult<Prisma.$TenantAssessmentTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   scores<T extends Prisma.AssessmentComponent$scoresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssessmentComponent$scoresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1541,7 +1678,7 @@ export interface AssessmentComponentFieldRefs {
   readonly tenantId: Prisma.FieldRef<"AssessmentComponent", 'String'>
   readonly classSubjectId: Prisma.FieldRef<"AssessmentComponent", 'String'>
   readonly academicPeriodId: Prisma.FieldRef<"AssessmentComponent", 'String'>
-  readonly type: Prisma.FieldRef<"AssessmentComponent", 'AssessmentType'>
+  readonly assessmentTypeId: Prisma.FieldRef<"AssessmentComponent", 'String'>
   readonly name: Prisma.FieldRef<"AssessmentComponent", 'String'>
   readonly weight: Prisma.FieldRef<"AssessmentComponent", 'Int'>
   readonly createdAt: Prisma.FieldRef<"AssessmentComponent", 'DateTime'>

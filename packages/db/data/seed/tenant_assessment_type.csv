@@ -1,0 +1,5 @@
+id,tenant_id,key,label,description,order,is_enabled
+95302cff-330c-5296-8fb8-18dc020c81b5,ba6e3b18-bccb-5149-adae-530286c8bd10,quiz,Kuis,Kuis singkat,1,true
+a5b229e1-239d-5810-a028-4b59d3fb9234,ba6e3b18-bccb-5149-adae-530286c8bd10,assignment,Tugas,Penugasan,2,true
+f1647786-a0cb-5378-99b1-bd4f23e9575f,ba6e3b18-bccb-5149-adae-530286c8bd10,midterm,UTS,Ujian Tengah Semester,3,true
+6068849c-6bf8-5d1f-b9ef-bdcdb71e131b,ba6e3b18-bccb-5149-adae-530286c8bd10,final,UAS,Ujian Akhir Semester,4,true

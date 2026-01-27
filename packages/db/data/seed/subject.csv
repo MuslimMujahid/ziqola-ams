@@ -1,0 +1,11 @@
+id,tenant_id,name,is_deleted,deleted_at
+d057220b-e94d-5bd8-b874-95f3629d9b74,ba6e3b18-bccb-5149-adae-530286c8bd10,Matematika,false,
+da6f2fe7-c371-5900-8dc9-c33019a52992,ba6e3b18-bccb-5149-adae-530286c8bd10,Bahasa Indonesia,false,
+bb8e78e2-8d41-529a-a31c-a9fd8c374d6b,ba6e3b18-bccb-5149-adae-530286c8bd10,Bahasa Inggris,false,
+3e467514-5ee7-5952-8db1-b8dc8a82f8a8,ba6e3b18-bccb-5149-adae-530286c8bd10,Fisika,false,
+9997a700-8a3e-5f87-8fda-8f41db168c52,ba6e3b18-bccb-5149-adae-530286c8bd10,Kimia,false,
+bcc13dfb-7319-55c7-ad90-3b058a43d34a,ba6e3b18-bccb-5149-adae-530286c8bd10,Biologi,false,
+ac6b4f70-62c0-5d91-b20e-93cacd1a833b,ba6e3b18-bccb-5149-adae-530286c8bd10,Sejarah,false,
+65910519-c93f-5c5a-b535-6253a402e739,ba6e3b18-bccb-5149-adae-530286c8bd10,Geografi,false,
+aa8bdda9-11b9-5657-a1f4-031235cb0d0d,ba6e3b18-bccb-5149-adae-530286c8bd10,Ekonomi,false,
+4155fd4c-28d7-5763-8798-87bcceed7402,ba6e3b18-bccb-5149-adae-530286c8bd10,PPKn,false,

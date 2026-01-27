@@ -457,10 +457,6 @@ export type EnumTenantConfigurationTypeFieldUpdateOperationsInput = {
   set?: $Enums.TenantConfigurationType
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }

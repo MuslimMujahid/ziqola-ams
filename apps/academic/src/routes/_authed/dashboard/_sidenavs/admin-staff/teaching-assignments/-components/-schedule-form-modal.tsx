@@ -47,6 +47,8 @@ type ScheduleFormModalProps = {
   initialValues: ScheduleFormValues;
   academicPeriodLabel: string;
   classOptions: Array<{ label: string; value: string }>;
+  subjectOptions: Array<{ label: string; value: string }>;
+  teacherOptions: Array<{ label: string; value: string }>;
   classSubjects: ClassSubject[];
   dayOptions: Array<{ label: string; value: string }>;
   onDelete?: () => void;
@@ -62,6 +64,8 @@ export function ScheduleFormModal({
   initialValues,
   academicPeriodLabel,
   classOptions,
+  subjectOptions,
+  teacherOptions,
   classSubjects,
   dayOptions,
   onDelete,
@@ -83,24 +87,10 @@ export function ScheduleFormModal({
 
   const formValues = useStore(form.store, (state) => state.values);
 
-  const filteredSubjectOptions = React.useMemo(() => {
-    if (!formValues.classId) return [];
-    const map = new Map<string, string>();
-
-    classSubjects
-      .filter(
-        (item) =>
-          item.classId === formValues.classId && Boolean(item.teacherProfileId),
-      )
-      .forEach((item) => {
-        map.set(item.subjectId, item.subjectName);
-      });
-
-    return Array.from(map.entries()).map(([value, label]) => ({
-      value,
-      label,
-    }));
-  }, [classSubjects, formValues.classId]);
+  const availableSubjectOptions = React.useMemo(
+    () => (formValues.classId ? subjectOptions : []),
+    [formValues.classId, subjectOptions],
+  );
 
   const selectedAssignment = React.useMemo(
     () =>
@@ -113,8 +103,17 @@ export function ScheduleFormModal({
   );
 
   React.useEffect(() => {
-    if (!formValues.classId) return;
-    const isSubjectValid = filteredSubjectOptions.some(
+    if (!formValues.classId) {
+      if (formValues.subjectId) {
+        form.setFieldValue("subjectId", "");
+      }
+      if (formValues.teacherProfileId) {
+        form.setFieldValue("teacherProfileId", "");
+      }
+      return;
+    }
+
+    const isSubjectValid = availableSubjectOptions.some(
       (option) => option.value === formValues.subjectId,
     );
 
@@ -124,18 +123,22 @@ export function ScheduleFormModal({
       return;
     }
 
-    const nextTeacherId = selectedAssignment?.teacherProfileId ?? "";
-    if (formValues.teacherProfileId !== nextTeacherId) {
-      form.setFieldValue("teacherProfileId", nextTeacherId);
+    if (selectedAssignment?.teacherProfileId) {
+      const nextTeacherId = selectedAssignment.teacherProfileId;
+      if (formValues.teacherProfileId !== nextTeacherId) {
+        form.setFieldValue("teacherProfileId", nextTeacherId);
+      }
     }
   }, [
-    filteredSubjectOptions,
+    availableSubjectOptions,
     form,
     formValues.classId,
     formValues.subjectId,
     formValues.teacherProfileId,
     selectedAssignment?.teacherProfileId,
   ]);
+
+  const isTeacherLocked = Boolean(selectedAssignment?.teacherProfileId);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -191,36 +194,37 @@ export function ScheduleFormModal({
                           ? "Pilih mata pelajaran"
                           : "Pilih kelas terlebih dahulu"
                       }
-                      values={selectedClassId ? filteredSubjectOptions : []}
+                      values={selectedClassId ? availableSubjectOptions : []}
                     />
                   )}
                 </form.AppField>
-                {selectedClassId && filteredSubjectOptions.length === 0 ? (
-                  <p className="mt-2 text-xs text-error">
-                    Tidak ada mata pelajaran dengan penugasan guru untuk kelas
-                    ini.
-                  </p>
-                ) : null}
               </div>
             )}
           </form.Subscribe>
 
-          <div>
-            <Label htmlFor="schedule-teacher">Guru</Label>
-            <Input
-              id="schedule-teacher"
-              value={selectedAssignment?.teacherName ?? "-"}
-              disabled
-              className="mt-2"
-            />
-            {!selectedAssignment &&
-            formValues.classId &&
-            formValues.subjectId ? (
-              <p className="mt-2 text-xs text-error">
-                Penugasan guru untuk kelas dan mata pelajaran ini belum dibuat.
-              </p>
-            ) : null}
-          </div>
+          <form.AppField name="teacherProfileId">
+            {(field) => (
+              <field.Select
+                label="Guru"
+                placeholder={
+                  formValues.classId && formValues.subjectId
+                    ? "Pilih guru"
+                    : "Pilih kelas dan mata pelajaran terlebih dahulu"
+                }
+                values={teacherOptions}
+                disabled={
+                  isTeacherLocked ||
+                  !formValues.classId ||
+                  !formValues.subjectId
+                }
+              />
+            )}
+          </form.AppField>
+          {isTeacherLocked ? (
+            <p className="text-xs text-ink-muted">
+              Guru diambil dari penugasan kelas dan mata pelajaran.
+            </p>
+          ) : null}
 
           <form.AppField name="dayOfWeek">
             {(field) => (
@@ -269,7 +273,7 @@ export function ScheduleFormModal({
                       type="button"
                       variant="ghost"
                       className="text-error hover:text-error"
-                      onClick={onDelete}
+                      onClick={() => onDelete()}
                       disabled={isDeleting}
                     >
                       Hapus jadwal

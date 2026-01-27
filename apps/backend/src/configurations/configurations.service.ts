@@ -46,6 +46,14 @@ type ConfigurationField = {
   isEnabled?: boolean | null;
 };
 
+type AssessmentTypeConfigurationField = {
+  key: string;
+  label: string;
+  description?: string | null;
+  order?: number | null;
+  isEnabled?: boolean | null;
+};
+
 type ProfileConfigurationPayload = {
   profile: {
     customFields: {
@@ -55,12 +63,76 @@ type ProfileConfigurationPayload = {
   };
 };
 
+type ConfigurationPayload = ProfileConfigurationPayload & {
+  assessmentTypes?: AssessmentTypeConfigurationField[];
+};
+
 type ConfigurationTemplate = {
   id: string;
   name: string;
   description?: string;
   isActive?: boolean;
   profile: ProfileConfigurationPayload["profile"];
+  assessmentTypes?: AssessmentTypeConfigurationField[];
+};
+
+type TenantAssessmentTypeRecord = {
+  id: string;
+  tenantId: string;
+  key: string;
+  label: string;
+  description: string | null;
+  order: number | null;
+  isEnabled: boolean;
+  sourceTemplateId: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+type TenantAssessmentTypeCreateInput = {
+  tenantId: string;
+  key: string;
+  label: string;
+  description?: string | null;
+  order?: number | null;
+  isEnabled?: boolean;
+  sourceTemplateId?: string | null;
+};
+
+type TenantAssessmentTypeDelegate = {
+  findMany: (args: {
+    where?: {
+      tenantId?: string;
+      isEnabled?: boolean;
+      key?: { in: string[] };
+    };
+    orderBy?: Array<{ order?: "asc" | "desc" } | { label?: "asc" | "desc" }>;
+    select?: {
+      id?: boolean;
+      key?: boolean;
+      label?: boolean;
+      description?: boolean;
+      order?: boolean;
+      isEnabled?: boolean;
+    };
+  }) => Promise<TenantAssessmentTypeRecord[]>;
+  findFirst: (args: {
+    where: { id?: string; tenantId?: string; key?: string };
+  }) => Promise<TenantAssessmentTypeRecord | null>;
+  createMany: (args: { data: TenantAssessmentTypeCreateInput[] }) => Promise<{
+    count: number;
+  }>;
+  create: (args: {
+    data: TenantAssessmentTypeCreateInput;
+  }) => Promise<TenantAssessmentTypeRecord>;
+  update: (args: {
+    where: { id: string };
+    data: Partial<TenantAssessmentTypeCreateInput>;
+  }) => Promise<TenantAssessmentTypeRecord>;
+  updateMany: (args: {
+    where: { id?: { in: string[] }; tenantId?: string; key?: { in: string[] } };
+    data: Partial<TenantAssessmentTypeCreateInput>;
+  }) => Promise<{ count: number }>;
 };
 
 @Injectable()
@@ -143,6 +215,36 @@ export class ConfigurationsService {
     const { customFields } = template.profile;
     this.assertFieldsShape(customFields.student, "student");
     this.assertFieldsShape(customFields.teacher, "teacher");
+
+    if (template.assessmentTypes) {
+      this.assertAssessmentTypesShape(template.assessmentTypes);
+    }
+  }
+
+  private assertAssessmentTypesShape(
+    types: AssessmentTypeConfigurationField[],
+  ) {
+    if (!Array.isArray(types)) {
+      throw new BadRequestException("Invalid assessment types configuration");
+    }
+
+    const keys = new Set<string>();
+
+    types.forEach((type) => {
+      if (!type.key || !type.label) {
+        throw new BadRequestException(
+          "Assessment type key and label are required",
+        );
+      }
+
+      if (keys.has(type.key)) {
+        throw new BadRequestException(
+          `Duplicate assessment type key found: ${type.key}`,
+        );
+      }
+
+      keys.add(type.key);
+    });
   }
 
   private assertFieldsShape(fields: ConfigurationField[], role: ProfileRole) {
@@ -204,7 +306,7 @@ export class ConfigurationsService {
       );
     }
 
-    let payload: ProfileConfigurationPayload;
+    let payload: ConfigurationPayload;
     let sourceTemplateId: string | null = null;
 
     if (dto.templateId) {
@@ -215,7 +317,10 @@ export class ConfigurationsService {
         throw new NotFoundException("Template not found");
       }
 
-      payload = { profile: template.profile };
+      payload = {
+        profile: template.profile,
+        assessmentTypes: template.assessmentTypes ?? undefined,
+      };
       sourceTemplateId = template.id;
     } else {
       payload = this.assertConfigurationPayload(dto.config ?? {});
@@ -234,6 +339,15 @@ export class ConfigurationsService {
       ),
     );
 
+    if (payload.assessmentTypes) {
+      await this.applyAssessmentTypes(
+        tenantId,
+        payload.assessmentTypes,
+        sourceTemplateId,
+        shouldPrune,
+      );
+    }
+
     await this.upsertProfileConfiguration(tenantId, {
       templateId: sourceTemplateId,
       isCustomized: !sourceTemplateId,
@@ -248,7 +362,7 @@ export class ConfigurationsService {
 
   private assertConfigurationPayload(
     payload: Record<string, unknown>,
-  ): ProfileConfigurationPayload {
+  ): ConfigurationPayload {
     const profile = payload.profile as ProfileConfigurationPayload["profile"];
     if (!profile || typeof profile !== "object") {
       throw new BadRequestException("Invalid configuration payload");
@@ -265,7 +379,15 @@ export class ConfigurationsService {
     this.assertFieldsShape(customFields.student, "student");
     this.assertFieldsShape(customFields.teacher, "teacher");
 
-    return payload as ProfileConfigurationPayload;
+    const assessmentTypes = payload.assessmentTypes as
+      | AssessmentTypeConfigurationField[]
+      | undefined;
+
+    if (assessmentTypes) {
+      this.assertAssessmentTypesShape(assessmentTypes);
+    }
+
+    return payload as ConfigurationPayload;
   }
 
   private async applyConfigurationForRole(
@@ -358,6 +480,82 @@ export class ConfigurationsService {
     }
 
     return createData.length;
+  }
+
+  private getAssessmentTypeModel() {
+    return (
+      this.prisma.client as unknown as {
+        tenantAssessmentType: TenantAssessmentTypeDelegate;
+      }
+    ).tenantAssessmentType;
+  }
+
+  private async applyAssessmentTypes(
+    tenantId: string,
+    types: AssessmentTypeConfigurationField[],
+    sourceTemplateId: string | null,
+    shouldPrune: boolean,
+  ) {
+    this.assertAssessmentTypesShape(types);
+    const model = this.getAssessmentTypeModel();
+
+    const existingTypes = await model.findMany({
+      where: { tenantId },
+      select: { id: true, key: true },
+    });
+
+    const existingMap = new Map(
+      existingTypes.map((type) => [type.key, type.id]),
+    );
+    const incomingKeys = new Set(types.map((type) => type.key));
+
+    const createData: TenantAssessmentTypeCreateInput[] = types
+      .filter((type) => !existingMap.has(type.key))
+      .map((type) => ({
+        tenantId,
+        key: type.key,
+        label: type.label,
+        description: type.description ?? undefined,
+        order: type.order ?? undefined,
+        isEnabled: type.isEnabled ?? true,
+        sourceTemplateId,
+      }));
+
+    const updatePromises = types
+      .filter((type) => existingMap.has(type.key))
+      .map((type) =>
+        model.update({
+          where: { id: existingMap.get(type.key) ?? "" },
+          data: {
+            label: type.label,
+            description: type.description ?? undefined,
+            order: type.order ?? undefined,
+            isEnabled: type.isEnabled ?? true,
+            sourceTemplateId,
+          },
+        }),
+      );
+
+    if (createData.length > 0) {
+      await model.createMany({ data: createData });
+    }
+
+    if (updatePromises.length > 0) {
+      await Promise.all(updatePromises);
+    }
+
+    if (shouldPrune) {
+      const keysToDisable = Array.from(existingMap.keys()).filter(
+        (key) => !incomingKeys.has(key),
+      );
+
+      if (keysToDisable.length > 0) {
+        await model.updateMany({
+          where: { tenantId, key: { in: keysToDisable } },
+          data: { isEnabled: false },
+        });
+      }
+    }
   }
 
   async listTenantFields(tenantId: string, role: string) {
@@ -509,10 +707,15 @@ export class ConfigurationsService {
         }),
       ]);
 
+    const assessmentTypes = await this.listTenantAssessmentTypes(tenantId, {
+      includeDisabled: true,
+    });
+
     return {
       configuration,
       studentFields,
       teacherFields,
+      assessmentTypes,
     };
   }
 
@@ -597,6 +800,95 @@ export class ConfigurationsService {
     );
 
     return { fields, values: valuesWithUrls };
+  }
+
+  async listTenantAssessmentTypes(
+    tenantId: string,
+    options?: { includeDisabled?: boolean },
+  ) {
+    const model = this.getAssessmentTypeModel();
+
+    return model.findMany({
+      where: {
+        tenantId,
+        ...(options?.includeDisabled ? {} : { isEnabled: true }),
+      },
+      orderBy: [{ order: "asc" }, { label: "asc" }],
+    });
+  }
+
+  async createTenantAssessmentType(
+    tenantId: string,
+    dto: {
+      key: string;
+      label: string;
+      description?: string;
+      order?: number;
+    },
+  ) {
+    const model = this.getAssessmentTypeModel();
+    const existing = await model.findFirst({
+      where: { tenantId, key: dto.key },
+    });
+
+    if (existing) {
+      throw new BadRequestException("Assessment type key already exists");
+    }
+
+    const created = await model.create({
+      data: {
+        tenantId,
+        key: dto.key,
+        label: dto.label,
+        description: dto.description ?? undefined,
+        order: dto.order ?? undefined,
+        isEnabled: true,
+      },
+    });
+
+    await this.markProfileConfigurationCustomized(tenantId);
+    return created;
+  }
+
+  async updateTenantAssessmentType(
+    tenantId: string,
+    typeId: string,
+    dto: {
+      label?: string;
+      description?: string;
+      order?: number;
+      isEnabled?: boolean;
+    },
+  ) {
+    const model = this.getAssessmentTypeModel();
+    const type = await model.findFirst({ where: { id: typeId, tenantId } });
+
+    if (!type) {
+      throw new NotFoundException("Assessment type not found");
+    }
+
+    const updated = await model.update({
+      where: { id: type.id },
+      data: {
+        label: dto.label ?? undefined,
+        description: dto.description ?? undefined,
+        order: dto.order ?? undefined,
+        isEnabled: dto.isEnabled ?? undefined,
+      },
+    });
+
+    await this.markProfileConfigurationCustomized(tenantId);
+    return updated;
+  }
+
+  async setAssessmentTypeEnabled(
+    tenantId: string,
+    typeId: string,
+    enabled: boolean,
+  ) {
+    return this.updateTenantAssessmentType(tenantId, typeId, {
+      isEnabled: enabled,
+    });
   }
 
   async upsertProfileValues(

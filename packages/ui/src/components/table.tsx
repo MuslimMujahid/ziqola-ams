@@ -140,7 +140,7 @@ function TableToolbar({ className, ...props }: TableToolbarProps) {
     <div
       data-slot="table-toolbar"
       className={cn(
-        "flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-4 md:flex-row md:items-center md:justify-between",
+        "flex flex-col gap-3 bg-white md:flex-row md:items-center",
         className,
       )}
       {...props}

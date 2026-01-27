@@ -55,17 +55,6 @@ export const AttendanceStatus = {
 export type AttendanceStatus = (typeof AttendanceStatus)[keyof typeof AttendanceStatus]
 
 
-export const AssessmentType = {
-  ASSIGNMENT: 'ASSIGNMENT',
-  QUIZ: 'QUIZ',
-  MIDTERM: 'MIDTERM',
-  FINAL_EXAM: 'FINAL_EXAM',
-  PRACTICAL: 'PRACTICAL'
-} as const
-
-export type AssessmentType = (typeof AssessmentType)[keyof typeof AssessmentType]
-
-
 export const ReportCardStatus = {
   DRAFT: 'DRAFT',
   REVIEW: 'REVIEW',

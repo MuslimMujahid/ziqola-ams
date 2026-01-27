@@ -2,8 +2,8 @@ import process from "node:process";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { prisma } from "../src/client";
 import * as argon2 from "argon2";
+import { prisma } from "../src/client";
 import {
   Role,
   AcademicStatus,
@@ -11,11 +11,10 @@ import {
   Gender,
   GroupType,
   UserStatus,
+  AttendanceStatus
 } from "../src/generated/prisma/enums";
-import type {
-  Prisma,
-  TenantProfileField,
-} from "../src/generated/prisma/client";
+import { Prisma } from "../src/generated/prisma/client";
+import type { TenantProfileField } from "../src/generated/prisma/client";
 
 type TemplateFieldOption = {
   label: string;
@@ -46,6 +45,8 @@ type ProfileTemplate = {
     };
   };
 };
+
+type CsvRow = Record<string, string>;
 
 const resolveBasicTemplatePath = () => {
   const cwd = process.cwd();
@@ -147,24 +148,272 @@ const buildFieldValuePayload = (
   }
 };
 
-/**
- * Seed script for Ziqola AMS
- *
- * Creates initial data for development and testing:
- * - Demo tenant with users (Principal, Admin, Teachers, Students)
- * - Academic year with periods
- * - Subjects, classes, and enrollments
- * - Groups (grades/streams)
- *
- * Run with: pnpm --filter backend prisma:seed
- */
+const resolveSeedDataPath = () => {
+  const cwd = process.cwd();
+  const candidates = [
+    path.join(cwd, "packages", "db", "data", "seed"),
+    path.join(cwd, "prisma", "data", "seed"),
+    path.join(cwd, "data", "seed"),
+    path.join(cwd, "..", "..", "packages", "db", "data", "seed"),
+  ];
+
+  const resolved = candidates.find((candidate) =>
+    existsSync(path.join(candidate, "tenant.csv")),
+  );
+
+  if (!resolved) {
+    throw new Error("Seed data folder not found. Generate CSVs first.");
+  }
+
+  return resolved;
+};
+
+const parseCsvLine = (line: string) => {
+  const values: string[] = [];
+  let current = "";
+  let inQuotes = false;
+
+  for (let index = 0; index < line.length; index += 1) {
+    const char = line[index];
+    if (char === '"') {
+      if (inQuotes && line[index + 1] === '"') {
+        current += '"';
+        index += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (char === "," && !inQuotes) {
+      values.push(current);
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+
+  values.push(current);
+  return values.map((value) => value.trim());
+};
+
+const ensureHeaders = (
+  headers: string[],
+  required: string[],
+  fileName: string,
+) => {
+  const missing = required.filter((header) => !headers.includes(header));
+  if (missing.length > 0) {
+    throw new Error(`Missing headers in ${fileName}: ${missing.join(", ")}`);
+  }
+};
+
+const loadCsv = async (filePath: string, requiredHeaders: string[]) => {
+  const raw = await readFile(filePath, "utf-8");
+  const lines = raw
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+
+  if (lines.length === 0) return [] as CsvRow[];
+
+  const header = parseCsvLine(lines[0]);
+  ensureHeaders(header, requiredHeaders, filePath);
+
+  return lines.slice(1).map((line) => {
+    const values = parseCsvLine(line);
+    const row: CsvRow = {};
+    header.forEach((key, index) => {
+      row[key] = values[index] ?? "";
+    });
+    return row;
+  });
+};
+
+const toOptional = (value?: string | null) =>
+  value && value.length > 0 ? value : null;
+
+const toOptionalInt = (value?: string | null) => {
+  if (!value) return null;
+  const parsed = Number.parseInt(value, 10);
+  return Number.isNaN(parsed) ? null : parsed;
+};
+
+const toOptionalDate = (value?: string | null) => {
+  if (!value) return null;
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+};
+
+const toOptionalBoolean = (value?: string | null) => {
+  if (!value) return null;
+  const normalized = value.toLowerCase();
+  if (["true", "1", "yes"].includes(normalized)) return true;
+  if (["false", "0", "no"].includes(normalized)) return false;
+  return null;
+};
+
+const toOptionalJson = (value?: string | null) => {
+  if (!value) return undefined;
+  try {
+    return JSON.parse(value) as Prisma.InputJsonValue;
+  } catch {
+    return undefined;
+  }
+};
+
+const CSV_HEADERS = {
+  tenant: ["id", "name", "slug", "education_level", "active_academic_year_id"],
+  academicYear: [
+    "id",
+    "tenant_id",
+    "label",
+    "status",
+    "start_date",
+    "end_date",
+    "active_period_id",
+  ],
+  academicPeriod: [
+    "id",
+    "tenant_id",
+    "academic_year_id",
+    "name",
+    "start_date",
+    "end_date",
+    "order_index",
+    "status",
+  ],
+  user: [
+    "id",
+    "tenant_id",
+    "email",
+    "name",
+    "role",
+    "status",
+    "gender",
+    "date_of_birth",
+    "phone_number",
+  ],
+  teacherProfile: [
+    "id",
+    "tenant_id",
+    "user_id",
+    "hired_at",
+    "additional_identifiers",
+  ],
+  studentProfile: ["id", "tenant_id", "user_id", "additional_identifiers"],
+  group: ["id", "tenant_id", "name", "type"],
+  class: ["id", "tenant_id", "academic_year_id", "name"],
+  classGroup: ["tenant_id", "class_id", "group_id"],
+  homeroomAssignment: [
+    "id",
+    "tenant_id",
+    "class_id",
+    "academic_year_id",
+    "teacher_profile_id",
+    "assigned_at",
+    "ended_at",
+    "is_active",
+  ],
+  subject: ["id", "tenant_id", "name", "is_deleted", "deleted_at"],
+  classSubject: [
+    "id",
+    "tenant_id",
+    "class_id",
+    "academic_year_id",
+    "subject_id",
+    "teacher_profile_id",
+    "is_deleted",
+    "deleted_at",
+  ],
+  teacherSubject: ["id", "tenant_id", "teacher_profile_id", "subject_id"],
+  classEnrollment: [
+    "id",
+    "tenant_id",
+    "class_id",
+    "student_profile_id",
+    "start_date",
+    "end_date",
+  ],
+  tenantAssessmentType: [
+    "id",
+    "tenant_id",
+    "key",
+    "label",
+    "description",
+    "order",
+    "is_enabled",
+  ],
+  assessmentTypeWeight: [
+    "id",
+    "tenant_id",
+    "teacher_subject_id",
+    "academic_period_id",
+    "assessment_type_id",
+    "weight",
+  ],
+  assessmentComponent: [
+    "id",
+    "tenant_id",
+    "class_subject_id",
+    "academic_period_id",
+    "assessment_type_id",
+    "name",
+    "weight",
+  ],
+  assessmentScore: [
+    "id",
+    "tenant_id",
+    "component_id",
+    "student_profile_id",
+    "score",
+    "is_locked",
+    "locked_at",
+  ],
+  attendance: [
+    "id",
+    "tenant_id",
+    "session_id",
+    "student_profile_id",
+    "status",
+    "remarks",
+  ],
+  schedule: [
+    "id",
+    "tenant_id",
+    "class_id",
+    "academic_period_id",
+    "class_subject_id",
+    "teacher_profile_id",
+    "day_of_week",
+    "start_time",
+    "end_time",
+  ],
+  session: [
+    "id",
+    "tenant_id",
+    "class_id",
+    "academic_period_id",
+    "class_subject_id",
+    "schedule_id",
+    "date",
+    "start_time",
+    "end_time",
+  ],
+};
 
 async function main() {
-  console.log("🌱 Starting database seed...\n");
+  console.log("🌱 Starting database seed from CSV...\n");
 
-  // Check if seed already exists
+  const seedDir = resolveSeedDataPath();
+  const load = (fileName: string, headers: string[]) =>
+    loadCsv(path.join(seedDir, `${fileName}.csv`), headers);
+
+  const tenantRows = await load("tenant", CSV_HEADERS.tenant);
+  if (tenantRows.length === 0) {
+    throw new Error("tenant.csv is empty. Generate seed data first.");
+  }
+
+  const tenantSlug = tenantRows[0].slug;
   const existingTenant = await prisma.tenant.findFirst({
-    where: { name: "Demo School" },
+    where: { slug: tenantSlug },
   });
 
   if (existingTenant) {
@@ -172,19 +421,358 @@ async function main() {
     return;
   }
 
-  // 1. Create tenant
-  console.log("📦 Creating tenant...");
-  const tenant = await prisma.tenant.create({
-    data: {
-      name: "Demo School",
-      slug: "demo-school",
-      educationLevel: "SMA",
-    },
-  });
-  console.log(`✅ Created tenant: ${tenant.name} (${tenant.id})\n`);
-  console.log(`   Tenant slug: ${tenant.slug}\n`);
+  const academicYearRows = await load(
+    "academic_year",
+    CSV_HEADERS.academicYear,
+  );
+  const academicPeriodRows = await load(
+    "academic_period",
+    CSV_HEADERS.academicPeriod,
+  );
+  const userRows = await load("user", CSV_HEADERS.user);
+  const teacherProfileRows = await load(
+    "teacher_profile",
+    CSV_HEADERS.teacherProfile,
+  );
+  const studentProfileRows = await load(
+    "student_profile",
+    CSV_HEADERS.studentProfile,
+  );
+  const groupRows = await load("group", CSV_HEADERS.group);
+  const classRows = await load("class", CSV_HEADERS.class);
+  const classGroupRows = await load("class_group", CSV_HEADERS.classGroup);
+  const homeroomRows = await load(
+    "homeroom_assignment",
+    CSV_HEADERS.homeroomAssignment,
+  );
+  const subjectRows = await load("subject", CSV_HEADERS.subject);
+  const classSubjectRows = await load(
+    "class_subject",
+    CSV_HEADERS.classSubject,
+  );
+  const teacherSubjectRows = await load(
+    "teacher_subject",
+    CSV_HEADERS.teacherSubject,
+  );
+  const scheduleRows = await load("schedule", CSV_HEADERS.schedule);
+  const sessionRows = await load("session", CSV_HEADERS.session);
+  const classEnrollmentRows = await load(
+    "class_enrollment",
+    CSV_HEADERS.classEnrollment,
+  );
+  const tenantAssessmentTypeRows = await load(
+    "tenant_assessment_type",
+    CSV_HEADERS.tenantAssessmentType,
+  );
+  const assessmentTypeWeightRows = await load(
+    "assessment_type_weight",
+    CSV_HEADERS.assessmentTypeWeight,
+  );
+  const assessmentComponentRows = await load(
+    "assessment_component",
+    CSV_HEADERS.assessmentComponent,
+  );
+  const assessmentScoreRows = await load(
+    "assessment_score",
+    CSV_HEADERS.assessmentScore,
+  );
+  const attendanceRows = await load("attendance", CSV_HEADERS.attendance);
 
-  // 1.1 Apply basic profile template fields
+  console.log("📦 Creating tenant...");
+  await prisma.tenant.createMany({
+    data: tenantRows.map((row) => ({
+      id: row.id,
+      name: row.name,
+      slug: row.slug,
+      educationLevel: toOptional(row.education_level),
+    })),
+  });
+
+  console.log("📅 Creating academic years and periods...");
+  await prisma.academicYear.createMany({
+    data: academicYearRows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      label: row.label,
+      status: row.status as AcademicStatus,
+      startDate: toOptionalDate(row.start_date),
+      endDate: toOptionalDate(row.end_date),
+    })),
+  });
+
+  await prisma.academicPeriod.createMany({
+    data: academicPeriodRows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      academicYearId: row.academic_year_id,
+      name: row.name,
+      startDate: new Date(row.start_date),
+      endDate: new Date(row.end_date),
+      orderIndex: Number.parseInt(row.order_index, 10),
+      status: row.status as PeriodStatus,
+    })),
+  });
+
+  for (const row of academicYearRows) {
+    if (!row.active_period_id) continue;
+    await prisma.academicYear.update({
+      where: { id: row.id },
+      data: { activePeriodId: row.active_period_id },
+    });
+  }
+
+  for (const row of tenantRows) {
+    if (!row.active_academic_year_id) continue;
+    await prisma.tenant.update({
+      where: { id: row.id },
+      data: { activeAcademicYearId: row.active_academic_year_id },
+    });
+  }
+
+  console.log("👥 Creating users and profiles...");
+  const defaultPassword = process.env.SEED_DEFAULT_PASSWORD ?? "password123";
+  const defaultPasswordHash = await argon2.hash(defaultPassword);
+
+  await prisma.user.createMany({
+    data: userRows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      email: row.email,
+      name: row.name,
+      passwordHash: defaultPasswordHash,
+      role: row.role as Role,
+      status: (row.status as UserStatus) ?? UserStatus.ACTIVE,
+      gender: row.gender ? (row.gender as Gender) : undefined,
+      dateOfBirth: toOptionalDate(row.date_of_birth),
+      phoneNumber: toOptional(row.phone_number),
+    })),
+    skipDuplicates: true,
+  });
+
+  await prisma.teacherProfile.createMany({
+    data: teacherProfileRows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      userId: row.user_id,
+      hiredAt: toOptionalDate(row.hired_at),
+      additionalIdentifiers: toOptionalJson(row.additional_identifiers),
+    })),
+    skipDuplicates: true,
+  });
+
+  await prisma.studentProfile.createMany({
+    data: studentProfileRows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      userId: row.user_id,
+      additionalIdentifiers: toOptionalJson(row.additional_identifiers),
+    })),
+    skipDuplicates: true,
+  });
+
+  console.log("🏫 Creating groups and classes...");
+  await prisma.group.createMany({
+    data: groupRows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      name: row.name,
+      type: row.type as GroupType,
+    })),
+    skipDuplicates: true,
+  });
+
+  await prisma.class.createMany({
+    data: classRows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      academicYearId: row.academic_year_id,
+      name: row.name,
+    })),
+    skipDuplicates: true,
+  });
+
+  await prisma.classGroup.createMany({
+    data: classGroupRows.map((row) => ({
+      tenantId: row.tenant_id,
+      classId: row.class_id,
+      groupId: row.group_id,
+    })),
+    skipDuplicates: true,
+  });
+
+  console.log("👨‍🏫 Creating homeroom assignments...");
+  if (homeroomRows.length > 0) {
+    await prisma.homeroomAssignment.createMany({
+      data: homeroomRows.map((row) => ({
+        id: row.id,
+        tenantId: row.tenant_id,
+        classId: row.class_id,
+        academicYearId: row.academic_year_id,
+        teacherProfileId: row.teacher_profile_id,
+        assignedAt: toOptionalDate(row.assigned_at) ?? new Date(),
+        endedAt: toOptionalDate(row.ended_at),
+        isActive: toOptionalBoolean(row.is_active) ?? true,
+      })),
+      skipDuplicates: true,
+    });
+  }
+
+  console.log("📚 Creating subjects and class subjects...");
+  await prisma.subject.createMany({
+    data: subjectRows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      name: row.name,
+      isDeleted: toOptionalBoolean(row.is_deleted) ?? false,
+      deletedAt: toOptionalDate(row.deleted_at),
+    })),
+    skipDuplicates: true,
+  });
+
+  await prisma.classSubject.createMany({
+    data: classSubjectRows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      classId: row.class_id,
+      academicYearId: row.academic_year_id,
+      subjectId: row.subject_id,
+      teacherProfileId: row.teacher_profile_id,
+      isDeleted: toOptionalBoolean(row.is_deleted) ?? false,
+      deletedAt: toOptionalDate(row.deleted_at),
+    })),
+    skipDuplicates: true,
+  });
+
+  if (teacherSubjectRows.length > 0) {
+    await prisma.teacherSubject.createMany({
+      data: teacherSubjectRows.map((row) => ({
+        id: row.id,
+        tenantId: row.tenant_id,
+        teacherProfileId: row.teacher_profile_id,
+        subjectId: row.subject_id,
+      })),
+      skipDuplicates: true,
+    });
+  }
+
+  console.log("🗓️  Creating schedules...");
+  if (scheduleRows.length > 0) {
+    await prisma.schedule.createMany({
+      data: scheduleRows.map((row) => ({
+        id: row.id,
+        tenantId: row.tenant_id,
+        classId: row.class_id,
+        academicPeriodId: row.academic_period_id,
+        classSubjectId: row.class_subject_id,
+        teacherProfileId: row.teacher_profile_id,
+        dayOfWeek: Number.parseInt(row.day_of_week, 10),
+        startTime: new Date(row.start_time),
+        endTime: new Date(row.end_time),
+      })),
+      skipDuplicates: true,
+    });
+  }
+
+  console.log("🧾 Creating sessions...");
+  if (sessionRows.length > 0) {
+    await prisma.session.createMany({
+      data: sessionRows.map((row) => ({
+        id: row.id,
+        tenantId: row.tenant_id,
+        classId: row.class_id,
+        academicPeriodId: toOptional(row.academic_period_id) ?? undefined,
+        classSubjectId: row.class_subject_id,
+        scheduleId: toOptional(row.schedule_id) ?? undefined,
+        date: new Date(row.date),
+        startTime: new Date(row.start_time),
+        endTime: new Date(row.end_time),
+      })),
+      skipDuplicates: true,
+    });
+  }
+
+  console.log("📝 Creating enrollments...");
+  await prisma.classEnrollment.createMany({
+    data: classEnrollmentRows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      classId: row.class_id,
+      studentProfileId: row.student_profile_id,
+      startDate: new Date(row.start_date),
+      endDate: toOptionalDate(row.end_date),
+    })),
+    skipDuplicates: true,
+  });
+
+  console.log(
+    "🧪 Creating assessment types, weights, components, and scores...",
+  );
+  await prisma.tenantAssessmentType.createMany({
+    data: tenantAssessmentTypeRows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      key: row.key,
+      label: row.label,
+      description: toOptional(row.description),
+      order: toOptionalInt(row.order),
+      isEnabled: toOptionalBoolean(row.is_enabled) ?? true,
+    })),
+    skipDuplicates: true,
+  });
+
+  await prisma.assessmentTypeWeight.createMany({
+    data: assessmentTypeWeightRows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      teacherSubjectId: row.teacher_subject_id,
+      academicPeriodId: row.academic_period_id,
+      assessmentTypeId: row.assessment_type_id,
+      weight: Number.parseInt(row.weight, 10),
+    })),
+    skipDuplicates: true,
+  });
+
+  await prisma.assessmentComponent.createMany({
+    data: assessmentComponentRows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      classSubjectId: row.class_subject_id,
+      academicPeriodId: row.academic_period_id,
+      assessmentTypeId: row.assessment_type_id,
+      name: row.name,
+      weight: Number.parseInt(row.weight, 10),
+    })),
+    skipDuplicates: true,
+  });
+
+  await prisma.assessmentScore.createMany({
+    data: assessmentScoreRows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      componentId: row.component_id,
+      studentProfileId: row.student_profile_id,
+      score: new Prisma.Decimal(row.score),
+      isLocked: toOptionalBoolean(row.is_locked) ?? false,
+      lockedAt: toOptionalDate(row.locked_at),
+    })),
+    skipDuplicates: true,
+  });
+
+  if (attendanceRows.length > 0) {
+    console.log("🧷 Creating attendance records...");
+    await prisma.attendance.createMany({
+      data: attendanceRows.map((row) => ({
+        id: row.id,
+        tenantId: row.tenant_id,
+        sessionId: row.session_id,
+        studentProfileId: row.student_profile_id,
+        status: row.status as AttendanceStatus,
+        remarks: toOptional(row.remarks),
+      })),
+      skipDuplicates: true,
+    });
+  }
+
   console.log("🧩 Applying basic profile template...");
   const template = await loadBasicTemplate();
   const studentFields = template.profile.customFields.student;
@@ -195,7 +783,7 @@ async function main() {
     fields: TemplateField[],
   ) =>
     fields.map((field) => ({
-      tenantId: tenant.id,
+      tenantId: tenantRows[0].id,
       role,
       key: field.key,
       label: field.label,
@@ -223,138 +811,9 @@ async function main() {
       skipDuplicates: true,
     });
   }
-  console.log("✅ Applied basic profile template\n");
 
-  // 2. Create users with different roles
-  console.log("👥 Creating users...");
-
-  const defaultPassword = await argon2.hash("password123");
-
-  // Principal
-  const principal = await prisma.user.create({
-    data: {
-      tenantId: tenant.id,
-      email: "principal@demo.school",
-      name: "Dr. Sarah Principal",
-      passwordHash: defaultPassword,
-      role: Role.PRINCIPAL,
-      status: UserStatus.ACTIVE,
-      gender: Gender.FEMALE,
-      phoneNumber: "+62-812-3456-7890",
-    },
-  });
-  console.log(`✅ Created principal: ${principal.email}`);
-
-  // Admin staff
-  const admin = await prisma.user.create({
-    data: {
-      tenantId: tenant.id,
-      email: "admin@demo.school",
-      name: "John Admin",
-      passwordHash: defaultPassword,
-      role: Role.ADMIN_STAFF,
-      status: UserStatus.ACTIVE,
-      gender: Gender.MALE,
-      phoneNumber: "+62-813-4567-8901",
-    },
-  });
-  console.log(`✅ Created admin: ${admin.email}`);
-
-  // Teachers
-  const teacherSeeds = [
-    {
-      email: "teacher1@demo.school",
-      name: "Siti Nurhayati",
-      gender: Gender.FEMALE,
-      nip: "198501012010012001",
-      nuptk: "1234567890123456",
-      hiredAt: new Date("2010-01-01"),
-    },
-    {
-      email: "teacher2@demo.school",
-      name: "Budi Santoso",
-      gender: Gender.MALE,
-      nip: "198601012010012002",
-      nuptk: "1234567890123457",
-      hiredAt: new Date("2011-01-01"),
-    },
-    {
-      email: "teacher3@demo.school",
-      name: "Rina Handayani",
-      gender: Gender.FEMALE,
-      nip: "198701012012012003",
-      nuptk: "1234567890123458",
-      hiredAt: new Date("2012-01-01"),
-    },
-  ];
-
-  const teachers = await Promise.all(
-    teacherSeeds.map((seed) =>
-      prisma.user.create({
-        data: {
-          tenantId: tenant.id,
-          email: seed.email,
-          name: seed.name,
-          passwordHash: defaultPassword,
-          role: Role.TEACHER,
-          status: UserStatus.ACTIVE,
-          gender: seed.gender,
-          teacherProfile: {
-            create: {
-              tenantId: tenant.id,
-              hiredAt: seed.hiredAt,
-            },
-          },
-        },
-        include: { teacherProfile: true },
-      }),
-    ),
-  );
-  console.log(`✅ Created ${teachers.length} teachers\n`);
-
-  // Students
-  console.log("🎓 Creating students...");
-  const studentNames = [
-    "Ahmad Fauzi",
-    "Nadia Aulia",
-    "Rizky Pratama",
-    "Dewi Lestari",
-    "Fajar Hidayat",
-    "Intan Permata",
-    "Ilham Ramadhan",
-    "Putri Amelia",
-    "Bagas Saputra",
-    "Salsabila Nur",
-  ];
-  const students = await Promise.all(
-    Array.from({ length: 10 }, (_, i) => {
-      const num = (i + 1).toString().padStart(3, "0");
-      return prisma.user.create({
-        data: {
-          tenantId: tenant.id,
-          email: `student${num}@demo.school`,
-          name: studentNames[i] ?? `Siswa ${num}`,
-          passwordHash: defaultPassword,
-          role: Role.STUDENT,
-          status: UserStatus.ACTIVE,
-          gender: i % 2 === 0 ? Gender.MALE : Gender.FEMALE,
-          dateOfBirth: new Date(2010 + (i % 3), i % 12, 15),
-          studentProfile: {
-            create: {
-              tenantId: tenant.id,
-            },
-          },
-        },
-        include: { studentProfile: true },
-      });
-    }),
-  );
-  console.log(`✅ Created ${students.length} students\n`);
-
-  // 2.1 Seed custom profile field values
-  console.log("🧩 Seeding custom profile field values...");
   const tenantProfileFields = await prisma.tenantProfileField.findMany({
-    where: { tenantId: tenant.id, isEnabled: true },
+    where: { tenantId: tenantRows[0].id, isEnabled: true },
   });
 
   const studentFieldsForValues = tenantProfileFields.filter(
@@ -365,66 +824,54 @@ async function main() {
   );
 
   const studentIdentifierMap = new Map(
-    students
-      .filter((student) => student.studentProfile)
-      .map((student, index) => {
-        const num = (index + 1).toString().padStart(3, "0");
-        return [
-          student.studentProfile!.id,
-          {
-            nis: `202400${num}`,
-            nisn: `00${num}0000000`,
-          },
-        ] as const;
-      }),
+    studentProfileRows.map((row) => [
+      row.id,
+      toOptionalJson(row.additional_identifiers) as
+        | { nis?: string; nisn?: string }
+        | undefined,
+    ]),
   );
 
   const teacherIdentifierMap = new Map(
-    teachers
-      .filter((teacher) => teacher.teacherProfile)
-      .map(
-        (teacher, index) =>
-          [
-            teacher.teacherProfile!.id,
-            {
-              nip: teacherSeeds[index]?.nip ?? "",
-              nuptk: teacherSeeds[index]?.nuptk ?? "",
-            },
-          ] as const,
-      ),
+    teacherProfileRows.map((row) => [
+      row.id,
+      toOptionalJson(row.additional_identifiers) as
+        | { nip?: string; nuptk?: string }
+        | undefined,
+    ]),
   );
 
-  const studentValueSeeds = students.flatMap((student, index) => {
-    const studentProfile = student.studentProfile;
-    if (!studentProfile) return [];
+  const studentValueSeeds = studentProfileRows.flatMap((student, index) =>
+    studentFieldsForValues.map((field) => {
+      const identifiers = studentIdentifierMap.get(student.id);
+      return {
+        tenantId: tenantRows[0].id,
+        studentProfileId: student.id,
+        fieldId: field.id,
+        ...(field.key === "nis"
+          ? { valueText: identifiers?.nis }
+          : field.key === "nisn"
+            ? { valueText: identifiers?.nisn }
+            : buildFieldValuePayload(field, index, new Date(2010, 0, 1))),
+      };
+    }),
+  );
 
-    return studentFieldsForValues.map((field) => ({
-      tenantId: tenant.id,
-      studentProfileId: studentProfile.id,
-      fieldId: field.id,
-      ...(field.key === "nis"
-        ? { valueText: studentIdentifierMap.get(studentProfile.id)?.nis }
-        : field.key === "nisn"
-          ? { valueText: studentIdentifierMap.get(studentProfile.id)?.nisn }
-          : buildFieldValuePayload(field, index, new Date(2010, 0, 1))),
-    }));
-  });
-
-  const teacherValueSeeds = teachers.flatMap((teacher, index) => {
-    const teacherProfile = teacher.teacherProfile;
-    if (!teacherProfile) return [];
-
-    return teacherFieldsForValues.map((field) => ({
-      tenantId: tenant.id,
-      teacherProfileId: teacherProfile.id,
-      fieldId: field.id,
-      ...(field.key === "nip"
-        ? { valueText: teacherIdentifierMap.get(teacherProfile.id)?.nip }
-        : field.key === "nuptk"
-          ? { valueText: teacherIdentifierMap.get(teacherProfile.id)?.nuptk }
-          : buildFieldValuePayload(field, index, new Date(1985, 0, 1))),
-    }));
-  });
+  const teacherValueSeeds = teacherProfileRows.flatMap((teacher, index) =>
+    teacherFieldsForValues.map((field) => {
+      const identifiers = teacherIdentifierMap.get(teacher.id);
+      return {
+        tenantId: tenantRows[0].id,
+        teacherProfileId: teacher.id,
+        fieldId: field.id,
+        ...(field.key === "nip"
+          ? { valueText: identifiers?.nip }
+          : field.key === "nuptk"
+            ? { valueText: identifiers?.nuptk }
+            : buildFieldValuePayload(field, index, new Date(1985, 0, 1))),
+      };
+    }),
+  );
 
   if (studentValueSeeds.length > 0) {
     await prisma.studentProfileFieldValue.createMany({
@@ -440,409 +887,14 @@ async function main() {
     });
   }
 
-  console.log(
-    `✅ Seeded ${studentValueSeeds.length} student values and ${teacherValueSeeds.length} teacher values\n`,
-  );
-
-  // 3. Create academic year with periods
-  console.log("📅 Creating academic year...");
-  const today = new Date();
-  const currentYear = today.getFullYear();
-  const academicYearStartYear =
-    today.getMonth() >= 6 ? currentYear : currentYear - 1;
-  const academicYearEndYear = academicYearStartYear + 1;
-  const academicYear = await prisma.academicYear.create({
-    data: {
-      tenantId: tenant.id,
-      label: `${academicYearStartYear}/${academicYearEndYear}`,
-      status: AcademicStatus.ACTIVE,
-      startDate: new Date(`${academicYearStartYear}-07-01`),
-      endDate: new Date(`${academicYearEndYear}-06-30`),
-      periods: {
-        create: [
-          {
-            tenantId: tenant.id,
-            name: "Semester 1",
-            startDate: new Date(`${academicYearStartYear}-07-01`),
-            endDate: new Date(`${academicYearStartYear}-12-31`),
-            orderIndex: 1,
-            status: PeriodStatus.DRAFT,
-          },
-          {
-            tenantId: tenant.id,
-            name: "Semester 2",
-            startDate: new Date(`${academicYearEndYear}-01-01`),
-            endDate: new Date(`${academicYearEndYear}-06-30`),
-            orderIndex: 2,
-            status: PeriodStatus.DRAFT,
-          },
-        ],
-      },
-    },
-    include: { periods: true },
-  });
-
-  const activePeriod =
-    academicYear.periods.find(
-      (period) =>
-        today >= period.startDate && today <= (period.endDate ?? today),
-    ) ?? academicYear.periods[0];
-
-  // Set active period
-  await prisma.academicYear.update({
-    where: { id: academicYear.id },
-    data: { activePeriodId: activePeriod.id },
-  });
-  console.log(`✅ Created academic year: ${academicYear.label}`);
-  console.log(`   - ${academicYear.periods.length} periods created\n`);
-
-  // Set this year as active for tenant
-  await prisma.tenant.update({
-    where: { id: tenant.id },
-    data: { activeAcademicYearId: academicYear.id },
-  });
-
-  // 4. Create subjects
-  console.log("📚 Creating subjects...");
-  const subjectNames = [
-    "Matematika",
-    "Bahasa Inggris",
-    "Bahasa Indonesia",
-    "IPA",
-    "IPS",
-    "PJOK",
-    "Seni Budaya",
-    "Pendidikan Agama",
-  ];
-
-  const subjects = await Promise.all(
-    subjectNames.map((name) =>
-      prisma.subject.create({
-        data: {
-          tenantId: tenant.id,
-          name,
-        },
-      }),
-    ),
-  );
-  console.log(`✅ Created ${subjects.length} subjects\n`);
-
-  // 5. Create groups (grades)
-  console.log("🏫 Creating groups...");
-  const gradeNames = getDefaultGrades(tenant.educationLevel ?? "SMA");
-  const grades = await Promise.all(
-    gradeNames.map((name) =>
-      prisma.group.create({
-        data: {
-          tenantId: tenant.id,
-          name,
-          type: GroupType.GRADE,
-        },
-      }),
-    ),
-  );
-
-  const streams = await Promise.all(
-    ["IPA", "IPS"].map((name) =>
-      prisma.group.create({
-        data: {
-          tenantId: tenant.id,
-          name,
-          type: GroupType.STREAM,
-        },
-      }),
-    ),
-  );
-  console.log(
-    `✅ Created ${grades.length} grades and ${streams.length} streams\n`,
-  );
-
-  // 6. Create classes
-  console.log("🎒 Creating classes...");
-  const class10A = await prisma.class.create({
-    data: {
-      tenantId: tenant.id,
-      academicYearId: academicYear.id,
-      name: "X IPA 1",
-      classGroups: {
-        create: [
-          { tenantId: tenant.id, groupId: grades[0].id }, // Grade 10
-          { tenantId: tenant.id, groupId: streams[0].id }, // Science
-        ],
-      },
-    },
-  });
-
-  const class10B = await prisma.class.create({
-    data: {
-      tenantId: tenant.id,
-      academicYearId: academicYear.id,
-      name: "X IPS 1",
-      classGroups: {
-        create: [
-          { tenantId: tenant.id, groupId: grades[0].id }, // Grade 10
-          { tenantId: tenant.id, groupId: streams[1].id }, // Social
-        ],
-      },
-    },
-  });
-  console.log(`✅ Created classes: ${class10A.name}, ${class10B.name}\n`);
-
-  // 7. Assign homeroom teachers
-  console.log("👨‍🏫 Assigning homeroom teachers...");
-  await Promise.all([
-    prisma.homeroomAssignment.create({
-      data: {
-        tenantId: tenant.id,
-        classId: class10A.id,
-        academicYearId: academicYear.id,
-        teacherProfileId: teachers[0].teacherProfile!.id,
-        isActive: true,
-      },
-    }),
-    prisma.homeroomAssignment.create({
-      data: {
-        tenantId: tenant.id,
-        classId: class10B.id,
-        academicYearId: academicYear.id,
-        teacherProfileId: teachers[1].teacherProfile!.id,
-        isActive: true,
-      },
-    }),
-  ]);
-  console.log(`✅ Homeroom teachers assigned\n`);
-
-  // 8. Create class subjects (assign subjects to classes with teachers)
-  console.log("📖 Creating class subjects...");
-
-  // Assign first 4 subjects to class 10-A
-  const class10ASubjects = await Promise.all(
-    subjects.slice(0, 4).map((subject, index) =>
-      prisma.classSubject.create({
-        data: {
-          tenantId: tenant.id,
-          classId: class10A.id,
-          academicYearId: academicYear.id,
-          subjectId: subject.id,
-          teacherProfileId:
-            teachers[index % teachers.length].teacherProfile!.id,
-        },
-      }),
-    ),
-  );
-
-  // Assign subjects to class 10-B
-  const class10BSubjects = await Promise.all(
-    subjects.slice(0, 4).map((subject, index) =>
-      prisma.classSubject.create({
-        data: {
-          tenantId: tenant.id,
-          classId: class10B.id,
-          academicYearId: academicYear.id,
-          subjectId: subject.id,
-          teacherProfileId:
-            teachers[index % teachers.length].teacherProfile!.id,
-        },
-      }),
-    ),
-  );
-  console.log(`✅ Created class subjects for both classes\n`);
-
-  // 8.5 Create schedules for calendar view
-  console.log("🗓️  Creating schedules...");
-  const buildTime = (baseDate: Date, hour: number, minute = 0) => {
-    const date = new Date(baseDate);
-    date.setHours(hour, minute, 0, 0);
-    return date;
-  };
-
-  const normalizeDayOfWeek = (value: number) => (value === 0 ? 7 : value);
-
-  const getNextDateForDayOfWeek = (baseDate: Date, dayOfWeek: number) => {
-    const date = new Date(baseDate);
-    const baseDay = normalizeDayOfWeek(date.getDay());
-    let diff = dayOfWeek - baseDay;
-    if (diff < 0) diff += 7;
-    date.setDate(date.getDate() + diff);
-    return date;
-  };
-
-  const getPreviousDateForDayOfWeek = (baseDate: Date, dayOfWeek: number) => {
-    const date = new Date(baseDate);
-    const baseDay = normalizeDayOfWeek(date.getDay());
-    let diff = baseDay - dayOfWeek;
-    if (diff < 0) diff += 7;
-    date.setDate(date.getDate() - diff);
-    return date;
-  };
-
-  const combineDateAndTime = (date: Date, timeSource: Date) => {
-    const result = new Date(date);
-    result.setHours(timeSource.getHours(), timeSource.getMinutes(), 0, 0);
-    return result;
-  };
-
-  const allClassSubjects = [...class10ASubjects, ...class10BSubjects];
-
-  const schedules = await Promise.all(
-    allClassSubjects.map((classSubject, index) => {
-      const dayOfWeek = (index % 5) + 1; // Monday - Friday
-      const startHour = 7 + (index % 5); // 07:00 - 11:00
-      const startTime = buildTime(new Date(), startHour);
-      const endTime = buildTime(new Date(), startHour + 1);
-
-      return prisma.schedule.create({
-        data: {
-          tenantId: tenant.id,
-          classId: classSubject.classId,
-          academicPeriodId: activePeriod.id,
-          classSubjectId: classSubject.id,
-          teacherProfileId: classSubject.teacherProfileId,
-          dayOfWeek,
-          startTime,
-          endTime,
-        },
-      });
-    }),
-  );
-
-  console.log(`✅ Created ${allClassSubjects.length} schedules\n`);
-
-  // 8.6 Create full sessions for work days (07:00 - 15:00) for a teacher
-  console.log(
-    "🧪 Creating full-day teacher sessions (Mon-Fri, 07:00-15:00)...",
-  );
-
-  const teacherProfileId = teachers[0].teacherProfile!.id;
-  const teacherClassSubject =
-    class10ASubjects.find(
-      (subject) => subject.teacherProfileId === teacherProfileId,
-    ) ?? class10ASubjects[0];
-
-  const weekStart = (() => {
-    const base = new Date(today);
-    const day = base.getDay();
-    const diff = day === 0 ? -6 : 1 - day; // Monday start
-    base.setDate(base.getDate() + diff);
-    base.setHours(0, 0, 0, 0);
-    return base;
-  })();
-
-  const workDays = Array.from({ length: 5 }, (_, index) => {
-    const date = new Date(weekStart);
-    date.setDate(weekStart.getDate() + index);
-    return date;
-  });
-
-  const withinActivePeriod = (date: Date) =>
-    activePeriod.startDate && activePeriod.endDate
-      ? date >= new Date(activePeriod.startDate) &&
-        date <= new Date(activePeriod.endDate)
-      : true;
-
-  const sessionSeeds = workDays
-    .filter(withinActivePeriod)
-    .flatMap((sessionDate) =>
-      Array.from({ length: 8 }, (_, slot) => {
-        const start = new Date(sessionDate);
-        start.setHours(7 + slot, 0, 0, 0);
-        const end = new Date(sessionDate);
-        end.setHours(8 + slot, 0, 0, 0);
-
-        return {
-          tenantId: tenant.id,
-          classId: teacherClassSubject.classId,
-          classSubjectId: teacherClassSubject.id,
-          academicPeriodId: activePeriod.id,
-          scheduleId: null,
-          date: sessionDate,
-          startTime: start,
-          endTime: end,
-        };
-      }),
-    );
-
-  await Promise.all(
-    sessionSeeds.map((session) =>
-      prisma.session.create({
-        data: session,
-      }),
-    ),
-  );
-
-  console.log(`✅ Created ${sessionSeeds.length} sessions\n`);
-
-  // 9. Enroll students
-  console.log("📝 Enrolling students...");
-
-  // Split students between two classes
-  const halfIndex = Math.floor(students.length / 2);
-  const class10AStudents = students.slice(0, halfIndex);
-  const class10BStudents = students.slice(halfIndex);
-
-  await Promise.all([
-    ...class10AStudents.map((student) =>
-      prisma.classEnrollment.create({
-        data: {
-          tenantId: tenant.id,
-          classId: class10A.id,
-          studentProfileId: student.studentProfile!.id,
-          startDate: academicYear.startDate!,
-        },
-      }),
-    ),
-    ...class10BStudents.map((student) =>
-      prisma.classEnrollment.create({
-        data: {
-          tenantId: tenant.id,
-          classId: class10B.id,
-          studentProfileId: student.studentProfile!.id,
-          startDate: academicYear.startDate!,
-        },
-      }),
-    ),
-  ]);
-  console.log(
-    `✅ Enrolled ${class10AStudents.length} students in ${class10A.name}`,
-  );
-  console.log(
-    `✅ Enrolled ${class10BStudents.length} students in ${class10B.name}\n`,
-  );
-
   console.log("✨ Seed completed successfully!\n");
   console.log("📋 Summary:");
-  console.log(`   - Tenant: ${tenant.name}`);
-  console.log(`   - Users: ${1 + 1 + teachers.length + students.length} total`);
-  console.log(`     • 1 Principal`);
-  console.log(`     • 1 Admin`);
-  console.log(`     • ${teachers.length} Teachers`);
-  console.log(`     • ${students.length} Students`);
-  console.log(`   - Academic Year: ${academicYear.label}`);
-  console.log(`   - Subjects: ${subjects.length}`);
-  console.log(`   - Classes: 2`);
-  console.log(`\n🔐 Default password for all users: password123`);
-  console.log("\n📧 Sample login credentials:");
-  console.log("   Tenant slug: demo-school");
-  console.log(`   Principal: principal@demo.school`);
-  console.log(`   Admin: admin@demo.school`);
-  console.log(`   Teacher: teacher1@demo.school`);
-  console.log(`   Student: student001@demo.school`);
-}
-
-function getDefaultGrades(level: string): string[] {
-  if (level === "SD") {
-    return ["Kelas 1", "Kelas 2", "Kelas 3", "Kelas 4", "Kelas 5", "Kelas 6"];
-  }
-
-  if (level === "SMP") {
-    return ["Kelas 7", "Kelas 8", "Kelas 9"];
-  }
-
-  if (level === "SMA" || level === "SMK") {
-    return ["Kelas 10", "Kelas 11", "Kelas 12"];
-  }
-
-  return [];
+  console.log(`   - Tenant: ${tenantRows[0].name}`);
+  console.log(`   - Users: ${userRows.length} total`);
+  console.log(`   - Academic Years: ${academicYearRows.length}`);
+  console.log(`   - Subjects: ${subjectRows.length}`);
+  console.log(`   - Classes: ${classRows.length}`);
+  console.log(`\n🔐 Default password for all users: ${defaultPassword}`);
 }
 
 main()

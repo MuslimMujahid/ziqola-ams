@@ -22,3 +22,7 @@ export { useProfileFieldsValues } from "./use-profile-fields-values";
 export { useUpsertProfileValues } from "./use-upsert-profile-values";
 export { useFilterProfiles } from "./use-filter-profiles";
 export { useExportProfiles } from "./use-export-profiles";
+export {
+  useTenantAssessmentTypes,
+  useSuspenseTenantAssessmentTypes,
+} from "./use-tenant-assessment-types";

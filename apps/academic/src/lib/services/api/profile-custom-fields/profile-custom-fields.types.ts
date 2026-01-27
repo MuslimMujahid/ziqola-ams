@@ -40,6 +40,14 @@ export type ConfigurationField = {
   isEnabled?: boolean | null;
 };
 
+export type AssessmentTypeConfiguration = {
+  key: string;
+  label: string;
+  description?: string | null;
+  order?: number | null;
+  isEnabled?: boolean | null;
+};
+
 export type ProfileConfiguration = {
   profile: {
     customFields: {
@@ -47,6 +55,7 @@ export type ProfileConfiguration = {
       teacher: ConfigurationField[];
     };
   };
+  assessmentTypes?: AssessmentTypeConfiguration[];
 };
 
 export type ProfileTemplateSummary = {
@@ -81,6 +90,19 @@ export type TenantProfileField = {
   helpText?: string | null;
   options?: FieldOption[] | null;
   validation?: FieldValidation | null;
+  order?: number | null;
+  isEnabled: boolean;
+  sourceTemplateId?: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TenantAssessmentType = {
+  id: string;
+  tenantId: string;
+  key: string;
+  label: string;
+  description?: string | null;
   order?: number | null;
   isEnabled: boolean;
   sourceTemplateId?: string | null;
@@ -200,6 +222,11 @@ export type ExportProfilesVars = FilterProfilesVars & {
   format: "csv" | "xlsx";
 };
 
+export type ListTenantAssessmentTypesVars = {
+  tenantId: string;
+  includeDisabled?: boolean;
+};
+
 export type ProfileFieldsResponse = ApiResponse<TenantProfileField[]>;
 export type ProfileTemplatesResponse = ApiResponse<ProfileTemplateSummary[]>;
 export type ProfileTemplateResponse = ApiResponse<ProfileTemplateDetail>;
@@ -209,6 +236,7 @@ export type TenantProfileConfigurationBatchPayload = {
   configuration: TenantProfileConfiguration | null;
   studentFields: TenantProfileField[];
   teacherFields: TenantProfileField[];
+  assessmentTypes: TenantAssessmentType[];
 };
 export type TenantConfigurationsBatchResponse = ApiResponse<{
   PROFILE?: TenantProfileConfigurationBatchPayload;
@@ -229,3 +257,6 @@ export type FilterProfilesResponse<TProfile> = ApiResponse<{
   total: number;
 }>;
 export type ExportProfilesResponse = ApiResponse<{ downloadUrl: string }>;
+export type ListTenantAssessmentTypesResponse = ApiResponse<
+  TenantAssessmentType[]
+>;

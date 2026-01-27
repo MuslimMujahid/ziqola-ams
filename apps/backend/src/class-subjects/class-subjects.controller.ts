@@ -21,6 +21,7 @@ import {
 import { ClassSubjectsService } from "./class-subjects.service";
 import { ClassSubjectQueryDto } from "./dto/class-subject-query.dto";
 import { CreateClassSubjectDto } from "./dto/create-class-subject.dto";
+import { ListTeacherSubjectsDto } from "./dto/list-teacher-subjects.dto";
 import { UpdateClassSubjectDto } from "./dto/update-class-subject.dto";
 
 interface JwtUser {
@@ -33,16 +34,27 @@ interface JwtUser {
 export class ClassSubjectsController {
   constructor(private readonly classSubjects: ClassSubjectsService) {}
 
-  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF, Role.TEACHER)
   @RequirePermissions(Permission.SUBJECT_READ)
   @Get()
   async listClassSubjects(
     @Query() query: ClassSubjectQueryDto,
     @UserDecorator() user: JwtUser,
   ) {
+    const effectiveQuery = { ...query };
+
+    if (user.role === Role.TEACHER) {
+      const teacherProfileId =
+        await this.classSubjects.getTeacherProfileIdByUser(
+          user.tenantId,
+          user.sub,
+        );
+      effectiveQuery.teacherProfileId = teacherProfileId;
+    }
+
     const result = await this.classSubjects.getClassSubjects(
       user.tenantId,
-      query,
+      effectiveQuery,
     );
 
     return paginatedResponse(
@@ -51,6 +63,32 @@ export class ClassSubjectsController {
       "Class subjects retrieved",
       200,
     );
+  }
+
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF, Role.TEACHER)
+  @RequirePermissions(Permission.SUBJECT_READ)
+  @Get("teacher-subjects")
+  async listTeacherSubjects(
+    @Query() query: ListTeacherSubjectsDto,
+    @UserDecorator() user: JwtUser,
+  ) {
+    const effectiveQuery = { ...query };
+
+    if (user.role === Role.TEACHER) {
+      const teacherProfileId =
+        await this.classSubjects.getTeacherProfileIdByUser(
+          user.tenantId,
+          user.sub,
+        );
+      effectiveQuery.teacherProfileId = teacherProfileId;
+    }
+
+    const result = await this.classSubjects.listTeacherSubjects(
+      user.tenantId,
+      effectiveQuery,
+    );
+
+    return successResponse(result, "Teacher subjects retrieved", 200);
   }
 
   @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)

@@ -11,12 +11,14 @@ export function Select({
   placeholder,
   id,
   className,
+  disabled,
 }: {
   label?: string;
   values: Array<{ label: string; value: string }>;
   placeholder?: string;
   id?: string;
   className?: string;
+  disabled?: boolean;
 }) {
   const field = useFieldContext<string>();
   const errors = useStore(field.store, (state) => state.meta.errors);
@@ -28,13 +30,14 @@ export function Select({
         name={field.name}
         value={field.state.value}
         onValueChange={(value) => field.handleChange(value)}
+        disabled={disabled}
       >
         {label ? (
           <Label htmlFor={inputId} className="mb-2 text-sm font-medium">
             {label}
           </Label>
         ) : null}
-        <SelectBase.SelectTrigger className="w-full">
+        <SelectBase.SelectTrigger className="w-full" disabled={disabled}>
           <SelectBase.SelectValue placeholder={placeholder} />
         </SelectBase.SelectTrigger>
         <SelectBase.SelectContent>

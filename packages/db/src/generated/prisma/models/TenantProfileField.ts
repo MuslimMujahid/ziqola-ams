@@ -615,14 +615,6 @@ export type TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput = {
   deleteMany?: Prisma.TenantProfileFieldScalarWhereInput | Prisma.TenantProfileFieldScalarWhereInput[]
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type TenantProfileFieldCreateNestedOneWithoutStudentValuesInput = {
   create?: Prisma.XOR<Prisma.TenantProfileFieldCreateWithoutStudentValuesInput, Prisma.TenantProfileFieldUncheckedCreateWithoutStudentValuesInput>
   connectOrCreate?: Prisma.TenantProfileFieldCreateOrConnectWithoutStudentValuesInput

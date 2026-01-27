@@ -29,9 +29,8 @@ export function SubmitButton({ label, onClick }: SubmitButtonProps) {
               className="h-4 w-4 animate-spin mx-auto"
               aria-hidden="true"
             />
-          ) : (
-            label
-          )}
+          ) : null}
+          {label}
         </Button>
       )}
     </form.Subscribe>

@@ -1,0 +1,6 @@
+id,tenant_id,name,type
+b80b64f7-17e9-517f-ad95-32a1c548bbaa,ba6e3b18-bccb-5149-adae-530286c8bd10,Kelas 10,GRADE
+215602f9-889d-5d64-bcef-41e2ef6cd3d5,ba6e3b18-bccb-5149-adae-530286c8bd10,Kelas 11,GRADE
+688ef752-f718-5a62-a294-c7f776a71acb,ba6e3b18-bccb-5149-adae-530286c8bd10,Kelas 12,GRADE
+72750958-0977-5908-a241-939d02a9de64,ba6e3b18-bccb-5149-adae-530286c8bd10,IPA,STREAM
+0addf703-5c18-57eb-8427-b97b3bf199a8,ba6e3b18-bccb-5149-adae-530286c8bd10,IPS,STREAM

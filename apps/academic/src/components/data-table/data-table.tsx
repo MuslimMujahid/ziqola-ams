@@ -175,11 +175,7 @@ function DataTableView<TData>({
           ) : (
             <span className="sr-only">Toolbar</span>
           )}
-          {renderToolbar ? (
-            <div className="flex flex-wrap items-center gap-2">
-              {renderToolbar(table)}
-            </div>
-          ) : null}
+          {renderToolbar?.(table)}
         </TableToolbar>
       )}
 

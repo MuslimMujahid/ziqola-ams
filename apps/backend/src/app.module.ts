@@ -21,6 +21,8 @@ import { SchedulesModule } from "./schedules/schedules.module";
 import { SessionsModule } from "./sessions/sessions.module";
 import { UploadsModule } from "./common/uploads/uploads.module";
 import { ConfigurationsModule } from "./configurations/configurations.module";
+import { AssessmentComponentsModule } from "./assessment-components/assessment-components.module";
+import { AssessmentScoresModule } from "./assessment-scores/assessment-scores.module";
 
 @Module({
   imports: [
@@ -50,6 +52,8 @@ import { ConfigurationsModule } from "./configurations/configurations.module";
     EnrollmentsModule,
     UploadsModule,
     ConfigurationsModule,
+    AssessmentComponentsModule,
+    AssessmentScoresModule,
     ExamplesModule, // Example controller for RBAC patterns
   ],
   controllers: [AppController],

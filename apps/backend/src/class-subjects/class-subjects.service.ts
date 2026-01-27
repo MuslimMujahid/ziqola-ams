@@ -9,6 +9,7 @@ import { Role } from "@repo/db";
 import { PrismaService } from "../prisma/prisma.service";
 import { ClassSubjectQueryDto } from "./dto/class-subject-query.dto";
 import { CreateClassSubjectDto } from "./dto/create-class-subject.dto";
+import { ListTeacherSubjectsDto } from "./dto/list-teacher-subjects.dto";
 import { UpdateClassSubjectDto } from "./dto/update-class-subject.dto";
 
 export type ClassSubjectSummary = {
@@ -27,6 +28,17 @@ export type ClassSubjectSummary = {
   updatedAt: Date;
   isDeleted: boolean;
   deletedAt: Date | null;
+};
+
+export type TeacherSubjectSummary = {
+  id: string;
+  tenantId: string;
+  teacherProfileId: string;
+  teacherName: string;
+  subjectId: string;
+  subjectName: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 @Injectable()
@@ -86,6 +98,99 @@ export class ClassSubjectsService {
     }
 
     return teacherProfile;
+  }
+
+  private async upsertTeacherSubject(
+    tenantId: string,
+    teacherProfileId: string,
+    subjectId: string,
+  ) {
+    return this.prisma.client.teacherSubject.upsert({
+      where: {
+        tenantId_teacherProfileId_subjectId: {
+          tenantId,
+          teacherProfileId,
+          subjectId,
+        },
+      },
+      create: {
+        tenantId,
+        teacherProfileId,
+        subjectId,
+      },
+      update: {},
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+  }
+
+  async getTeacherProfileIdByUser(tenantId: string, userId: string) {
+    const teacherProfile = await this.prisma.client.teacherProfile.findFirst({
+      where: { tenantId, userId },
+      select: { id: true },
+    });
+
+    if (!teacherProfile) {
+      throw new NotFoundException("Teacher profile not found");
+    }
+
+    return teacherProfile.id;
+  }
+
+  async listTeacherSubjects(
+    tenantId: string,
+    query: ListTeacherSubjectsDto,
+  ): Promise<TeacherSubjectSummary[]> {
+    if (!query.academicYearId) {
+      throw new BadRequestException("academicYearId is required");
+    }
+
+    const items = await this.prisma.client.classSubject.findMany({
+      where: {
+        tenantId,
+        academicYearId: query.academicYearId,
+        isDeleted: false,
+        ...(query.teacherProfileId
+          ? { teacherProfileId: query.teacherProfileId }
+          : {}),
+      },
+      distinct: ["teacherProfileId", "subjectId"],
+      select: {
+        teacherProfileId: true,
+        teacherProfile: {
+          select: { id: true, user: { select: { id: true, name: true } } },
+        },
+        subjectId: true,
+        subject: { select: { id: true, name: true } },
+      },
+      orderBy: { createdAt: "asc" },
+    });
+
+    const results = await Promise.all(
+      items.map(async (item) => {
+        const teacherSubject = await this.upsertTeacherSubject(
+          tenantId,
+          item.teacherProfileId,
+          item.subjectId,
+        );
+
+        return {
+          id: teacherSubject.id,
+          tenantId,
+          teacherProfileId: item.teacherProfileId,
+          teacherName: item.teacherProfile.user.name,
+          subjectId: item.subjectId,
+          subjectName: item.subject.name,
+          createdAt: teacherSubject.createdAt,
+          updatedAt: teacherSubject.updatedAt,
+        };
+      }),
+    );
+
+    return results;
   }
 
   async getClassSubjects(tenantId: string, query: ClassSubjectQueryDto) {
@@ -233,6 +338,12 @@ export class ClassSubjectsService {
         },
       });
 
+      await this.upsertTeacherSubject(
+        tenantId,
+        dto.teacherProfileId,
+        dto.subjectId,
+      );
+
       return this.mapClassSubject(restored);
     }
 
@@ -263,6 +374,12 @@ export class ClassSubjectsService {
         updatedAt: true,
       },
     });
+
+    await this.upsertTeacherSubject(
+      tenantId,
+      dto.teacherProfileId,
+      dto.subjectId,
+    );
 
     return this.mapClassSubject(created);
   }
@@ -322,6 +439,12 @@ export class ClassSubjectsService {
         updatedAt: true,
       },
     });
+
+    await this.upsertTeacherSubject(
+      tenantId,
+      dto.teacherProfileId,
+      classSubject.subjectId,
+    );
 
     return this.mapClassSubject(updated);
   }

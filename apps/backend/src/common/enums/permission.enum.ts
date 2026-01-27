@@ -136,6 +136,7 @@ export const DefaultRolePermissions: Record<string, Permission[]> = {
     Permission.ATTENDANCE_READ,
     Permission.ATTENDANCE_READ_ALL,
     Permission.ASSESSMENT_READ,
+    Permission.ASSESSMENT_CONFIGURE,
     Permission.GRADE_READ_ALL,
     Permission.REPORT_CARD_READ_ALL,
     Permission.GROUP_READ,
@@ -227,6 +228,8 @@ export const DefaultRolePermissions: Record<string, Permission[]> = {
     // Read-only access to academic data
     Permission.ATTENDANCE_READ,
     Permission.ATTENDANCE_READ_ALL,
+    Permission.ASSESSMENT_READ,
+    Permission.ASSESSMENT_CONFIGURE,
     Permission.GRADE_READ_ALL,
     Permission.REPORT_CARD_READ_ALL,
     // Tenant read

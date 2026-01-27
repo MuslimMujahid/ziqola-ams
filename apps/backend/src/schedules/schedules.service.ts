@@ -86,14 +86,7 @@ export class SchedulesService {
   }
 
   private ensureTimeRange(startTime: string, endTime: string) {
-    const start = new Date(startTime);
-    const end = new Date(endTime);
-
-    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-      throw new BadRequestException("Invalid time range");
-    }
-
-    if (start >= end) {
+    if (new Date(startTime).getTime() >= new Date(endTime).getTime()) {
       throw new BadRequestException("Start time must be before end time");
     }
   }
@@ -118,6 +111,39 @@ export class SchedulesService {
     return teacherProfile;
   }
 
+  private getTeacherSubjectClient() {
+    const client = this.prisma.client as unknown as {
+      teacherSubject: {
+        upsert: (args: unknown) => Promise<{ id: string }>;
+      };
+    };
+
+    return client.teacherSubject;
+  }
+
+  private async upsertTeacherSubject(
+    tenantId: string,
+    teacherProfileId: string,
+    subjectId: string,
+  ) {
+    await this.getTeacherSubjectClient().upsert({
+      where: {
+        tenantId_teacherProfileId_subjectId: {
+          tenantId,
+          teacherProfileId,
+          subjectId,
+        },
+      },
+      create: {
+        tenantId,
+        teacherProfileId,
+        subjectId,
+      },
+      update: {},
+      select: { id: true },
+    });
+  }
+
   private async resolveClassSubject(params: {
     tenantId: string;
     academicYearId: string;
@@ -136,6 +162,14 @@ export class SchedulesService {
       subjectId,
       teacherProfileId,
     } = params;
+
+    let classSubject: {
+      id: string;
+      classId: string;
+      subjectId: string;
+      academicYearId: string;
+      teacherProfileId: string;
+    } | null = null;
 
     if (classSubjectId) {
       if (classId || subjectId || teacherProfileId) {
@@ -165,86 +199,53 @@ export class SchedulesService {
         );
       }
 
-      return existing;
+      classSubject = existing;
     }
 
-    if (!classId || !subjectId || !teacherProfileId) {
+    if (!classSubject && (!classId || !subjectId || !teacherProfileId)) {
       throw new BadRequestException(
         "classId, subjectId, and teacherProfileId are required",
       );
     }
 
-    await this.validateTeacherProfile(tenantId, teacherProfileId);
+    if (!classSubject) {
+      const resolvedClassId = classId as string;
+      const resolvedSubjectId = subjectId as string;
+      const resolvedTeacherProfileId = teacherProfileId as string;
 
-    const classItem = await this.prisma.client.class.findFirst({
-      where: { id: classId, tenantId },
-      select: { id: true, academicYearId: true },
-    });
+      await this.validateTeacherProfile(tenantId, resolvedTeacherProfileId);
 
-    if (!classItem) {
-      throw new NotFoundException("Class not found");
-    }
+      const classItem = await this.prisma.client.class.findFirst({
+        where: { id: resolvedClassId, tenantId },
+        select: { id: true, academicYearId: true },
+      });
 
-    if (classItem.academicYearId !== academicYearId) {
-      throw new BadRequestException(
-        "Class does not belong to this academic period",
-      );
-    }
+      if (!classItem) {
+        throw new NotFoundException("Class not found");
+      }
 
-    const subject = await this.prisma.client.subject.findFirst({
-      where: { id: subjectId, tenantId, isDeleted: false },
-      select: { id: true },
-    });
+      if (classItem.academicYearId !== academicYearId) {
+        throw new BadRequestException(
+          "Class does not belong to this academic period",
+        );
+      }
 
-    if (!subject) {
-      throw new NotFoundException("Subject not found");
-    }
+      const subject = await this.prisma.client.subject.findFirst({
+        where: { id: resolvedSubjectId, tenantId, isDeleted: false },
+        select: { id: true },
+      });
 
-    const existing = await this.prisma.client.classSubject.findFirst({
-      where: {
-        tenantId,
-        classId,
-        academicYearId,
-        subjectId,
-        isDeleted: false,
-      },
-      select: {
-        id: true,
-        classId: true,
-        subjectId: true,
-        academicYearId: true,
-        teacherProfileId: true,
-      },
-    });
+      if (!subject) {
+        throw new NotFoundException("Subject not found");
+      }
 
-    if (existing && existing.teacherProfileId !== teacherProfileId) {
-      throw new ConflictException(
-        "Class subject already assigned to another teacher",
-      );
-    }
-
-    if (existing) {
-      return existing;
-    }
-
-    const softDeleted = await this.prisma.client.classSubject.findFirst({
-      where: {
-        tenantId,
-        classId,
-        academicYearId,
-        subjectId,
-        isDeleted: true,
-      },
-      select: { id: true },
-    });
-
-    if (softDeleted) {
-      return this.prisma.client.classSubject.update({
-        where: { id: softDeleted.id },
-        data: {
-          teacherProfileId,
+      const existing = await this.prisma.client.classSubject.findFirst({
+        where: {
+          tenantId,
+          classId: resolvedClassId,
+          academicYearId,
+          subjectId: resolvedSubjectId,
           isDeleted: false,
-          deletedAt: null,
         },
         select: {
           id: true,
@@ -254,24 +255,77 @@ export class SchedulesService {
           teacherProfileId: true,
         },
       });
+
+      if (existing && existing.teacherProfileId !== resolvedTeacherProfileId) {
+        throw new ConflictException(
+          "Class subject already assigned to another teacher",
+        );
+      }
+
+      if (existing) {
+        classSubject = existing;
+      }
     }
 
-    return this.prisma.client.classSubject.create({
-      data: {
-        tenantId,
-        classId,
-        academicYearId,
-        subjectId,
-        teacherProfileId,
-      },
-      select: {
-        id: true,
-        classId: true,
-        subjectId: true,
-        academicYearId: true,
-        teacherProfileId: true,
-      },
-    });
+    if (!classSubject) {
+      const softDeleted = await this.prisma.client.classSubject.findFirst({
+        where: {
+          tenantId,
+          classId: classId as string,
+          academicYearId,
+          subjectId: subjectId as string,
+          isDeleted: true,
+        },
+        select: { id: true },
+      });
+
+      if (softDeleted) {
+        classSubject = await this.prisma.client.classSubject.update({
+          where: { id: softDeleted.id },
+          data: {
+            teacherProfileId: teacherProfileId as string,
+            isDeleted: false,
+            deletedAt: null,
+          },
+          select: {
+            id: true,
+            classId: true,
+            subjectId: true,
+            academicYearId: true,
+            teacherProfileId: true,
+          },
+        });
+      } else {
+        classSubject = await this.prisma.client.classSubject.create({
+          data: {
+            tenantId,
+            classId: classId as string,
+            academicYearId,
+            subjectId: subjectId as string,
+            teacherProfileId: teacherProfileId as string,
+          },
+          select: {
+            id: true,
+            classId: true,
+            subjectId: true,
+            academicYearId: true,
+            teacherProfileId: true,
+          },
+        });
+      }
+    }
+
+    if (!classSubject) {
+      throw new NotFoundException("Class subject not resolved");
+    }
+
+    await this.upsertTeacherSubject(
+      tenantId,
+      classSubject.teacherProfileId,
+      classSubject.subjectId,
+    );
+
+    return classSubject;
   }
 
   private async getScheduleById(tenantId: string, id: string) {

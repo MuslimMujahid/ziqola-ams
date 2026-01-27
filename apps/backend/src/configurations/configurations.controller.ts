@@ -19,9 +19,12 @@ import {
 import { ConfigurationsService } from "./configurations.service";
 import { ApplyConfigurationDto } from "./dto/apply-configuration.dto";
 import { BatchConfigurationsDto } from "./dto/batch-configurations.dto";
+import { CreateTenantAssessmentTypeDto } from "./dto/create-tenant-assessment-type.dto";
 import { CreateTenantProfileFieldDto } from "./dto/create-tenant-profile-field.dto";
 import { ListTenantProfileFieldsDto } from "./dto/list-tenant-profile-fields.dto";
+import { ListTenantAssessmentTypesDto } from "./dto/list-tenant-assessment-types.dto";
 import { UpdateTenantProfileFieldDto } from "./dto/update-tenant-profile-field.dto";
+import { UpdateTenantAssessmentTypeDto } from "./dto/update-tenant-assessment-type.dto";
 import { UpsertProfileFieldValuesDto } from "./dto/upsert-profile-field-values.dto";
 import { FilterProfilesDto } from "./dto/filter-profiles.dto";
 import { ExportProfilesDto } from "./dto/export-profiles.dto";
@@ -119,6 +122,86 @@ export class ConfigurationsController {
       query.role ?? "",
     );
     return successResponse(fields, "Profile fields retrieved successfully");
+  }
+
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF, Role.TEACHER)
+  @RequirePermissions(Permission.ASSESSMENT_READ)
+  @Get("tenants/:tenantId/assessment-types")
+  async listTenantAssessmentTypes(
+    @Param("tenantId") tenantId: string,
+    @Query() query: ListTenantAssessmentTypesDto,
+    @UserDecorator() user: JwtUser,
+  ) {
+    await this.service.assertTenantAccess(tenantId, user.tenantId);
+    const types = await this.service.listTenantAssessmentTypes(tenantId, {
+      includeDisabled: query.includeDisabled,
+    });
+    return successResponse(types, "Assessment types retrieved successfully");
+  }
+
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
+  @RequirePermissions(Permission.ASSESSMENT_CONFIGURE)
+  @Post("tenants/:tenantId/assessment-types")
+  async createTenantAssessmentType(
+    @Param("tenantId") tenantId: string,
+    @Body() dto: CreateTenantAssessmentTypeDto,
+    @UserDecorator() user: JwtUser,
+  ) {
+    await this.service.assertTenantAccess(tenantId, user.tenantId);
+    const type = await this.service.createTenantAssessmentType(tenantId, dto);
+    return successResponse(type, "Assessment type created successfully", 201);
+  }
+
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
+  @RequirePermissions(Permission.ASSESSMENT_CONFIGURE)
+  @Patch("tenants/:tenantId/assessment-types/:typeId")
+  async updateTenantAssessmentType(
+    @Param("tenantId") tenantId: string,
+    @Param("typeId") typeId: string,
+    @Body() dto: UpdateTenantAssessmentTypeDto,
+    @UserDecorator() user: JwtUser,
+  ) {
+    await this.service.assertTenantAccess(tenantId, user.tenantId);
+    const type = await this.service.updateTenantAssessmentType(
+      tenantId,
+      typeId,
+      dto,
+    );
+    return successResponse(type, "Assessment type updated successfully");
+  }
+
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
+  @RequirePermissions(Permission.ASSESSMENT_CONFIGURE)
+  @Post("tenants/:tenantId/assessment-types/:typeId/enable")
+  async enableTenantAssessmentType(
+    @Param("tenantId") tenantId: string,
+    @Param("typeId") typeId: string,
+    @UserDecorator() user: JwtUser,
+  ) {
+    await this.service.assertTenantAccess(tenantId, user.tenantId);
+    const type = await this.service.setAssessmentTypeEnabled(
+      tenantId,
+      typeId,
+      true,
+    );
+    return successResponse(type, "Assessment type enabled successfully");
+  }
+
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
+  @RequirePermissions(Permission.ASSESSMENT_CONFIGURE)
+  @Post("tenants/:tenantId/assessment-types/:typeId/disable")
+  async disableTenantAssessmentType(
+    @Param("tenantId") tenantId: string,
+    @Param("typeId") typeId: string,
+    @UserDecorator() user: JwtUser,
+  ) {
+    await this.service.assertTenantAccess(tenantId, user.tenantId);
+    const type = await this.service.setAssessmentTypeEnabled(
+      tenantId,
+      typeId,
+      false,
+    );
+    return successResponse(type, "Assessment type disabled successfully");
   }
 
   @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)

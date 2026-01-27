@@ -86,5 +86,42 @@
         }
       ]
     }
-  }
+  },
+  "assessmentTypes": [
+    {
+      "key": "assignment",
+      "label": "Tugas",
+      "description": "Tugas atau pekerjaan rumah",
+      "order": 1,
+      "isEnabled": true
+    },
+    {
+      "key": "quiz",
+      "label": "Ulangan",
+      "description": "Ulangan harian atau kuis",
+      "order": 2,
+      "isEnabled": true
+    },
+    {
+      "key": "midterm",
+      "label": "UTS",
+      "description": "Ujian tengah semester",
+      "order": 3,
+      "isEnabled": true
+    },
+    {
+      "key": "final",
+      "label": "UAS",
+      "description": "Ujian akhir semester",
+      "order": 4,
+      "isEnabled": true
+    },
+    {
+      "key": "practical",
+      "label": "Praktik",
+      "description": "Penilaian praktik",
+      "order": 5,
+      "isEnabled": false
+    }
+  ]
 }

@@ -705,6 +705,8 @@ function TeachingAssignmentsPage() {
               : (selectedAcademicPeriod?.name ?? "-")
           }
           classOptions={classSelectOptions}
+          subjectOptions={subjectSelectOptions}
+          teacherOptions={teacherSelectOptions}
           classSubjects={classSubjectAssignments}
           dayOptions={dayOptions}
           initialValues={scheduleInitialValues}

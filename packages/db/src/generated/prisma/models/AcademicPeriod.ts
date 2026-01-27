@@ -262,6 +262,7 @@ export type AcademicPeriodWhereInput = {
   schedules?: Prisma.ScheduleListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   assessments?: Prisma.AssessmentComponentListRelationFilter
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightListRelationFilter
   reportCards?: Prisma.ReportCardListRelationFilter
 }
 
@@ -282,6 +283,7 @@ export type AcademicPeriodOrderByWithRelationInput = {
   schedules?: Prisma.ScheduleOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   assessments?: Prisma.AssessmentComponentOrderByRelationAggregateInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightOrderByRelationAggregateInput
   reportCards?: Prisma.ReportCardOrderByRelationAggregateInput
 }
 
@@ -305,6 +307,7 @@ export type AcademicPeriodWhereUniqueInput = Prisma.AtLeast<{
   schedules?: Prisma.ScheduleListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   assessments?: Prisma.AssessmentComponentListRelationFilter
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightListRelationFilter
   reportCards?: Prisma.ReportCardListRelationFilter
 }, "id">
 
@@ -357,6 +360,7 @@ export type AcademicPeriodCreateInput = {
   schedules?: Prisma.ScheduleCreateNestedManyWithoutAcademicPeriodInput
   sessions?: Prisma.SessionCreateNestedManyWithoutAcademicPeriodInput
   assessments?: Prisma.AssessmentComponentCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutAcademicPeriodInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutAcademicPeriodInput
 }
 
@@ -375,6 +379,7 @@ export type AcademicPeriodUncheckedCreateInput = {
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutAcademicPeriodInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutAcademicPeriodInput
   assessments?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutAcademicPeriodInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutAcademicPeriodInput
 }
 
@@ -393,6 +398,7 @@ export type AcademicPeriodUpdateInput = {
   schedules?: Prisma.ScheduleUpdateManyWithoutAcademicPeriodNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutAcademicPeriodNestedInput
   assessments?: Prisma.AssessmentComponentUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutAcademicPeriodNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutAcademicPeriodNestedInput
 }
 
@@ -411,6 +417,7 @@ export type AcademicPeriodUncheckedUpdateInput = {
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   assessments?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutAcademicPeriodNestedInput
 }
 
@@ -666,6 +673,20 @@ export type AcademicPeriodUpdateOneRequiredWithoutAssessmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AcademicPeriodUpdateToOneWithWhereWithoutAssessmentsInput, Prisma.AcademicPeriodUpdateWithoutAssessmentsInput>, Prisma.AcademicPeriodUncheckedUpdateWithoutAssessmentsInput>
 }
 
+export type AcademicPeriodCreateNestedOneWithoutAssessmentTypeWeightsInput = {
+  create?: Prisma.XOR<Prisma.AcademicPeriodCreateWithoutAssessmentTypeWeightsInput, Prisma.AcademicPeriodUncheckedCreateWithoutAssessmentTypeWeightsInput>
+  connectOrCreate?: Prisma.AcademicPeriodCreateOrConnectWithoutAssessmentTypeWeightsInput
+  connect?: Prisma.AcademicPeriodWhereUniqueInput
+}
+
+export type AcademicPeriodUpdateOneRequiredWithoutAssessmentTypeWeightsNestedInput = {
+  create?: Prisma.XOR<Prisma.AcademicPeriodCreateWithoutAssessmentTypeWeightsInput, Prisma.AcademicPeriodUncheckedCreateWithoutAssessmentTypeWeightsInput>
+  connectOrCreate?: Prisma.AcademicPeriodCreateOrConnectWithoutAssessmentTypeWeightsInput
+  upsert?: Prisma.AcademicPeriodUpsertWithoutAssessmentTypeWeightsInput
+  connect?: Prisma.AcademicPeriodWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AcademicPeriodUpdateToOneWithWhereWithoutAssessmentTypeWeightsInput, Prisma.AcademicPeriodUpdateWithoutAssessmentTypeWeightsInput>, Prisma.AcademicPeriodUncheckedUpdateWithoutAssessmentTypeWeightsInput>
+}
+
 export type AcademicPeriodCreateNestedOneWithoutReportCardsInput = {
   create?: Prisma.XOR<Prisma.AcademicPeriodCreateWithoutReportCardsInput, Prisma.AcademicPeriodUncheckedCreateWithoutReportCardsInput>
   connectOrCreate?: Prisma.AcademicPeriodCreateOrConnectWithoutReportCardsInput
@@ -694,6 +715,7 @@ export type AcademicPeriodCreateWithoutTenantInput = {
   schedules?: Prisma.ScheduleCreateNestedManyWithoutAcademicPeriodInput
   sessions?: Prisma.SessionCreateNestedManyWithoutAcademicPeriodInput
   assessments?: Prisma.AssessmentComponentCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutAcademicPeriodInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutAcademicPeriodInput
 }
 
@@ -711,6 +733,7 @@ export type AcademicPeriodUncheckedCreateWithoutTenantInput = {
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutAcademicPeriodInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutAcademicPeriodInput
   assessments?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutAcademicPeriodInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutAcademicPeriodInput
 }
 
@@ -770,6 +793,7 @@ export type AcademicPeriodCreateWithoutActiveInAcademicYearInput = {
   schedules?: Prisma.ScheduleCreateNestedManyWithoutAcademicPeriodInput
   sessions?: Prisma.SessionCreateNestedManyWithoutAcademicPeriodInput
   assessments?: Prisma.AssessmentComponentCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutAcademicPeriodInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutAcademicPeriodInput
 }
 
@@ -787,6 +811,7 @@ export type AcademicPeriodUncheckedCreateWithoutActiveInAcademicYearInput = {
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutAcademicPeriodInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutAcademicPeriodInput
   assessments?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutAcademicPeriodInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutAcademicPeriodInput
 }
 
@@ -809,6 +834,7 @@ export type AcademicPeriodCreateWithoutAcademicYearInput = {
   schedules?: Prisma.ScheduleCreateNestedManyWithoutAcademicPeriodInput
   sessions?: Prisma.SessionCreateNestedManyWithoutAcademicPeriodInput
   assessments?: Prisma.AssessmentComponentCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutAcademicPeriodInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutAcademicPeriodInput
 }
 
@@ -826,6 +852,7 @@ export type AcademicPeriodUncheckedCreateWithoutAcademicYearInput = {
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutAcademicPeriodInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutAcademicPeriodInput
   assessments?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutAcademicPeriodInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutAcademicPeriodInput
 }
 
@@ -864,6 +891,7 @@ export type AcademicPeriodUpdateWithoutActiveInAcademicYearInput = {
   schedules?: Prisma.ScheduleUpdateManyWithoutAcademicPeriodNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutAcademicPeriodNestedInput
   assessments?: Prisma.AssessmentComponentUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutAcademicPeriodNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutAcademicPeriodNestedInput
 }
 
@@ -881,6 +909,7 @@ export type AcademicPeriodUncheckedUpdateWithoutActiveInAcademicYearInput = {
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   assessments?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutAcademicPeriodNestedInput
 }
 
@@ -914,6 +943,7 @@ export type AcademicPeriodCreateWithoutSchedulesInput = {
   activeInAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActivePeriodInput
   sessions?: Prisma.SessionCreateNestedManyWithoutAcademicPeriodInput
   assessments?: Prisma.AssessmentComponentCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutAcademicPeriodInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutAcademicPeriodInput
 }
 
@@ -931,6 +961,7 @@ export type AcademicPeriodUncheckedCreateWithoutSchedulesInput = {
   activeInAcademicYear?: Prisma.AcademicYearUncheckedCreateNestedOneWithoutActivePeriodInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutAcademicPeriodInput
   assessments?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutAcademicPeriodInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutAcademicPeriodInput
 }
 
@@ -964,6 +995,7 @@ export type AcademicPeriodUpdateWithoutSchedulesInput = {
   activeInAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActivePeriodNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutAcademicPeriodNestedInput
   assessments?: Prisma.AssessmentComponentUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutAcademicPeriodNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutAcademicPeriodNestedInput
 }
 
@@ -981,6 +1013,7 @@ export type AcademicPeriodUncheckedUpdateWithoutSchedulesInput = {
   activeInAcademicYear?: Prisma.AcademicYearUncheckedUpdateOneWithoutActivePeriodNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   assessments?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutAcademicPeriodNestedInput
 }
 
@@ -998,6 +1031,7 @@ export type AcademicPeriodCreateWithoutSessionsInput = {
   activeInAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActivePeriodInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutAcademicPeriodInput
   assessments?: Prisma.AssessmentComponentCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutAcademicPeriodInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutAcademicPeriodInput
 }
 
@@ -1015,6 +1049,7 @@ export type AcademicPeriodUncheckedCreateWithoutSessionsInput = {
   activeInAcademicYear?: Prisma.AcademicYearUncheckedCreateNestedOneWithoutActivePeriodInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutAcademicPeriodInput
   assessments?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutAcademicPeriodInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutAcademicPeriodInput
 }
 
@@ -1048,6 +1083,7 @@ export type AcademicPeriodUpdateWithoutSessionsInput = {
   activeInAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActivePeriodNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutAcademicPeriodNestedInput
   assessments?: Prisma.AssessmentComponentUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutAcademicPeriodNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutAcademicPeriodNestedInput
 }
 
@@ -1065,6 +1101,7 @@ export type AcademicPeriodUncheckedUpdateWithoutSessionsInput = {
   activeInAcademicYear?: Prisma.AcademicYearUncheckedUpdateOneWithoutActivePeriodNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   assessments?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutAcademicPeriodNestedInput
 }
 
@@ -1082,6 +1119,7 @@ export type AcademicPeriodCreateWithoutAssessmentsInput = {
   activeInAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActivePeriodInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutAcademicPeriodInput
   sessions?: Prisma.SessionCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutAcademicPeriodInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutAcademicPeriodInput
 }
 
@@ -1099,6 +1137,7 @@ export type AcademicPeriodUncheckedCreateWithoutAssessmentsInput = {
   activeInAcademicYear?: Prisma.AcademicYearUncheckedCreateNestedOneWithoutActivePeriodInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutAcademicPeriodInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutAcademicPeriodInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutAcademicPeriodInput
 }
 
@@ -1132,6 +1171,7 @@ export type AcademicPeriodUpdateWithoutAssessmentsInput = {
   activeInAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActivePeriodNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutAcademicPeriodNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutAcademicPeriodNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutAcademicPeriodNestedInput
 }
 
@@ -1149,6 +1189,95 @@ export type AcademicPeriodUncheckedUpdateWithoutAssessmentsInput = {
   activeInAcademicYear?: Prisma.AcademicYearUncheckedUpdateOneWithoutActivePeriodNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutAcademicPeriodNestedInput
+  reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutAcademicPeriodNestedInput
+}
+
+export type AcademicPeriodCreateWithoutAssessmentTypeWeightsInput = {
+  id?: string
+  name: string
+  startDate: Date | string
+  endDate: Date | string
+  orderIndex: number
+  status?: $Enums.PeriodStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutAcademicPeriodsInput
+  academicYear: Prisma.AcademicYearCreateNestedOneWithoutPeriodsInput
+  activeInAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActivePeriodInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutAcademicPeriodInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutAcademicPeriodInput
+  assessments?: Prisma.AssessmentComponentCreateNestedManyWithoutAcademicPeriodInput
+  reportCards?: Prisma.ReportCardCreateNestedManyWithoutAcademicPeriodInput
+}
+
+export type AcademicPeriodUncheckedCreateWithoutAssessmentTypeWeightsInput = {
+  id?: string
+  tenantId: string
+  academicYearId: string
+  name: string
+  startDate: Date | string
+  endDate: Date | string
+  orderIndex: number
+  status?: $Enums.PeriodStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activeInAcademicYear?: Prisma.AcademicYearUncheckedCreateNestedOneWithoutActivePeriodInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutAcademicPeriodInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutAcademicPeriodInput
+  assessments?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutAcademicPeriodInput
+  reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutAcademicPeriodInput
+}
+
+export type AcademicPeriodCreateOrConnectWithoutAssessmentTypeWeightsInput = {
+  where: Prisma.AcademicPeriodWhereUniqueInput
+  create: Prisma.XOR<Prisma.AcademicPeriodCreateWithoutAssessmentTypeWeightsInput, Prisma.AcademicPeriodUncheckedCreateWithoutAssessmentTypeWeightsInput>
+}
+
+export type AcademicPeriodUpsertWithoutAssessmentTypeWeightsInput = {
+  update: Prisma.XOR<Prisma.AcademicPeriodUpdateWithoutAssessmentTypeWeightsInput, Prisma.AcademicPeriodUncheckedUpdateWithoutAssessmentTypeWeightsInput>
+  create: Prisma.XOR<Prisma.AcademicPeriodCreateWithoutAssessmentTypeWeightsInput, Prisma.AcademicPeriodUncheckedCreateWithoutAssessmentTypeWeightsInput>
+  where?: Prisma.AcademicPeriodWhereInput
+}
+
+export type AcademicPeriodUpdateToOneWithWhereWithoutAssessmentTypeWeightsInput = {
+  where?: Prisma.AcademicPeriodWhereInput
+  data: Prisma.XOR<Prisma.AcademicPeriodUpdateWithoutAssessmentTypeWeightsInput, Prisma.AcademicPeriodUncheckedUpdateWithoutAssessmentTypeWeightsInput>
+}
+
+export type AcademicPeriodUpdateWithoutAssessmentTypeWeightsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumPeriodStatusFieldUpdateOperationsInput | $Enums.PeriodStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutAcademicPeriodsNestedInput
+  academicYear?: Prisma.AcademicYearUpdateOneRequiredWithoutPeriodsNestedInput
+  activeInAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActivePeriodNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutAcademicPeriodNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutAcademicPeriodNestedInput
+  assessments?: Prisma.AssessmentComponentUpdateManyWithoutAcademicPeriodNestedInput
+  reportCards?: Prisma.ReportCardUpdateManyWithoutAcademicPeriodNestedInput
+}
+
+export type AcademicPeriodUncheckedUpdateWithoutAssessmentTypeWeightsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  academicYearId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumPeriodStatusFieldUpdateOperationsInput | $Enums.PeriodStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activeInAcademicYear?: Prisma.AcademicYearUncheckedUpdateOneWithoutActivePeriodNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutAcademicPeriodNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutAcademicPeriodNestedInput
+  assessments?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutAcademicPeriodNestedInput
 }
 
@@ -1167,6 +1296,7 @@ export type AcademicPeriodCreateWithoutReportCardsInput = {
   schedules?: Prisma.ScheduleCreateNestedManyWithoutAcademicPeriodInput
   sessions?: Prisma.SessionCreateNestedManyWithoutAcademicPeriodInput
   assessments?: Prisma.AssessmentComponentCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutAcademicPeriodInput
 }
 
 export type AcademicPeriodUncheckedCreateWithoutReportCardsInput = {
@@ -1184,6 +1314,7 @@ export type AcademicPeriodUncheckedCreateWithoutReportCardsInput = {
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutAcademicPeriodInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutAcademicPeriodInput
   assessments?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutAcademicPeriodInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutAcademicPeriodInput
 }
 
 export type AcademicPeriodCreateOrConnectWithoutReportCardsInput = {
@@ -1217,6 +1348,7 @@ export type AcademicPeriodUpdateWithoutReportCardsInput = {
   schedules?: Prisma.ScheduleUpdateManyWithoutAcademicPeriodNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutAcademicPeriodNestedInput
   assessments?: Prisma.AssessmentComponentUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutAcademicPeriodNestedInput
 }
 
 export type AcademicPeriodUncheckedUpdateWithoutReportCardsInput = {
@@ -1234,6 +1366,7 @@ export type AcademicPeriodUncheckedUpdateWithoutReportCardsInput = {
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   assessments?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutAcademicPeriodNestedInput
 }
 
 export type AcademicPeriodCreateManyTenantInput = {
@@ -1262,6 +1395,7 @@ export type AcademicPeriodUpdateWithoutTenantInput = {
   schedules?: Prisma.ScheduleUpdateManyWithoutAcademicPeriodNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutAcademicPeriodNestedInput
   assessments?: Prisma.AssessmentComponentUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutAcademicPeriodNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutAcademicPeriodNestedInput
 }
 
@@ -1279,6 +1413,7 @@ export type AcademicPeriodUncheckedUpdateWithoutTenantInput = {
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   assessments?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutAcademicPeriodNestedInput
 }
 
@@ -1320,6 +1455,7 @@ export type AcademicPeriodUpdateWithoutAcademicYearInput = {
   schedules?: Prisma.ScheduleUpdateManyWithoutAcademicPeriodNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutAcademicPeriodNestedInput
   assessments?: Prisma.AssessmentComponentUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutAcademicPeriodNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutAcademicPeriodNestedInput
 }
 
@@ -1337,6 +1473,7 @@ export type AcademicPeriodUncheckedUpdateWithoutAcademicYearInput = {
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   assessments?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutAcademicPeriodNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutAcademicPeriodNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutAcademicPeriodNestedInput
 }
 
@@ -1361,6 +1498,7 @@ export type AcademicPeriodCountOutputType = {
   schedules: number
   sessions: number
   assessments: number
+  assessmentTypeWeights: number
   reportCards: number
 }
 
@@ -1368,6 +1506,7 @@ export type AcademicPeriodCountOutputTypeSelect<ExtArgs extends runtime.Types.Ex
   schedules?: boolean | AcademicPeriodCountOutputTypeCountSchedulesArgs
   sessions?: boolean | AcademicPeriodCountOutputTypeCountSessionsArgs
   assessments?: boolean | AcademicPeriodCountOutputTypeCountAssessmentsArgs
+  assessmentTypeWeights?: boolean | AcademicPeriodCountOutputTypeCountAssessmentTypeWeightsArgs
   reportCards?: boolean | AcademicPeriodCountOutputTypeCountReportCardsArgs
 }
 
@@ -1405,6 +1544,13 @@ export type AcademicPeriodCountOutputTypeCountAssessmentsArgs<ExtArgs extends ru
 /**
  * AcademicPeriodCountOutputType without action
  */
+export type AcademicPeriodCountOutputTypeCountAssessmentTypeWeightsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AssessmentTypeWeightWhereInput
+}
+
+/**
+ * AcademicPeriodCountOutputType without action
+ */
 export type AcademicPeriodCountOutputTypeCountReportCardsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ReportCardWhereInput
 }
@@ -1427,6 +1573,7 @@ export type AcademicPeriodSelect<ExtArgs extends runtime.Types.Extensions.Intern
   schedules?: boolean | Prisma.AcademicPeriod$schedulesArgs<ExtArgs>
   sessions?: boolean | Prisma.AcademicPeriod$sessionsArgs<ExtArgs>
   assessments?: boolean | Prisma.AcademicPeriod$assessmentsArgs<ExtArgs>
+  assessmentTypeWeights?: boolean | Prisma.AcademicPeriod$assessmentTypeWeightsArgs<ExtArgs>
   reportCards?: boolean | Prisma.AcademicPeriod$reportCardsArgs<ExtArgs>
   _count?: boolean | Prisma.AcademicPeriodCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["academicPeriod"]>
@@ -1482,6 +1629,7 @@ export type AcademicPeriodInclude<ExtArgs extends runtime.Types.Extensions.Inter
   schedules?: boolean | Prisma.AcademicPeriod$schedulesArgs<ExtArgs>
   sessions?: boolean | Prisma.AcademicPeriod$sessionsArgs<ExtArgs>
   assessments?: boolean | Prisma.AcademicPeriod$assessmentsArgs<ExtArgs>
+  assessmentTypeWeights?: boolean | Prisma.AcademicPeriod$assessmentTypeWeightsArgs<ExtArgs>
   reportCards?: boolean | Prisma.AcademicPeriod$reportCardsArgs<ExtArgs>
   _count?: boolean | Prisma.AcademicPeriodCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1503,6 +1651,7 @@ export type $AcademicPeriodPayload<ExtArgs extends runtime.Types.Extensions.Inte
     schedules: Prisma.$SchedulePayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     assessments: Prisma.$AssessmentComponentPayload<ExtArgs>[]
+    assessmentTypeWeights: Prisma.$AssessmentTypeWeightPayload<ExtArgs>[]
     reportCards: Prisma.$ReportCardPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1916,6 +2065,7 @@ export interface Prisma__AcademicPeriodClient<T, Null = never, ExtArgs extends r
   schedules<T extends Prisma.AcademicPeriod$schedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AcademicPeriod$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.AcademicPeriod$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AcademicPeriod$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assessments<T extends Prisma.AcademicPeriod$assessmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AcademicPeriod$assessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentComponentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assessmentTypeWeights<T extends Prisma.AcademicPeriod$assessmentTypeWeightsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AcademicPeriod$assessmentTypeWeightsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentTypeWeightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reportCards<T extends Prisma.AcademicPeriod$reportCardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AcademicPeriod$reportCardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportCardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2440,6 +2590,30 @@ export type AcademicPeriod$assessmentsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.AssessmentComponentScalarFieldEnum | Prisma.AssessmentComponentScalarFieldEnum[]
+}
+
+/**
+ * AcademicPeriod.assessmentTypeWeights
+ */
+export type AcademicPeriod$assessmentTypeWeightsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssessmentTypeWeight
+   */
+  select?: Prisma.AssessmentTypeWeightSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AssessmentTypeWeight
+   */
+  omit?: Prisma.AssessmentTypeWeightOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AssessmentTypeWeightInclude<ExtArgs> | null
+  where?: Prisma.AssessmentTypeWeightWhereInput
+  orderBy?: Prisma.AssessmentTypeWeightOrderByWithRelationInput | Prisma.AssessmentTypeWeightOrderByWithRelationInput[]
+  cursor?: Prisma.AssessmentTypeWeightWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AssessmentTypeWeightScalarFieldEnum | Prisma.AssessmentTypeWeightScalarFieldEnum[]
 }
 
 /**

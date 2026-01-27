@@ -37,7 +37,7 @@ interface JwtUser {
 export class AcademicController {
   constructor(private readonly academic: AcademicService) {}
 
-  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF, Role.TEACHER)
   @RequirePermissions(Permission.ACADEMIC_YEAR_READ)
   @Get("context")
   async getContext(@UserDecorator() user: JwtUser) {

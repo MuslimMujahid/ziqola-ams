@@ -32,6 +32,13 @@ const profileCustomFieldsKeys = {
       role,
       filtersKey,
     ] as const,
+  tenantAssessmentTypes: (tenantId: string, includeDisabled?: boolean) =>
+    [
+      ...profileCustomFieldsKeys.all,
+      "tenant-assessment-types",
+      tenantId,
+      includeDisabled ?? false,
+    ] as const,
 };
 
 export { profileCustomFieldsKeys };

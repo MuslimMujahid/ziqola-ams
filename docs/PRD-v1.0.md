@@ -58,6 +58,7 @@ A **cloud-based, multi-tenant academic management system** that digitizes core a
 - Messaging / chat
 - Mobile application
 - Excel import/export
+- Per-subject assessment type overrides
 
 ---
 
@@ -243,6 +244,21 @@ The system supports **tenant-specific custom profile properties** for **Student*
 
 - Custom fields must be **queryable** for filtering (e.g., religion, domicile, achievements).
 - Data storage must support **search and export** of custom field values.
+
+---
+
+### 4.4 Assessment Type Customization (Tenant-Level)
+
+The system supports **tenant-specific assessment types** that define categories used when creating assessment components.
+
+**Key Principles:**
+
+- Assessment types are **tenant-scoped** and used across all subjects in the tenant.
+- Only **Admin Staff** can configure assessment types.
+- A **default template** is provided (e.g., Assignment, Quiz, Midterm, Final).
+- Types can be **renamed or disabled**.
+- **Type identifiers are immutable** once used in components.
+- **Hard delete is not allowed** for types that are already referenced.
 
 ---
 
@@ -443,6 +459,16 @@ Session Generation
 
 ## 8. Assessment & Grading
 
+### 8.0 Assessment Types
+
+Assessment Types define the **category** of an assessment component (e.g., Assignment/Tugas, Quiz/Ulangan, Midterm/UTS, Final/UAS).
+
+Rules:
+
+- Types are configured **per tenant** and apply to all classes and subjects.
+- Types are created from a **default template** and can be renamed or disabled.
+- Types **cannot be deleted** once used in any assessment component.
+
 ### 8.1 Assessment Components
 
 Assessment weights are defined **per Class–Subject per Academic Period**.
@@ -587,18 +613,19 @@ This section defines a **canonical mapping** between Indonesian academic terms u
 
 ### 13.3 Assessment & Rapor
 
-| Indonesian Term    | English Term (Code) | Notes              |
-| ------------------ | ------------------- | ------------------ |
-| Nilai              | Score               | Numeric value      |
-| Komponen Penilaian | AssessmentComponent | Weighted           |
-| Tugas              | Assignment          | Assessment type    |
-| Ulangan            | Quiz                | Assessment type    |
-| UTS                | Midterm             | Assessment type    |
-| UAS                | FinalExam           | Assessment type    |
-| Praktik            | Practical           | Assessment type    |
-| Rapor              | ReportCard          | Semester report    |
-| Predikat           | GradeLetter         | A/B/C              |
-| Deskripsi          | Description         | Narrative feedback |
+| Indonesian Term    | English Term (Code) | Notes               |
+| ------------------ | ------------------- | ------------------- |
+| Tipe Penilaian     | AssessmentType      | Assessment category |
+| Nilai              | Score               | Numeric value       |
+| Komponen Penilaian | AssessmentComponent | Weighted            |
+| Tugas              | Assignment          | Assessment type     |
+| Ulangan            | Quiz                | Assessment type     |
+| UTS                | Midterm             | Assessment type     |
+| UAS                | FinalExam           | Assessment type     |
+| Praktik            | Practical           | Assessment type     |
+| Rapor              | ReportCard          | Semester report     |
+| Predikat           | GradeLetter         | A/B/C               |
+| Deskripsi          | Description         | Narrative feedback  |
 
 ### 13.4 System & Control
 

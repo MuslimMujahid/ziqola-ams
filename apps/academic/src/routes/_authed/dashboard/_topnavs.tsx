@@ -106,12 +106,10 @@ const TEACHER_NAV_ITEMS: TopnavNavItem[] = [
     to: "/dashboard/teacher/assessments",
     icon: ClipboardListIcon,
     subItems: [
-      { label: "Input Nilai", to: "/dashboard/teacher/assessments" },
       {
-        label: "Komponen Penilaian",
-        to: "/dashboard/teacher/assessments/components",
+        label: "Kelola Nilai",
+        to: "/dashboard/teacher/assessments",
       },
-      { type: "separator" },
       { label: "Rekap Nilai", to: "/dashboard/teacher/assessments/recap" },
     ],
   },

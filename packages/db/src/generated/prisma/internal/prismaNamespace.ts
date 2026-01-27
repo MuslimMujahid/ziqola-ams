@@ -385,6 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Tenant: 'Tenant',
+  TenantAssessmentType: 'TenantAssessmentType',
   TenantConfiguration: 'TenantConfiguration',
   User: 'User',
   TeacherProfile: 'TeacherProfile',
@@ -401,12 +402,14 @@ export const ModelName = {
   ClassEnrollment: 'ClassEnrollment',
   Subject: 'Subject',
   ClassSubject: 'ClassSubject',
+  TeacherSubject: 'TeacherSubject',
   Schedule: 'Schedule',
   Session: 'Session',
   SessionMaterial: 'SessionMaterial',
   SessionMaterialAttachment: 'SessionMaterialAttachment',
   Attendance: 'Attendance',
   AssessmentComponent: 'AssessmentComponent',
+  AssessmentTypeWeight: 'AssessmentTypeWeight',
   AssessmentScore: 'AssessmentScore',
   ReportCard: 'ReportCard',
   ReportCardSubject: 'ReportCardSubject',
@@ -426,7 +429,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "tenant" | "tenantConfiguration" | "user" | "teacherProfile" | "studentProfile" | "tenantProfileField" | "studentProfileFieldValue" | "teacherProfileFieldValue" | "academicYear" | "academicPeriod" | "class" | "homeroomAssignment" | "group" | "classGroup" | "classEnrollment" | "subject" | "classSubject" | "schedule" | "session" | "sessionMaterial" | "sessionMaterialAttachment" | "attendance" | "assessmentComponent" | "assessmentScore" | "reportCard" | "reportCardSubject" | "auditLog"
+    modelProps: "tenant" | "tenantAssessmentType" | "tenantConfiguration" | "user" | "teacherProfile" | "studentProfile" | "tenantProfileField" | "studentProfileFieldValue" | "teacherProfileFieldValue" | "academicYear" | "academicPeriod" | "class" | "homeroomAssignment" | "group" | "classGroup" | "classEnrollment" | "subject" | "classSubject" | "teacherSubject" | "schedule" | "session" | "sessionMaterial" | "sessionMaterialAttachment" | "attendance" | "assessmentComponent" | "assessmentTypeWeight" | "assessmentScore" | "reportCard" | "reportCardSubject" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -501,6 +504,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TenantCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TenantCountAggregateOutputType> | number
+        }
+      }
+    }
+    TenantAssessmentType: {
+      payload: Prisma.$TenantAssessmentTypePayload<ExtArgs>
+      fields: Prisma.TenantAssessmentTypeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TenantAssessmentTypeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantAssessmentTypePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TenantAssessmentTypeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantAssessmentTypePayload>
+        }
+        findFirst: {
+          args: Prisma.TenantAssessmentTypeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantAssessmentTypePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TenantAssessmentTypeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantAssessmentTypePayload>
+        }
+        findMany: {
+          args: Prisma.TenantAssessmentTypeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantAssessmentTypePayload>[]
+        }
+        create: {
+          args: Prisma.TenantAssessmentTypeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantAssessmentTypePayload>
+        }
+        createMany: {
+          args: Prisma.TenantAssessmentTypeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TenantAssessmentTypeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantAssessmentTypePayload>[]
+        }
+        delete: {
+          args: Prisma.TenantAssessmentTypeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantAssessmentTypePayload>
+        }
+        update: {
+          args: Prisma.TenantAssessmentTypeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantAssessmentTypePayload>
+        }
+        deleteMany: {
+          args: Prisma.TenantAssessmentTypeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TenantAssessmentTypeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TenantAssessmentTypeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantAssessmentTypePayload>[]
+        }
+        upsert: {
+          args: Prisma.TenantAssessmentTypeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantAssessmentTypePayload>
+        }
+        aggregate: {
+          args: Prisma.TenantAssessmentTypeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTenantAssessmentType>
+        }
+        groupBy: {
+          args: Prisma.TenantAssessmentTypeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TenantAssessmentTypeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TenantAssessmentTypeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TenantAssessmentTypeCountAggregateOutputType> | number
         }
       }
     }
@@ -1688,6 +1765,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TeacherSubject: {
+      payload: Prisma.$TeacherSubjectPayload<ExtArgs>
+      fields: Prisma.TeacherSubjectFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TeacherSubjectFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherSubjectPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TeacherSubjectFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherSubjectPayload>
+        }
+        findFirst: {
+          args: Prisma.TeacherSubjectFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherSubjectPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TeacherSubjectFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherSubjectPayload>
+        }
+        findMany: {
+          args: Prisma.TeacherSubjectFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherSubjectPayload>[]
+        }
+        create: {
+          args: Prisma.TeacherSubjectCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherSubjectPayload>
+        }
+        createMany: {
+          args: Prisma.TeacherSubjectCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TeacherSubjectCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherSubjectPayload>[]
+        }
+        delete: {
+          args: Prisma.TeacherSubjectDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherSubjectPayload>
+        }
+        update: {
+          args: Prisma.TeacherSubjectUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherSubjectPayload>
+        }
+        deleteMany: {
+          args: Prisma.TeacherSubjectDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TeacherSubjectUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TeacherSubjectUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherSubjectPayload>[]
+        }
+        upsert: {
+          args: Prisma.TeacherSubjectUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherSubjectPayload>
+        }
+        aggregate: {
+          args: Prisma.TeacherSubjectAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTeacherSubject>
+        }
+        groupBy: {
+          args: Prisma.TeacherSubjectGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TeacherSubjectGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TeacherSubjectCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TeacherSubjectCountAggregateOutputType> | number
+        }
+      }
+    }
     Schedule: {
       payload: Prisma.$SchedulePayload<ExtArgs>
       fields: Prisma.ScheduleFieldRefs
@@ -2132,6 +2283,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AssessmentTypeWeight: {
+      payload: Prisma.$AssessmentTypeWeightPayload<ExtArgs>
+      fields: Prisma.AssessmentTypeWeightFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AssessmentTypeWeightFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTypeWeightPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AssessmentTypeWeightFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTypeWeightPayload>
+        }
+        findFirst: {
+          args: Prisma.AssessmentTypeWeightFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTypeWeightPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AssessmentTypeWeightFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTypeWeightPayload>
+        }
+        findMany: {
+          args: Prisma.AssessmentTypeWeightFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTypeWeightPayload>[]
+        }
+        create: {
+          args: Prisma.AssessmentTypeWeightCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTypeWeightPayload>
+        }
+        createMany: {
+          args: Prisma.AssessmentTypeWeightCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AssessmentTypeWeightCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTypeWeightPayload>[]
+        }
+        delete: {
+          args: Prisma.AssessmentTypeWeightDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTypeWeightPayload>
+        }
+        update: {
+          args: Prisma.AssessmentTypeWeightUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTypeWeightPayload>
+        }
+        deleteMany: {
+          args: Prisma.AssessmentTypeWeightDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AssessmentTypeWeightUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AssessmentTypeWeightUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTypeWeightPayload>[]
+        }
+        upsert: {
+          args: Prisma.AssessmentTypeWeightUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentTypeWeightPayload>
+        }
+        aggregate: {
+          args: Prisma.AssessmentTypeWeightAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAssessmentTypeWeight>
+        }
+        groupBy: {
+          args: Prisma.AssessmentTypeWeightGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AssessmentTypeWeightGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AssessmentTypeWeightCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AssessmentTypeWeightCountAggregateOutputType> | number
+        }
+      }
+    }
     AssessmentScore: {
       payload: Prisma.$AssessmentScorePayload<ExtArgs>
       fields: Prisma.AssessmentScoreFieldRefs
@@ -2480,6 +2705,22 @@ export const TenantScalarFieldEnum = {
 export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
 
 
+export const TenantAssessmentTypeScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  key: 'key',
+  label: 'label',
+  description: 'description',
+  order: 'order',
+  isEnabled: 'isEnabled',
+  sourceTemplateId: 'sourceTemplateId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantAssessmentTypeScalarFieldEnum = (typeof TenantAssessmentTypeScalarFieldEnum)[keyof typeof TenantAssessmentTypeScalarFieldEnum]
+
+
 export const TenantConfigurationScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -2725,6 +2966,18 @@ export const ClassSubjectScalarFieldEnum = {
 export type ClassSubjectScalarFieldEnum = (typeof ClassSubjectScalarFieldEnum)[keyof typeof ClassSubjectScalarFieldEnum]
 
 
+export const TeacherSubjectScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  teacherProfileId: 'teacherProfileId',
+  subjectId: 'subjectId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeacherSubjectScalarFieldEnum = (typeof TeacherSubjectScalarFieldEnum)[keyof typeof TeacherSubjectScalarFieldEnum]
+
+
 export const ScheduleScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -2806,7 +3059,7 @@ export const AssessmentComponentScalarFieldEnum = {
   tenantId: 'tenantId',
   classSubjectId: 'classSubjectId',
   academicPeriodId: 'academicPeriodId',
-  type: 'type',
+  assessmentTypeId: 'assessmentTypeId',
   name: 'name',
   weight: 'weight',
   createdAt: 'createdAt',
@@ -2814,6 +3067,20 @@ export const AssessmentComponentScalarFieldEnum = {
 } as const
 
 export type AssessmentComponentScalarFieldEnum = (typeof AssessmentComponentScalarFieldEnum)[keyof typeof AssessmentComponentScalarFieldEnum]
+
+
+export const AssessmentTypeWeightScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  teacherSubjectId: 'teacherSubjectId',
+  academicPeriodId: 'academicPeriodId',
+  assessmentTypeId: 'assessmentTypeId',
+  weight: 'weight',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AssessmentTypeWeightScalarFieldEnum = (typeof AssessmentTypeWeightScalarFieldEnum)[keyof typeof AssessmentTypeWeightScalarFieldEnum]
 
 
 export const AssessmentScoreScalarFieldEnum = {
@@ -2954,6 +3221,27 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'TenantConfigurationType'
  */
 export type EnumTenantConfigurationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TenantConfigurationType'>
@@ -2964,13 +3252,6 @@ export type EnumTenantConfigurationTypeFieldRefInput<$PrismaModel> = FieldRefInp
  * Reference to a field of type 'TenantConfigurationType[]'
  */
 export type ListEnumTenantConfigurationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TenantConfigurationType[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -2999,20 +3280,6 @@ export type EnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'UserStatus[]'
  */
 export type ListEnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -3111,20 +3378,6 @@ export type EnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'AttendanceStatus[]'
  */
 export type ListEnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'AssessmentType'
- */
-export type EnumAssessmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssessmentType'>
-    
-
-
-/**
- * Reference to a field of type 'AssessmentType[]'
- */
-export type ListEnumAssessmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssessmentType[]'>
     
 
 
@@ -3293,6 +3546,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   tenant?: Prisma.TenantOmit
+  tenantAssessmentType?: Prisma.TenantAssessmentTypeOmit
   tenantConfiguration?: Prisma.TenantConfigurationOmit
   user?: Prisma.UserOmit
   teacherProfile?: Prisma.TeacherProfileOmit
@@ -3309,12 +3563,14 @@ export type GlobalOmitConfig = {
   classEnrollment?: Prisma.ClassEnrollmentOmit
   subject?: Prisma.SubjectOmit
   classSubject?: Prisma.ClassSubjectOmit
+  teacherSubject?: Prisma.TeacherSubjectOmit
   schedule?: Prisma.ScheduleOmit
   session?: Prisma.SessionOmit
   sessionMaterial?: Prisma.SessionMaterialOmit
   sessionMaterialAttachment?: Prisma.SessionMaterialAttachmentOmit
   attendance?: Prisma.AttendanceOmit
   assessmentComponent?: Prisma.AssessmentComponentOmit
+  assessmentTypeWeight?: Prisma.AssessmentTypeWeightOmit
   assessmentScore?: Prisma.AssessmentScoreOmit
   reportCard?: Prisma.ReportCardOmit
   reportCardSubject?: Prisma.ReportCardSubjectOmit

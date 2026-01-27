@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 
 import { getClassSubjects } from "./api.client";
 import { classSubjectsQueryKeys } from "./class-subjects.keys";
@@ -16,5 +16,12 @@ export function useClassSubjects(
     queryFn: () => getClassSubjects(params),
     placeholderData: (previous) => previous,
     enabled: options?.enabled ?? true,
+  });
+}
+
+export function useSuspenseClassSubjects(params: GetClassSubjectsVars) {
+  return useSuspenseQuery<GetClassSubjectsResponse>({
+    queryKey: classSubjectsQueryKeys.list(params),
+    queryFn: () => getClassSubjects(params),
   });
 }

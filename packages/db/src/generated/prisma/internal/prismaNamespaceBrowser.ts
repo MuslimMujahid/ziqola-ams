@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Tenant: 'Tenant',
+  TenantAssessmentType: 'TenantAssessmentType',
   TenantConfiguration: 'TenantConfiguration',
   User: 'User',
   TeacherProfile: 'TeacherProfile',
@@ -68,12 +69,14 @@ export const ModelName = {
   ClassEnrollment: 'ClassEnrollment',
   Subject: 'Subject',
   ClassSubject: 'ClassSubject',
+  TeacherSubject: 'TeacherSubject',
   Schedule: 'Schedule',
   Session: 'Session',
   SessionMaterial: 'SessionMaterial',
   SessionMaterialAttachment: 'SessionMaterialAttachment',
   Attendance: 'Attendance',
   AssessmentComponent: 'AssessmentComponent',
+  AssessmentTypeWeight: 'AssessmentTypeWeight',
   AssessmentScore: 'AssessmentScore',
   ReportCard: 'ReportCard',
   ReportCardSubject: 'ReportCardSubject',
@@ -107,6 +110,22 @@ export const TenantScalarFieldEnum = {
 } as const
 
 export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
+
+
+export const TenantAssessmentTypeScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  key: 'key',
+  label: 'label',
+  description: 'description',
+  order: 'order',
+  isEnabled: 'isEnabled',
+  sourceTemplateId: 'sourceTemplateId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantAssessmentTypeScalarFieldEnum = (typeof TenantAssessmentTypeScalarFieldEnum)[keyof typeof TenantAssessmentTypeScalarFieldEnum]
 
 
 export const TenantConfigurationScalarFieldEnum = {
@@ -354,6 +373,18 @@ export const ClassSubjectScalarFieldEnum = {
 export type ClassSubjectScalarFieldEnum = (typeof ClassSubjectScalarFieldEnum)[keyof typeof ClassSubjectScalarFieldEnum]
 
 
+export const TeacherSubjectScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  teacherProfileId: 'teacherProfileId',
+  subjectId: 'subjectId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeacherSubjectScalarFieldEnum = (typeof TeacherSubjectScalarFieldEnum)[keyof typeof TeacherSubjectScalarFieldEnum]
+
+
 export const ScheduleScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -435,7 +466,7 @@ export const AssessmentComponentScalarFieldEnum = {
   tenantId: 'tenantId',
   classSubjectId: 'classSubjectId',
   academicPeriodId: 'academicPeriodId',
-  type: 'type',
+  assessmentTypeId: 'assessmentTypeId',
   name: 'name',
   weight: 'weight',
   createdAt: 'createdAt',
@@ -443,6 +474,20 @@ export const AssessmentComponentScalarFieldEnum = {
 } as const
 
 export type AssessmentComponentScalarFieldEnum = (typeof AssessmentComponentScalarFieldEnum)[keyof typeof AssessmentComponentScalarFieldEnum]
+
+
+export const AssessmentTypeWeightScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  teacherSubjectId: 'teacherSubjectId',
+  academicPeriodId: 'academicPeriodId',
+  assessmentTypeId: 'assessmentTypeId',
+  weight: 'weight',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AssessmentTypeWeightScalarFieldEnum = (typeof AssessmentTypeWeightScalarFieldEnum)[keyof typeof AssessmentTypeWeightScalarFieldEnum]
 
 
 export const AssessmentScoreScalarFieldEnum = {

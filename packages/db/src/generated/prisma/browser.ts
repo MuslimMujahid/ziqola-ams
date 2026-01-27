@@ -23,6 +23,11 @@ export * from './enums';
  */
 export type Tenant = Prisma.TenantModel
 /**
+ * Model TenantAssessmentType
+ * 
+ */
+export type TenantAssessmentType = Prisma.TenantAssessmentTypeModel
+/**
  * Model TenantConfiguration
  * 
  */
@@ -103,6 +108,11 @@ export type Subject = Prisma.SubjectModel
  */
 export type ClassSubject = Prisma.ClassSubjectModel
 /**
+ * Model TeacherSubject
+ * 
+ */
+export type TeacherSubject = Prisma.TeacherSubjectModel
+/**
  * Model Schedule
  * 
  */
@@ -132,6 +142,11 @@ export type Attendance = Prisma.AttendanceModel
  * 
  */
 export type AssessmentComponent = Prisma.AssessmentComponentModel
+/**
+ * Model AssessmentTypeWeight
+ * 
+ */
+export type AssessmentTypeWeight = Prisma.AssessmentTypeWeightModel
 /**
  * Model AssessmentScore
  * 
