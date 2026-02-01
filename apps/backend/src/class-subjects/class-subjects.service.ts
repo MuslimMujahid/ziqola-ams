@@ -24,6 +24,7 @@ export type ClassSubjectSummary = {
   teacherProfileId: string;
   teacherUserId: string;
   teacherName: string;
+  kkm: number;
   createdAt: Date;
   updatedAt: Date;
   isDeleted: boolean;
@@ -56,6 +57,7 @@ export class ClassSubjectsService {
     subject: { id: string; name: string };
     teacherProfileId: string;
     teacherProfile: { id: string; user: { id: string; name: string } };
+    kkm: number;
     isDeleted: boolean;
     deletedAt: Date | null;
     createdAt: Date;
@@ -73,6 +75,7 @@ export class ClassSubjectsService {
       teacherProfileId: item.teacherProfileId,
       teacherUserId: item.teacherProfile.user.id,
       teacherName: item.teacherProfile.user.name,
+      kkm: item.kkm,
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
       isDeleted: item.isDeleted,
@@ -228,6 +231,7 @@ export class ClassSubjectsService {
           teacherProfile: {
             select: { id: true, user: { select: { id: true, name: true } } },
           },
+          kkm: true,
           isDeleted: true,
           deletedAt: true,
           createdAt: true,
@@ -315,6 +319,7 @@ export class ClassSubjectsService {
         where: { id: softDeleted.id },
         data: {
           teacherProfileId: dto.teacherProfileId,
+          kkm: dto.kkm,
           isDeleted: false,
           deletedAt: null,
         },
@@ -331,6 +336,7 @@ export class ClassSubjectsService {
           teacherProfile: {
             select: { id: true, user: { select: { id: true, name: true } } },
           },
+          kkm: true,
           isDeleted: true,
           deletedAt: true,
           createdAt: true,
@@ -354,6 +360,7 @@ export class ClassSubjectsService {
         academicYearId: dto.academicYearId,
         subjectId: dto.subjectId,
         teacherProfileId: dto.teacherProfileId,
+        kkm: dto.kkm,
       },
       select: {
         id: true,
@@ -368,6 +375,7 @@ export class ClassSubjectsService {
         teacherProfile: {
           select: { id: true, user: { select: { id: true, name: true } } },
         },
+        kkm: true,
         isDeleted: true,
         deletedAt: true,
         createdAt: true,
@@ -404,6 +412,7 @@ export class ClassSubjectsService {
         teacherProfile: {
           select: { id: true, user: { select: { id: true, name: true } } },
         },
+        kkm: true,
         isDeleted: true,
         deletedAt: true,
         createdAt: true,
@@ -419,7 +428,7 @@ export class ClassSubjectsService {
 
     const updated = await this.prisma.client.classSubject.update({
       where: { id },
-      data: { teacherProfileId: dto.teacherProfileId },
+      data: { teacherProfileId: dto.teacherProfileId, kkm: dto.kkm },
       select: {
         id: true,
         tenantId: true,
@@ -433,6 +442,7 @@ export class ClassSubjectsService {
         teacherProfile: {
           select: { id: true, user: { select: { id: true, name: true } } },
         },
+        kkm: true,
         isDeleted: true,
         deletedAt: true,
         createdAt: true,
@@ -478,6 +488,7 @@ export class ClassSubjectsService {
         teacherProfile: {
           select: { id: true, user: { select: { id: true, name: true } } },
         },
+        kkm: true,
         isDeleted: true,
         deletedAt: true,
         createdAt: true,

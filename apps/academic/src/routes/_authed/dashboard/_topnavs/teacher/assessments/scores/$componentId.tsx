@@ -1,7 +1,7 @@
 import React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowLeftIcon, SaveIcon } from "lucide-react";
+import { ArrowLeftIcon, LockIcon, SaveIcon } from "lucide-react";
 import { z } from "zod";
 import { Button } from "@repo/ui/button";
 import { Input } from "@repo/ui/input";
@@ -67,6 +67,7 @@ function TeacherAssessmentScoresPage({
   const upsertScores = useUpsertAssessmentScores();
 
   const students = scoresQuery.data?.students ?? [];
+  const hasUnlockedScores = students.some((student) => !student.isLocked);
 
   const initialValues = React.useMemo<ScoreEntryInput>(
     () => ({
@@ -145,31 +146,39 @@ function TeacherAssessmentScoresPage({
 
                 return (
                   <div className="space-y-1">
-                    <Input
-                      id={inputId}
-                      type="number"
-                      min={0}
-                      max={100}
-                      step="0.01"
-                      value={displayValue}
-                      aria-label={`Nilai untuk ${row.original.studentName}`}
-                      aria-invalid={Boolean(errorMessage)}
-                      aria-describedby={
-                        errorMessage ? `${inputId}-error` : undefined
-                      }
-                      disabled={isLocked}
-                      onChange={(event) => {
-                        const nextValue = event.target.value;
-                        if (nextValue === "") {
-                          field.handleChange(null);
-                          return;
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id={inputId}
+                        type="number"
+                        min={0}
+                        max={100}
+                        step="0.01"
+                        value={displayValue}
+                        aria-label={`Nilai untuk ${row.original.studentName}`}
+                        aria-invalid={Boolean(errorMessage)}
+                        aria-describedby={
+                          errorMessage ? `${inputId}-error` : undefined
                         }
+                        disabled={isLocked}
+                        onChange={(event) => {
+                          const nextValue = event.target.value;
+                          if (nextValue === "") {
+                            field.handleChange(null);
+                            return;
+                          }
 
-                        const parsed = Number(nextValue);
-                        if (Number.isNaN(parsed)) return;
-                        field.handleChange(parsed);
-                      }}
-                    />
+                          const parsed = Number(nextValue);
+                          if (Number.isNaN(parsed)) return;
+                          field.handleChange(parsed);
+                        }}
+                      />
+                      {isLocked ? (
+                        <LockIcon
+                          className="h-4 w-4 text-ink-muted"
+                          aria-hidden="true"
+                        />
+                      ) : null}
+                    </div>
                     {errorMessage ? (
                       <p
                         id={`${inputId}-error`}
@@ -178,9 +187,6 @@ function TeacherAssessmentScoresPage({
                       >
                         {errorMessage}
                       </p>
-                    ) : null}
-                    {isLocked ? (
-                      <p className="text-xs text-ink-muted">Nilai terkunci</p>
                     ) : null}
                   </div>
                 );
@@ -201,7 +207,7 @@ function TeacherAssessmentScoresPage({
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <Button asChild variant="ghost" size="icon">
+          <Button asChild variant="ghost" size="icon" className="rounded-full">
             <Link to="/dashboard/teacher/assessments">
               <ArrowLeftIcon className="h-4 w-4" aria-hidden="true" />
               <span className="sr-only">Kembali</span>
@@ -271,23 +277,25 @@ function TeacherAssessmentScoresPage({
           globalFilterPlaceholder="Cari siswa..."
           emptyMessage="Tidak ada siswa"
           enablePagination
-          renderToolbar={() => (
-            <form.Subscribe
-              selector={(state) => [state.canSubmit, state.isSubmitting]}
-            >
-              {([canSubmit, isSubmitting]) => (
-                <Button
-                  type="button"
-                  className="ml-auto"
-                  onClick={() => form.handleSubmit()}
-                  disabled={!canSubmit || isSubmitting}
-                >
-                  <SaveIcon className="h-4 w-4" aria-hidden="true" />
-                  {isSubmitting ? "Menyimpan..." : "Simpan nilai"}
-                </Button>
-              )}
-            </form.Subscribe>
-          )}
+          renderToolbar={() =>
+            hasUnlockedScores ? (
+              <form.Subscribe
+                selector={(state) => [state.canSubmit, state.isSubmitting]}
+              >
+                {([canSubmit, isSubmitting]) => (
+                  <Button
+                    type="button"
+                    className="ml-auto"
+                    onClick={() => form.handleSubmit()}
+                    disabled={!canSubmit || isSubmitting}
+                  >
+                    <SaveIcon className="h-4 w-4" aria-hidden="true" />
+                    {isSubmitting ? "Menyimpan..." : "Simpan nilai"}
+                  </Button>
+                )}
+              </form.Subscribe>
+            ) : null
+          }
         />
       </div>
 

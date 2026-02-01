@@ -13,6 +13,7 @@ When making API requests in the project, follow these guidelines to ensure consi
 - Define types for request payloads and responses in `src/lib/services/api/[domain]/types.ts`.
 - Define custom hooks for API requests in `src/lib/hooks/[domain]/` (e.g., `src/lib/hooks/user/use-get-user.ts`).
 - Build types using generics specified in `src/lib/services/api/api.types.ts` (e.g., `ApiResponse<T>`, `ApiListResponse<T>`).
+- Primarily use client-side API requests. Only create server-side API requests when necessary.
 
 ## Naming Conventions
 

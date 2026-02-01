@@ -1,69 +1,93 @@
-## Implementation Plan — Teacher Assessment Scores Skeletons + Suspense Query
+## Implementation Plan — Recap UI Simplification + Invalid-Items Popup
 
 ### Goal
 
-Add proper loading skeletons to the teacher assessment scores page and migrate its data fetching to `useSuspenseQuery` for a smoother loading experience.
+Simplify the recap UI by removing redundant widgets, and provide a compact, actionable popup beside the submission button that lists invalid items and a lightweight status hint.
 
 ### Scope
 
-- Frontend (academic app): update the teacher assessment scores route to use suspense-driven data fetching and skeleton fallbacks.
-- API hooks: add a suspense variant for the assessment scores query hook used on the page.
+- Frontend only (Academic app).
+- Remove the “Tercapai vs Remedial” widget from the insights panel.
+- Remove the “Status pengiriman” widget block.
+- Add an icon button next to “Kirim ke Wali Kelas” that opens a popup with invalid items and submission status.
 
 ### Out of Scope
 
-- Backend changes or new endpoints.
-- UI redesign beyond skeletons and suspense boundaries.
+- Backend changes and new API fields.
+- Changes to readiness logic or submission behavior.
+- Additional analytics or new report widgets.
 
-### Existing Implementation Review
+### Current Implementation Review
 
-- Teacher assessment scores page is in [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/assessments/scores/$componentId.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/assessments/scores/$componentId.tsx).
-- The page uses `useAssessmentScores` with `enabled: true`, a manual `isLoading` empty message, and a route-level `pendingComponent` spinner.
-- Suspense patterns exist elsewhere with skeleton fallbacks (e.g., [apps/academic/src/routes/\_authed/dashboard/\_sidenavs/admin-staff/settings/customization/index.tsx](apps/academic/src/routes/_authed/dashboard/_sidenavs/admin-staff/settings/customization/index.tsx)).
-- Query hooks are located under [apps/academic/src/lib/services/api/assessment-scores](apps/academic/src/lib/services/api/assessment-scores).
+- Recap page renders summary cards, a table, and the insights panel with two sections: “Tercapai vs Remedial” and “Distribusi nilai.”
+- Submission action currently lives under the insights column, and a separate “Status pengiriman” widget exists (RecapSubmissionPanel).
+- Readiness data is available in `effectiveReadiness` (missing scores, weight validation, isReady) and submission status in `submission`.
+- UI components available include `@repo/ui/button` and the new `@repo/ui/popover` components.
 
-### Requirements
+### Functional Requirements
 
-- Use `useSuspenseQuery` for the assessment scores data.
-- Add skeleton UI that follows design guidelines (flat surfaces, no shadows/borders, surface backgrounds, animate-pulse).
-- Preserve existing UX, error handling, and form behavior.
+1. Remove the “Tercapai vs Remedial” block from the insights panel.
+2. Remove the “Status pengiriman” widget from the recap page layout.
+3. Add a compact icon button next to the submission button that:
+   - Opens a popup listing invalid readiness items.
+   - Shows a short submission status line (e.g., Draft / Submitted / Returned + timestamp).
+   - Is keyboard and screen-reader accessible.
 
-### Implementation Plan
+### UX/Design Requirements
 
-1. **Add Suspense Query Hook**
+- Keep layout flat (no borders/shadows), use existing surface colors and status colors.
+- The popup should be concise: label + value per line, status highlighted with info/success/warning tone.
+- Icon button should visually pair with the submit button; keep size consistent with the button height.
 
-- Create `useSuspenseAssessmentScores` alongside the current `useAssessmentScores` hook in the assessment scores API module.
-- Reuse existing query options and query keys to keep cache behavior consistent.
-- Export the suspense hook from the assessment scores index barrel.
+### Proposed UI Implementation
 
-2. **Introduce Skeleton Component**
+- Use `@repo/ui/popover` for the invalid-items popup:
+  - `Popover` + `PopoverTrigger asChild` wrapping an icon-only `Button`.
+  - `PopoverContent` with a compact custom layout.
+- Icon: use a Lucide icon with the `Icon` suffix (e.g., `InfoIcon` or `AlertTriangleIcon`).
+- Popup content structure:
+  - Header line: “Status pengiriman: <label>” + date if submitted/resubmitted.
+  - Separator.
+  - Invalid items list:
+    - “Nilai kosong”: `{missingScoreCount}` and `{missingStudentCount} siswa` (only if missingScoreCount > 0).
+    - “Bobot penilaian”: `{weightTotal}/100` + “OK” or “Periksa”.
+    - If `!hasSelection`, show “Filter belum lengkap”.
+  - If `isReady`, show a single line “Semua siap dikirim.”
 
-- Add a route-local skeleton component (e.g., `-components/teacher-assessment-scores-skeleton.tsx`).
-- Skeleton should cover:
-  - Page header and back button area
-  - Component/class/subject summary card
-  - Data table toolbar placeholder and several rows with input placeholders
-- Use `animate-pulse` with surface backgrounds to match the UI system.
+### Data/State Mapping
 
-3. **Refactor the Route to Use Suspense**
+- Use existing fields from `effectiveReadiness`, `submissionStatus`, `submission?.submittedAt`, and `hasSelection`.
+- Derive a short status label from `submissionStatus` (draft/submitted/returned/resubmitted).
+- Derive a formatted date using `formatDateLocal` (already used in RecapSubmissionPanel).
 
-- Split the page into a small wrapper that reads `componentId` and renders a `React.Suspense` boundary.
-- Move data fetching into a child component that calls `useSuspenseAssessmentScores`.
-- Replace the route `pendingComponent` spinner with the new skeleton to keep a consistent loading experience.
-- Remove `isLoading` fallback strings and rely on suspense loading state.
+### Implementation Tasks
 
-4. **Maintain Accessibility and Errors**
+1. **Update RecapInsights**
+   - Remove the “Tercapai vs Remedial” card.
+   - Remove unused props (`passCount`, `remedialCount`) from `RecapInsights` and its call site.
 
-- Keep existing `errorComponent` behavior on the route.
-- Ensure skeleton uses semantic structure without extra ARIA unless necessary.
-- Preserve current error messaging and feedback dialog usage for submit errors.
+2. **Remove RecapSubmissionPanel**
+   - Remove `RecapSubmissionPanel` usage from the recap page layout.
+   - Remove the import in recap route.
+   - Decide whether to delete the component file or leave it for potential reuse; prefer removing if no longer used.
+
+3. **Add Submission Info Popup**
+   - Import popover components from `@repo/ui/popover` and the chosen icon.
+   - Add an icon-only `Button` next to the existing submit button in the insights column.
+   - Implement popup content with compact status and invalid items.
+   - Ensure `aria-label` on icon button and use `sr-only` text if needed.
+
+4. **Styling/Interaction**
+   - Keep alignment and spacing consistent with the current button stack.
+   - Use status colors for labels (success/warning/info) without borders/shadows.
 
 ### Testing Plan
 
-- Open the assessment scores page and confirm the skeleton appears until data resolves.
-- Verify the table renders and inputs populate after loading.
-- Save scores and confirm success/error feedback still works.
-- Confirm no Suspense or React Query warnings in the console.
-
-### Open Decisions
-
-- None identified; the page has a single query dependency so a single suspense boundary should suffice.
+- Manual UI checks:
+  - Popup opens and closes via mouse and keyboard.
+  - Correct invalid items display when missing scores or invalid weights.
+  - “Semua siap dikirim” appears when ready.
+  - Status line updates for draft/submitted/returned/resubmitted.
+- Regression checks:
+  - Submit button behavior unchanged.
+  - Insights chart still renders and layout remains responsive.

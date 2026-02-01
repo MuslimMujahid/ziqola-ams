@@ -110,7 +110,7 @@ const TEACHER_NAV_ITEMS: TopnavNavItem[] = [
         label: "Kelola Nilai",
         to: "/dashboard/teacher/assessments",
       },
-      { label: "Rekap Nilai", to: "/dashboard/teacher/assessments/recap" },
+      { label: "Rekap Nilai", to: "/dashboard/teacher/recap" },
     ],
   },
 ];

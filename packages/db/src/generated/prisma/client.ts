@@ -175,6 +175,16 @@ export type AssessmentTypeWeight = Prisma.AssessmentTypeWeightModel
  */
 export type AssessmentScore = Prisma.AssessmentScoreModel
 /**
+ * Model AssessmentSubmission
+ * 
+ */
+export type AssessmentSubmission = Prisma.AssessmentSubmissionModel
+/**
+ * Model AssessmentScoreChangeRequest
+ * 
+ */
+export type AssessmentScoreChangeRequest = Prisma.AssessmentScoreChangeRequestModel
+/**
  * Model ReportCard
  * 
  */

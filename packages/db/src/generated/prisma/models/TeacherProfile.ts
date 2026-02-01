@@ -199,6 +199,8 @@ export type TeacherProfileWhereInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentListRelationFilter
   classSubjects?: Prisma.ClassSubjectListRelationFilter
   teacherSubjects?: Prisma.TeacherSubjectListRelationFilter
+  assessmentSubmissions?: Prisma.AssessmentSubmissionListRelationFilter
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestListRelationFilter
   schedules?: Prisma.ScheduleListRelationFilter
   compiledReportCards?: Prisma.ReportCardListRelationFilter
   sessionMaterials?: Prisma.SessionMaterialListRelationFilter
@@ -218,6 +220,8 @@ export type TeacherProfileOrderByWithRelationInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentOrderByRelationAggregateInput
   classSubjects?: Prisma.ClassSubjectOrderByRelationAggregateInput
   teacherSubjects?: Prisma.TeacherSubjectOrderByRelationAggregateInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionOrderByRelationAggregateInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestOrderByRelationAggregateInput
   schedules?: Prisma.ScheduleOrderByRelationAggregateInput
   compiledReportCards?: Prisma.ReportCardOrderByRelationAggregateInput
   sessionMaterials?: Prisma.SessionMaterialOrderByRelationAggregateInput
@@ -240,6 +244,8 @@ export type TeacherProfileWhereUniqueInput = Prisma.AtLeast<{
   homeroomAssignments?: Prisma.HomeroomAssignmentListRelationFilter
   classSubjects?: Prisma.ClassSubjectListRelationFilter
   teacherSubjects?: Prisma.TeacherSubjectListRelationFilter
+  assessmentSubmissions?: Prisma.AssessmentSubmissionListRelationFilter
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestListRelationFilter
   schedules?: Prisma.ScheduleListRelationFilter
   compiledReportCards?: Prisma.ReportCardListRelationFilter
   sessionMaterials?: Prisma.SessionMaterialListRelationFilter
@@ -283,6 +289,8 @@ export type TeacherProfileCreateInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
@@ -300,6 +308,8 @@ export type TeacherProfileUncheckedCreateInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
@@ -317,6 +327,8 @@ export type TeacherProfileUpdateInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
@@ -334,6 +346,8 @@ export type TeacherProfileUncheckedUpdateInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -574,6 +588,34 @@ export type TeacherProfileUpdateOneRequiredWithoutSessionMaterialsNestedInput = 
   update?: Prisma.XOR<Prisma.XOR<Prisma.TeacherProfileUpdateToOneWithWhereWithoutSessionMaterialsInput, Prisma.TeacherProfileUpdateWithoutSessionMaterialsInput>, Prisma.TeacherProfileUncheckedUpdateWithoutSessionMaterialsInput>
 }
 
+export type TeacherProfileCreateNestedOneWithoutAssessmentSubmissionsInput = {
+  create?: Prisma.XOR<Prisma.TeacherProfileCreateWithoutAssessmentSubmissionsInput, Prisma.TeacherProfileUncheckedCreateWithoutAssessmentSubmissionsInput>
+  connectOrCreate?: Prisma.TeacherProfileCreateOrConnectWithoutAssessmentSubmissionsInput
+  connect?: Prisma.TeacherProfileWhereUniqueInput
+}
+
+export type TeacherProfileUpdateOneRequiredWithoutAssessmentSubmissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.TeacherProfileCreateWithoutAssessmentSubmissionsInput, Prisma.TeacherProfileUncheckedCreateWithoutAssessmentSubmissionsInput>
+  connectOrCreate?: Prisma.TeacherProfileCreateOrConnectWithoutAssessmentSubmissionsInput
+  upsert?: Prisma.TeacherProfileUpsertWithoutAssessmentSubmissionsInput
+  connect?: Prisma.TeacherProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TeacherProfileUpdateToOneWithWhereWithoutAssessmentSubmissionsInput, Prisma.TeacherProfileUpdateWithoutAssessmentSubmissionsInput>, Prisma.TeacherProfileUncheckedUpdateWithoutAssessmentSubmissionsInput>
+}
+
+export type TeacherProfileCreateNestedOneWithoutAssessmentScoreChangeRequestsInput = {
+  create?: Prisma.XOR<Prisma.TeacherProfileCreateWithoutAssessmentScoreChangeRequestsInput, Prisma.TeacherProfileUncheckedCreateWithoutAssessmentScoreChangeRequestsInput>
+  connectOrCreate?: Prisma.TeacherProfileCreateOrConnectWithoutAssessmentScoreChangeRequestsInput
+  connect?: Prisma.TeacherProfileWhereUniqueInput
+}
+
+export type TeacherProfileUpdateOneRequiredWithoutAssessmentScoreChangeRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.TeacherProfileCreateWithoutAssessmentScoreChangeRequestsInput, Prisma.TeacherProfileUncheckedCreateWithoutAssessmentScoreChangeRequestsInput>
+  connectOrCreate?: Prisma.TeacherProfileCreateOrConnectWithoutAssessmentScoreChangeRequestsInput
+  upsert?: Prisma.TeacherProfileUpsertWithoutAssessmentScoreChangeRequestsInput
+  connect?: Prisma.TeacherProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TeacherProfileUpdateToOneWithWhereWithoutAssessmentScoreChangeRequestsInput, Prisma.TeacherProfileUpdateWithoutAssessmentScoreChangeRequestsInput>, Prisma.TeacherProfileUncheckedUpdateWithoutAssessmentScoreChangeRequestsInput>
+}
+
 export type TeacherProfileCreateNestedOneWithoutCompiledReportCardsInput = {
   create?: Prisma.XOR<Prisma.TeacherProfileCreateWithoutCompiledReportCardsInput, Prisma.TeacherProfileUncheckedCreateWithoutCompiledReportCardsInput>
   connectOrCreate?: Prisma.TeacherProfileCreateOrConnectWithoutCompiledReportCardsInput
@@ -600,6 +642,8 @@ export type TeacherProfileCreateWithoutTenantInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
@@ -616,6 +660,8 @@ export type TeacherProfileUncheckedCreateWithoutTenantInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
@@ -671,6 +717,8 @@ export type TeacherProfileCreateWithoutUserInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
@@ -687,6 +735,8 @@ export type TeacherProfileUncheckedCreateWithoutUserInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
@@ -719,6 +769,8 @@ export type TeacherProfileUpdateWithoutUserInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
@@ -735,6 +787,8 @@ export type TeacherProfileUncheckedUpdateWithoutUserInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -752,6 +806,8 @@ export type TeacherProfileCreateWithoutCustomFieldValuesInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
@@ -768,6 +824,8 @@ export type TeacherProfileUncheckedCreateWithoutCustomFieldValuesInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
@@ -800,6 +858,8 @@ export type TeacherProfileUpdateWithoutCustomFieldValuesInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
@@ -816,6 +876,8 @@ export type TeacherProfileUncheckedUpdateWithoutCustomFieldValuesInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -831,6 +893,8 @@ export type TeacherProfileCreateWithoutHomeroomAssignmentsInput = {
   user: Prisma.UserCreateNestedOneWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
@@ -847,6 +911,8 @@ export type TeacherProfileUncheckedCreateWithoutHomeroomAssignmentsInput = {
   updatedAt?: Date | string
   classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
@@ -879,6 +945,8 @@ export type TeacherProfileUpdateWithoutHomeroomAssignmentsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
@@ -895,6 +963,8 @@ export type TeacherProfileUncheckedUpdateWithoutHomeroomAssignmentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -911,6 +981,8 @@ export type TeacherProfileCreateWithoutClassSubjectsInput = {
   user: Prisma.UserCreateNestedOneWithoutTeacherProfileInput
   homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
@@ -927,6 +999,8 @@ export type TeacherProfileUncheckedCreateWithoutClassSubjectsInput = {
   updatedAt?: Date | string
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
@@ -959,6 +1033,8 @@ export type TeacherProfileUpdateWithoutClassSubjectsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutTeacherProfileNestedInput
   homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
@@ -975,6 +1051,8 @@ export type TeacherProfileUncheckedUpdateWithoutClassSubjectsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -991,6 +1069,8 @@ export type TeacherProfileCreateWithoutTeacherSubjectsInput = {
   user: Prisma.UserCreateNestedOneWithoutTeacherProfileInput
   homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
@@ -1007,6 +1087,8 @@ export type TeacherProfileUncheckedCreateWithoutTeacherSubjectsInput = {
   updatedAt?: Date | string
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1039,6 +1121,8 @@ export type TeacherProfileUpdateWithoutTeacherSubjectsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutTeacherProfileNestedInput
   homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
@@ -1055,6 +1139,8 @@ export type TeacherProfileUncheckedUpdateWithoutTeacherSubjectsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1072,6 +1158,8 @@ export type TeacherProfileCreateWithoutSchedulesInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
   customFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTeacherProfileInput
@@ -1088,6 +1176,8 @@ export type TeacherProfileUncheckedCreateWithoutSchedulesInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
   customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTeacherProfileInput
@@ -1120,6 +1210,8 @@ export type TeacherProfileUpdateWithoutSchedulesInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
   customFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTeacherProfileNestedInput
@@ -1136,6 +1228,8 @@ export type TeacherProfileUncheckedUpdateWithoutSchedulesInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
   customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTeacherProfileNestedInput
@@ -1152,6 +1246,8 @@ export type TeacherProfileCreateWithoutSessionMaterialsInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
   customFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTeacherProfileInput
@@ -1168,6 +1264,8 @@ export type TeacherProfileUncheckedCreateWithoutSessionMaterialsInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
   customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTeacherProfileInput
@@ -1200,6 +1298,8 @@ export type TeacherProfileUpdateWithoutSessionMaterialsInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   customFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTeacherProfileNestedInput
@@ -1216,8 +1316,186 @@ export type TeacherProfileUncheckedUpdateWithoutSessionMaterialsInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTeacherProfileNestedInput
+}
+
+export type TeacherProfileCreateWithoutAssessmentSubmissionsInput = {
+  id?: string
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  hiredAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutTeacherProfilesInput
+  user: Prisma.UserCreateNestedOneWithoutTeacherProfileInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTeacherProfileInput
+  classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
+  teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTeacherProfileInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
+  compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
+  sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTeacherProfileInput
+}
+
+export type TeacherProfileUncheckedCreateWithoutAssessmentSubmissionsInput = {
+  id?: string
+  tenantId: string
+  userId: string
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  hiredAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTeacherProfileInput
+  classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTeacherProfileInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
+  compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTeacherProfileInput
+}
+
+export type TeacherProfileCreateOrConnectWithoutAssessmentSubmissionsInput = {
+  where: Prisma.TeacherProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.TeacherProfileCreateWithoutAssessmentSubmissionsInput, Prisma.TeacherProfileUncheckedCreateWithoutAssessmentSubmissionsInput>
+}
+
+export type TeacherProfileUpsertWithoutAssessmentSubmissionsInput = {
+  update: Prisma.XOR<Prisma.TeacherProfileUpdateWithoutAssessmentSubmissionsInput, Prisma.TeacherProfileUncheckedUpdateWithoutAssessmentSubmissionsInput>
+  create: Prisma.XOR<Prisma.TeacherProfileCreateWithoutAssessmentSubmissionsInput, Prisma.TeacherProfileUncheckedCreateWithoutAssessmentSubmissionsInput>
+  where?: Prisma.TeacherProfileWhereInput
+}
+
+export type TeacherProfileUpdateToOneWithWhereWithoutAssessmentSubmissionsInput = {
+  where?: Prisma.TeacherProfileWhereInput
+  data: Prisma.XOR<Prisma.TeacherProfileUpdateWithoutAssessmentSubmissionsInput, Prisma.TeacherProfileUncheckedUpdateWithoutAssessmentSubmissionsInput>
+}
+
+export type TeacherProfileUpdateWithoutAssessmentSubmissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutTeacherProfilesNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutTeacherProfileNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTeacherProfileNestedInput
+  classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
+  teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTeacherProfileNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
+  compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTeacherProfileNestedInput
+}
+
+export type TeacherProfileUncheckedUpdateWithoutAssessmentSubmissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTeacherProfileNestedInput
+}
+
+export type TeacherProfileCreateWithoutAssessmentScoreChangeRequestsInput = {
+  id?: string
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  hiredAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutTeacherProfilesInput
+  user: Prisma.UserCreateNestedOneWithoutTeacherProfileInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTeacherProfileInput
+  classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
+  teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTeacherProfileInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
+  compiledReportCards?: Prisma.ReportCardCreateNestedManyWithoutCompiledByProfileInput
+  sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTeacherProfileInput
+}
+
+export type TeacherProfileUncheckedCreateWithoutAssessmentScoreChangeRequestsInput = {
+  id?: string
+  tenantId: string
+  userId: string
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  hiredAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTeacherProfileInput
+  classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTeacherProfileInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
+  compiledReportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutCompiledByProfileInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTeacherProfileInput
+}
+
+export type TeacherProfileCreateOrConnectWithoutAssessmentScoreChangeRequestsInput = {
+  where: Prisma.TeacherProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.TeacherProfileCreateWithoutAssessmentScoreChangeRequestsInput, Prisma.TeacherProfileUncheckedCreateWithoutAssessmentScoreChangeRequestsInput>
+}
+
+export type TeacherProfileUpsertWithoutAssessmentScoreChangeRequestsInput = {
+  update: Prisma.XOR<Prisma.TeacherProfileUpdateWithoutAssessmentScoreChangeRequestsInput, Prisma.TeacherProfileUncheckedUpdateWithoutAssessmentScoreChangeRequestsInput>
+  create: Prisma.XOR<Prisma.TeacherProfileCreateWithoutAssessmentScoreChangeRequestsInput, Prisma.TeacherProfileUncheckedCreateWithoutAssessmentScoreChangeRequestsInput>
+  where?: Prisma.TeacherProfileWhereInput
+}
+
+export type TeacherProfileUpdateToOneWithWhereWithoutAssessmentScoreChangeRequestsInput = {
+  where?: Prisma.TeacherProfileWhereInput
+  data: Prisma.XOR<Prisma.TeacherProfileUpdateWithoutAssessmentScoreChangeRequestsInput, Prisma.TeacherProfileUncheckedUpdateWithoutAssessmentScoreChangeRequestsInput>
+}
+
+export type TeacherProfileUpdateWithoutAssessmentScoreChangeRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutTeacherProfilesNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutTeacherProfileNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTeacherProfileNestedInput
+  classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
+  teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTeacherProfileNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
+  compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
+  customFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTeacherProfileNestedInput
+}
+
+export type TeacherProfileUncheckedUpdateWithoutAssessmentScoreChangeRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  additionalIdentifiers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  hiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
   customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTeacherProfileNestedInput
 }
 
@@ -1232,6 +1510,8 @@ export type TeacherProfileCreateWithoutCompiledReportCardsInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleCreateNestedManyWithoutTeacherProfileInput
   sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutCreatedByInput
   customFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTeacherProfileInput
@@ -1248,6 +1528,8 @@ export type TeacherProfileUncheckedCreateWithoutCompiledReportCardsInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTeacherProfileInput
   classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTeacherProfileInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTeacherProfileInput
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTeacherProfileInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutCreatedByInput
   customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTeacherProfileInput
@@ -1280,6 +1562,8 @@ export type TeacherProfileUpdateWithoutCompiledReportCardsInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
   customFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTeacherProfileNestedInput
@@ -1296,6 +1580,8 @@ export type TeacherProfileUncheckedUpdateWithoutCompiledReportCardsInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
   customFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTeacherProfileNestedInput
@@ -1320,6 +1606,8 @@ export type TeacherProfileUpdateWithoutTenantInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutCreatedByNestedInput
@@ -1336,6 +1624,8 @@ export type TeacherProfileUncheckedUpdateWithoutTenantInput = {
   homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTeacherProfileNestedInput
   classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTeacherProfileNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTeacherProfileNestedInput
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTeacherProfileNestedInput
   compiledReportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutCompiledByProfileNestedInput
   sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1360,6 +1650,8 @@ export type TeacherProfileCountOutputType = {
   homeroomAssignments: number
   classSubjects: number
   teacherSubjects: number
+  assessmentSubmissions: number
+  assessmentScoreChangeRequests: number
   schedules: number
   compiledReportCards: number
   sessionMaterials: number
@@ -1370,6 +1662,8 @@ export type TeacherProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Ex
   homeroomAssignments?: boolean | TeacherProfileCountOutputTypeCountHomeroomAssignmentsArgs
   classSubjects?: boolean | TeacherProfileCountOutputTypeCountClassSubjectsArgs
   teacherSubjects?: boolean | TeacherProfileCountOutputTypeCountTeacherSubjectsArgs
+  assessmentSubmissions?: boolean | TeacherProfileCountOutputTypeCountAssessmentSubmissionsArgs
+  assessmentScoreChangeRequests?: boolean | TeacherProfileCountOutputTypeCountAssessmentScoreChangeRequestsArgs
   schedules?: boolean | TeacherProfileCountOutputTypeCountSchedulesArgs
   compiledReportCards?: boolean | TeacherProfileCountOutputTypeCountCompiledReportCardsArgs
   sessionMaterials?: boolean | TeacherProfileCountOutputTypeCountSessionMaterialsArgs
@@ -1405,6 +1699,20 @@ export type TeacherProfileCountOutputTypeCountClassSubjectsArgs<ExtArgs extends 
  */
 export type TeacherProfileCountOutputTypeCountTeacherSubjectsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.TeacherSubjectWhereInput
+}
+
+/**
+ * TeacherProfileCountOutputType without action
+ */
+export type TeacherProfileCountOutputTypeCountAssessmentSubmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AssessmentSubmissionWhereInput
+}
+
+/**
+ * TeacherProfileCountOutputType without action
+ */
+export type TeacherProfileCountOutputTypeCountAssessmentScoreChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AssessmentScoreChangeRequestWhereInput
 }
 
 /**
@@ -1449,6 +1757,8 @@ export type TeacherProfileSelect<ExtArgs extends runtime.Types.Extensions.Intern
   homeroomAssignments?: boolean | Prisma.TeacherProfile$homeroomAssignmentsArgs<ExtArgs>
   classSubjects?: boolean | Prisma.TeacherProfile$classSubjectsArgs<ExtArgs>
   teacherSubjects?: boolean | Prisma.TeacherProfile$teacherSubjectsArgs<ExtArgs>
+  assessmentSubmissions?: boolean | Prisma.TeacherProfile$assessmentSubmissionsArgs<ExtArgs>
+  assessmentScoreChangeRequests?: boolean | Prisma.TeacherProfile$assessmentScoreChangeRequestsArgs<ExtArgs>
   schedules?: boolean | Prisma.TeacherProfile$schedulesArgs<ExtArgs>
   compiledReportCards?: boolean | Prisma.TeacherProfile$compiledReportCardsArgs<ExtArgs>
   sessionMaterials?: boolean | Prisma.TeacherProfile$sessionMaterialsArgs<ExtArgs>
@@ -1497,6 +1807,8 @@ export type TeacherProfileInclude<ExtArgs extends runtime.Types.Extensions.Inter
   homeroomAssignments?: boolean | Prisma.TeacherProfile$homeroomAssignmentsArgs<ExtArgs>
   classSubjects?: boolean | Prisma.TeacherProfile$classSubjectsArgs<ExtArgs>
   teacherSubjects?: boolean | Prisma.TeacherProfile$teacherSubjectsArgs<ExtArgs>
+  assessmentSubmissions?: boolean | Prisma.TeacherProfile$assessmentSubmissionsArgs<ExtArgs>
+  assessmentScoreChangeRequests?: boolean | Prisma.TeacherProfile$assessmentScoreChangeRequestsArgs<ExtArgs>
   schedules?: boolean | Prisma.TeacherProfile$schedulesArgs<ExtArgs>
   compiledReportCards?: boolean | Prisma.TeacherProfile$compiledReportCardsArgs<ExtArgs>
   sessionMaterials?: boolean | Prisma.TeacherProfile$sessionMaterialsArgs<ExtArgs>
@@ -1520,6 +1832,8 @@ export type $TeacherProfilePayload<ExtArgs extends runtime.Types.Extensions.Inte
     homeroomAssignments: Prisma.$HomeroomAssignmentPayload<ExtArgs>[]
     classSubjects: Prisma.$ClassSubjectPayload<ExtArgs>[]
     teacherSubjects: Prisma.$TeacherSubjectPayload<ExtArgs>[]
+    assessmentSubmissions: Prisma.$AssessmentSubmissionPayload<ExtArgs>[]
+    assessmentScoreChangeRequests: Prisma.$AssessmentScoreChangeRequestPayload<ExtArgs>[]
     schedules: Prisma.$SchedulePayload<ExtArgs>[]
     compiledReportCards: Prisma.$ReportCardPayload<ExtArgs>[]
     sessionMaterials: Prisma.$SessionMaterialPayload<ExtArgs>[]
@@ -1932,6 +2246,8 @@ export interface Prisma__TeacherProfileClient<T, Null = never, ExtArgs extends r
   homeroomAssignments<T extends Prisma.TeacherProfile$homeroomAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherProfile$homeroomAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HomeroomAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   classSubjects<T extends Prisma.TeacherProfile$classSubjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherProfile$classSubjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClassSubjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   teacherSubjects<T extends Prisma.TeacherProfile$teacherSubjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherProfile$teacherSubjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherSubjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assessmentSubmissions<T extends Prisma.TeacherProfile$assessmentSubmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherProfile$assessmentSubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assessmentScoreChangeRequests<T extends Prisma.TeacherProfile$assessmentScoreChangeRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherProfile$assessmentScoreChangeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentScoreChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   schedules<T extends Prisma.TeacherProfile$schedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherProfile$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   compiledReportCards<T extends Prisma.TeacherProfile$compiledReportCardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherProfile$compiledReportCardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportCardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessionMaterials<T extends Prisma.TeacherProfile$sessionMaterialsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherProfile$sessionMaterialsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionMaterialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2437,6 +2753,54 @@ export type TeacherProfile$teacherSubjectsArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.TeacherSubjectScalarFieldEnum | Prisma.TeacherSubjectScalarFieldEnum[]
+}
+
+/**
+ * TeacherProfile.assessmentSubmissions
+ */
+export type TeacherProfile$assessmentSubmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssessmentSubmission
+   */
+  select?: Prisma.AssessmentSubmissionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AssessmentSubmission
+   */
+  omit?: Prisma.AssessmentSubmissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AssessmentSubmissionInclude<ExtArgs> | null
+  where?: Prisma.AssessmentSubmissionWhereInput
+  orderBy?: Prisma.AssessmentSubmissionOrderByWithRelationInput | Prisma.AssessmentSubmissionOrderByWithRelationInput[]
+  cursor?: Prisma.AssessmentSubmissionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AssessmentSubmissionScalarFieldEnum | Prisma.AssessmentSubmissionScalarFieldEnum[]
+}
+
+/**
+ * TeacherProfile.assessmentScoreChangeRequests
+ */
+export type TeacherProfile$assessmentScoreChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssessmentScoreChangeRequest
+   */
+  select?: Prisma.AssessmentScoreChangeRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AssessmentScoreChangeRequest
+   */
+  omit?: Prisma.AssessmentScoreChangeRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AssessmentScoreChangeRequestInclude<ExtArgs> | null
+  where?: Prisma.AssessmentScoreChangeRequestWhereInput
+  orderBy?: Prisma.AssessmentScoreChangeRequestOrderByWithRelationInput | Prisma.AssessmentScoreChangeRequestOrderByWithRelationInput[]
+  cursor?: Prisma.AssessmentScoreChangeRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AssessmentScoreChangeRequestScalarFieldEnum | Prisma.AssessmentScoreChangeRequestScalarFieldEnum[]
 }
 
 /**

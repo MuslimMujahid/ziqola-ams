@@ -1,4 +1,4 @@
-import { IsUUID } from "class-validator";
+import { IsInt, IsOptional, IsUUID, Max, Min } from "class-validator";
 
 export class CreateClassSubjectDto {
   @IsUUID()
@@ -12,4 +12,10 @@ export class CreateClassSubjectDto {
 
   @IsUUID()
   teacherProfileId: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(100)
+  kkm?: number;
 }

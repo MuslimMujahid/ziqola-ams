@@ -78,6 +78,8 @@ export const ModelName = {
   AssessmentComponent: 'AssessmentComponent',
   AssessmentTypeWeight: 'AssessmentTypeWeight',
   AssessmentScore: 'AssessmentScore',
+  AssessmentSubmission: 'AssessmentSubmission',
+  AssessmentScoreChangeRequest: 'AssessmentScoreChangeRequest',
   ReportCard: 'ReportCard',
   ReportCardSubject: 'ReportCardSubject',
   AuditLog: 'AuditLog'
@@ -364,6 +366,7 @@ export const ClassSubjectScalarFieldEnum = {
   academicYearId: 'academicYearId',
   subjectId: 'subjectId',
   teacherProfileId: 'teacherProfileId',
+  kkm: 'kkm',
   isDeleted: 'isDeleted',
   deletedAt: 'deletedAt',
   createdAt: 'createdAt',
@@ -503,6 +506,40 @@ export const AssessmentScoreScalarFieldEnum = {
 } as const
 
 export type AssessmentScoreScalarFieldEnum = (typeof AssessmentScoreScalarFieldEnum)[keyof typeof AssessmentScoreScalarFieldEnum]
+
+
+export const AssessmentSubmissionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  classSubjectId: 'classSubjectId',
+  academicPeriodId: 'academicPeriodId',
+  teacherProfileId: 'teacherProfileId',
+  status: 'status',
+  submittedAt: 'submittedAt',
+  returnedAt: 'returnedAt',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AssessmentSubmissionScalarFieldEnum = (typeof AssessmentSubmissionScalarFieldEnum)[keyof typeof AssessmentSubmissionScalarFieldEnum]
+
+
+export const AssessmentScoreChangeRequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  classSubjectId: 'classSubjectId',
+  academicPeriodId: 'academicPeriodId',
+  teacherProfileId: 'teacherProfileId',
+  status: 'status',
+  isActive: 'isActive',
+  requestedAt: 'requestedAt',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AssessmentScoreChangeRequestScalarFieldEnum = (typeof AssessmentScoreChangeRequestScalarFieldEnum)[keyof typeof AssessmentScoreChangeRequestScalarFieldEnum]
 
 
 export const ReportCardScalarFieldEnum = {

@@ -1,7 +1,14 @@
 import React from "react";
+import { z } from "zod";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import type { ColumnDef } from "@tanstack/react-table";
-import { FileTextIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import type { ColumnDef, ColumnFiltersState } from "@tanstack/react-table";
+import {
+  ClipboardCheckIcon,
+  FileTextIcon,
+  PencilIcon,
+  PlusIcon,
+  Trash2Icon,
+} from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -11,6 +18,7 @@ import {
 } from "@repo/ui/select";
 import { Button } from "@repo/ui/button";
 import { cn } from "@/lib/utils/cn";
+import { useUrlSearchState } from "@/lib/utils/use-url-state";
 import { DataTable } from "@/components/data-table/data-table";
 import { useAuthStore } from "@/stores/auth.store";
 import { useConfirm } from "@/lib/utils/use-confirm";
@@ -29,6 +37,7 @@ import {
   useUpdateAssessmentComponent,
   useUpsertAssessmentTypeWeight,
 } from "@/lib/services/api/assessment-components";
+import { useTeacherAssessmentRecap } from "@/lib/services/api/assessment-recap";
 import {
   AssessmentComponentFormModal,
   type AssessmentComponentFormValues,
@@ -36,10 +45,19 @@ import {
 import { AssessmentTypeWeightModal } from "./-components/assessment-type-weight-modal";
 import { TeacherAssessmentsSkeleton } from "./-components/teacher-assessments-skeleton";
 
+const assessmentFiltersSchema = z.object({
+  subjectId: z.string().optional(),
+  classId: z.string().optional(),
+  assessmentTypeId: z.string().optional(),
+});
+
+type AssessmentFiltersSearch = z.infer<typeof assessmentFiltersSchema>;
+
 export const Route = createFileRoute(
   "/_authed/dashboard/_topnavs/teacher/assessments/",
 )({
   staticData: { topnavId: "teacher" },
+  validateSearch: (search) => assessmentFiltersSchema.parse(search),
   component: TeacherAssessmentComponentsPage,
   errorComponent: ({ error }: { error: Error }) => (
     <div className="p-6 text-error">Terjadi kesalahan: {error.message}</div>
@@ -135,6 +153,7 @@ type AssessmentTypeWeightsCardProps = {
   weightMap: Map<string, AssessmentTypeWeight>;
   totalWeight: number;
   showWeightEmptyState: boolean;
+  isRecapSubmitted: boolean;
   onOpenWeightModal: (
     type: { id: string; label: string },
     weight: AssessmentTypeWeight | null,
@@ -156,8 +175,11 @@ function TeacherAssessmentComponentsWithYear({
   });
 
   const classSubjects = classSubjectsQuery.data?.data ?? [];
-  const [selectedClassId, setSelectedClassId] = React.useState("");
-  const [selectedSubjectId, setSelectedSubjectId] = React.useState("");
+  const search = Route.useSearch() as AssessmentFiltersSearch;
+  const { setSearch } = useUrlSearchState<AssessmentFiltersSearch>();
+  const selectedSubjectId = search.subjectId ?? "";
+  const selectedClassId = search.classId ?? "";
+  const selectedAssessmentTypeId = search.assessmentTypeId ?? "all";
 
   const teacherSubjectsQuery = useSuspenseTeacherSubjects({
     academicYearId: activeYearId,
@@ -199,17 +221,33 @@ function TeacherAssessmentComponentsWithYear({
   }, [classSubjects, selectedSubjectId]);
 
   React.useEffect(() => {
+    if (subjectOptions.length === 0) {
+      if (selectedSubjectId) {
+        setSearch({ subjectId: "", classId: "" });
+      }
+      return;
+    }
+
     if (
       !selectedSubjectId ||
       !subjectOptions.some((option) => option.id === selectedSubjectId)
     ) {
-      setSelectedSubjectId(subjectOptions[0]?.id ?? "");
+      setSearch({ subjectId: subjectOptions[0]?.id ?? "", classId: "" });
     }
-  }, [selectedSubjectId, subjectOptions]);
+  }, [selectedSubjectId, setSearch, subjectOptions]);
 
   React.useEffect(() => {
     if (!selectedSubjectId) {
-      setSelectedClassId("");
+      if (selectedClassId) {
+        setSearch({ classId: "" });
+      }
+      return;
+    }
+
+    if (classOptions.length === 0) {
+      if (selectedClassId) {
+        setSearch({ classId: "" });
+      }
       return;
     }
 
@@ -217,9 +255,62 @@ function TeacherAssessmentComponentsWithYear({
       !selectedClassId ||
       !classOptions.some((option) => option.id === selectedClassId)
     ) {
-      setSelectedClassId(classOptions[0]?.id ?? "");
+      setSearch({ classId: classOptions[0]?.id ?? "" });
     }
-  }, [classOptions, selectedClassId, selectedSubjectId]);
+  }, [classOptions, selectedClassId, selectedSubjectId, setSearch]);
+
+  React.useEffect(() => {
+    if (!search.assessmentTypeId) {
+      setSearch({ assessmentTypeId: "all" });
+      return;
+    }
+
+    if (
+      search.assessmentTypeId !== "all" &&
+      !assessmentTypes.some((type) => type.id === search.assessmentTypeId)
+    ) {
+      setSearch({ assessmentTypeId: "all" });
+    }
+  }, [assessmentTypes, search.assessmentTypeId, setSearch]);
+  const handleSubjectChange = React.useCallback(
+    (value: string) => {
+      setSearch({ subjectId: value, classId: "" });
+    },
+    [setSearch],
+  );
+
+  const handleClassChange = React.useCallback(
+    (value: string) => {
+      setSearch({ classId: value });
+    },
+    [setSearch],
+  );
+
+  const handleAssessmentTypeChange = React.useCallback(
+    (value: string) => {
+      setSearch({ assessmentTypeId: value });
+    },
+    [setSearch],
+  );
+
+  const assessmentTypeFilterValue =
+    selectedAssessmentTypeId === "all" ? "" : selectedAssessmentTypeId;
+  const columnFilters = React.useMemo<ColumnFiltersState>(
+    () =>
+      assessmentTypeFilterValue
+        ? [{ id: "assessmentTypeId", value: assessmentTypeFilterValue }]
+        : [],
+    [assessmentTypeFilterValue],
+  );
+
+  const recapSearch = React.useMemo(
+    () => ({
+      periodId: activePeriod?.id,
+      classId: selectedClassId || undefined,
+      subjectId: selectedSubjectId || undefined,
+    }),
+    [activePeriod?.id, selectedClassId, selectedSubjectId],
+  );
 
   const selectedClassSubjectId = React.useMemo(() => {
     if (!selectedClassId || !selectedSubjectId) return "";
@@ -240,6 +331,23 @@ function TeacherAssessmentComponentsWithYear({
   );
 
   const selectedTeacherSubjectId = selectedTeacherSubject?.id ?? "";
+
+  const recapQuery = useTeacherAssessmentRecap(
+    {
+      periodId: activePeriod?.id,
+      classId: selectedClassId || undefined,
+      subjectId: selectedSubjectId || undefined,
+    },
+    {
+      enabled: Boolean(
+        activePeriod?.id && selectedClassId && selectedSubjectId,
+      ),
+    },
+  );
+
+  const isRecapSubmitted = recapQuery.isPending
+    ? true
+    : (recapQuery.data?.hasSubmittedRecap ?? false);
 
   const createComponent = useCreateAssessmentComponent();
   const updateComponent = useUpdateAssessmentComponent();
@@ -483,12 +591,12 @@ function TeacherAssessmentComponentsWithYear({
   const showComponentEmptyState = !activePeriod?.id || !selectedClassSubjectId;
 
   const renderToolbar = React.useCallback(
-    (table: import("@tanstack/react-table").Table<AssessmentComponent>) => (
+    (_table: import("@tanstack/react-table").Table<AssessmentComponent>) => (
       <>
         <div className="flex gap-3">
           <Select
             value={selectedClassId}
-            onValueChange={setSelectedClassId}
+            onValueChange={handleClassChange}
             disabled={!selectedSubjectId}
           >
             <SelectTrigger id="class-selector" className="w-full">
@@ -503,16 +611,8 @@ function TeacherAssessmentComponentsWithYear({
             </SelectContent>
           </Select>
           <Select
-            value={
-              (table.getColumn("assessmentTypeId")?.getFilterValue() as
-                | string
-                | undefined) ?? "all"
-            }
-            onValueChange={(value) => {
-              table
-                .getColumn("assessmentTypeId")
-                ?.setFilterValue(value === "all" ? "" : value);
-            }}
+            value={selectedAssessmentTypeId}
+            onValueChange={handleAssessmentTypeChange}
           >
             <SelectTrigger className="w-50">
               <SelectValue placeholder="Semua tipe" />
@@ -527,23 +627,34 @@ function TeacherAssessmentComponentsWithYear({
             </SelectContent>
           </Select>
         </div>
-        <Button
-          className="ml-auto"
-          onClick={handleOpenCreate}
-          disabled={!selectedClassSubjectId || !activePeriod?.id}
-        >
-          <PlusIcon className="h-4 w-4" aria-hidden="true" />
-          Tambah Penilaian
-        </Button>
+        <div className="ml-auto flex items-center gap-2">
+          <Button
+            className="ml-auto"
+            onClick={handleOpenCreate}
+            disabled={!selectedClassSubjectId || !activePeriod?.id}
+          >
+            <PlusIcon className="h-4 w-4" aria-hidden="true" />
+            Tambah Penilaian
+          </Button>
+          <Button asChild variant="secondary" disabled={!selectedSubjectId}>
+            <Link to="/dashboard/teacher/recap" search={recapSearch}>
+              <ClipboardCheckIcon className="h-4 w-4" aria-hidden="true" />
+              Rekap Nilai
+            </Link>
+          </Button>
+        </div>
       </>
     ),
     [
       activePeriod?.id,
       assessmentTypes,
       classOptions,
+      handleAssessmentTypeChange,
+      handleClassChange,
       handleOpenCreate,
       selectedClassId,
       selectedClassSubjectId,
+      selectedAssessmentTypeId,
       selectedSubjectId,
     ],
   );
@@ -554,6 +665,7 @@ function TeacherAssessmentComponentsWithYear({
       weightMap={new Map()}
       totalWeight={0}
       showWeightEmptyState
+      isRecapSubmitted={isRecapSubmitted}
       onOpenWeightModal={handleWeightModal}
     />
   ) : (
@@ -562,6 +674,7 @@ function TeacherAssessmentComponentsWithYear({
         assessmentTypes={assessmentTypes}
         teacherSubjectId={selectedTeacherSubjectId}
         academicPeriodId={activePeriod?.id ?? ""}
+        isRecapSubmitted={isRecapSubmitted}
         onOpenWeightModal={handleWeightModal}
       />
     </React.Suspense>
@@ -591,7 +704,7 @@ function TeacherAssessmentComponentsWithYear({
             </label>
             <Select
               value={selectedSubjectId}
-              onValueChange={setSelectedSubjectId}
+              onValueChange={handleSubjectChange}
             >
               <SelectTrigger id="subject-selector" className="w-full">
                 <SelectValue placeholder="Pilih mata pelajaran" />
@@ -622,6 +735,7 @@ function TeacherAssessmentComponentsWithYear({
               classSubjectId={selectedClassSubjectId}
               academicPeriodId={activePeriod?.id ?? ""}
               columns={columns}
+              columnFilters={columnFilters}
               renderToolbar={renderToolbar}
             />
           </React.Suspense>
@@ -668,11 +782,13 @@ function AssessmentTypeWeightsData({
   assessmentTypes,
   teacherSubjectId,
   academicPeriodId,
+  isRecapSubmitted,
   onOpenWeightModal,
 }: {
   assessmentTypes: { id: string; label: string }[];
   teacherSubjectId: string;
   academicPeriodId: string;
+  isRecapSubmitted: boolean;
   onOpenWeightModal: (
     type: { id: string; label: string },
     weight: AssessmentTypeWeight | null,
@@ -699,6 +815,7 @@ function AssessmentTypeWeightsData({
       weightMap={weightMap}
       totalWeight={totalWeight}
       showWeightEmptyState={false}
+      isRecapSubmitted={isRecapSubmitted}
       onOpenWeightModal={onOpenWeightModal}
     />
   );
@@ -709,6 +826,7 @@ function AssessmentTypeWeightsCard({
   weightMap,
   totalWeight,
   showWeightEmptyState,
+  isRecapSubmitted,
   onOpenWeightModal,
 }: AssessmentTypeWeightsCardProps) {
   const totalTone = React.useMemo(() => {
@@ -753,17 +871,19 @@ function AssessmentTypeWeightsCard({
                   </div>
                   <div className="text-xs text-ink-muted">{weight}%</div>
                 </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() =>
-                    onOpenWeightModal(type, weightMap.get(type.id) ?? null)
-                  }
-                  disabled={showWeightEmptyState}
-                >
-                  Atur bobot
-                </Button>
+                {isRecapSubmitted ? null : (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      onOpenWeightModal(type, weightMap.get(type.id) ?? null)
+                    }
+                    disabled={showWeightEmptyState}
+                  >
+                    Atur bobot
+                  </Button>
+                )}
               </div>
             );
           })
@@ -799,11 +919,13 @@ function AssessmentComponentsTableData({
   classSubjectId,
   academicPeriodId,
   columns,
+  columnFilters,
   renderToolbar,
 }: {
   classSubjectId: string;
   academicPeriodId: string;
   columns: ColumnDef<AssessmentComponent>[];
+  columnFilters: ColumnFiltersState;
   renderToolbar: (
     table: import("@tanstack/react-table").Table<AssessmentComponent>,
   ) => React.ReactNode;
@@ -827,6 +949,7 @@ function AssessmentComponentsTableData({
           emptyMessage="Belum ada penilaian"
           enablePagination
           enableSorting
+          state={{ columnFilters }}
         />
       </div>
     </div>

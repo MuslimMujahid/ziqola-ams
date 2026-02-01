@@ -23,6 +23,7 @@ import { UploadsModule } from "./common/uploads/uploads.module";
 import { ConfigurationsModule } from "./configurations/configurations.module";
 import { AssessmentComponentsModule } from "./assessment-components/assessment-components.module";
 import { AssessmentScoresModule } from "./assessment-scores/assessment-scores.module";
+import { AssessmentRecapModule } from "./assessment-recap/assessment-recap.module";
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { AssessmentScoresModule } from "./assessment-scores/assessment-scores.mo
     ConfigurationsModule,
     AssessmentComponentsModule,
     AssessmentScoresModule,
+    AssessmentRecapModule,
     ExamplesModule, // Example controller for RBAC patterns
   ],
   controllers: [AppController],

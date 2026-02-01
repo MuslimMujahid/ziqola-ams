@@ -217,6 +217,7 @@ export type TenantWhereInput = {
   assessmentComponents?: Prisma.AssessmentComponentListRelationFilter
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightListRelationFilter
   assessmentScores?: Prisma.AssessmentScoreListRelationFilter
+  assessmentSubmissions?: Prisma.AssessmentSubmissionListRelationFilter
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeListRelationFilter
   reportCards?: Prisma.ReportCardListRelationFilter
   reportCardSubjects?: Prisma.ReportCardSubjectListRelationFilter
@@ -228,6 +229,7 @@ export type TenantWhereInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueListRelationFilter
   tenantConfigurations?: Prisma.TenantConfigurationListRelationFilter
   teacherSubjects?: Prisma.TeacherSubjectListRelationFilter
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestListRelationFilter
 }
 
 export type TenantOrderByWithRelationInput = {
@@ -257,6 +259,7 @@ export type TenantOrderByWithRelationInput = {
   assessmentComponents?: Prisma.AssessmentComponentOrderByRelationAggregateInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightOrderByRelationAggregateInput
   assessmentScores?: Prisma.AssessmentScoreOrderByRelationAggregateInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionOrderByRelationAggregateInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeOrderByRelationAggregateInput
   reportCards?: Prisma.ReportCardOrderByRelationAggregateInput
   reportCardSubjects?: Prisma.ReportCardSubjectOrderByRelationAggregateInput
@@ -268,6 +271,7 @@ export type TenantOrderByWithRelationInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueOrderByRelationAggregateInput
   tenantConfigurations?: Prisma.TenantConfigurationOrderByRelationAggregateInput
   teacherSubjects?: Prisma.TeacherSubjectOrderByRelationAggregateInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestOrderByRelationAggregateInput
 }
 
 export type TenantWhereUniqueInput = Prisma.AtLeast<{
@@ -300,6 +304,7 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   assessmentComponents?: Prisma.AssessmentComponentListRelationFilter
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightListRelationFilter
   assessmentScores?: Prisma.AssessmentScoreListRelationFilter
+  assessmentSubmissions?: Prisma.AssessmentSubmissionListRelationFilter
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeListRelationFilter
   reportCards?: Prisma.ReportCardListRelationFilter
   reportCardSubjects?: Prisma.ReportCardSubjectListRelationFilter
@@ -311,6 +316,7 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueListRelationFilter
   tenantConfigurations?: Prisma.TenantConfigurationListRelationFilter
   teacherSubjects?: Prisma.TeacherSubjectListRelationFilter
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestListRelationFilter
 }, "id" | "slug" | "activeAcademicYearId">
 
 export type TenantOrderByWithAggregationInput = {
@@ -365,6 +371,7 @@ export type TenantCreateInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -376,6 +383,7 @@ export type TenantCreateInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateInput = {
@@ -404,6 +412,7 @@ export type TenantUncheckedCreateInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -415,6 +424,7 @@ export type TenantUncheckedCreateInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUpdateInput = {
@@ -443,6 +453,7 @@ export type TenantUpdateInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -454,6 +465,7 @@ export type TenantUpdateInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateInput = {
@@ -482,6 +494,7 @@ export type TenantUncheckedUpdateInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -493,6 +506,7 @@ export type TenantUncheckedUpdateInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateManyInput = {
@@ -972,6 +986,34 @@ export type TenantUpdateOneRequiredWithoutAssessmentScoresNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutAssessmentScoresInput, Prisma.TenantUpdateWithoutAssessmentScoresInput>, Prisma.TenantUncheckedUpdateWithoutAssessmentScoresInput>
 }
 
+export type TenantCreateNestedOneWithoutAssessmentSubmissionsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutAssessmentSubmissionsInput, Prisma.TenantUncheckedCreateWithoutAssessmentSubmissionsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutAssessmentSubmissionsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutAssessmentSubmissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutAssessmentSubmissionsInput, Prisma.TenantUncheckedCreateWithoutAssessmentSubmissionsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutAssessmentSubmissionsInput
+  upsert?: Prisma.TenantUpsertWithoutAssessmentSubmissionsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutAssessmentSubmissionsInput, Prisma.TenantUpdateWithoutAssessmentSubmissionsInput>, Prisma.TenantUncheckedUpdateWithoutAssessmentSubmissionsInput>
+}
+
+export type TenantCreateNestedOneWithoutAssessmentScoreChangeRequestsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutAssessmentScoreChangeRequestsInput, Prisma.TenantUncheckedCreateWithoutAssessmentScoreChangeRequestsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutAssessmentScoreChangeRequestsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutAssessmentScoreChangeRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutAssessmentScoreChangeRequestsInput, Prisma.TenantUncheckedCreateWithoutAssessmentScoreChangeRequestsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutAssessmentScoreChangeRequestsInput
+  upsert?: Prisma.TenantUpsertWithoutAssessmentScoreChangeRequestsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutAssessmentScoreChangeRequestsInput, Prisma.TenantUpdateWithoutAssessmentScoreChangeRequestsInput>, Prisma.TenantUncheckedUpdateWithoutAssessmentScoreChangeRequestsInput>
+}
+
 export type TenantCreateNestedOneWithoutReportCardsInput = {
   create?: Prisma.XOR<Prisma.TenantCreateWithoutReportCardsInput, Prisma.TenantUncheckedCreateWithoutReportCardsInput>
   connectOrCreate?: Prisma.TenantCreateOrConnectWithoutReportCardsInput
@@ -1040,6 +1082,7 @@ export type TenantCreateWithoutTenantAssessmentTypesInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
@@ -1050,6 +1093,7 @@ export type TenantCreateWithoutTenantAssessmentTypesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutTenantAssessmentTypesInput = {
@@ -1078,6 +1122,7 @@ export type TenantUncheckedCreateWithoutTenantAssessmentTypesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
@@ -1088,6 +1133,7 @@ export type TenantUncheckedCreateWithoutTenantAssessmentTypesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutTenantAssessmentTypesInput = {
@@ -1132,6 +1178,7 @@ export type TenantUpdateWithoutTenantAssessmentTypesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
@@ -1142,6 +1189,7 @@ export type TenantUpdateWithoutTenantAssessmentTypesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutTenantAssessmentTypesInput = {
@@ -1170,6 +1218,7 @@ export type TenantUncheckedUpdateWithoutTenantAssessmentTypesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
@@ -1180,6 +1229,7 @@ export type TenantUncheckedUpdateWithoutTenantAssessmentTypesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutTenantConfigurationsInput = {
@@ -1208,6 +1258,7 @@ export type TenantCreateWithoutTenantConfigurationsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -1218,6 +1269,7 @@ export type TenantCreateWithoutTenantConfigurationsInput = {
   studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutTenantConfigurationsInput = {
@@ -1246,6 +1298,7 @@ export type TenantUncheckedCreateWithoutTenantConfigurationsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -1256,6 +1309,7 @@ export type TenantUncheckedCreateWithoutTenantConfigurationsInput = {
   studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutTenantConfigurationsInput = {
@@ -1300,6 +1354,7 @@ export type TenantUpdateWithoutTenantConfigurationsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -1310,6 +1365,7 @@ export type TenantUpdateWithoutTenantConfigurationsInput = {
   studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutTenantConfigurationsInput = {
@@ -1338,6 +1394,7 @@ export type TenantUncheckedUpdateWithoutTenantConfigurationsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -1348,6 +1405,7 @@ export type TenantUncheckedUpdateWithoutTenantConfigurationsInput = {
   studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutUsersInput = {
@@ -1375,6 +1433,7 @@ export type TenantCreateWithoutUsersInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -1386,6 +1445,7 @@ export type TenantCreateWithoutUsersInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutUsersInput = {
@@ -1413,6 +1473,7 @@ export type TenantUncheckedCreateWithoutUsersInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -1424,6 +1485,7 @@ export type TenantUncheckedCreateWithoutUsersInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutUsersInput = {
@@ -1467,6 +1529,7 @@ export type TenantUpdateWithoutUsersInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -1478,6 +1541,7 @@ export type TenantUpdateWithoutUsersInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutUsersInput = {
@@ -1505,6 +1569,7 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -1516,6 +1581,7 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutTeacherProfilesInput = {
@@ -1544,6 +1610,7 @@ export type TenantCreateWithoutTeacherProfilesInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -1554,6 +1621,7 @@ export type TenantCreateWithoutTeacherProfilesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutTeacherProfilesInput = {
@@ -1582,6 +1650,7 @@ export type TenantUncheckedCreateWithoutTeacherProfilesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -1592,6 +1661,7 @@ export type TenantUncheckedCreateWithoutTeacherProfilesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutTeacherProfilesInput = {
@@ -1636,6 +1706,7 @@ export type TenantUpdateWithoutTeacherProfilesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -1646,6 +1717,7 @@ export type TenantUpdateWithoutTeacherProfilesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutTeacherProfilesInput = {
@@ -1674,6 +1746,7 @@ export type TenantUncheckedUpdateWithoutTeacherProfilesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -1684,6 +1757,7 @@ export type TenantUncheckedUpdateWithoutTeacherProfilesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutStudentProfilesInput = {
@@ -1712,6 +1786,7 @@ export type TenantCreateWithoutStudentProfilesInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -1722,6 +1797,7 @@ export type TenantCreateWithoutStudentProfilesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutStudentProfilesInput = {
@@ -1750,6 +1826,7 @@ export type TenantUncheckedCreateWithoutStudentProfilesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -1760,6 +1837,7 @@ export type TenantUncheckedCreateWithoutStudentProfilesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutStudentProfilesInput = {
@@ -1804,6 +1882,7 @@ export type TenantUpdateWithoutStudentProfilesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -1814,6 +1893,7 @@ export type TenantUpdateWithoutStudentProfilesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutStudentProfilesInput = {
@@ -1842,6 +1922,7 @@ export type TenantUncheckedUpdateWithoutStudentProfilesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -1852,6 +1933,7 @@ export type TenantUncheckedUpdateWithoutStudentProfilesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutTenantProfileFieldsInput = {
@@ -1880,6 +1962,7 @@ export type TenantCreateWithoutTenantProfileFieldsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -1890,6 +1973,7 @@ export type TenantCreateWithoutTenantProfileFieldsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutTenantProfileFieldsInput = {
@@ -1918,6 +2002,7 @@ export type TenantUncheckedCreateWithoutTenantProfileFieldsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -1928,6 +2013,7 @@ export type TenantUncheckedCreateWithoutTenantProfileFieldsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutTenantProfileFieldsInput = {
@@ -1972,6 +2058,7 @@ export type TenantUpdateWithoutTenantProfileFieldsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -1982,6 +2069,7 @@ export type TenantUpdateWithoutTenantProfileFieldsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutTenantProfileFieldsInput = {
@@ -2010,6 +2098,7 @@ export type TenantUncheckedUpdateWithoutTenantProfileFieldsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -2020,6 +2109,7 @@ export type TenantUncheckedUpdateWithoutTenantProfileFieldsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutStudentProfileFieldValuesInput = {
@@ -2048,6 +2138,7 @@ export type TenantCreateWithoutStudentProfileFieldValuesInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -2058,6 +2149,7 @@ export type TenantCreateWithoutStudentProfileFieldValuesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutStudentProfileFieldValuesInput = {
@@ -2086,6 +2178,7 @@ export type TenantUncheckedCreateWithoutStudentProfileFieldValuesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -2096,6 +2189,7 @@ export type TenantUncheckedCreateWithoutStudentProfileFieldValuesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutStudentProfileFieldValuesInput = {
@@ -2140,6 +2234,7 @@ export type TenantUpdateWithoutStudentProfileFieldValuesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -2150,6 +2245,7 @@ export type TenantUpdateWithoutStudentProfileFieldValuesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutStudentProfileFieldValuesInput = {
@@ -2178,6 +2274,7 @@ export type TenantUncheckedUpdateWithoutStudentProfileFieldValuesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -2188,6 +2285,7 @@ export type TenantUncheckedUpdateWithoutStudentProfileFieldValuesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutTeacherProfileFieldValuesInput = {
@@ -2216,6 +2314,7 @@ export type TenantCreateWithoutTeacherProfileFieldValuesInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -2226,6 +2325,7 @@ export type TenantCreateWithoutTeacherProfileFieldValuesInput = {
   studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutTeacherProfileFieldValuesInput = {
@@ -2254,6 +2354,7 @@ export type TenantUncheckedCreateWithoutTeacherProfileFieldValuesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -2264,6 +2365,7 @@ export type TenantUncheckedCreateWithoutTeacherProfileFieldValuesInput = {
   studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutTeacherProfileFieldValuesInput = {
@@ -2308,6 +2410,7 @@ export type TenantUpdateWithoutTeacherProfileFieldValuesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -2318,6 +2421,7 @@ export type TenantUpdateWithoutTeacherProfileFieldValuesInput = {
   studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutTeacherProfileFieldValuesInput = {
@@ -2346,6 +2450,7 @@ export type TenantUncheckedUpdateWithoutTeacherProfileFieldValuesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -2356,6 +2461,7 @@ export type TenantUncheckedUpdateWithoutTeacherProfileFieldValuesInput = {
   studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAcademicYearsInput = {
@@ -2383,6 +2489,7 @@ export type TenantCreateWithoutAcademicYearsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -2394,6 +2501,7 @@ export type TenantCreateWithoutAcademicYearsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAcademicYearsInput = {
@@ -2421,6 +2529,7 @@ export type TenantUncheckedCreateWithoutAcademicYearsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -2432,6 +2541,7 @@ export type TenantUncheckedCreateWithoutAcademicYearsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAcademicYearsInput = {
@@ -2464,6 +2574,7 @@ export type TenantCreateWithoutActiveAcademicYearInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -2475,6 +2586,7 @@ export type TenantCreateWithoutActiveAcademicYearInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutActiveAcademicYearInput = {
@@ -2502,6 +2614,7 @@ export type TenantUncheckedCreateWithoutActiveAcademicYearInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -2513,6 +2626,7 @@ export type TenantUncheckedCreateWithoutActiveAcademicYearInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutActiveAcademicYearInput = {
@@ -2556,6 +2670,7 @@ export type TenantUpdateWithoutAcademicYearsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -2567,6 +2682,7 @@ export type TenantUpdateWithoutAcademicYearsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAcademicYearsInput = {
@@ -2594,6 +2710,7 @@ export type TenantUncheckedUpdateWithoutAcademicYearsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -2605,6 +2722,7 @@ export type TenantUncheckedUpdateWithoutAcademicYearsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUpsertWithoutActiveAcademicYearInput = {
@@ -2643,6 +2761,7 @@ export type TenantUpdateWithoutActiveAcademicYearInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -2654,6 +2773,7 @@ export type TenantUpdateWithoutActiveAcademicYearInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutActiveAcademicYearInput = {
@@ -2681,6 +2801,7 @@ export type TenantUncheckedUpdateWithoutActiveAcademicYearInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -2692,6 +2813,7 @@ export type TenantUncheckedUpdateWithoutActiveAcademicYearInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAcademicPeriodsInput = {
@@ -2719,6 +2841,7 @@ export type TenantCreateWithoutAcademicPeriodsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -2730,6 +2853,7 @@ export type TenantCreateWithoutAcademicPeriodsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAcademicPeriodsInput = {
@@ -2757,6 +2881,7 @@ export type TenantUncheckedCreateWithoutAcademicPeriodsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -2768,6 +2893,7 @@ export type TenantUncheckedCreateWithoutAcademicPeriodsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAcademicPeriodsInput = {
@@ -2811,6 +2937,7 @@ export type TenantUpdateWithoutAcademicPeriodsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -2822,6 +2949,7 @@ export type TenantUpdateWithoutAcademicPeriodsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAcademicPeriodsInput = {
@@ -2849,6 +2977,7 @@ export type TenantUncheckedUpdateWithoutAcademicPeriodsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -2860,6 +2989,7 @@ export type TenantUncheckedUpdateWithoutAcademicPeriodsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutClassesInput = {
@@ -2887,6 +3017,7 @@ export type TenantCreateWithoutClassesInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -2898,6 +3029,7 @@ export type TenantCreateWithoutClassesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutClassesInput = {
@@ -2925,6 +3057,7 @@ export type TenantUncheckedCreateWithoutClassesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -2936,6 +3069,7 @@ export type TenantUncheckedCreateWithoutClassesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutClassesInput = {
@@ -2979,6 +3113,7 @@ export type TenantUpdateWithoutClassesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -2990,6 +3125,7 @@ export type TenantUpdateWithoutClassesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutClassesInput = {
@@ -3017,6 +3153,7 @@ export type TenantUncheckedUpdateWithoutClassesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -3028,6 +3165,7 @@ export type TenantUncheckedUpdateWithoutClassesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutHomeroomAssignmentsInput = {
@@ -3055,6 +3193,7 @@ export type TenantCreateWithoutHomeroomAssignmentsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -3066,6 +3205,7 @@ export type TenantCreateWithoutHomeroomAssignmentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutHomeroomAssignmentsInput = {
@@ -3093,6 +3233,7 @@ export type TenantUncheckedCreateWithoutHomeroomAssignmentsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -3104,6 +3245,7 @@ export type TenantUncheckedCreateWithoutHomeroomAssignmentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutHomeroomAssignmentsInput = {
@@ -3147,6 +3289,7 @@ export type TenantUpdateWithoutHomeroomAssignmentsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -3158,6 +3301,7 @@ export type TenantUpdateWithoutHomeroomAssignmentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutHomeroomAssignmentsInput = {
@@ -3185,6 +3329,7 @@ export type TenantUncheckedUpdateWithoutHomeroomAssignmentsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -3196,6 +3341,7 @@ export type TenantUncheckedUpdateWithoutHomeroomAssignmentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutGroupsInput = {
@@ -3223,6 +3369,7 @@ export type TenantCreateWithoutGroupsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -3234,6 +3381,7 @@ export type TenantCreateWithoutGroupsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutGroupsInput = {
@@ -3261,6 +3409,7 @@ export type TenantUncheckedCreateWithoutGroupsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -3272,6 +3421,7 @@ export type TenantUncheckedCreateWithoutGroupsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutGroupsInput = {
@@ -3315,6 +3465,7 @@ export type TenantUpdateWithoutGroupsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -3326,6 +3477,7 @@ export type TenantUpdateWithoutGroupsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutGroupsInput = {
@@ -3353,6 +3505,7 @@ export type TenantUncheckedUpdateWithoutGroupsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -3364,6 +3517,7 @@ export type TenantUncheckedUpdateWithoutGroupsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutClassGroupsInput = {
@@ -3391,6 +3545,7 @@ export type TenantCreateWithoutClassGroupsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -3402,6 +3557,7 @@ export type TenantCreateWithoutClassGroupsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutClassGroupsInput = {
@@ -3429,6 +3585,7 @@ export type TenantUncheckedCreateWithoutClassGroupsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -3440,6 +3597,7 @@ export type TenantUncheckedCreateWithoutClassGroupsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutClassGroupsInput = {
@@ -3483,6 +3641,7 @@ export type TenantUpdateWithoutClassGroupsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -3494,6 +3653,7 @@ export type TenantUpdateWithoutClassGroupsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutClassGroupsInput = {
@@ -3521,6 +3681,7 @@ export type TenantUncheckedUpdateWithoutClassGroupsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -3532,6 +3693,7 @@ export type TenantUncheckedUpdateWithoutClassGroupsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutClassEnrollmentsInput = {
@@ -3559,6 +3721,7 @@ export type TenantCreateWithoutClassEnrollmentsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -3570,6 +3733,7 @@ export type TenantCreateWithoutClassEnrollmentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutClassEnrollmentsInput = {
@@ -3597,6 +3761,7 @@ export type TenantUncheckedCreateWithoutClassEnrollmentsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -3608,6 +3773,7 @@ export type TenantUncheckedCreateWithoutClassEnrollmentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutClassEnrollmentsInput = {
@@ -3651,6 +3817,7 @@ export type TenantUpdateWithoutClassEnrollmentsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -3662,6 +3829,7 @@ export type TenantUpdateWithoutClassEnrollmentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutClassEnrollmentsInput = {
@@ -3689,6 +3857,7 @@ export type TenantUncheckedUpdateWithoutClassEnrollmentsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -3700,6 +3869,7 @@ export type TenantUncheckedUpdateWithoutClassEnrollmentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSubjectsInput = {
@@ -3727,6 +3897,7 @@ export type TenantCreateWithoutSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -3738,6 +3909,7 @@ export type TenantCreateWithoutSubjectsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSubjectsInput = {
@@ -3765,6 +3937,7 @@ export type TenantUncheckedCreateWithoutSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -3776,6 +3949,7 @@ export type TenantUncheckedCreateWithoutSubjectsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSubjectsInput = {
@@ -3819,6 +3993,7 @@ export type TenantUpdateWithoutSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -3830,6 +4005,7 @@ export type TenantUpdateWithoutSubjectsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSubjectsInput = {
@@ -3857,6 +4033,7 @@ export type TenantUncheckedUpdateWithoutSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -3868,6 +4045,7 @@ export type TenantUncheckedUpdateWithoutSubjectsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutClassSubjectsInput = {
@@ -3895,6 +4073,7 @@ export type TenantCreateWithoutClassSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -3906,6 +4085,7 @@ export type TenantCreateWithoutClassSubjectsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutClassSubjectsInput = {
@@ -3933,6 +4113,7 @@ export type TenantUncheckedCreateWithoutClassSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -3944,6 +4125,7 @@ export type TenantUncheckedCreateWithoutClassSubjectsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutClassSubjectsInput = {
@@ -3987,6 +4169,7 @@ export type TenantUpdateWithoutClassSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -3998,6 +4181,7 @@ export type TenantUpdateWithoutClassSubjectsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutClassSubjectsInput = {
@@ -4025,6 +4209,7 @@ export type TenantUncheckedUpdateWithoutClassSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -4036,6 +4221,7 @@ export type TenantUncheckedUpdateWithoutClassSubjectsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutTeacherSubjectsInput = {
@@ -4064,6 +4250,7 @@ export type TenantCreateWithoutTeacherSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -4074,6 +4261,7 @@ export type TenantCreateWithoutTeacherSubjectsInput = {
   studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutTeacherSubjectsInput = {
@@ -4102,6 +4290,7 @@ export type TenantUncheckedCreateWithoutTeacherSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -4112,6 +4301,7 @@ export type TenantUncheckedCreateWithoutTeacherSubjectsInput = {
   studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutTeacherSubjectsInput = {
@@ -4156,6 +4346,7 @@ export type TenantUpdateWithoutTeacherSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -4166,6 +4357,7 @@ export type TenantUpdateWithoutTeacherSubjectsInput = {
   studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutTeacherSubjectsInput = {
@@ -4194,6 +4386,7 @@ export type TenantUncheckedUpdateWithoutTeacherSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -4204,6 +4397,7 @@ export type TenantUncheckedUpdateWithoutTeacherSubjectsInput = {
   studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSchedulesInput = {
@@ -4231,6 +4425,7 @@ export type TenantCreateWithoutSchedulesInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -4242,6 +4437,7 @@ export type TenantCreateWithoutSchedulesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSchedulesInput = {
@@ -4269,6 +4465,7 @@ export type TenantUncheckedCreateWithoutSchedulesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -4280,6 +4477,7 @@ export type TenantUncheckedCreateWithoutSchedulesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSchedulesInput = {
@@ -4323,6 +4521,7 @@ export type TenantUpdateWithoutSchedulesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -4334,6 +4533,7 @@ export type TenantUpdateWithoutSchedulesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSchedulesInput = {
@@ -4361,6 +4561,7 @@ export type TenantUncheckedUpdateWithoutSchedulesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -4372,6 +4573,7 @@ export type TenantUncheckedUpdateWithoutSchedulesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSessionsInput = {
@@ -4399,6 +4601,7 @@ export type TenantCreateWithoutSessionsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -4410,6 +4613,7 @@ export type TenantCreateWithoutSessionsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSessionsInput = {
@@ -4437,6 +4641,7 @@ export type TenantUncheckedCreateWithoutSessionsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -4448,6 +4653,7 @@ export type TenantUncheckedCreateWithoutSessionsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSessionsInput = {
@@ -4491,6 +4697,7 @@ export type TenantUpdateWithoutSessionsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -4502,6 +4709,7 @@ export type TenantUpdateWithoutSessionsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSessionsInput = {
@@ -4529,6 +4737,7 @@ export type TenantUncheckedUpdateWithoutSessionsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -4540,6 +4749,7 @@ export type TenantUncheckedUpdateWithoutSessionsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSessionMaterialsInput = {
@@ -4567,6 +4777,7 @@ export type TenantCreateWithoutSessionMaterialsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -4578,6 +4789,7 @@ export type TenantCreateWithoutSessionMaterialsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSessionMaterialsInput = {
@@ -4605,6 +4817,7 @@ export type TenantUncheckedCreateWithoutSessionMaterialsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -4616,6 +4829,7 @@ export type TenantUncheckedCreateWithoutSessionMaterialsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSessionMaterialsInput = {
@@ -4659,6 +4873,7 @@ export type TenantUpdateWithoutSessionMaterialsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -4670,6 +4885,7 @@ export type TenantUpdateWithoutSessionMaterialsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSessionMaterialsInput = {
@@ -4697,6 +4913,7 @@ export type TenantUncheckedUpdateWithoutSessionMaterialsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -4708,6 +4925,7 @@ export type TenantUncheckedUpdateWithoutSessionMaterialsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSessionMaterialAttachmentsInput = {
@@ -4735,6 +4953,7 @@ export type TenantCreateWithoutSessionMaterialAttachmentsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -4746,6 +4965,7 @@ export type TenantCreateWithoutSessionMaterialAttachmentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSessionMaterialAttachmentsInput = {
@@ -4773,6 +4993,7 @@ export type TenantUncheckedCreateWithoutSessionMaterialAttachmentsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -4784,6 +5005,7 @@ export type TenantUncheckedCreateWithoutSessionMaterialAttachmentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSessionMaterialAttachmentsInput = {
@@ -4827,6 +5049,7 @@ export type TenantUpdateWithoutSessionMaterialAttachmentsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -4838,6 +5061,7 @@ export type TenantUpdateWithoutSessionMaterialAttachmentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSessionMaterialAttachmentsInput = {
@@ -4865,6 +5089,7 @@ export type TenantUncheckedUpdateWithoutSessionMaterialAttachmentsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -4876,6 +5101,7 @@ export type TenantUncheckedUpdateWithoutSessionMaterialAttachmentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAttendancesInput = {
@@ -4903,6 +5129,7 @@ export type TenantCreateWithoutAttendancesInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -4914,6 +5141,7 @@ export type TenantCreateWithoutAttendancesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAttendancesInput = {
@@ -4941,6 +5169,7 @@ export type TenantUncheckedCreateWithoutAttendancesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -4952,6 +5181,7 @@ export type TenantUncheckedCreateWithoutAttendancesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAttendancesInput = {
@@ -4995,6 +5225,7 @@ export type TenantUpdateWithoutAttendancesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -5006,6 +5237,7 @@ export type TenantUpdateWithoutAttendancesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAttendancesInput = {
@@ -5033,6 +5265,7 @@ export type TenantUncheckedUpdateWithoutAttendancesInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -5044,6 +5277,7 @@ export type TenantUncheckedUpdateWithoutAttendancesInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAssessmentComponentsInput = {
@@ -5071,6 +5305,7 @@ export type TenantCreateWithoutAssessmentComponentsInput = {
   attendances?: Prisma.AttendanceCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -5082,6 +5317,7 @@ export type TenantCreateWithoutAssessmentComponentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAssessmentComponentsInput = {
@@ -5109,6 +5345,7 @@ export type TenantUncheckedCreateWithoutAssessmentComponentsInput = {
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -5120,6 +5357,7 @@ export type TenantUncheckedCreateWithoutAssessmentComponentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAssessmentComponentsInput = {
@@ -5163,6 +5401,7 @@ export type TenantUpdateWithoutAssessmentComponentsInput = {
   attendances?: Prisma.AttendanceUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -5174,6 +5413,7 @@ export type TenantUpdateWithoutAssessmentComponentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAssessmentComponentsInput = {
@@ -5201,6 +5441,7 @@ export type TenantUncheckedUpdateWithoutAssessmentComponentsInput = {
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -5212,6 +5453,7 @@ export type TenantUncheckedUpdateWithoutAssessmentComponentsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAssessmentTypeWeightsInput = {
@@ -5239,6 +5481,7 @@ export type TenantCreateWithoutAssessmentTypeWeightsInput = {
   attendances?: Prisma.AttendanceCreateNestedManyWithoutTenantInput
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -5250,6 +5493,7 @@ export type TenantCreateWithoutAssessmentTypeWeightsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAssessmentTypeWeightsInput = {
@@ -5277,6 +5521,7 @@ export type TenantUncheckedCreateWithoutAssessmentTypeWeightsInput = {
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTenantInput
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -5288,6 +5533,7 @@ export type TenantUncheckedCreateWithoutAssessmentTypeWeightsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAssessmentTypeWeightsInput = {
@@ -5331,6 +5577,7 @@ export type TenantUpdateWithoutAssessmentTypeWeightsInput = {
   attendances?: Prisma.AttendanceUpdateManyWithoutTenantNestedInput
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -5342,6 +5589,7 @@ export type TenantUpdateWithoutAssessmentTypeWeightsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAssessmentTypeWeightsInput = {
@@ -5369,6 +5617,7 @@ export type TenantUncheckedUpdateWithoutAssessmentTypeWeightsInput = {
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTenantNestedInput
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -5380,6 +5629,7 @@ export type TenantUncheckedUpdateWithoutAssessmentTypeWeightsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAssessmentScoresInput = {
@@ -5407,6 +5657,7 @@ export type TenantCreateWithoutAssessmentScoresInput = {
   attendances?: Prisma.AttendanceCreateNestedManyWithoutTenantInput
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -5418,6 +5669,7 @@ export type TenantCreateWithoutAssessmentScoresInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAssessmentScoresInput = {
@@ -5445,6 +5697,7 @@ export type TenantUncheckedCreateWithoutAssessmentScoresInput = {
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTenantInput
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -5456,6 +5709,7 @@ export type TenantUncheckedCreateWithoutAssessmentScoresInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAssessmentScoresInput = {
@@ -5499,6 +5753,7 @@ export type TenantUpdateWithoutAssessmentScoresInput = {
   attendances?: Prisma.AttendanceUpdateManyWithoutTenantNestedInput
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -5510,6 +5765,7 @@ export type TenantUpdateWithoutAssessmentScoresInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAssessmentScoresInput = {
@@ -5537,6 +5793,360 @@ export type TenantUncheckedUpdateWithoutAssessmentScoresInput = {
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTenantNestedInput
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
+  tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
+  reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
+  teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutAssessmentSubmissionsInput = {
+  id?: string
+  name: string
+  slug: string
+  educationLevel?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
+  academicPeriods?: Prisma.AcademicPeriodCreateNestedManyWithoutTenantInput
+  groups?: Prisma.GroupCreateNestedManyWithoutTenantInput
+  subjects?: Prisma.SubjectCreateNestedManyWithoutTenantInput
+  classes?: Prisma.ClassCreateNestedManyWithoutTenantInput
+  classEnrollments?: Prisma.ClassEnrollmentCreateNestedManyWithoutTenantInput
+  classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTenantInput
+  classGroups?: Prisma.ClassGroupCreateNestedManyWithoutTenantInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTenantInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutTenantInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
+  sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutTenantInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentCreateNestedManyWithoutTenantInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutTenantInput
+  assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
+  assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
+  reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
+  reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
+  studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
+  teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutAssessmentSubmissionsInput = {
+  id?: string
+  name: string
+  slug: string
+  educationLevel?: string | null
+  activeAcademicYearId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
+  academicPeriods?: Prisma.AcademicPeriodUncheckedCreateNestedManyWithoutTenantInput
+  groups?: Prisma.GroupUncheckedCreateNestedManyWithoutTenantInput
+  subjects?: Prisma.SubjectUncheckedCreateNestedManyWithoutTenantInput
+  classes?: Prisma.ClassUncheckedCreateNestedManyWithoutTenantInput
+  classEnrollments?: Prisma.ClassEnrollmentUncheckedCreateNestedManyWithoutTenantInput
+  classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTenantInput
+  classGroups?: Prisma.ClassGroupUncheckedCreateNestedManyWithoutTenantInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTenantInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTenantInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutTenantInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTenantInput
+  assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
+  reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
+  studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
+  teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutAssessmentSubmissionsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutAssessmentSubmissionsInput, Prisma.TenantUncheckedCreateWithoutAssessmentSubmissionsInput>
+}
+
+export type TenantUpsertWithoutAssessmentSubmissionsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutAssessmentSubmissionsInput, Prisma.TenantUncheckedUpdateWithoutAssessmentSubmissionsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutAssessmentSubmissionsInput, Prisma.TenantUncheckedCreateWithoutAssessmentSubmissionsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutAssessmentSubmissionsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutAssessmentSubmissionsInput, Prisma.TenantUncheckedUpdateWithoutAssessmentSubmissionsInput>
+}
+
+export type TenantUpdateWithoutAssessmentSubmissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
+  academicPeriods?: Prisma.AcademicPeriodUpdateManyWithoutTenantNestedInput
+  groups?: Prisma.GroupUpdateManyWithoutTenantNestedInput
+  subjects?: Prisma.SubjectUpdateManyWithoutTenantNestedInput
+  classes?: Prisma.ClassUpdateManyWithoutTenantNestedInput
+  classEnrollments?: Prisma.ClassEnrollmentUpdateManyWithoutTenantNestedInput
+  classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTenantNestedInput
+  classGroups?: Prisma.ClassGroupUpdateManyWithoutTenantNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTenantNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutTenantNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutTenantNestedInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUpdateManyWithoutTenantNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutTenantNestedInput
+  assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
+  assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
+  reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
+  studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
+  teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutAssessmentSubmissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
+  academicPeriods?: Prisma.AcademicPeriodUncheckedUpdateManyWithoutTenantNestedInput
+  groups?: Prisma.GroupUncheckedUpdateManyWithoutTenantNestedInput
+  subjects?: Prisma.SubjectUncheckedUpdateManyWithoutTenantNestedInput
+  classes?: Prisma.ClassUncheckedUpdateManyWithoutTenantNestedInput
+  classEnrollments?: Prisma.ClassEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
+  classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  classGroups?: Prisma.ClassGroupUncheckedUpdateManyWithoutTenantNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTenantNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTenantNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutTenantNestedInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
+  reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfiles?: Prisma.TeacherProfileUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfiles?: Prisma.StudentProfileUncheckedUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
+  teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutAssessmentScoreChangeRequestsInput = {
+  id?: string
+  name: string
+  slug: string
+  educationLevel?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activeAcademicYear?: Prisma.AcademicYearCreateNestedOneWithoutActiveTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutTenantInput
+  academicPeriods?: Prisma.AcademicPeriodCreateNestedManyWithoutTenantInput
+  groups?: Prisma.GroupCreateNestedManyWithoutTenantInput
+  subjects?: Prisma.SubjectCreateNestedManyWithoutTenantInput
+  classes?: Prisma.ClassCreateNestedManyWithoutTenantInput
+  classEnrollments?: Prisma.ClassEnrollmentCreateNestedManyWithoutTenantInput
+  classSubjects?: Prisma.ClassSubjectCreateNestedManyWithoutTenantInput
+  classGroups?: Prisma.ClassGroupCreateNestedManyWithoutTenantInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentCreateNestedManyWithoutTenantInput
+  schedules?: Prisma.ScheduleCreateNestedManyWithoutTenantInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutTenantInput
+  sessionMaterials?: Prisma.SessionMaterialCreateNestedManyWithoutTenantInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentCreateNestedManyWithoutTenantInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutTenantInput
+  assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
+  assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
+  tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
+  reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
+  reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
+  teacherProfiles?: Prisma.TeacherProfileCreateNestedManyWithoutTenantInput
+  studentProfiles?: Prisma.StudentProfileCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
+  teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutAssessmentScoreChangeRequestsInput = {
+  id?: string
+  name: string
+  slug: string
+  educationLevel?: string | null
+  activeAcademicYearId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutTenantInput
+  academicPeriods?: Prisma.AcademicPeriodUncheckedCreateNestedManyWithoutTenantInput
+  groups?: Prisma.GroupUncheckedCreateNestedManyWithoutTenantInput
+  subjects?: Prisma.SubjectUncheckedCreateNestedManyWithoutTenantInput
+  classes?: Prisma.ClassUncheckedCreateNestedManyWithoutTenantInput
+  classEnrollments?: Prisma.ClassEnrollmentUncheckedCreateNestedManyWithoutTenantInput
+  classSubjects?: Prisma.ClassSubjectUncheckedCreateNestedManyWithoutTenantInput
+  classGroups?: Prisma.ClassGroupUncheckedCreateNestedManyWithoutTenantInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedCreateNestedManyWithoutTenantInput
+  schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutTenantInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutTenantInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedCreateNestedManyWithoutTenantInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutTenantInput
+  assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
+  tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
+  reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfiles?: Prisma.TeacherProfileUncheckedCreateNestedManyWithoutTenantInput
+  studentProfiles?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutTenantInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUncheckedCreateNestedManyWithoutTenantInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
+  tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
+  teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutAssessmentScoreChangeRequestsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutAssessmentScoreChangeRequestsInput, Prisma.TenantUncheckedCreateWithoutAssessmentScoreChangeRequestsInput>
+}
+
+export type TenantUpsertWithoutAssessmentScoreChangeRequestsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutAssessmentScoreChangeRequestsInput, Prisma.TenantUncheckedUpdateWithoutAssessmentScoreChangeRequestsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutAssessmentScoreChangeRequestsInput, Prisma.TenantUncheckedCreateWithoutAssessmentScoreChangeRequestsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutAssessmentScoreChangeRequestsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutAssessmentScoreChangeRequestsInput, Prisma.TenantUncheckedUpdateWithoutAssessmentScoreChangeRequestsInput>
+}
+
+export type TenantUpdateWithoutAssessmentScoreChangeRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activeAcademicYear?: Prisma.AcademicYearUpdateOneWithoutActiveTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  academicYears?: Prisma.AcademicYearUpdateManyWithoutTenantNestedInput
+  academicPeriods?: Prisma.AcademicPeriodUpdateManyWithoutTenantNestedInput
+  groups?: Prisma.GroupUpdateManyWithoutTenantNestedInput
+  subjects?: Prisma.SubjectUpdateManyWithoutTenantNestedInput
+  classes?: Prisma.ClassUpdateManyWithoutTenantNestedInput
+  classEnrollments?: Prisma.ClassEnrollmentUpdateManyWithoutTenantNestedInput
+  classSubjects?: Prisma.ClassSubjectUpdateManyWithoutTenantNestedInput
+  classGroups?: Prisma.ClassGroupUpdateManyWithoutTenantNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUpdateManyWithoutTenantNestedInput
+  schedules?: Prisma.ScheduleUpdateManyWithoutTenantNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutTenantNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUpdateManyWithoutTenantNestedInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUpdateManyWithoutTenantNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutTenantNestedInput
+  assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
+  assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
+  tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
+  reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
+  reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
+  teacherProfiles?: Prisma.TeacherProfileUpdateManyWithoutTenantNestedInput
+  studentProfiles?: Prisma.StudentProfileUpdateManyWithoutTenantNestedInput
+  tenantProfileFields?: Prisma.TenantProfileFieldUpdateManyWithoutTenantNestedInput
+  studentProfileFieldValues?: Prisma.StudentProfileFieldValueUpdateManyWithoutTenantNestedInput
+  teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
+  tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
+  teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutAssessmentScoreChangeRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  educationLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activeAcademicYearId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutTenantNestedInput
+  academicPeriods?: Prisma.AcademicPeriodUncheckedUpdateManyWithoutTenantNestedInput
+  groups?: Prisma.GroupUncheckedUpdateManyWithoutTenantNestedInput
+  subjects?: Prisma.SubjectUncheckedUpdateManyWithoutTenantNestedInput
+  classes?: Prisma.ClassUncheckedUpdateManyWithoutTenantNestedInput
+  classEnrollments?: Prisma.ClassEnrollmentUncheckedUpdateManyWithoutTenantNestedInput
+  classSubjects?: Prisma.ClassSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  classGroups?: Prisma.ClassGroupUncheckedUpdateManyWithoutTenantNestedInput
+  homeroomAssignments?: Prisma.HomeroomAssignmentUncheckedUpdateManyWithoutTenantNestedInput
+  schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutTenantNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutTenantNestedInput
+  sessionMaterials?: Prisma.SessionMaterialUncheckedUpdateManyWithoutTenantNestedInput
+  sessionMaterialAttachments?: Prisma.SessionMaterialAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -5576,6 +6186,7 @@ export type TenantCreateWithoutReportCardsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
@@ -5586,6 +6197,7 @@ export type TenantCreateWithoutReportCardsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutReportCardsInput = {
@@ -5614,6 +6226,7 @@ export type TenantUncheckedCreateWithoutReportCardsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
@@ -5624,6 +6237,7 @@ export type TenantUncheckedCreateWithoutReportCardsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutReportCardsInput = {
@@ -5668,6 +6282,7 @@ export type TenantUpdateWithoutReportCardsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
@@ -5678,6 +6293,7 @@ export type TenantUpdateWithoutReportCardsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutReportCardsInput = {
@@ -5706,6 +6322,7 @@ export type TenantUncheckedUpdateWithoutReportCardsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
@@ -5716,6 +6333,7 @@ export type TenantUncheckedUpdateWithoutReportCardsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutReportCardSubjectsInput = {
@@ -5744,6 +6362,7 @@ export type TenantCreateWithoutReportCardSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput
@@ -5754,6 +6373,7 @@ export type TenantCreateWithoutReportCardSubjectsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutReportCardSubjectsInput = {
@@ -5782,6 +6402,7 @@ export type TenantUncheckedCreateWithoutReportCardSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput
@@ -5792,6 +6413,7 @@ export type TenantUncheckedCreateWithoutReportCardSubjectsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutReportCardSubjectsInput = {
@@ -5836,6 +6458,7 @@ export type TenantUpdateWithoutReportCardSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput
@@ -5846,6 +6469,7 @@ export type TenantUpdateWithoutReportCardSubjectsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutReportCardSubjectsInput = {
@@ -5874,6 +6498,7 @@ export type TenantUncheckedUpdateWithoutReportCardSubjectsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput
@@ -5884,6 +6509,7 @@ export type TenantUncheckedUpdateWithoutReportCardSubjectsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAuditLogsInput = {
@@ -5912,6 +6538,7 @@ export type TenantCreateWithoutAuditLogsInput = {
   assessmentComponents?: Prisma.AssessmentComponentCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectCreateNestedManyWithoutTenantInput
@@ -5922,6 +6549,7 @@ export type TenantCreateWithoutAuditLogsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAuditLogsInput = {
@@ -5950,6 +6578,7 @@ export type TenantUncheckedCreateWithoutAuditLogsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedCreateNestedManyWithoutTenantInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedCreateNestedManyWithoutTenantInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedCreateNestedManyWithoutTenantInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedCreateNestedManyWithoutTenantInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedCreateNestedManyWithoutTenantInput
   reportCards?: Prisma.ReportCardUncheckedCreateNestedManyWithoutTenantInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedCreateNestedManyWithoutTenantInput
@@ -5960,6 +6589,7 @@ export type TenantUncheckedCreateWithoutAuditLogsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedCreateNestedManyWithoutTenantInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedCreateNestedManyWithoutTenantInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedCreateNestedManyWithoutTenantInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAuditLogsInput = {
@@ -6004,6 +6634,7 @@ export type TenantUpdateWithoutAuditLogsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUpdateManyWithoutTenantNestedInput
@@ -6014,6 +6645,7 @@ export type TenantUpdateWithoutAuditLogsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAuditLogsInput = {
@@ -6042,6 +6674,7 @@ export type TenantUncheckedUpdateWithoutAuditLogsInput = {
   assessmentComponents?: Prisma.AssessmentComponentUncheckedUpdateManyWithoutTenantNestedInput
   assessmentTypeWeights?: Prisma.AssessmentTypeWeightUncheckedUpdateManyWithoutTenantNestedInput
   assessmentScores?: Prisma.AssessmentScoreUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentSubmissions?: Prisma.AssessmentSubmissionUncheckedUpdateManyWithoutTenantNestedInput
   tenantAssessmentTypes?: Prisma.TenantAssessmentTypeUncheckedUpdateManyWithoutTenantNestedInput
   reportCards?: Prisma.ReportCardUncheckedUpdateManyWithoutTenantNestedInput
   reportCardSubjects?: Prisma.ReportCardSubjectUncheckedUpdateManyWithoutTenantNestedInput
@@ -6052,6 +6685,7 @@ export type TenantUncheckedUpdateWithoutAuditLogsInput = {
   teacherProfileFieldValues?: Prisma.TeacherProfileFieldValueUncheckedUpdateManyWithoutTenantNestedInput
   tenantConfigurations?: Prisma.TenantConfigurationUncheckedUpdateManyWithoutTenantNestedInput
   teacherSubjects?: Prisma.TeacherSubjectUncheckedUpdateManyWithoutTenantNestedInput
+  assessmentScoreChangeRequests?: Prisma.AssessmentScoreChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 
@@ -6078,6 +6712,7 @@ export type TenantCountOutputType = {
   assessmentComponents: number
   assessmentTypeWeights: number
   assessmentScores: number
+  assessmentSubmissions: number
   tenantAssessmentTypes: number
   reportCards: number
   reportCardSubjects: number
@@ -6089,6 +6724,7 @@ export type TenantCountOutputType = {
   teacherProfileFieldValues: number
   tenantConfigurations: number
   teacherSubjects: number
+  assessmentScoreChangeRequests: number
 }
 
 export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -6110,6 +6746,7 @@ export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   assessmentComponents?: boolean | TenantCountOutputTypeCountAssessmentComponentsArgs
   assessmentTypeWeights?: boolean | TenantCountOutputTypeCountAssessmentTypeWeightsArgs
   assessmentScores?: boolean | TenantCountOutputTypeCountAssessmentScoresArgs
+  assessmentSubmissions?: boolean | TenantCountOutputTypeCountAssessmentSubmissionsArgs
   tenantAssessmentTypes?: boolean | TenantCountOutputTypeCountTenantAssessmentTypesArgs
   reportCards?: boolean | TenantCountOutputTypeCountReportCardsArgs
   reportCardSubjects?: boolean | TenantCountOutputTypeCountReportCardSubjectsArgs
@@ -6121,6 +6758,7 @@ export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   teacherProfileFieldValues?: boolean | TenantCountOutputTypeCountTeacherProfileFieldValuesArgs
   tenantConfigurations?: boolean | TenantCountOutputTypeCountTenantConfigurationsArgs
   teacherSubjects?: boolean | TenantCountOutputTypeCountTeacherSubjectsArgs
+  assessmentScoreChangeRequests?: boolean | TenantCountOutputTypeCountAssessmentScoreChangeRequestsArgs
 }
 
 /**
@@ -6262,6 +6900,13 @@ export type TenantCountOutputTypeCountAssessmentScoresArgs<ExtArgs extends runti
 /**
  * TenantCountOutputType without action
  */
+export type TenantCountOutputTypeCountAssessmentSubmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AssessmentSubmissionWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
 export type TenantCountOutputTypeCountTenantAssessmentTypesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.TenantAssessmentTypeWhereInput
 }
@@ -6336,6 +6981,13 @@ export type TenantCountOutputTypeCountTeacherSubjectsArgs<ExtArgs extends runtim
   where?: Prisma.TeacherSubjectWhereInput
 }
 
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountAssessmentScoreChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AssessmentScoreChangeRequestWhereInput
+}
+
 
 export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -6364,6 +7016,7 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   assessmentComponents?: boolean | Prisma.Tenant$assessmentComponentsArgs<ExtArgs>
   assessmentTypeWeights?: boolean | Prisma.Tenant$assessmentTypeWeightsArgs<ExtArgs>
   assessmentScores?: boolean | Prisma.Tenant$assessmentScoresArgs<ExtArgs>
+  assessmentSubmissions?: boolean | Prisma.Tenant$assessmentSubmissionsArgs<ExtArgs>
   tenantAssessmentTypes?: boolean | Prisma.Tenant$tenantAssessmentTypesArgs<ExtArgs>
   reportCards?: boolean | Prisma.Tenant$reportCardsArgs<ExtArgs>
   reportCardSubjects?: boolean | Prisma.Tenant$reportCardSubjectsArgs<ExtArgs>
@@ -6375,6 +7028,7 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   teacherProfileFieldValues?: boolean | Prisma.Tenant$teacherProfileFieldValuesArgs<ExtArgs>
   tenantConfigurations?: boolean | Prisma.Tenant$tenantConfigurationsArgs<ExtArgs>
   teacherSubjects?: boolean | Prisma.Tenant$teacherSubjectsArgs<ExtArgs>
+  assessmentScoreChangeRequests?: boolean | Prisma.Tenant$assessmentScoreChangeRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
@@ -6431,6 +7085,7 @@ export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   assessmentComponents?: boolean | Prisma.Tenant$assessmentComponentsArgs<ExtArgs>
   assessmentTypeWeights?: boolean | Prisma.Tenant$assessmentTypeWeightsArgs<ExtArgs>
   assessmentScores?: boolean | Prisma.Tenant$assessmentScoresArgs<ExtArgs>
+  assessmentSubmissions?: boolean | Prisma.Tenant$assessmentSubmissionsArgs<ExtArgs>
   tenantAssessmentTypes?: boolean | Prisma.Tenant$tenantAssessmentTypesArgs<ExtArgs>
   reportCards?: boolean | Prisma.Tenant$reportCardsArgs<ExtArgs>
   reportCardSubjects?: boolean | Prisma.Tenant$reportCardSubjectsArgs<ExtArgs>
@@ -6442,6 +7097,7 @@ export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   teacherProfileFieldValues?: boolean | Prisma.Tenant$teacherProfileFieldValuesArgs<ExtArgs>
   tenantConfigurations?: boolean | Prisma.Tenant$tenantConfigurationsArgs<ExtArgs>
   teacherSubjects?: boolean | Prisma.Tenant$teacherSubjectsArgs<ExtArgs>
+  assessmentScoreChangeRequests?: boolean | Prisma.Tenant$assessmentScoreChangeRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TenantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -6473,6 +7129,7 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     assessmentComponents: Prisma.$AssessmentComponentPayload<ExtArgs>[]
     assessmentTypeWeights: Prisma.$AssessmentTypeWeightPayload<ExtArgs>[]
     assessmentScores: Prisma.$AssessmentScorePayload<ExtArgs>[]
+    assessmentSubmissions: Prisma.$AssessmentSubmissionPayload<ExtArgs>[]
     tenantAssessmentTypes: Prisma.$TenantAssessmentTypePayload<ExtArgs>[]
     reportCards: Prisma.$ReportCardPayload<ExtArgs>[]
     reportCardSubjects: Prisma.$ReportCardSubjectPayload<ExtArgs>[]
@@ -6484,6 +7141,7 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     teacherProfileFieldValues: Prisma.$TeacherProfileFieldValuePayload<ExtArgs>[]
     tenantConfigurations: Prisma.$TenantConfigurationPayload<ExtArgs>[]
     teacherSubjects: Prisma.$TeacherSubjectPayload<ExtArgs>[]
+    assessmentScoreChangeRequests: Prisma.$AssessmentScoreChangeRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -6906,6 +7564,7 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
   assessmentComponents<T extends Prisma.Tenant$assessmentComponentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$assessmentComponentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentComponentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assessmentTypeWeights<T extends Prisma.Tenant$assessmentTypeWeightsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$assessmentTypeWeightsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentTypeWeightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assessmentScores<T extends Prisma.Tenant$assessmentScoresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$assessmentScoresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assessmentSubmissions<T extends Prisma.Tenant$assessmentSubmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$assessmentSubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tenantAssessmentTypes<T extends Prisma.Tenant$tenantAssessmentTypesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$tenantAssessmentTypesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantAssessmentTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reportCards<T extends Prisma.Tenant$reportCardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$reportCardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportCardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reportCardSubjects<T extends Prisma.Tenant$reportCardSubjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$reportCardSubjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportCardSubjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -6917,6 +7576,7 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
   teacherProfileFieldValues<T extends Prisma.Tenant$teacherProfileFieldValuesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$teacherProfileFieldValuesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherProfileFieldValuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tenantConfigurations<T extends Prisma.Tenant$tenantConfigurationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$tenantConfigurationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantConfigurationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   teacherSubjects<T extends Prisma.Tenant$teacherSubjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$teacherSubjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherSubjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assessmentScoreChangeRequests<T extends Prisma.Tenant$assessmentScoreChangeRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$assessmentScoreChangeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssessmentScoreChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7800,6 +8460,30 @@ export type Tenant$assessmentScoresArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
+ * Tenant.assessmentSubmissions
+ */
+export type Tenant$assessmentSubmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssessmentSubmission
+   */
+  select?: Prisma.AssessmentSubmissionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AssessmentSubmission
+   */
+  omit?: Prisma.AssessmentSubmissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AssessmentSubmissionInclude<ExtArgs> | null
+  where?: Prisma.AssessmentSubmissionWhereInput
+  orderBy?: Prisma.AssessmentSubmissionOrderByWithRelationInput | Prisma.AssessmentSubmissionOrderByWithRelationInput[]
+  cursor?: Prisma.AssessmentSubmissionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AssessmentSubmissionScalarFieldEnum | Prisma.AssessmentSubmissionScalarFieldEnum[]
+}
+
+/**
  * Tenant.tenantAssessmentTypes
  */
 export type Tenant$tenantAssessmentTypesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -8061,6 +8745,30 @@ export type Tenant$teacherSubjectsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.TeacherSubjectScalarFieldEnum | Prisma.TeacherSubjectScalarFieldEnum[]
+}
+
+/**
+ * Tenant.assessmentScoreChangeRequests
+ */
+export type Tenant$assessmentScoreChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssessmentScoreChangeRequest
+   */
+  select?: Prisma.AssessmentScoreChangeRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AssessmentScoreChangeRequest
+   */
+  omit?: Prisma.AssessmentScoreChangeRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AssessmentScoreChangeRequestInclude<ExtArgs> | null
+  where?: Prisma.AssessmentScoreChangeRequestWhereInput
+  orderBy?: Prisma.AssessmentScoreChangeRequestOrderByWithRelationInput | Prisma.AssessmentScoreChangeRequestOrderByWithRelationInput[]
+  cursor?: Prisma.AssessmentScoreChangeRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AssessmentScoreChangeRequestScalarFieldEnum | Prisma.AssessmentScoreChangeRequestScalarFieldEnum[]
 }
 
 /**

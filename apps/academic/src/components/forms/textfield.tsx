@@ -18,7 +18,7 @@ export function TextField({
   pattern,
   lang,
 }: {
-  label: string;
+  label?: string;
   placeholder?: string;
   type?: string;
   id?: string;
@@ -36,9 +36,11 @@ export function TextField({
 
   return (
     <div>
-      <Label htmlFor={inputId} className="mb-2 text-sm font-medium">
-        {label}
-      </Label>
+      {label ? (
+        <Label htmlFor={inputId} className="mb-2 text-sm font-medium">
+          {label}
+        </Label>
+      ) : null}
       <Input
         id={inputId}
         type={type}

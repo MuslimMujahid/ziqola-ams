@@ -411,6 +411,8 @@ export const ModelName = {
   AssessmentComponent: 'AssessmentComponent',
   AssessmentTypeWeight: 'AssessmentTypeWeight',
   AssessmentScore: 'AssessmentScore',
+  AssessmentSubmission: 'AssessmentSubmission',
+  AssessmentScoreChangeRequest: 'AssessmentScoreChangeRequest',
   ReportCard: 'ReportCard',
   ReportCardSubject: 'ReportCardSubject',
   AuditLog: 'AuditLog'
@@ -429,7 +431,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "tenant" | "tenantAssessmentType" | "tenantConfiguration" | "user" | "teacherProfile" | "studentProfile" | "tenantProfileField" | "studentProfileFieldValue" | "teacherProfileFieldValue" | "academicYear" | "academicPeriod" | "class" | "homeroomAssignment" | "group" | "classGroup" | "classEnrollment" | "subject" | "classSubject" | "teacherSubject" | "schedule" | "session" | "sessionMaterial" | "sessionMaterialAttachment" | "attendance" | "assessmentComponent" | "assessmentTypeWeight" | "assessmentScore" | "reportCard" | "reportCardSubject" | "auditLog"
+    modelProps: "tenant" | "tenantAssessmentType" | "tenantConfiguration" | "user" | "teacherProfile" | "studentProfile" | "tenantProfileField" | "studentProfileFieldValue" | "teacherProfileFieldValue" | "academicYear" | "academicPeriod" | "class" | "homeroomAssignment" | "group" | "classGroup" | "classEnrollment" | "subject" | "classSubject" | "teacherSubject" | "schedule" | "session" | "sessionMaterial" | "sessionMaterialAttachment" | "attendance" | "assessmentComponent" | "assessmentTypeWeight" | "assessmentScore" | "assessmentSubmission" | "assessmentScoreChangeRequest" | "reportCard" | "reportCardSubject" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2431,6 +2433,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AssessmentSubmission: {
+      payload: Prisma.$AssessmentSubmissionPayload<ExtArgs>
+      fields: Prisma.AssessmentSubmissionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AssessmentSubmissionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentSubmissionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AssessmentSubmissionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentSubmissionPayload>
+        }
+        findFirst: {
+          args: Prisma.AssessmentSubmissionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentSubmissionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AssessmentSubmissionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentSubmissionPayload>
+        }
+        findMany: {
+          args: Prisma.AssessmentSubmissionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentSubmissionPayload>[]
+        }
+        create: {
+          args: Prisma.AssessmentSubmissionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentSubmissionPayload>
+        }
+        createMany: {
+          args: Prisma.AssessmentSubmissionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AssessmentSubmissionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentSubmissionPayload>[]
+        }
+        delete: {
+          args: Prisma.AssessmentSubmissionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentSubmissionPayload>
+        }
+        update: {
+          args: Prisma.AssessmentSubmissionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentSubmissionPayload>
+        }
+        deleteMany: {
+          args: Prisma.AssessmentSubmissionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AssessmentSubmissionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AssessmentSubmissionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentSubmissionPayload>[]
+        }
+        upsert: {
+          args: Prisma.AssessmentSubmissionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentSubmissionPayload>
+        }
+        aggregate: {
+          args: Prisma.AssessmentSubmissionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAssessmentSubmission>
+        }
+        groupBy: {
+          args: Prisma.AssessmentSubmissionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AssessmentSubmissionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AssessmentSubmissionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AssessmentSubmissionCountAggregateOutputType> | number
+        }
+      }
+    }
+    AssessmentScoreChangeRequest: {
+      payload: Prisma.$AssessmentScoreChangeRequestPayload<ExtArgs>
+      fields: Prisma.AssessmentScoreChangeRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AssessmentScoreChangeRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentScoreChangeRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AssessmentScoreChangeRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentScoreChangeRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.AssessmentScoreChangeRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentScoreChangeRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AssessmentScoreChangeRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentScoreChangeRequestPayload>
+        }
+        findMany: {
+          args: Prisma.AssessmentScoreChangeRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentScoreChangeRequestPayload>[]
+        }
+        create: {
+          args: Prisma.AssessmentScoreChangeRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentScoreChangeRequestPayload>
+        }
+        createMany: {
+          args: Prisma.AssessmentScoreChangeRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AssessmentScoreChangeRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentScoreChangeRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.AssessmentScoreChangeRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentScoreChangeRequestPayload>
+        }
+        update: {
+          args: Prisma.AssessmentScoreChangeRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentScoreChangeRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.AssessmentScoreChangeRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AssessmentScoreChangeRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AssessmentScoreChangeRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentScoreChangeRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.AssessmentScoreChangeRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssessmentScoreChangeRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.AssessmentScoreChangeRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAssessmentScoreChangeRequest>
+        }
+        groupBy: {
+          args: Prisma.AssessmentScoreChangeRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AssessmentScoreChangeRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AssessmentScoreChangeRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AssessmentScoreChangeRequestCountAggregateOutputType> | number
+        }
+      }
+    }
     ReportCard: {
       payload: Prisma.$ReportCardPayload<ExtArgs>
       fields: Prisma.ReportCardFieldRefs
@@ -2957,6 +3107,7 @@ export const ClassSubjectScalarFieldEnum = {
   academicYearId: 'academicYearId',
   subjectId: 'subjectId',
   teacherProfileId: 'teacherProfileId',
+  kkm: 'kkm',
   isDeleted: 'isDeleted',
   deletedAt: 'deletedAt',
   createdAt: 'createdAt',
@@ -3096,6 +3247,40 @@ export const AssessmentScoreScalarFieldEnum = {
 } as const
 
 export type AssessmentScoreScalarFieldEnum = (typeof AssessmentScoreScalarFieldEnum)[keyof typeof AssessmentScoreScalarFieldEnum]
+
+
+export const AssessmentSubmissionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  classSubjectId: 'classSubjectId',
+  academicPeriodId: 'academicPeriodId',
+  teacherProfileId: 'teacherProfileId',
+  status: 'status',
+  submittedAt: 'submittedAt',
+  returnedAt: 'returnedAt',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AssessmentSubmissionScalarFieldEnum = (typeof AssessmentSubmissionScalarFieldEnum)[keyof typeof AssessmentSubmissionScalarFieldEnum]
+
+
+export const AssessmentScoreChangeRequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  classSubjectId: 'classSubjectId',
+  academicPeriodId: 'academicPeriodId',
+  teacherProfileId: 'teacherProfileId',
+  status: 'status',
+  isActive: 'isActive',
+  requestedAt: 'requestedAt',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AssessmentScoreChangeRequestScalarFieldEnum = (typeof AssessmentScoreChangeRequestScalarFieldEnum)[keyof typeof AssessmentScoreChangeRequestScalarFieldEnum]
 
 
 export const ReportCardScalarFieldEnum = {
@@ -3572,6 +3757,8 @@ export type GlobalOmitConfig = {
   assessmentComponent?: Prisma.AssessmentComponentOmit
   assessmentTypeWeight?: Prisma.AssessmentTypeWeightOmit
   assessmentScore?: Prisma.AssessmentScoreOmit
+  assessmentSubmission?: Prisma.AssessmentSubmissionOmit
+  assessmentScoreChangeRequest?: Prisma.AssessmentScoreChangeRequestOmit
   reportCard?: Prisma.ReportCardOmit
   reportCardSubject?: Prisma.ReportCardSubjectOmit
   auditLog?: Prisma.AuditLogOmit

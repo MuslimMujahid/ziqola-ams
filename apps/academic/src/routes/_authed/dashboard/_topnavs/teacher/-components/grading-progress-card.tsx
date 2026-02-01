@@ -129,7 +129,7 @@ function getProgressColor(percent: number): string {
 }
 
 function getProgressLabel(percent: number): string {
-  if (percent === 100) return "Tuntas";
+  if (percent === 100) return "Tercapai";
   if (percent >= 75) return "Hampir selesai";
   if (percent >= 50) return "Dalam penilaian";
   return "Perlu dilengkapi";

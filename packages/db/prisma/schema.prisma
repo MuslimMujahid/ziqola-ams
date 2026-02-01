@@ -118,6 +118,7 @@ model Tenant {
   assessmentComponents AssessmentComponent[]
   assessmentTypeWeights AssessmentTypeWeight[]
   assessmentScores     AssessmentScore[]
+  assessmentSubmissions AssessmentSubmission[]
   tenantAssessmentTypes TenantAssessmentType[]
   reportCards          ReportCard[]
   reportCardSubjects   ReportCardSubject[]
@@ -127,8 +128,9 @@ model Tenant {
   tenantProfileFields  TenantProfileField[]
   studentProfileFieldValues StudentProfileFieldValue[]
   teacherProfileFieldValues TeacherProfileFieldValue[]
-  tenantConfigurations TenantConfiguration[]
+  tenantConfigurations TenantConfiguration[] 
   teacherSubjects      TeacherSubject[]
+  assessmentScoreChangeRequests AssessmentScoreChangeRequest[]
 
   createdAt            DateTime       @default(now())
   updatedAt            DateTime       @updatedAt
@@ -239,6 +241,8 @@ model TeacherProfile {
   homeroomAssignments HomeroomAssignment[] @relation("HomeroomAssignmentTeacherProfile")
   classSubjects       ClassSubject[]        @relation("ClassSubjectTeacherProfile")
   teacherSubjects      TeacherSubject[]
+  assessmentSubmissions AssessmentSubmission[]
+  assessmentScoreChangeRequests AssessmentScoreChangeRequest[]
   schedules          Schedule[]             @relation("ScheduleTeacherProfile")
   compiledReportCards ReportCard[]          @relation("ReportCardCompiledByProfile")
   sessionMaterials    SessionMaterial[]
@@ -407,6 +411,8 @@ model AcademicPeriod {
   assessments   AssessmentComponent[]
   assessmentTypeWeights AssessmentTypeWeight[]
   reportCards   ReportCard[]
+  assessmentSubmissions AssessmentSubmission[]
+  assessmentScoreChangeRequests AssessmentScoreChangeRequest[]
 
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -545,10 +551,13 @@ model ClassSubject {
   subject        Subject  @relation(fields: [subjectId], references: [id])
   teacherProfileId String
   teacherProfile   TeacherProfile @relation("ClassSubjectTeacherProfile", fields: [teacherProfileId], references: [id])
+  kkm            Int      @default(0)
 
   schedules      Schedule[]
   sessions       Session[]
   assessments    AssessmentComponent[]
+  assessmentSubmissions AssessmentSubmission[]
+  assessmentScoreChangeRequests AssessmentScoreChangeRequest[]
   reportCardSubjects ReportCardSubject[]
 
   isDeleted      Boolean @default(false)
@@ -760,6 +769,60 @@ model AssessmentScore {
 
   @@unique([componentId, studentProfileId])
   @@index([tenantId, studentProfileId])
+}
+
+model AssessmentSubmission {
+  id               String   @id @default(uuid())
+  tenantId         String
+  tenant           Tenant   @relation(fields: [tenantId], references: [id])
+
+  classSubjectId   String
+  classSubject     ClassSubject @relation(fields: [classSubjectId], references: [id])
+
+  academicPeriodId String
+  academicPeriod   AcademicPeriod @relation(fields: [academicPeriodId], references: [id])
+
+  teacherProfileId String
+  teacherProfile   TeacherProfile @relation(fields: [teacherProfileId], references: [id])
+
+  status           String   @default("submitted")
+  submittedAt      DateTime @default(now())
+  returnedAt       DateTime?
+  notes            String?
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([classSubjectId, academicPeriodId])
+  @@index([tenantId, classSubjectId, academicPeriodId])
+  @@index([tenantId, teacherProfileId])
+}
+
+model AssessmentScoreChangeRequest {
+  id               String   @id @default(uuid())
+  tenantId         String
+  tenant           Tenant   @relation(fields: [tenantId], references: [id])
+
+  classSubjectId   String
+  classSubject     ClassSubject @relation(fields: [classSubjectId], references: [id])
+
+  academicPeriodId String
+  academicPeriod   AcademicPeriod @relation(fields: [academicPeriodId], references: [id])
+
+  teacherProfileId String
+  teacherProfile   TeacherProfile @relation(fields: [teacherProfileId], references: [id])
+
+  status           String   @default("pending")
+  isActive         Boolean  @default(true)
+  requestedAt      DateTime @default(now())
+  resolvedAt       DateTime?
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([classSubjectId, academicPeriodId, isActive])
+  @@index([tenantId, classSubjectId, academicPeriodId])
+  @@index([tenantId, teacherProfileId])
 }
 
 // =============================
