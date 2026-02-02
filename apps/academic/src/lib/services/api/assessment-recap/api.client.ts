@@ -1,6 +1,13 @@
 import { clientApi } from "@/lib/services/api/api";
 
 import type {
+  DecideHomeroomAssessmentRecapChangeResponse,
+  DecideHomeroomAssessmentRecapChangeVars,
+  GetHomeroomAssessmentRecapResponse,
+  GetHomeroomAssessmentRecapVars,
+  GetHomeroomRecapDetailResponse,
+  GetHomeroomRecapDetailVars,
+  GetHomeroomRecapOptionsResponse,
   GetTeacherAssessmentRecapResponse,
   GetTeacherAssessmentRecapVars,
   RequestTeacherAssessmentRecapChangeResponse,
@@ -17,6 +24,30 @@ async function getTeacherAssessmentRecap(
   const response = await clientApi.get<GetTeacherAssessmentRecapResponse>(
     "/assessment-recap",
     { params },
+  );
+  return response.data.data;
+}
+
+async function getHomeroomAssessmentRecaps(
+  params?: GetHomeroomAssessmentRecapVars,
+) {
+  const response = await clientApi.get<GetHomeroomAssessmentRecapResponse>(
+    "/assessment-recap/homeroom",
+    { params },
+  );
+  return response.data.data;
+}
+
+async function getHomeroomRecapOptions() {
+  const response = await clientApi.get<GetHomeroomRecapOptionsResponse>(
+    "/assessment-recap/homeroom/options",
+  );
+  return response.data.data;
+}
+
+async function getHomeroomRecapDetail(vars: GetHomeroomRecapDetailVars) {
+  const response = await clientApi.get<GetHomeroomRecapDetailResponse>(
+    `/assessment-recap/homeroom/${vars.submissionId}`,
   );
   return response.data.data;
 }
@@ -53,9 +84,25 @@ async function requestTeacherAssessmentRecapChange(
   return response.data.data;
 }
 
+async function decideHomeroomAssessmentRecapChange(
+  vars: DecideHomeroomAssessmentRecapChangeVars,
+) {
+  const { requestId, ...payload } = vars;
+  const response =
+    await clientApi.post<DecideHomeroomAssessmentRecapChangeResponse>(
+      `/assessment-recap/change-requests/${requestId}/decision`,
+      payload,
+    );
+  return response.data.data;
+}
+
 export {
   getTeacherAssessmentRecap,
+  getHomeroomAssessmentRecaps,
+  getHomeroomRecapOptions,
+  getHomeroomRecapDetail,
   submitTeacherAssessmentRecap,
   updateTeacherAssessmentRecapKkm,
   requestTeacherAssessmentRecapChange,
+  decideHomeroomAssessmentRecapChange,
 };

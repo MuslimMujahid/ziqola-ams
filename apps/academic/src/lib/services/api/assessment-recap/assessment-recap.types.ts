@@ -84,6 +84,91 @@ type AssessmentRecapChangeRequest = {
   teacherProfileId: string;
 };
 
+type HomeroomRecapSubmission = {
+  id: string;
+  status: "submitted" | "returned" | "resubmitted";
+  submittedAt: string;
+  returnedAt: string | null;
+  teacherProfileId: string;
+};
+
+type HomeroomRecapChangeRequest = {
+  id: string;
+  status: "pending" | "approved" | "rejected";
+  requestedAt: string;
+  resolvedAt: string | null;
+  isActive: boolean;
+};
+
+type HomeroomAssessmentRecapItem = {
+  submissionId: string;
+  classSubjectId: string;
+  classId: string;
+  className: string;
+  subjectId: string;
+  subjectName: string;
+  periodId: string;
+  periodName: string;
+  academicYearLabel: string;
+  submission: HomeroomRecapSubmission;
+  submittingTeacher: {
+    id: string;
+    name: string;
+  };
+  changeRequest: HomeroomRecapChangeRequest | null;
+};
+
+type HomeroomAssessmentRecapList = {
+  activePeriodId: string | null;
+  items: HomeroomAssessmentRecapItem[];
+};
+
+type HomeroomRecapOptionClass = {
+  id: string;
+  name: string;
+};
+
+type HomeroomRecapOptionSubmission = {
+  submissionId: string;
+  classId: string;
+  className: string;
+  subjectId: string;
+  subjectName: string;
+  teacherProfileId: string;
+  teacherName: string;
+  status: "submitted" | "returned" | "resubmitted";
+  submittedAt: string;
+  changeRequest: HomeroomRecapChangeRequest | null;
+};
+
+type HomeroomRecapOptions = {
+  activePeriodId: string | null;
+  classes: HomeroomRecapOptionClass[];
+  submissions: HomeroomRecapOptionSubmission[];
+};
+
+type HomeroomRecapDetail = {
+  submissionId: string;
+  classSubjectId: string;
+  classId: string;
+  className: string;
+  subjectId: string;
+  subjectName: string;
+  periodId: string;
+  periodName: string;
+  academicYearLabel: string;
+  classKkm: number;
+  assessmentTypes: AssessmentRecapAssessmentType[];
+  students: AssessmentRecapStudent[];
+  summary: AssessmentRecapSummary;
+  submission: HomeroomRecapSubmission;
+  submittingTeacher: {
+    id: string;
+    name: string;
+  };
+  changeRequest: HomeroomRecapChangeRequest | null;
+};
+
 type TeacherAssessmentRecap = {
   activePeriodId: string | null;
   periods: AssessmentRecapPeriod[];
@@ -136,6 +221,39 @@ type RequestTeacherAssessmentRecapChangeVars = {
 type RequestTeacherAssessmentRecapChangeResponse =
   ApiResponse<AssessmentRecapChangeRequest>;
 
+type GetHomeroomAssessmentRecapVars = {
+  periodId?: string;
+  classId?: string;
+  status?: "submitted" | "returned" | "resubmitted";
+  changeRequestStatus?: "pending" | "approved" | "rejected";
+};
+
+type GetHomeroomAssessmentRecapResponse =
+  ApiResponse<HomeroomAssessmentRecapList>;
+
+type GetHomeroomRecapOptionsResponse = ApiResponse<HomeroomRecapOptions>;
+
+type GetHomeroomRecapDetailVars = {
+  submissionId: string;
+};
+
+type GetHomeroomRecapDetailResponse = ApiResponse<HomeroomRecapDetail>;
+
+type DecideHomeroomAssessmentRecapChangeVars = {
+  requestId: string;
+  decision: "approved" | "rejected";
+  note?: string;
+};
+
+type DecideHomeroomAssessmentRecapChangeResponse = ApiResponse<{
+  id: string;
+  status: string;
+  requestedAt: string;
+  resolvedAt: string | null;
+  classSubjectId: string;
+  academicPeriodId: string;
+}>;
+
 export type {
   AssessmentRecapPeriod,
   AssessmentRecapClass,
@@ -148,6 +266,14 @@ export type {
   AssessmentRecapReadiness,
   AssessmentRecapSubmission,
   AssessmentRecapChangeRequest,
+  HomeroomRecapSubmission,
+  HomeroomRecapChangeRequest,
+  HomeroomAssessmentRecapItem,
+  HomeroomAssessmentRecapList,
+  HomeroomRecapOptionClass,
+  HomeroomRecapOptionSubmission,
+  HomeroomRecapOptions,
+  HomeroomRecapDetail,
   TeacherAssessmentRecap,
   GetTeacherAssessmentRecapResponse,
   GetTeacherAssessmentRecapVars,
@@ -157,4 +283,11 @@ export type {
   UpdateTeacherAssessmentRecapKkmResponse,
   RequestTeacherAssessmentRecapChangeVars,
   RequestTeacherAssessmentRecapChangeResponse,
+  GetHomeroomAssessmentRecapVars,
+  GetHomeroomAssessmentRecapResponse,
+  GetHomeroomRecapOptionsResponse,
+  GetHomeroomRecapDetailVars,
+  GetHomeroomRecapDetailResponse,
+  DecideHomeroomAssessmentRecapChangeVars,
+  DecideHomeroomAssessmentRecapChangeResponse,
 };

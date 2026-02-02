@@ -17,6 +17,7 @@ import {
   MenuIcon,
   SearchIcon,
   SettingsIcon,
+  UserCheckIcon,
   UsersIcon,
   XIcon,
 } from "lucide-react";
@@ -25,8 +26,10 @@ import { Button } from "@repo/ui/button";
 import { Input } from "@repo/ui/input";
 import { cn } from "@/lib/utils";
 import { getRoleLabel } from "@/lib/utils/auth";
+import { useAcademicContext } from "@/lib/services/api/academic";
 import { useLogout } from "@/lib/services/api/auth/use-logout";
 import { useAuthStore } from "@/stores/auth.store";
+import { AcademicPeriodBadge } from "@/routes/_authed/dashboard/_topnavs/teacher/-components";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -85,35 +88,51 @@ const STUDENT_NAV_ITEMS: TopnavNavItem[] = [
   { label: "Kelas", to: "/dashboard/student/classes", icon: BookOpenIcon },
 ];
 
-const TEACHER_NAV_ITEMS: TopnavNavItem[] = [
-  { label: "Beranda", to: "/dashboard/teacher", icon: HomeIcon },
-  {
-    label: "Jadwal",
-    to: "/dashboard/teacher/schedule",
-    icon: CalendarIcon,
-  },
-  {
-    label: "Kelas Saya",
-    to: "/dashboard/teacher/classes",
-    icon: UsersIcon,
-    subItems: [
-      { label: "Daftar Kelas", to: "/dashboard/teacher/classes" },
-      { label: "Kehadiran Siswa", to: "/dashboard/teacher/classes/attendance" },
-    ],
-  },
-  {
-    label: "Penilaian",
-    to: "/dashboard/teacher/assessments",
-    icon: ClipboardListIcon,
-    subItems: [
-      {
-        label: "Kelola Nilai",
-        to: "/dashboard/teacher/assessments",
-      },
-      { label: "Rekap Nilai", to: "/dashboard/teacher/recap" },
-    ],
-  },
-];
+const getTeacherNavItems = (isHomeroomTeacher: boolean): TopnavNavItem[] => {
+  const navItems: TopnavNavItem[] = [
+    { label: "Beranda", to: "/dashboard/teacher", icon: HomeIcon },
+    {
+      label: "Jadwal",
+      to: "/dashboard/teacher/schedule",
+      icon: CalendarIcon,
+    },
+    {
+      label: "Kelas Saya",
+      to: "/dashboard/teacher/classes",
+      icon: UsersIcon,
+      subItems: [
+        { label: "Daftar Kelas", to: "/dashboard/teacher/classes" },
+        {
+          label: "Kehadiran Siswa",
+          to: "/dashboard/teacher/classes/attendance",
+        },
+      ],
+    },
+    {
+      label: "Penilaian",
+      to: "/dashboard/teacher/assessments",
+      icon: ClipboardListIcon,
+      subItems: [
+        {
+          label: "Kelola Nilai",
+          to: "/dashboard/teacher/assessments",
+        },
+        { label: "Rekap Nilai", to: "/dashboard/teacher/recap" },
+      ],
+    },
+  ];
+
+  if (isHomeroomTeacher) {
+    navItems.push({
+      label: "Wali Kelas",
+      to: "/dashboard/teacher/compile",
+      icon: UserCheckIcon,
+      subItems: [{ label: "Rekapan Nilai", to: "/dashboard/teacher/compile" }],
+    });
+  }
+
+  return navItems;
+};
 
 const PRINCIPAL_NAV_ITEMS: TopnavNavItem[] = [
   { label: "Beranda", to: "/dashboard/principal", icon: HomeIcon },
@@ -177,7 +196,7 @@ const TOPNAV_CONFIGS: Record<TopnavId, TopnavConfig> = {
     title: "Guru",
     description: "Kelola jadwal mengajar dan penilaian siswa",
     homeTo: "/dashboard/teacher",
-    navItems: TEACHER_NAV_ITEMS,
+    navItems: getTeacherNavItems(false),
   },
   principal: {
     id: "principal",
@@ -200,6 +219,7 @@ export const Route = createFileRoute("/_authed/dashboard/_topnavs")({
 
 function TopnavLayoutRoute() {
   const matches = useMatches();
+  const user = useAuthStore((state) => state.user);
 
   const topnavId = React.useMemo(() => {
     for (const match of [...matches].reverse()) {
@@ -209,7 +229,19 @@ function TopnavLayoutRoute() {
     return DEFAULT_TOPNAV_ID;
   }, [matches]);
 
-  const config = TOPNAV_CONFIGS[topnavId] ?? TOPNAV_CONFIGS[DEFAULT_TOPNAV_ID];
+  const config = React.useMemo(() => {
+    const baseConfig =
+      TOPNAV_CONFIGS[topnavId] ?? TOPNAV_CONFIGS[DEFAULT_TOPNAV_ID];
+
+    if (topnavId === "teacher") {
+      return {
+        ...baseConfig,
+        navItems: getTeacherNavItems(Boolean(user?.isHomeroomTeacher)),
+      };
+    }
+
+    return baseConfig;
+  }, [topnavId, user?.isHomeroomTeacher]);
 
   return <TopnavLayout config={config} />;
 }
@@ -235,6 +267,7 @@ function TopnavLayout({ config }: TopnavLayoutProps) {
 
   const user = useAuthStore((state) => state.user);
   const logoutMutation = useLogout();
+  const academicContextQuery = useAcademicContext();
 
   const notificationMenuRef = React.useRef<HTMLDivElement | null>(null);
   const profileMenuRef = React.useRef<HTMLDivElement | null>(null);
@@ -254,6 +287,9 @@ function TopnavLayout({ config }: TopnavLayoutProps) {
   const userDisplayName = user?.name ?? "Pengguna";
   const userEmail = user?.email ?? "";
   const userRoleLabel = user?.role ? getRoleLabel(user.role) : config.title;
+  const academicPeriodName = academicContextQuery.data?.period?.name ?? null;
+  const academicYearLabel = academicContextQuery.data?.year?.label ?? null;
+  const isAcademicPeriodLoading = academicContextQuery.isLoading;
 
   const toggleMobileItem = (label: string) => {
     setExpandedMobileItems((prev) => ({
@@ -319,12 +355,21 @@ function TopnavLayout({ config }: TopnavLayoutProps) {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-14 items-center justify-between gap-4">
               {/* Left: Brand */}
-              <Link to={config.homeTo} className="flex items-center gap-2">
-                <span className="text-lg font-bold text-primary">Ziqola</span>
-                <span className="hidden text-xs font-medium text-ink-muted sm:inline-block">
-                  / {config.title}
-                </span>
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link to={config.homeTo} className="flex items-center gap-2">
+                  <span className="text-lg font-bold text-primary">Ziqola</span>
+                  <span className="hidden text-xs font-medium text-ink-muted sm:inline-block">
+                    / {config.title}
+                  </span>
+                </Link>
+                <div className="hidden md:flex">
+                  <AcademicPeriodBadge
+                    periodName={academicPeriodName}
+                    academicYearLabel={academicYearLabel}
+                    isLoading={isAcademicPeriodLoading}
+                  />
+                </div>
+              </div>
 
               {/* Right: Search, Notifications, Profile */}
               <div className="flex items-center gap-2">
@@ -499,6 +544,16 @@ function TopnavLayout({ config }: TopnavLayoutProps) {
                 </Button>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div className="relative z-40 border-t border-border/30 bg-neutral-50/80 backdrop-blur-sm dark:bg-neutral-900/80 md:hidden">
+          <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
+            <AcademicPeriodBadge
+              periodName={academicPeriodName}
+              academicYearLabel={academicYearLabel}
+              isLoading={isAcademicPeriodLoading}
+            />
           </div>
         </div>
 

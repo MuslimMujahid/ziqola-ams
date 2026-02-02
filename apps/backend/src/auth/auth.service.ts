@@ -78,12 +78,19 @@ export class AuthService {
       user.email,
       user.role,
     );
+    const isHomeroomTeacher = await this.resolveHomeroomStatus(
+      user.tenantId,
+      user.id,
+      user.role,
+    );
+
     const safeUser = {
       id: user.id,
       tenantId: user.tenantId,
       email: user.email,
       name: user.name,
       role: user.role,
+      isHomeroomTeacher,
       gender: user.gender,
       dateOfBirth: user.dateOfBirth,
       phoneNumber: user.phoneNumber,
@@ -112,7 +119,16 @@ export class AuthService {
       throw new UnauthorizedException("Invalid session");
     }
 
-    return user;
+    const isHomeroomTeacher = await this.resolveHomeroomStatus(
+      user.tenantId,
+      user.id,
+      user.role,
+    );
+
+    return {
+      ...user,
+      isHomeroomTeacher,
+    };
   }
 
   async signToken(sub: string, tenantId: string, email: string, role: string) {
@@ -191,5 +207,56 @@ export class AuthService {
 
   private hashToken(token: string) {
     return crypto.createHash("sha256").update(token).digest("hex");
+  }
+
+  private async resolveHomeroomStatus(
+    tenantId: string,
+    userId: string,
+    role: string,
+  ) {
+    if (role !== "TEACHER") return false;
+
+    const teacherProfile = await this.prisma.client.teacherProfile.findFirst({
+      where: { tenantId, userId },
+      select: { id: true },
+    });
+
+    if (!teacherProfile) return false;
+
+    const tenant = await this.prisma.client.tenant.findFirst({
+      where: { id: tenantId },
+      select: { activeAcademicYearId: true },
+    });
+
+    const activeYear = tenant?.activeAcademicYearId
+      ? await this.prisma.client.academicYear.findFirst({
+          where: {
+            id: tenant.activeAcademicYearId,
+            tenantId,
+            deletedAt: null,
+          },
+          select: { id: true },
+        })
+      : await this.prisma.client.academicYear.findFirst({
+          where: { tenantId, deletedAt: null },
+          orderBy: { createdAt: "desc" },
+          select: { id: true },
+        });
+
+    if (!activeYear?.id) return false;
+
+    const now = new Date();
+    const assignment = await this.prisma.client.homeroomAssignment.findFirst({
+      where: {
+        tenantId,
+        teacherProfileId: teacherProfile.id,
+        academicYearId: activeYear.id,
+        isActive: true,
+        OR: [{ endedAt: null }, { endedAt: { gte: now } }],
+      },
+      select: { id: true },
+    });
+
+    return Boolean(assignment);
   }
 }

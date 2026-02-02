@@ -14,7 +14,6 @@ import { formatDateLongId } from "@/lib/utils/date";
 import { useAuthStore } from "@/stores/auth.store";
 import { TenantNewsCard, TenantScheduleCard } from "@/components/widgets";
 import {
-  AcademicPeriodBadge,
   MyClassesCard,
   PendingTasksCard,
   PersonalInfoCard,
@@ -280,13 +279,6 @@ function TeacherDashboardPage() {
             Kelola jadwal mengajar, kehadiran, dan penilaian siswa
           </p>
         </div>
-        <AcademicPeriodBadge
-          periodName={dashboardData?.academicPeriod?.name ?? null}
-          academicYearLabel={
-            dashboardData?.academicPeriod?.academicYearLabel ?? null
-          }
-          isLoading={isDashboardLoading}
-        />
       </div>
 
       {/* Top Row */}

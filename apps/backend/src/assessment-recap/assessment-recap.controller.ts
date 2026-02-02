@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Patch, Post, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+  Query,
+} from "@nestjs/common";
 import {
   Permission,
   RequirePermissions,
@@ -10,6 +19,8 @@ import {
 import { AssessmentRecapService } from "./assessment-recap.service";
 import {
   ListAssessmentRecapDto,
+  ListHomeroomAssessmentRecapDto,
+  DecideAssessmentRecapChangeDto,
   RequestAssessmentRecapChangeDto,
   SubmitAssessmentRecapDto,
   UpdateAssessmentRecapKkmDto,
@@ -34,6 +45,47 @@ export class AssessmentRecapController {
   ) {
     const data = await this.service.getTeacherRecap(user.tenantId, query, user);
     return successResponse(data, "Assessment recap retrieved", 200);
+  }
+
+  @Roles(Role.TEACHER)
+  @RequirePermissions(Permission.ASSESSMENT_READ)
+  @Get("homeroom")
+  async getHomeroomRecaps(
+    @Query() query: ListHomeroomAssessmentRecapDto,
+    @UserDecorator() user: JwtUser,
+  ) {
+    const data = await this.service.getHomeroomRecaps(
+      user.tenantId,
+      query,
+      user,
+    );
+    return successResponse(data, "Homeroom recap retrieved", 200);
+  }
+
+  @Roles(Role.TEACHER)
+  @RequirePermissions(Permission.ASSESSMENT_READ)
+  @Get("homeroom/options")
+  async getHomeroomRecapOptions(@UserDecorator() user: JwtUser) {
+    const data = await this.service.getHomeroomRecapOptions(
+      user.tenantId,
+      user,
+    );
+    return successResponse(data, "Homeroom recap options retrieved", 200);
+  }
+
+  @Roles(Role.TEACHER)
+  @RequirePermissions(Permission.ASSESSMENT_READ)
+  @Get("homeroom/:submissionId")
+  async getHomeroomRecapDetail(
+    @Param("submissionId", ParseUUIDPipe) submissionId: string,
+    @UserDecorator() user: JwtUser,
+  ) {
+    const data = await this.service.getHomeroomRecapDetail(
+      user.tenantId,
+      submissionId,
+      user,
+    );
+    return successResponse(data, "Homeroom recap detail retrieved", 200);
   }
 
   @Roles(Role.TEACHER)
@@ -64,6 +116,23 @@ export class AssessmentRecapController {
       user,
     );
     return successResponse(data, "Change request submitted", 200);
+  }
+
+  @Roles(Role.TEACHER)
+  @RequirePermissions(Permission.GRADE_UPDATE)
+  @Post("change-requests/:id/decision")
+  async decideChangeRequest(
+    @Param("id") id: string,
+    @Body() body: DecideAssessmentRecapChangeDto,
+    @UserDecorator() user: JwtUser,
+  ) {
+    const data = await this.service.decideHomeroomChangeRequest(
+      user.tenantId,
+      id,
+      body,
+      user,
+    );
+    return successResponse(data, "Change request decided", 200);
   }
 
   @Roles(Role.TEACHER)

@@ -10,6 +10,8 @@ import type { Prisma } from "@repo/db";
 import { PrismaService } from "../prisma/prisma.service";
 import {
   ListAssessmentRecapDto,
+  ListHomeroomAssessmentRecapDto,
+  DecideAssessmentRecapChangeDto,
   RequestAssessmentRecapChangeDto,
   UpdateAssessmentRecapKkmDto,
 } from "./dto";
@@ -20,8 +22,17 @@ const SUBMISSION_STATUS = {
   RESUBMITTED: "resubmitted",
 } as const;
 
+const CHANGE_REQUEST_STATUS = {
+  PENDING: "pending",
+  APPROVED: "approved",
+  REJECTED: "rejected",
+} as const;
+
 type SubmissionStatus =
   (typeof SUBMISSION_STATUS)[keyof typeof SUBMISSION_STATUS];
+
+type ChangeRequestStatus =
+  (typeof CHANGE_REQUEST_STATUS)[keyof typeof CHANGE_REQUEST_STATUS];
 
 type AssessmentRecapPeriod = {
   id: string;
@@ -105,6 +116,91 @@ type AssessmentRecapChangeRequest = {
   status: string;
   requestedAt: Date;
   teacherProfileId: string;
+};
+
+type HomeroomRecapSubmission = {
+  id: string;
+  status: SubmissionStatus;
+  submittedAt: Date;
+  returnedAt: Date | null;
+  teacherProfileId: string;
+};
+
+type HomeroomRecapChangeRequest = {
+  id: string;
+  status: ChangeRequestStatus;
+  requestedAt: Date;
+  resolvedAt: Date | null;
+  isActive: boolean;
+};
+
+type HomeroomAssessmentRecapItem = {
+  submissionId: string;
+  classSubjectId: string;
+  classId: string;
+  className: string;
+  subjectId: string;
+  subjectName: string;
+  periodId: string;
+  periodName: string;
+  academicYearLabel: string;
+  submission: HomeroomRecapSubmission;
+  submittingTeacher: {
+    id: string;
+    name: string;
+  };
+  changeRequest: HomeroomRecapChangeRequest | null;
+};
+
+type HomeroomAssessmentRecapList = {
+  activePeriodId: string | null;
+  items: HomeroomAssessmentRecapItem[];
+};
+
+type HomeroomRecapOptionClass = {
+  id: string;
+  name: string;
+};
+
+type HomeroomRecapOptionSubmission = {
+  submissionId: string;
+  classId: string;
+  className: string;
+  subjectId: string;
+  subjectName: string;
+  teacherProfileId: string;
+  teacherName: string;
+  status: SubmissionStatus;
+  submittedAt: Date;
+  changeRequest: HomeroomRecapChangeRequest | null;
+};
+
+type HomeroomRecapOptions = {
+  activePeriodId: string | null;
+  classes: HomeroomRecapOptionClass[];
+  submissions: HomeroomRecapOptionSubmission[];
+};
+
+type HomeroomRecapDetail = {
+  submissionId: string;
+  classSubjectId: string;
+  classId: string;
+  className: string;
+  subjectId: string;
+  subjectName: string;
+  periodId: string;
+  periodName: string;
+  academicYearLabel: string;
+  classKkm: number;
+  assessmentTypes: AssessmentRecapAssessmentType[];
+  students: AssessmentRecapStudent[];
+  summary: AssessmentRecapSummary;
+  submission: HomeroomRecapSubmission;
+  submittingTeacher: {
+    id: string;
+    name: string;
+  };
+  changeRequest: HomeroomRecapChangeRequest | null;
 };
 
 export type TeacherAssessmentRecap = {
@@ -1386,6 +1482,741 @@ export class AssessmentRecapService {
       requestedAt: created.requestedAt,
       teacherProfileId: created.teacherProfileId,
     };
+  }
+
+  async getHomeroomRecaps(
+    tenantId: string,
+    query: ListHomeroomAssessmentRecapDto,
+    actor: AssessmentActor,
+  ): Promise<HomeroomAssessmentRecapList> {
+    if (actor.role !== Role.TEACHER) {
+      throw new ForbiddenException("Only teachers can view homeroom recaps");
+    }
+
+    const teacherProfileId = await this.resolveTeacherProfileId(
+      tenantId,
+      actor.sub,
+    );
+
+    const tenant = await this.prisma.client.tenant.findFirst({
+      where: { id: tenantId },
+      select: { id: true, activeAcademicYearId: true },
+    });
+
+    const activeYear = tenant?.activeAcademicYearId
+      ? await this.prisma.client.academicYear.findFirst({
+          where: {
+            id: tenant.activeAcademicYearId,
+            tenantId,
+            deletedAt: null,
+          },
+          select: { id: true, activePeriodId: true },
+        })
+      : await this.prisma.client.academicYear.findFirst({
+          where: { tenantId, deletedAt: null },
+          orderBy: { createdAt: "desc" },
+          select: { id: true, activePeriodId: true },
+        });
+
+    const activePeriodId = activeYear?.activePeriodId ?? null;
+    const effectivePeriodId = query.periodId ?? activePeriodId ?? undefined;
+
+    let targetAcademicYearId = activeYear?.id ?? null;
+
+    if (query.periodId) {
+      const period = await this.prisma.client.academicPeriod.findFirst({
+        where: { tenantId, id: query.periodId },
+        select: { id: true, academicYearId: true },
+      });
+
+      if (!period) {
+        throw new NotFoundException("Academic period not found");
+      }
+
+      targetAcademicYearId = period.academicYearId;
+    }
+
+    const now = new Date();
+    const homeroomAssignments =
+      await this.prisma.client.homeroomAssignment.findMany({
+        where: {
+          tenantId,
+          teacherProfileId,
+          isActive: true,
+          ...(targetAcademicYearId
+            ? { academicYearId: targetAcademicYearId }
+            : {}),
+          OR: [{ endedAt: null }, { endedAt: { gte: now } }],
+        },
+        select: { classId: true },
+      });
+
+    if (homeroomAssignments.length === 0) {
+      return { activePeriodId, items: [] };
+    }
+
+    const homeroomClassIds = homeroomAssignments.map((item) => item.classId);
+
+    if (query.classId && !homeroomClassIds.includes(query.classId)) {
+      return { activePeriodId, items: [] };
+    }
+
+    const classSubjects = await this.prisma.client.classSubject.findMany({
+      where: {
+        tenantId,
+        isDeleted: false,
+        classId: query.classId ? query.classId : { in: homeroomClassIds },
+      },
+      select: {
+        id: true,
+        classId: true,
+        subjectId: true,
+        class: { select: { id: true, name: true } },
+        subject: { select: { id: true, name: true } },
+      },
+    });
+
+    if (classSubjects.length === 0) {
+      return { activePeriodId, items: [] };
+    }
+
+    const classSubjectIds = classSubjects.map((item) => item.id);
+
+    const submissions = await this.prisma.client.assessmentSubmission.findMany({
+      where: {
+        tenantId,
+        classSubjectId: { in: classSubjectIds },
+        ...(effectivePeriodId ? { academicPeriodId: effectivePeriodId } : {}),
+        ...(query.status ? { status: query.status } : {}),
+      },
+      select: {
+        id: true,
+        status: true,
+        submittedAt: true,
+        returnedAt: true,
+        classSubjectId: true,
+        academicPeriodId: true,
+        teacherProfileId: true,
+        classSubject: {
+          select: {
+            class: { select: { id: true, name: true } },
+            subject: { select: { id: true, name: true } },
+          },
+        },
+        academicPeriod: {
+          select: {
+            id: true,
+            name: true,
+            academicYear: { select: { label: true } },
+          },
+        },
+        teacherProfile: {
+          select: {
+            id: true,
+            user: { select: { id: true, name: true } },
+          },
+        },
+      },
+      orderBy: { submittedAt: "desc" },
+    });
+
+    if (submissions.length === 0) {
+      return { activePeriodId, items: [] };
+    }
+
+    const periodIds = Array.from(
+      new Set(submissions.map((item) => item.academicPeriodId)),
+    );
+
+    const changeRequests =
+      await this.prisma.client.assessmentScoreChangeRequest.findMany({
+        where: {
+          tenantId,
+          classSubjectId: { in: classSubjectIds },
+          academicPeriodId: { in: periodIds },
+        },
+        select: {
+          id: true,
+          classSubjectId: true,
+          academicPeriodId: true,
+          status: true,
+          requestedAt: true,
+          resolvedAt: true,
+          isActive: true,
+        },
+        orderBy: { requestedAt: "desc" },
+      });
+
+    const changeRequestMap = new Map<string, HomeroomRecapChangeRequest>();
+
+    for (const request of changeRequests) {
+      const key = `${request.classSubjectId}:${request.academicPeriodId}`;
+      if (!changeRequestMap.has(key)) {
+        changeRequestMap.set(key, {
+          id: request.id,
+          status: request.status as ChangeRequestStatus,
+          requestedAt: request.requestedAt,
+          resolvedAt: request.resolvedAt,
+          isActive: request.isActive,
+        });
+      }
+    }
+
+    const items = submissions
+      .map((submission) => {
+        const key = `${submission.classSubjectId}:${submission.academicPeriodId}`;
+        const changeRequest = changeRequestMap.get(key) ?? null;
+
+        if (
+          query.changeRequestStatus &&
+          (!changeRequest || changeRequest.status !== query.changeRequestStatus)
+        ) {
+          return null;
+        }
+
+        return {
+          submissionId: submission.id,
+          classSubjectId: submission.classSubjectId,
+          classId: submission.classSubject.class.id,
+          className: submission.classSubject.class.name,
+          subjectId: submission.classSubject.subject.id,
+          subjectName: submission.classSubject.subject.name,
+          periodId: submission.academicPeriod.id,
+          periodName: submission.academicPeriod.name,
+          academicYearLabel: submission.academicPeriod.academicYear.label,
+          submission: {
+            id: submission.id,
+            status: submission.status as SubmissionStatus,
+            submittedAt: submission.submittedAt,
+            returnedAt: submission.returnedAt,
+            teacherProfileId: submission.teacherProfileId,
+          },
+          submittingTeacher: {
+            id: submission.teacherProfile.id,
+            name: submission.teacherProfile.user.name,
+          },
+          changeRequest,
+        } satisfies HomeroomAssessmentRecapItem;
+      })
+      .filter((item): item is HomeroomAssessmentRecapItem => Boolean(item));
+
+    return { activePeriodId, items };
+  }
+
+  async getHomeroomRecapOptions(
+    tenantId: string,
+    actor: AssessmentActor,
+  ): Promise<HomeroomRecapOptions> {
+    const recapList = await this.getHomeroomRecaps(tenantId, {}, actor);
+
+    const classMap = new Map<string, HomeroomRecapOptionClass>();
+    const submissions = recapList.items.map((item) => {
+      if (!classMap.has(item.classId)) {
+        classMap.set(item.classId, { id: item.classId, name: item.className });
+      }
+
+      return {
+        submissionId: item.submissionId,
+        classId: item.classId,
+        className: item.className,
+        subjectId: item.subjectId,
+        subjectName: item.subjectName,
+        teacherProfileId: item.submission.teacherProfileId,
+        teacherName: item.submittingTeacher.name,
+        status: item.submission.status,
+        submittedAt: item.submission.submittedAt,
+        changeRequest: item.changeRequest,
+      } satisfies HomeroomRecapOptionSubmission;
+    });
+
+    return {
+      activePeriodId: recapList.activePeriodId,
+      classes: Array.from(classMap.values()),
+      submissions,
+    };
+  }
+
+  async getHomeroomRecapDetail(
+    tenantId: string,
+    submissionId: string,
+    actor: AssessmentActor,
+  ): Promise<HomeroomRecapDetail> {
+    if (actor.role !== Role.TEACHER) {
+      throw new ForbiddenException("Only teachers can view homeroom recaps");
+    }
+
+    const homeroomTeacherProfileId = await this.resolveTeacherProfileId(
+      tenantId,
+      actor.sub,
+    );
+
+    const tenant = await this.prisma.client.tenant.findFirst({
+      where: { id: tenantId },
+      select: { activeAcademicYearId: true },
+    });
+
+    const activeYear = tenant?.activeAcademicYearId
+      ? await this.prisma.client.academicYear.findFirst({
+          where: {
+            id: tenant.activeAcademicYearId,
+            tenantId,
+            deletedAt: null,
+          },
+          select: { id: true, activePeriodId: true },
+        })
+      : await this.prisma.client.academicYear.findFirst({
+          where: { tenantId, deletedAt: null },
+          orderBy: { createdAt: "desc" },
+          select: { id: true, activePeriodId: true },
+        });
+
+    const activePeriodId = activeYear?.activePeriodId ?? null;
+
+    const submission = await this.prisma.client.assessmentSubmission.findFirst({
+      where: { id: submissionId, tenantId },
+      select: {
+        id: true,
+        status: true,
+        submittedAt: true,
+        returnedAt: true,
+        classSubjectId: true,
+        academicPeriodId: true,
+        teacherProfileId: true,
+        classSubject: {
+          select: {
+            id: true,
+            classId: true,
+            subjectId: true,
+            kkm: true,
+            class: { select: { id: true, name: true } },
+            subject: { select: { id: true, name: true } },
+          },
+        },
+        academicPeriod: {
+          select: {
+            id: true,
+            name: true,
+            academicYear: { select: { id: true, label: true } },
+          },
+        },
+        teacherProfile: {
+          select: {
+            id: true,
+            user: { select: { id: true, name: true } },
+          },
+        },
+      },
+    });
+
+    if (!submission) {
+      throw new NotFoundException("Submission not found");
+    }
+
+    if (activePeriodId && submission.academicPeriodId !== activePeriodId) {
+      throw new BadRequestException("Submission is not in active period");
+    }
+
+    const now = new Date();
+    const homeroomAssignment =
+      await this.prisma.client.homeroomAssignment.findFirst({
+        where: {
+          tenantId,
+          teacherProfileId: homeroomTeacherProfileId,
+          classId: submission.classSubject.classId,
+          academicYearId: submission.academicPeriod.academicYear.id,
+          isActive: true,
+          OR: [{ endedAt: null }, { endedAt: { gte: now } }],
+        },
+        select: { id: true },
+      });
+
+    if (!homeroomAssignment) {
+      throw new ForbiddenException("Homeroom access required");
+    }
+
+    const components = await this.prisma.client.assessmentComponent.findMany({
+      where: {
+        tenantId,
+        classSubjectId: submission.classSubjectId,
+        academicPeriodId: submission.academicPeriodId,
+      },
+      select: {
+        id: true,
+        name: true,
+        assessmentTypeId: true,
+        assessmentType: { select: { id: true, label: true } },
+      },
+    });
+
+    const assessmentTypeMap = new Map<string, string>();
+    const componentGroups = new Map<string, ComponentGroup>();
+
+    for (const component of components) {
+      if (component.assessmentType?.id) {
+        assessmentTypeMap.set(
+          component.assessmentType.id,
+          component.assessmentType.label,
+        );
+      }
+
+      const key = `${submission.classSubjectId}:${submission.academicPeriodId}`;
+      const current = componentGroups.get(key) ?? {
+        classSubjectId: submission.classSubjectId,
+        periodId: submission.academicPeriodId,
+        components: [],
+      };
+
+      current.components.push({
+        id: component.id,
+        name: component.name,
+        assessmentTypeId: component.assessmentTypeId,
+        assessmentTypeLabel: component.assessmentType?.label ?? "-",
+      });
+      componentGroups.set(key, current);
+    }
+
+    const assessmentTypes = Array.from(assessmentTypeMap.entries()).map(
+      ([id, label]) => ({ id, label }),
+    );
+
+    const teacherSubject = await this.prisma.client.teacherSubject.findFirst({
+      where: {
+        tenantId,
+        teacherProfileId: submission.teacherProfileId,
+        subjectId: submission.classSubject.subjectId,
+      },
+      select: { id: true },
+    });
+
+    const typeWeights = teacherSubject
+      ? await this.prisma.client.assessmentTypeWeight.findMany({
+          where: {
+            tenantId,
+            teacherSubjectId: teacherSubject.id,
+            academicPeriodId: submission.academicPeriodId,
+          },
+          select: { assessmentTypeId: true, weight: true },
+        })
+      : [];
+
+    const weightMap = new Map<string, number>();
+    for (const weight of typeWeights) {
+      weightMap.set(weight.assessmentTypeId, weight.weight);
+    }
+
+    const componentIds = components.map((item) => item.id);
+    const scores = componentIds.length
+      ? await this.prisma.client.assessmentScore.findMany({
+          where: {
+            tenantId,
+            componentId: { in: componentIds },
+          },
+          select: {
+            studentProfileId: true,
+            componentId: true,
+            score: true,
+          },
+        })
+      : [];
+
+    const scoreMap = new Map<string, number>();
+    for (const score of scores) {
+      scoreMap.set(
+        `${score.studentProfileId}:${score.componentId}`,
+        Number(score.score),
+      );
+    }
+
+    const roster: Prisma.ClassEnrollmentGetPayload<{
+      select: {
+        classId: true;
+        studentProfileId: true;
+        studentProfile: { select: { user: { select: { name: true } } } };
+      };
+    }>[] = await this.prisma.client.classEnrollment.findMany({
+      where: {
+        tenantId,
+        classId: submission.classSubject.classId,
+        ...this.getActiveStudents(new Date()),
+      },
+      select: {
+        classId: true,
+        studentProfileId: true,
+        studentProfile: { select: { user: { select: { name: true } } } },
+      },
+      orderBy: {
+        studentProfile: { user: { name: "asc" } },
+      },
+    });
+
+    const rosterProfileIds = roster.map((item) => item.studentProfileId);
+    const identifiers = await this.resolveStudentIdentifierValues(
+      tenantId,
+      rosterProfileIds,
+    );
+
+    const students: AssessmentRecapStudent[] = [];
+    const groupKey = `${submission.classSubjectId}:${submission.academicPeriodId}`;
+    const group = componentGroups.get(groupKey);
+    const groupComponents = group?.components ?? [];
+
+    for (const rosterItem of roster) {
+      const componentScores = groupComponents.map((component) => ({
+        componentId: component.id,
+        componentName: component.name,
+        assessmentTypeId: component.assessmentTypeId,
+        assessmentTypeLabel: component.assessmentTypeLabel,
+        score:
+          scoreMap.get(`${rosterItem.studentProfileId}:${component.id}`) ??
+          null,
+      }));
+
+      const studentScoreInput: StudentScoreInput = {
+        studentProfileId: rosterItem.studentProfileId,
+        studentName: rosterItem.studentProfile.user.name,
+        nis: identifiers.get(rosterItem.studentProfileId)?.nis ?? null,
+        classId: submission.classSubject.classId,
+        className: submission.classSubject.class.name,
+        subjectId: submission.classSubject.subjectId,
+        subjectName: submission.classSubject.subject.name,
+        periodId: submission.academicPeriodId,
+        componentScores,
+        typeWeights: weightMap,
+      };
+
+      const finalScore = this.calculateFinalScore(studentScoreInput);
+
+      students.push({
+        id: `${rosterItem.studentProfileId}:${submission.classSubjectId}:${submission.academicPeriodId}`,
+        studentProfileId: rosterItem.studentProfileId,
+        studentName: studentScoreInput.studentName,
+        nis: studentScoreInput.nis,
+        classId: studentScoreInput.classId,
+        className: studentScoreInput.className,
+        subjectId: studentScoreInput.subjectId,
+        subjectName: studentScoreInput.subjectName,
+        periodId: studentScoreInput.periodId,
+        finalScore,
+        componentScores,
+      });
+    }
+
+    const kkmMap = new Map<string, number>([
+      [
+        `${submission.classSubject.classId}:${submission.classSubject.subjectId}`,
+        submission.classSubject.kkm,
+      ],
+    ]);
+    const summary = this.computeSummary(students, kkmMap);
+
+    const changeRequest =
+      await this.prisma.client.assessmentScoreChangeRequest.findFirst({
+        where: {
+          tenantId,
+          classSubjectId: submission.classSubjectId,
+          academicPeriodId: submission.academicPeriodId,
+        },
+        select: {
+          id: true,
+          status: true,
+          requestedAt: true,
+          resolvedAt: true,
+          isActive: true,
+        },
+        orderBy: { requestedAt: "desc" },
+      });
+
+    return {
+      submissionId: submission.id,
+      classSubjectId: submission.classSubjectId,
+      classId: submission.classSubject.classId,
+      className: submission.classSubject.class.name,
+      subjectId: submission.classSubject.subjectId,
+      subjectName: submission.classSubject.subject.name,
+      periodId: submission.academicPeriod.id,
+      periodName: submission.academicPeriod.name,
+      academicYearLabel: submission.academicPeriod.academicYear.label,
+      classKkm: submission.classSubject.kkm,
+      assessmentTypes,
+      students,
+      summary,
+      submission: {
+        id: submission.id,
+        status: submission.status as SubmissionStatus,
+        submittedAt: submission.submittedAt,
+        returnedAt: submission.returnedAt,
+        teacherProfileId: submission.teacherProfileId,
+      },
+      submittingTeacher: {
+        id: submission.teacherProfile.id,
+        name: submission.teacherProfile.user.name,
+      },
+      changeRequest: changeRequest
+        ? {
+            id: changeRequest.id,
+            status: changeRequest.status as ChangeRequestStatus,
+            requestedAt: changeRequest.requestedAt,
+            resolvedAt: changeRequest.resolvedAt,
+            isActive: changeRequest.isActive,
+          }
+        : null,
+    };
+  }
+
+  async decideHomeroomChangeRequest(
+    tenantId: string,
+    requestId: string,
+    dto: DecideAssessmentRecapChangeDto,
+    actor: AssessmentActor,
+  ) {
+    if (actor.role !== Role.TEACHER) {
+      throw new ForbiddenException("Only teachers can decide change requests");
+    }
+
+    const homeroomTeacherProfileId = await this.resolveTeacherProfileId(
+      tenantId,
+      actor.sub,
+    );
+
+    const changeRequest =
+      await this.prisma.client.assessmentScoreChangeRequest.findFirst({
+        where: { id: requestId, tenantId },
+        select: {
+          id: true,
+          status: true,
+          isActive: true,
+          classSubjectId: true,
+          academicPeriodId: true,
+          classSubject: { select: { classId: true } },
+          academicPeriod: { select: { academicYearId: true } },
+        },
+      });
+
+    if (!changeRequest) {
+      throw new NotFoundException("Change request not found");
+    }
+
+    if (
+      !changeRequest.isActive ||
+      changeRequest.status !== CHANGE_REQUEST_STATUS.PENDING
+    ) {
+      throw new BadRequestException("Change request already resolved");
+    }
+
+    const now = new Date();
+    const homeroomAssignment =
+      await this.prisma.client.homeroomAssignment.findFirst({
+        where: {
+          tenantId,
+          teacherProfileId: homeroomTeacherProfileId,
+          classId: changeRequest.classSubject.classId,
+          academicYearId: changeRequest.academicPeriod.academicYearId,
+          isActive: true,
+          OR: [{ endedAt: null }, { endedAt: { gte: now } }],
+        },
+        select: { id: true },
+      });
+
+    if (!homeroomAssignment) {
+      throw new ForbiddenException("Homeroom access required");
+    }
+
+    const resolvedAt = new Date();
+
+    const updatedRequest = await this.prisma.client.$transaction(async (tx) => {
+      await tx.assessmentScoreChangeRequest.deleteMany({
+        where: {
+          tenantId,
+          classSubjectId: changeRequest.classSubjectId,
+          academicPeriodId: changeRequest.academicPeriodId,
+          isActive: false,
+          NOT: { id: changeRequest.id },
+        },
+      });
+
+      const requestUpdate = await tx.assessmentScoreChangeRequest.update({
+        where: { id: changeRequest.id },
+        data: {
+          status: dto.decision,
+          isActive: false,
+          resolvedAt,
+        },
+        select: {
+          id: true,
+          status: true,
+          requestedAt: true,
+          resolvedAt: true,
+          classSubjectId: true,
+          academicPeriodId: true,
+        },
+      });
+
+      if (dto.decision === CHANGE_REQUEST_STATUS.APPROVED) {
+        const components = await tx.assessmentComponent.findMany({
+          where: {
+            tenantId,
+            classSubjectId: changeRequest.classSubjectId,
+            academicPeriodId: changeRequest.academicPeriodId,
+          },
+          select: { id: true },
+        });
+
+        const roster = await this.getClassRoster(
+          tenantId,
+          changeRequest.classSubject.classId,
+        );
+        const rosterIds = roster.map((item) => item.studentProfileId);
+        const componentIds = components.map((item) => item.id);
+
+        if (componentIds.length > 0 && rosterIds.length > 0) {
+          await tx.assessmentScore.updateMany({
+            where: {
+              tenantId,
+              componentId: { in: componentIds },
+              studentProfileId: { in: rosterIds },
+              isLocked: true,
+            },
+            data: {
+              isLocked: false,
+              lockedAt: null,
+            },
+          });
+        }
+
+        await tx.assessmentSubmission.update({
+          where: {
+            classSubjectId_academicPeriodId: {
+              classSubjectId: changeRequest.classSubjectId,
+              academicPeriodId: changeRequest.academicPeriodId,
+            },
+          },
+          data: {
+            status: SUBMISSION_STATUS.RETURNED,
+            returnedAt: resolvedAt,
+          },
+        });
+      }
+
+      await tx.auditLog.create({
+        data: {
+          tenantId,
+          entityType: AuditEntityType.GRADE,
+          entityId: changeRequest.id,
+          action: AuditAction.UPDATE,
+          actorId: actor.sub,
+          metadata: {
+            classSubjectId: changeRequest.classSubjectId,
+            academicPeriodId: changeRequest.academicPeriodId,
+            decision: dto.decision,
+            note: dto.note ?? null,
+          },
+        },
+      });
+
+      return requestUpdate;
+    });
+
+    return updatedRequest;
   }
 
   async updateTeacherRecapKkm(

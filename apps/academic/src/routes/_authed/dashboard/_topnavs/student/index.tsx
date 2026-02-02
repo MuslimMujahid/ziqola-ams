@@ -1,7 +1,6 @@
 import React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { AcademicPeriodBadge } from "@/routes/_authed/dashboard/_topnavs/teacher/-components";
 import {
   TenantNewsCard,
   type TenantNewsItem,
@@ -398,11 +397,6 @@ function StudentDashboardPage() {
             Lihat agenda hari ini, berita sekolah, dan jadwal terbaru
           </p>
         </div>
-        <AcademicPeriodBadge
-          periodName="Semester Genap"
-          academicYearLabel="2025/2026"
-          isLoading={false}
-        />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">

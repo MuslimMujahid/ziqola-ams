@@ -7,6 +7,7 @@ type AuthUser = {
   email: string;
   name?: string | null;
   role: AuthRole;
+  isHomeroomTeacher?: boolean;
 };
 
 type Gender = "MALE" | "FEMALE";

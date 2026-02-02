@@ -1,93 +1,156 @@
-## Implementation Plan — Recap UI Simplification + Invalid-Items Popup
+## Implementation Plan — Homeroom Recap Review + Score Table
 
 ### Goal
 
-Simplify the recap UI by removing redundant widgets, and provide a compact, actionable popup beside the submission button that lists invalid items and a lightweight status hint.
+Extend the homeroom recap page so homeroom teachers can review submitted scores in a data table, in addition to approving/rejecting change requests.
 
 ### Scope
 
-- Frontend only (Academic app).
-- Remove the “Tercapai vs Remedial” widget from the insights panel.
-- Remove the “Status pengiriman” widget block.
-- Add an icon button next to “Kirim ke Wali Kelas” that opens a popup with invalid items and submission status.
+- Backend: add a homeroom recap detail endpoint that returns score data for a selected submission (students + assessment type breakdown).
+- Frontend (Academic app): add table view to the homeroom recap page, reuse existing table patterns, and keep the approve/reject flow intact.
+
+### Requirements (Updated)
+
+1. Replace the recap list with selector-driven review (no separate list view).
+2. Add a class filter plus a single selector for subject - teacher.
+3. Default to the most recent submitted recap for the selected class.
+4. Scope to active period only (no period filter).
+5. Display summary cards and a data table for the selected recap.
+6. Continue to allow approve/reject from the detail view with change-request status next to actions.
 
 ### Out of Scope
 
-- Backend changes and new API fields.
-- Changes to readiness logic or submission behavior.
-- Additional analytics or new report widgets.
+### Requirements (Updated)
+
+### UI/UX Design
+
+- Replace the list with a selector bar:
+  - Class dropdown.
+  - Subject - teacher dropdown (disabled until class selected).
+- Show summary cards and the data table for the selected recap.
+- Place change-request status next to the approve/reject actions.
+- Keep colors and layout consistent with the current flat design system (no borders or shadows).
+
+2. Allow homeroom teachers to open a submitted recap and review student scores.
+3. Display scores using a data table (sortable, paginated like other tables).
 
 ### Current Implementation Review
 
-- Recap page renders summary cards, a table, and the insights panel with two sections: “Tercapai vs Remedial” and “Distribusi nilai.”
-- Submission action currently lives under the insights column, and a separate “Status pengiriman” widget exists (RecapSubmissionPanel).
-- Readiness data is available in `effectiveReadiness` (missing scores, weight validation, isReady) and submission status in `submission`.
-- UI components available include `@repo/ui/button` and the new `@repo/ui/popover` components.
+### API/Data Design
 
-### Functional Requirements
+- **Selector data endpoint**: extend `GET /assessment-recap/homeroom` to return
+  active-period submissions grouped by class and subject-teacher pairs
+  (or add a lightweight `GET /assessment-recap/homeroom/options`).
+- **Detail endpoint**: `GET /assessment-recap/homeroom/:submissionId`
+  - Response should include: class, subject, period labels, assessment types, class KKM, and student rows with component scores and final score.
+  - Match the shape of existing teacher recap data where possible to reuse table logic.
 
-1. Remove the “Tercapai vs Remedial” block from the insights panel.
-2. Remove the “Status pengiriman” widget from the recap page layout.
-3. Add a compact icon button next to the submission button that:
-   - Opens a popup listing invalid readiness items.
-   - Shows a short submission status line (e.g., Draft / Submitted / Returned + timestamp).
-   - Is keyboard and screen-reader accessible.
+- Homeroom recap list and decisions already exist in [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/compile/index.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/compile/index.tsx).
+- Recap table component exists in [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/recap/-components/recap-table.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/recap/-components/recap-table.tsx) and uses the shared data table pattern.
 
-### UX/Design Requirements
+### API/Data Design
 
-- Keep layout flat (no borders/shadows), use existing surface colors and status colors.
-- The popup should be concise: label + value per line, status highlighted with info/success/warning tone.
-- Icon button should visually pair with the submit button; keep size consistent with the button height.
+1. **Backend: DTOs + Types**
+   - Add a DTO for homeroom recap detail parameters.
+   - Add response types for recap detail (assessment types + students + KKM).
+   - Add selector option response types if using a dedicated options endpoint.
 
-### Proposed UI Implementation
+- **Detail endpoint**: `GET /assessment-recap/homeroom/:submissionId`
+  - Response should include: class, subject, period labels, assessment types, class KKM, and student rows with component scores and final score.
+  - Match the shape of existing teacher recap data where possible to reuse table logic.
 
-- Use `@repo/ui/popover` for the invalid-items popup:
-  - `Popover` + `PopoverTrigger asChild` wrapping an icon-only `Button`.
-  - `PopoverContent` with a compact custom layout.
-- Icon: use a Lucide icon with the `Icon` suffix (e.g., `InfoIcon` or `AlertTriangleIcon`).
-- Popup content structure:
-  - Header line: “Status pengiriman: <label>” + date if submitted/resubmitted.
-  - Separator.
-  - Invalid items list:
-    - “Nilai kosong”: `{missingScoreCount}` and `{missingStudentCount} siswa` (only if missingScoreCount > 0).
-    - “Bobot penilaian”: `{weightTotal}/100` + “OK” or “Periksa”.
-    - If `!hasSelection`, show “Filter belum lengkap”.
-  - If `isReady`, show a single line “Semua siap dikirim.”
+2. **Backend: Service Logic**
+   - Implement a detail query scoped by submission ID and homeroom authorization.
+   - If needed, implement selector options query (class + subject-teacher pairs for active period).
 
-### Data/State Mapping
+### UI/UX Design
 
-- Use existing fields from `effectiveReadiness`, `submissionStatus`, `submission?.submittedAt`, and `hasSelection`.
-- Derive a short status label from `submissionStatus` (draft/submitted/returned/resubmitted).
-- Derive a formatted date using `formatDateLocal` (already used in RecapSubmissionPanel).
+- Add a “Lihat Rekap” action on each list card to open score details.
+
+3. **Backend: Controller + Permissions**
+   - Add a `GET /assessment-recap/homeroom/:submissionId` route.
+   - Add `GET /assessment-recap/homeroom/options` if separating selector data.
+   - Keep permission aligned with `ASSESSMENT_READ` and homeroom checks.
+
+- Show scores in a data table using the same table component or a small wrapper that adapts data to the existing column model.
+- Use a split layout or expandable panel:
+  - Option A: expand/collapse under each list item.
+  - Option B: right-side panel or dialog with the data table.
+
+4. **Frontend: API Client + Hooks**
+   - Add API client and hooks to fetch selector options and recap detail by submission ID.
+   - Add query keys for options + detail caching and invalidation.
+
+- Keep colors and layout consistent with the current flat design system (no borders or shadows).
 
 ### Implementation Tasks
 
-1. **Update RecapInsights**
-   - Remove the “Tercapai vs Remedial” card.
-   - Remove unused props (`passCount`, `remedialCount`) from `RecapInsights` and its call site.
+5. **Frontend: Data Mapping**
+   - Transform detail data into `RecapTableRow` to reuse [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/recap/-components/recap-table.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/recap/-components/recap-table.tsx).
+   - Compute summary cards from detail data or use API-provided summary.
+1. **Backend: DTOs + Types**
+   - Add a DTO for homeroom recap detail parameters.
+   - Add response types for recap detail (assessment types + students + KKM).
 
-2. **Remove RecapSubmissionPanel**
-   - Remove `RecapSubmissionPanel` usage from the recap page layout.
-   - Remove the import in recap route.
-   - Decide whether to delete the component file or leave it for potential reuse; prefer removing if no longer used.
+1. **Backend: Service Logic**
+1. **Frontend: UI Updates**
+   - Replace the list with selector controls (class + subject-teacher).
+   - Default to the latest submission for the selected class.
+   - Render summary cards and the recap table for the selected submission.
+   - Show change-request status next to approve/reject actions.
+   - Implement a detail query that reuses the existing recap computation but scoped by submission ID and homeroom authorization.
+   - Validate homeroom ownership of the class linked to the submission.
 
-3. **Add Submission Info Popup**
-   - Import popover components from `@repo/ui/popover` and the chosen icon.
-   - Add an icon-only `Button` next to the existing submit button in the insights column.
-   - Implement popup content with compact status and invalid items.
-   - Ensure `aria-label` on icon button and use `sr-only` text if needed.
-
-4. **Styling/Interaction**
-   - Keep alignment and spacing consistent with the current button stack.
-   - Use status colors for labels (success/warning/info) without borders/shadows.
+1. **Backend: Controller + Permissions**
+1. **Frontend: Loading + Empty States**
+   - Add skeleton state for selector + detail table.
+   - Show empty state if no submissions exist for a class.
+   - Add a `GET /assessment-recap/homeroom/:submissionId` route.
+   - Keep permission aligned with `ASSESSMENT_READ` and homeroom checks.
+1. **Frontend: API Client + Hooks**
+   - Add API client and hooks to fetch homeroom recap detail by submission ID.
 
 ### Testing Plan
 
-- Manual UI checks:
-  - Popup opens and closes via mouse and keyboard.
-  - Correct invalid items display when missing scores or invalid weights.
-  - “Semua siap dikirim” appears when ready.
-  - Status line updates for draft/submitted/returned/resubmitted.
-- Regression checks:
-  - Submit button behavior unchanged.
-  - Insights chart still renders and layout remains responsive.
+- **Backend**
+  - Verify options endpoint returns only active-period submissions.
+  - Verify detail endpoint returns consistent assessment types and student rows.
+  - Verify homeroom authorization blocks non-homeroom access.
+  - Add query keys for detail caching and invalidation.
+
+5. **Frontend: Data Mapping**
+   - Transform detail data into `RecapTableRow` to reuse [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/recap/-components/recap-table.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/recap/-components/recap-table.tsx).
+
+- **Frontend**
+  - Manual UI: selector loads, default selection applies, table renders, actions work.
+  - Regression: approve/reject flow invalidates options + detail data.
+  - Ensure assessment type averages and final score are computed or passed from the API.
+
+### Risks / Open Questions
+
+### Decision Summary
+
+- Selector fields: Class + Subject - Teacher.
+- Default selection: most recent submission for the selected class.
+- Period scope: active period only (no period filter).
+- Change-request status placement: next to action buttons.
+  - Render the table panel (expandable section or modal) with the selected recap’s data.
+
+7. **Frontend: Loading + Empty States**
+   - Add a skeleton state for the detail table.
+   - Show a friendly empty state if no students are returned.
+
+### Testing Plan
+
+- **Backend**
+  - Verify detail endpoint returns consistent assessment types and student rows.
+  - Verify homeroom authorization blocks non-homeroom access.
+
+- **Frontend**
+  - Manual UI: list loads, detail opens, table renders, and actions still work.
+  - Regression: approve/reject flow still invalidates list and detail data.
+
+### Risks / Open Questions
+
+- Decide whether detail view should be inline expansion or modal panel for best usability.
+- Confirm whether to return only active period data or allow historical submissions.
