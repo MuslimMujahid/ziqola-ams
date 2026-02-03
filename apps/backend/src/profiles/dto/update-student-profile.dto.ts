@@ -1,7 +1,24 @@
-import { IsObject, IsOptional } from "class-validator";
+import { IsDateString, IsEnum, IsOptional, IsString } from "class-validator";
+import { Gender } from "@repo/db";
 
 export class UpdateStudentProfileDto {
   @IsOptional()
-  @IsObject()
-  additionalIdentifiers?: Record<string, unknown>;
+  @IsString()
+  nis?: string;
+
+  @IsOptional()
+  @IsString()
+  nisn?: string;
+
+  @IsOptional()
+  @IsEnum(Gender)
+  gender?: Gender;
+
+  @IsOptional()
+  @IsDateString()
+  dateOfBirth?: string;
+
+  @IsOptional()
+  @IsString()
+  phoneNumber?: string;
 }

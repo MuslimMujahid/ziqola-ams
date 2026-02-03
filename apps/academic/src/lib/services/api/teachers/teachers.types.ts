@@ -10,14 +10,14 @@ type TeacherProfile = {
   tenantId: string;
   userId: string;
   hiredAt?: string | null;
+  gender?: "MALE" | "FEMALE" | null;
+  dateOfBirth?: string | null;
+  phoneNumber?: string | null;
   additionalIdentifiers?: Record<string, unknown> | null;
   user: {
     id: string;
     name: string;
     email: string;
-    gender?: "MALE" | "FEMALE" | null;
-    dateOfBirth?: string | null;
-    phoneNumber?: string | null;
   };
   createdAt?: string | null;
   updatedAt?: string | null;
@@ -37,12 +37,18 @@ type GetTeacherProfileResponse = ApiResponse<TeacherProfile>;
 type CreateTeacherProfileVars = {
   userId: string;
   hiredAt?: string;
+  gender?: "MALE" | "FEMALE";
+  dateOfBirth?: string;
+  phoneNumber?: string;
   additionalIdentifiers?: Record<string, unknown>;
 };
 
 type UpdateTeacherProfileVars = {
   id: string;
   hiredAt?: string;
+  gender?: "MALE" | "FEMALE";
+  dateOfBirth?: string;
+  phoneNumber?: string;
   additionalIdentifiers?: Record<string, unknown>;
 };
 

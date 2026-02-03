@@ -1,12 +1,5 @@
-import {
-  IsDateString,
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-} from "class-validator";
-import { Gender, Role } from "@repo/db";
+import { IsEmail, IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { Role } from "@repo/db";
 
 export class RegisterDto {
   @IsString()
@@ -22,16 +15,4 @@ export class RegisterDto {
 
   @IsEnum(Role)
   role: Role;
-
-  @IsOptional()
-  @IsEnum(Gender)
-  gender?: Gender;
-
-  @IsOptional()
-  @IsDateString()
-  dateOfBirth?: string;
-
-  @IsOptional()
-  @IsString()
-  phoneNumber?: string;
 }

@@ -363,61 +363,6 @@ export class AssessmentRecapService {
     };
   }
 
-  private async resolveStudentIdentifierValues(
-    tenantId: string,
-    profileIds: string[],
-  ) {
-    if (profileIds.length === 0) {
-      return new Map<string, { nis?: string | null }>();
-    }
-
-    const fields = await this.prisma.client.tenantProfileField.findMany({
-      where: {
-        tenantId,
-        role: "student",
-        key: { in: ["nis"] },
-      },
-      select: { id: true, key: true },
-    });
-
-    if (fields.length === 0) {
-      return new Map<string, { nis?: string | null }>();
-    }
-
-    const fieldIds = fields.map((field) => field.id);
-    const fieldKeyMap = new Map(fields.map((field) => [field.id, field.key]));
-
-    const values = await this.prisma.client.studentProfileFieldValue.findMany({
-      where: {
-        tenantId,
-        studentProfileId: { in: profileIds },
-        fieldId: { in: fieldIds },
-      },
-      select: {
-        studentProfileId: true,
-        fieldId: true,
-        valueText: true,
-      },
-    });
-
-    const result = new Map<string, { nis?: string | null }>();
-
-    for (const value of values) {
-      const key = fieldKeyMap.get(value.fieldId);
-      if (!key) continue;
-
-      const current = result.get(value.studentProfileId) ?? { nis: null };
-
-      if (key === "nis") {
-        current.nis = value.valueText ?? null;
-      }
-
-      result.set(value.studentProfileId, current);
-    }
-
-    return result;
-  }
-
   private getActiveStudents(referenceDate: Date) {
     return {
       startDate: { lte: referenceDate },
@@ -926,7 +871,9 @@ export class AssessmentRecapService {
       select: {
         classId: true;
         studentProfileId: true;
-        studentProfile: { select: { user: { select: { name: true } } } };
+        studentProfile: {
+          select: { nis: true; user: { select: { name: true } } };
+        };
       };
     }>[] = await this.prisma.client.classEnrollment.findMany({
       where: {
@@ -937,18 +884,17 @@ export class AssessmentRecapService {
       select: {
         classId: true,
         studentProfileId: true,
-        studentProfile: { select: { user: { select: { name: true } } } },
+        studentProfile: {
+          select: {
+            nis: true,
+            user: { select: { name: true } },
+          },
+        },
       },
       orderBy: {
         studentProfile: { user: { name: "asc" } },
       },
     });
-
-    const rosterProfileIds = roster.map((item) => item.studentProfileId);
-    const identifiers = await this.resolveStudentIdentifierValues(
-      tenantId,
-      rosterProfileIds,
-    );
 
     const rosterByClassId = new Map<string, string[]>();
     for (const item of roster) {
@@ -996,7 +942,7 @@ export class AssessmentRecapService {
           const studentScoreInput: StudentScoreInput = {
             studentProfileId: rosterItem.studentProfileId,
             studentName: rosterItem.studentProfile.user.name,
-            nis: identifiers.get(rosterItem.studentProfileId)?.nis ?? null,
+            nis: rosterItem.studentProfile.nis ?? null,
             classId: classItem.id,
             className: classItem.name,
             subjectId: subject.id,
@@ -1931,7 +1877,9 @@ export class AssessmentRecapService {
       select: {
         classId: true;
         studentProfileId: true;
-        studentProfile: { select: { user: { select: { name: true } } } };
+        studentProfile: {
+          select: { nis: true; user: { select: { name: true } } };
+        };
       };
     }>[] = await this.prisma.client.classEnrollment.findMany({
       where: {
@@ -1942,18 +1890,17 @@ export class AssessmentRecapService {
       select: {
         classId: true,
         studentProfileId: true,
-        studentProfile: { select: { user: { select: { name: true } } } },
+        studentProfile: {
+          select: {
+            nis: true,
+            user: { select: { name: true } },
+          },
+        },
       },
       orderBy: {
         studentProfile: { user: { name: "asc" } },
       },
     });
-
-    const rosterProfileIds = roster.map((item) => item.studentProfileId);
-    const identifiers = await this.resolveStudentIdentifierValues(
-      tenantId,
-      rosterProfileIds,
-    );
 
     const students: AssessmentRecapStudent[] = [];
     const groupKey = `${submission.classSubjectId}:${submission.academicPeriodId}`;
@@ -1974,7 +1921,7 @@ export class AssessmentRecapService {
       const studentScoreInput: StudentScoreInput = {
         studentProfileId: rosterItem.studentProfileId,
         studentName: rosterItem.studentProfile.user.name,
-        nis: identifiers.get(rosterItem.studentProfileId)?.nis ?? null,
+        nis: rosterItem.studentProfile.nis ?? null,
         classId: submission.classSubject.classId,
         className: submission.classSubject.class.name,
         subjectId: submission.classSubject.subjectId,

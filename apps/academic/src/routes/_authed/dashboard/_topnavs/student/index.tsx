@@ -23,8 +23,6 @@ import {
 import { useInfiniteSessions } from "@/lib/services/api/sessions";
 import { type ScheduleItem, useSchedules } from "@/lib/services/api/schedules";
 import { useStudentProfileByUserId } from "@/lib/services/api/students";
-import { useProfileFieldsValues } from "@/lib/services/api/profile-custom-fields";
-import { formatProfileValue } from "@/lib/utils/profile-custom-fields";
 
 const TIME_FORMATTER = new Intl.DateTimeFormat("id-ID", {
   hour: "2-digit",
@@ -121,19 +119,9 @@ export const Route = createFileRoute("/_authed/dashboard/_topnavs/student/")({
 
 function StudentDashboardPage() {
   const user = useAuthStore((state) => state.user);
-  const tenantId = user?.tenantId ?? "";
   const studentProfileQuery = useStudentProfileByUserId(user?.id ?? "", {
     enabled: Boolean(user?.id),
   });
-  const studentProfileId = studentProfileQuery.data?.data.id ?? "";
-  const profileFieldsQuery = useProfileFieldsValues(
-    tenantId,
-    "student",
-    studentProfileId,
-    {
-      enabled: Boolean(tenantId) && Boolean(studentProfileId),
-    },
-  );
 
   const today = React.useMemo(() => normalizeDate(new Date()), []);
   const [range, setRange] = React.useState(() => {
@@ -157,30 +145,17 @@ function StudentDashboardPage() {
   const schedulesQuery = useSchedules(scheduleParams, { enabled: true });
 
   const profileInfo = React.useMemo(() => {
-    const fields = profileFieldsQuery.data?.data.fields ?? [];
-    const values = profileFieldsQuery.data?.data.values ?? [];
-    const nisField = fields.find((field) => field.key === "nis");
-    const nisValue = nisField
-      ? values.find((value) => value.fieldId === nisField.id)
-      : undefined;
-
-    const formattedNis = nisField
-      ? formatProfileValue(nisField, nisValue)
-      : "-";
+    const studentProfile = studentProfileQuery.data?.data;
+    const nisValue = studentProfile?.nis ?? null;
 
     return {
       name: user?.name ?? "Siswa",
       className: "XI IPA 1",
-      nis: formattedNis === "-" ? null : formattedNis,
+      nis: nisValue,
       email: user?.email ?? "siswa@ziqola.sch.id",
       avatarUrl: null,
     };
-  }, [
-    profileFieldsQuery.data?.data.fields,
-    profileFieldsQuery.data?.data.values,
-    user?.email,
-    user?.name,
-  ]);
+  }, [studentProfileQuery.data?.data, user?.email, user?.name]);
 
   const scheduleItems = React.useMemo<StudentScheduleItem[]>(
     () =>

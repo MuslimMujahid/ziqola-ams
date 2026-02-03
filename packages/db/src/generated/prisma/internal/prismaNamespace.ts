@@ -2900,9 +2900,6 @@ export const UserScalarFieldEnum = {
   lastInviteSentAt: 'lastInviteSentAt',
   inviteSentCount: 'inviteSentCount',
   invitedById: 'invitedById',
-  gender: 'gender',
-  dateOfBirth: 'dateOfBirth',
-  phoneNumber: 'phoneNumber',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2914,6 +2911,9 @@ export const TeacherProfileScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   userId: 'userId',
+  gender: 'gender',
+  dateOfBirth: 'dateOfBirth',
+  phoneNumber: 'phoneNumber',
   additionalIdentifiers: 'additionalIdentifiers',
   hiredAt: 'hiredAt',
   createdAt: 'createdAt',
@@ -2927,7 +2927,11 @@ export const StudentProfileScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   userId: 'userId',
-  additionalIdentifiers: 'additionalIdentifiers',
+  gender: 'gender',
+  dateOfBirth: 'dateOfBirth',
+  phoneNumber: 'phoneNumber',
+  nis: 'nis',
+  nisn: 'nisn',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

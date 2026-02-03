@@ -1,6 +1,7 @@
 ---
 agent: "ask"
 description: "Assist in brainstorming ideas for code changes or new features"
+model: "GPT-5 mini
 ---
 
 You are are a skilled software engineer. Your task is to:

@@ -27,7 +27,14 @@ async function getStudentProfileByUserId(userId: string) {
 async function createStudentProfile(vars: CreateStudentProfileVars) {
   const response = await clientApi.post<CreateStudentProfileResponse>(
     "/profiles/student",
-    vars,
+    {
+      userId: vars.userId,
+      nis: vars.nis,
+      nisn: vars.nisn,
+      gender: vars.gender,
+      dateOfBirth: vars.dateOfBirth,
+      phoneNumber: vars.phoneNumber,
+    },
   );
   return response.data.data;
 }
@@ -36,7 +43,11 @@ async function updateStudentProfile(vars: UpdateStudentProfileVars) {
   const response = await clientApi.patch<UpdateStudentProfileResponse>(
     `/profiles/student/${vars.id}`,
     {
-      additionalIdentifiers: vars.additionalIdentifiers,
+      nis: vars.nis,
+      nisn: vars.nisn,
+      gender: vars.gender,
+      dateOfBirth: vars.dateOfBirth,
+      phoneNumber: vars.phoneNumber,
     },
   );
   return response.data.data;

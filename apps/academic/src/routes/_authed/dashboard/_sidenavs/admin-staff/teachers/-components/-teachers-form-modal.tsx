@@ -12,9 +12,10 @@ import {
 } from "@repo/ui/dialog";
 import { Button } from "@repo/ui/button";
 import { useAppForm } from "@/lib/utils/form";
-import type { Gender } from "@/lib/services/api/auth";
 
-const GENDER_OPTIONS: Array<{ label: string; value: Gender | "none" }> = [
+type GenderValue = "MALE" | "FEMALE" | "none";
+
+const GENDER_OPTIONS: Array<{ label: string; value: GenderValue }> = [
   { label: "Tidak diisi", value: "none" },
   { label: "Laki-laki", value: "MALE" },
   { label: "Perempuan", value: "FEMALE" },
@@ -23,7 +24,7 @@ const GENDER_OPTIONS: Array<{ label: string; value: Gender | "none" }> = [
 type TeacherFormValues = {
   name: string;
   email: string;
-  gender?: Gender | "none";
+  gender?: GenderValue;
   dateOfBirth?: string;
   phoneNumber?: string;
   hiredAt?: string;

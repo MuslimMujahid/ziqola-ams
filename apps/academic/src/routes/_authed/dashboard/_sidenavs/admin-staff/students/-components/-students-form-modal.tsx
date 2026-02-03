@@ -11,12 +11,13 @@ import {
 } from "@repo/ui/dialog";
 import { Button } from "@repo/ui/button";
 import { useAppForm } from "@/lib/utils/form";
-import type { Gender } from "@/lib/services/api/auth";
 import type { ClassItem } from "@/lib/services/api/classes";
 
 const STUDENT_ROLE = "STUDENT" as const;
 
-const GENDER_OPTIONS: Array<{ label: string; value: Gender | "none" }> = [
+type GenderValue = "MALE" | "FEMALE" | "none";
+
+const GENDER_OPTIONS: Array<{ label: string; value: GenderValue }> = [
   { label: "Tidak diisi", value: "none" },
   { label: "Laki-laki", value: "MALE" },
   { label: "Perempuan", value: "FEMALE" },
@@ -26,7 +27,7 @@ type StudentFormValues = {
   name: string;
   email: string;
   classId: string;
-  gender?: Gender | "none";
+  gender?: GenderValue;
   dateOfBirth?: string;
   phoneNumber?: string;
 };

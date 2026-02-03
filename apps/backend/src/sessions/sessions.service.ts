@@ -568,6 +568,8 @@ export class SessionsService {
         studentProfileId: true,
         studentProfile: {
           select: {
+            nis: true,
+            nisn: true,
             user: { select: { name: true } },
           },
         },
@@ -578,71 +580,6 @@ export class SessionsService {
         },
       },
     });
-  }
-
-  private async resolveStudentIdentifierValues(
-    tenantId: string,
-    profileIds: string[],
-  ) {
-    if (profileIds.length === 0) {
-      return new Map<string, { nis?: string | null; nisn?: string | null }>();
-    }
-
-    const fields = await this.prisma.client.tenantProfileField.findMany({
-      where: {
-        tenantId,
-        role: "student",
-        key: { in: ["nis", "nisn"] },
-      },
-      select: { id: true, key: true },
-    });
-
-    if (fields.length === 0) {
-      return new Map<string, { nis?: string | null; nisn?: string | null }>();
-    }
-
-    const fieldIds = fields.map((field) => field.id);
-    const fieldKeyMap = new Map(fields.map((field) => [field.id, field.key]));
-
-    const values = await this.prisma.client.studentProfileFieldValue.findMany({
-      where: {
-        tenantId,
-        studentProfileId: { in: profileIds },
-        fieldId: { in: fieldIds },
-      },
-      select: {
-        studentProfileId: true,
-        fieldId: true,
-        valueText: true,
-      },
-    });
-
-    const result = new Map<
-      string,
-      { nis?: string | null; nisn?: string | null }
-    >();
-
-    for (const value of values) {
-      const key = fieldKeyMap.get(value.fieldId);
-      if (!key) continue;
-
-      const current = result.get(value.studentProfileId) ?? {
-        nis: null,
-        nisn: null,
-      };
-
-      if (key === "nis") {
-        current.nis = value.valueText ?? null;
-      }
-
-      if (key === "nisn") {
-        current.nisn = value.valueText ?? null;
-      }
-
-      result.set(value.studentProfileId, current);
-    }
-
-    return result;
   }
 
   async getSessions(
@@ -754,19 +691,13 @@ export class SessionsService {
       attendance.map((item) => [item.studentProfileId, item]),
     );
 
-    const identifierMap = await this.resolveStudentIdentifierValues(
-      tenantId,
-      roster.map((item) => item.studentProfileId),
-    );
-
     const students = roster.map((item) => {
       const current = attendanceMap.get(item.studentProfileId);
-      const identifiers = identifierMap.get(item.studentProfileId);
       return {
         studentProfileId: item.studentProfileId,
         studentName: item.studentProfile.user.name,
-        studentNis: identifiers?.nis ?? null,
-        studentNisn: identifiers?.nisn ?? null,
+        studentNis: item.studentProfile.nis ?? null,
+        studentNisn: item.studentProfile.nisn ?? null,
         status: current?.status ?? null,
         remarks: current?.remarks ?? null,
       };

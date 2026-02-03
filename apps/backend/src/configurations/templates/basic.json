@@ -7,20 +7,6 @@
     "customFields": {
       "student": [
         {
-          "key": "nis",
-          "label": "NIS",
-          "type": "text",
-          "validation": { "required": false },
-          "order": 1
-        },
-        {
-          "key": "nisn",
-          "label": "NISN",
-          "type": "text",
-          "validation": { "required": false },
-          "order": 2
-        },
-        {
           "key": "religion",
           "label": "Agama",
           "type": "select",
@@ -33,21 +19,21 @@
             { "label": "Konghucu", "value": "konghucu", "order": 6 }
           ],
           "validation": { "required": false },
-          "order": 3
+          "order": 1
         },
         {
           "key": "address",
           "label": "Alamat",
           "type": "text",
           "validation": { "required": false, "min": 3 },
-          "order": 4
+          "order": 2
         },
         {
           "key": "guardianPhone",
           "label": "No. HP Wali",
           "type": "text",
           "validation": { "required": false, "min": 6 },
-          "order": 5
+          "order": 3
         }
       ],
       "teacher": [

@@ -8,10 +8,10 @@ import {
   Role,
   AcademicStatus,
   PeriodStatus,
-  Gender,
   GroupType,
   UserStatus,
-  AttendanceStatus
+  AttendanceStatus,
+  Gender,
 } from "../src/generated/prisma/enums";
 import { Prisma } from "../src/generated/prisma/client";
 import type { TenantProfileField } from "../src/generated/prisma/client";
@@ -230,6 +230,14 @@ const loadCsv = async (filePath: string, requiredHeaders: string[]) => {
 const toOptional = (value?: string | null) =>
   value && value.length > 0 ? value : null;
 
+const toOptionalGender = (value?: string | null) => {
+  if (!value) return undefined;
+  const normalized = value.toUpperCase();
+  if (normalized === "MALE") return Gender.MALE;
+  if (normalized === "FEMALE") return Gender.FEMALE;
+  return undefined;
+};
+
 const toOptionalInt = (value?: string | null) => {
   if (!value) return null;
   const parsed = Number.parseInt(value, 10);
@@ -259,6 +267,45 @@ const toOptionalJson = (value?: string | null) => {
   }
 };
 
+const collectMissingIds = (
+  rows: CsvRow[],
+  key: string,
+  reference: Set<string>,
+) => {
+  const missing = new Set<string>();
+  for (const row of rows) {
+    const value = row[key];
+    if (value && !reference.has(value)) {
+      missing.add(value);
+    }
+  }
+  return Array.from(missing);
+};
+
+const collectDuplicateIds = (
+  rows: CsvRow[],
+  key: string,
+  options?: { allowBlank?: boolean },
+) => {
+  const seen = new Set<string>();
+  const duplicates = new Set<string>();
+  const allowBlank = options?.allowBlank ?? false;
+  for (const row of rows) {
+    const value = row[key];
+    if (!value && allowBlank) continue;
+    if (!value) {
+      duplicates.add("");
+      continue;
+    }
+    if (seen.has(value)) {
+      duplicates.add(value);
+    } else {
+      seen.add(value);
+    }
+  }
+  return Array.from(duplicates);
+};
+
 const CSV_HEADERS = {
   tenant: ["id", "name", "slug", "education_level", "active_academic_year_id"],
   academicYear: [
@@ -280,25 +327,9 @@ const CSV_HEADERS = {
     "order_index",
     "status",
   ],
-  user: [
-    "id",
-    "tenant_id",
-    "email",
-    "name",
-    "role",
-    "status",
-    "gender",
-    "date_of_birth",
-    "phone_number",
-  ],
-  teacherProfile: [
-    "id",
-    "tenant_id",
-    "user_id",
-    "hired_at",
-    "additional_identifiers",
-  ],
-  studentProfile: ["id", "tenant_id", "user_id", "additional_identifiers"],
+  user: ["id", "tenant_id", "email", "name", "role", "status"],
+  teacherProfile: ["id", "tenant_id", "user_id", "hired_at"],
+  studentProfile: ["id", "tenant_id", "user_id"],
   group: ["id", "tenant_id", "name", "type"],
   class: ["id", "tenant_id", "academic_year_id", "name"],
   classGroup: ["tenant_id", "class_id", "group_id"],
@@ -403,6 +434,7 @@ async function main() {
   console.log("🌱 Starting database seed from CSV...\n");
 
   const seedDir = resolveSeedDataPath();
+  console.log(`📂 Using seed data from: ${seedDir}`);
   const load = (fileName: string, headers: string[]) =>
     loadCsv(path.join(seedDir, `${fileName}.csv`), headers);
 
@@ -478,6 +510,66 @@ async function main() {
   );
   const attendanceRows = await load("attendance", CSV_HEADERS.attendance);
 
+  const duplicateStudentIds = collectDuplicateIds(studentProfileRows, "id");
+  if (duplicateStudentIds.length > 0) {
+    throw new Error(
+      `student_profile.csv has duplicate id values. Example: ${duplicateStudentIds.slice(0, 3).join(", ")}`,
+    );
+  }
+
+  const duplicateStudentUserIds = collectDuplicateIds(
+    studentProfileRows,
+    "user_id",
+  );
+  if (duplicateStudentUserIds.length > 0) {
+    throw new Error(
+      `student_profile.csv has duplicate user_id values. Example: ${duplicateStudentUserIds.slice(0, 3).join(", ")}`,
+    );
+  }
+
+  const duplicateStudentNis = collectDuplicateIds(studentProfileRows, "nis", {
+    allowBlank: true,
+  });
+  if (duplicateStudentNis.length > 0) {
+    throw new Error(
+      `student_profile.csv has duplicate nis values. Example: ${duplicateStudentNis.slice(0, 3).join(", ")}`,
+    );
+  }
+
+  const duplicateStudentNisn = collectDuplicateIds(studentProfileRows, "nisn", {
+    allowBlank: true,
+  });
+  if (duplicateStudentNisn.length > 0) {
+    throw new Error(
+      `student_profile.csv has duplicate nisn values. Example: ${duplicateStudentNisn.slice(0, 3).join(", ")}`,
+    );
+  }
+
+  const studentProfileIds = new Set(studentProfileRows.map((row) => row.id));
+  const classIds = new Set(classRows.map((row) => row.id));
+
+  const missingEnrollmentStudents = collectMissingIds(
+    classEnrollmentRows,
+    "student_profile_id",
+    studentProfileIds,
+  );
+  if (missingEnrollmentStudents.length > 0) {
+    throw new Error(
+      `class_enrollment.csv references ${missingEnrollmentStudents.length} missing student_profile_id values. Example: ${missingEnrollmentStudents.slice(0, 3).join(", ")}`,
+    );
+  }
+
+  const missingEnrollmentClasses = collectMissingIds(
+    classEnrollmentRows,
+    "class_id",
+    classIds,
+  );
+  if (missingEnrollmentClasses.length > 0) {
+    throw new Error(
+      `class_enrollment.csv references ${missingEnrollmentClasses.length} missing class_id values. Example: ${missingEnrollmentClasses.slice(0, 3).join(", ")}`,
+    );
+  }
+
   console.log("📦 Creating tenant...");
   await prisma.tenant.createMany({
     data: tenantRows.map((row) => ({
@@ -533,6 +625,8 @@ async function main() {
   const defaultPassword = process.env.SEED_DEFAULT_PASSWORD ?? "password123";
   const defaultPasswordHash = await argon2.hash(defaultPassword);
 
+  const userRowMap = new Map(userRows.map((row) => [row.id, row]));
+
   await prisma.user.createMany({
     data: userRows.map((row) => ({
       id: row.id,
@@ -542,15 +636,27 @@ async function main() {
       passwordHash: defaultPasswordHash,
       role: row.role as Role,
       status: (row.status as UserStatus) ?? UserStatus.ACTIVE,
-      gender: row.gender ? (row.gender as Gender) : undefined,
-      dateOfBirth: toOptionalDate(row.date_of_birth),
-      phoneNumber: toOptional(row.phone_number),
     })),
     skipDuplicates: true,
   });
 
   await prisma.teacherProfile.createMany({
     data: teacherProfileRows.map((row) => ({
+      ...(function resolveTeacherDemographics() {
+        const userRow = userRowMap.get(row.user_id);
+        const gender =
+          toOptionalGender(row.gender) ?? toOptionalGender(userRow?.gender);
+        const dateOfBirth =
+          toOptionalDate(row.date_of_birth) ??
+          toOptionalDate(userRow?.date_of_birth);
+        const phoneNumber =
+          toOptional(row.phone_number) ?? toOptional(userRow?.phone_number);
+        return {
+          gender: gender ?? undefined,
+          dateOfBirth: dateOfBirth ?? undefined,
+          phoneNumber: phoneNumber ?? undefined,
+        };
+      })(),
       id: row.id,
       tenantId: row.tenant_id,
       userId: row.user_id,
@@ -562,10 +668,35 @@ async function main() {
 
   await prisma.studentProfile.createMany({
     data: studentProfileRows.map((row) => ({
+      ...(function resolveStudentDemographics() {
+        const userRow = userRowMap.get(row.user_id);
+        const gender =
+          toOptionalGender(row.gender) ?? toOptionalGender(userRow?.gender);
+        const dateOfBirth =
+          toOptionalDate(row.date_of_birth) ??
+          toOptionalDate(userRow?.date_of_birth);
+        const phoneNumber =
+          toOptional(row.phone_number) ?? toOptional(userRow?.phone_number);
+        return {
+          gender: gender ?? undefined,
+          dateOfBirth: dateOfBirth ?? undefined,
+          phoneNumber: phoneNumber ?? undefined,
+        };
+      })(),
+      ...(function resolveStudentIdentifiers() {
+        const identifiers = toOptionalJson(row.additional_identifiers) as
+          | { nis?: string; nisn?: string }
+          | undefined;
+        const nis = toOptional(row.nis) ?? identifiers?.nis;
+        const nisn = toOptional(row.nisn) ?? identifiers?.nisn;
+        return {
+          nis: nis ?? undefined,
+          nisn: nisn ?? undefined,
+        };
+      })(),
       id: row.id,
       tenantId: row.tenant_id,
       userId: row.user_id,
-      additionalIdentifiers: toOptionalJson(row.additional_identifiers),
     })),
     skipDuplicates: true,
   });
@@ -823,15 +954,6 @@ async function main() {
     (field) => field.role === "teacher",
   );
 
-  const studentIdentifierMap = new Map(
-    studentProfileRows.map((row) => [
-      row.id,
-      toOptionalJson(row.additional_identifiers) as
-        | { nis?: string; nisn?: string }
-        | undefined,
-    ]),
-  );
-
   const teacherIdentifierMap = new Map(
     teacherProfileRows.map((row) => [
       row.id,
@@ -842,24 +964,18 @@ async function main() {
   );
 
   const studentValueSeeds = studentProfileRows.flatMap((student, index) =>
-    studentFieldsForValues.map((field) => {
-      const identifiers = studentIdentifierMap.get(student.id);
-      return {
-        tenantId: tenantRows[0].id,
-        studentProfileId: student.id,
-        fieldId: field.id,
-        ...(field.key === "nis"
-          ? { valueText: identifiers?.nis }
-          : field.key === "nisn"
-            ? { valueText: identifiers?.nisn }
-            : buildFieldValuePayload(field, index, new Date(2010, 0, 1))),
-      };
-    }),
+    studentFieldsForValues.map((field) => ({
+      tenantId: tenantRows[0].id,
+      studentProfileId: student.id,
+      fieldId: field.id,
+      ...buildFieldValuePayload(field, index, new Date(2010, 0, 1)),
+    })),
   );
 
   const teacherValueSeeds = teacherProfileRows.flatMap((teacher, index) =>
     teacherFieldsForValues.map((field) => {
       const identifiers = teacherIdentifierMap.get(teacher.id);
+
       return {
         tenantId: tenantRows[0].id,
         teacherProfileId: teacher.id,

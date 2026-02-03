@@ -1,4 +1,12 @@
-import { IsDateString, IsObject, IsOptional, IsUUID } from "class-validator";
+import {
+  IsDateString,
+  IsEnum,
+  IsObject,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from "class-validator";
+import { Gender } from "@repo/db";
 
 export class CreateTeacherProfileDto {
   @IsUUID()
@@ -7,6 +15,18 @@ export class CreateTeacherProfileDto {
   @IsOptional()
   @IsDateString()
   hiredAt?: string;
+
+  @IsOptional()
+  @IsEnum(Gender)
+  gender?: Gender;
+
+  @IsOptional()
+  @IsDateString()
+  dateOfBirth?: string;
+
+  @IsOptional()
+  @IsString()
+  phoneNumber?: string;
 
   @IsOptional()
   @IsObject()

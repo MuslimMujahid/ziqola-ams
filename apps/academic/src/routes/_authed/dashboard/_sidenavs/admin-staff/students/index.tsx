@@ -387,13 +387,13 @@ function StudentsPage() {
           role: "STUDENT",
           name: values.name.trim(),
           email: values.email.trim(),
-          gender: values.gender === "none" ? undefined : values.gender,
-          dateOfBirth: normalizeOptional(values.dateOfBirth),
-          phoneNumber: normalizeOptional(values.phoneNumber),
         });
 
         const profile = await createProfile.mutateAsync({
           userId: registerResponse.data.user.id,
+          gender: values.gender === "none" ? undefined : values.gender,
+          dateOfBirth: normalizeOptional(values.dateOfBirth),
+          phoneNumber: normalizeOptional(values.phoneNumber),
         });
 
         const selectedPeriod = academicPeriodsQuery.data?.data.find(
@@ -433,7 +433,6 @@ function StudentsPage() {
       createEnrollment,
       createProfile,
       getErrorMessage,
-      normalizeOptional,
       inviteUser,
       showFeedback,
       user?.tenantId,

@@ -16,6 +16,11 @@ type StudentListItem = {
   id: string;
   tenantId: string;
   userId: string;
+  gender?: "MALE" | "FEMALE" | null;
+  dateOfBirth?: string | null;
+  phoneNumber?: string | null;
+  nis?: string | null;
+  nisn?: string | null;
   createdAt?: string | null;
   updatedAt?: string | null;
   user: {
@@ -42,19 +47,31 @@ type StudentProfile = {
   id: string;
   tenantId: string;
   userId: string;
-  additionalIdentifiers?: Record<string, unknown> | null;
+  gender?: "MALE" | "FEMALE" | null;
+  dateOfBirth?: string | null;
+  phoneNumber?: string | null;
+  nis?: string | null;
+  nisn?: string | null;
   createdAt?: string | null;
   updatedAt?: string | null;
 };
 
 type CreateStudentProfileVars = {
   userId: string;
-  additionalIdentifiers?: Record<string, unknown>;
+  gender?: "MALE" | "FEMALE";
+  dateOfBirth?: string;
+  phoneNumber?: string;
+  nis?: string;
+  nisn?: string;
 };
 
 type UpdateStudentProfileVars = {
   id: string;
-  additionalIdentifiers?: Record<string, unknown>;
+  gender?: "MALE" | "FEMALE";
+  dateOfBirth?: string;
+  phoneNumber?: string;
+  nis?: string;
+  nisn?: string;
 };
 
 type CreateStudentProfileResponse = ApiResponse<StudentProfile>;

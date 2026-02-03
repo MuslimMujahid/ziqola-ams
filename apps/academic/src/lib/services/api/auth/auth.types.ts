@@ -10,8 +10,6 @@ type AuthUser = {
   isHomeroomTeacher?: boolean;
 };
 
-type Gender = "MALE" | "FEMALE";
-
 export type { AuthUser };
 
 export type LoginVars = {
@@ -37,16 +35,10 @@ export type RegisterVars = {
   email: string;
   name: string;
   role: AuthRole;
-  gender?: Gender;
-  dateOfBirth?: string;
-  phoneNumber?: string;
 };
 
 export type RegisterResponse = ApiResponse<{
   user: AuthUser & {
-    gender?: Gender | null;
-    dateOfBirth?: string | null;
-    phoneNumber?: string | null;
     createdAt?: string | null;
   };
 }>;
@@ -61,5 +53,3 @@ export type AcceptInviteResponse = ApiResponse<{
     status?: string | null;
   };
 }>;
-
-export type { Gender };

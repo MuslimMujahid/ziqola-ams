@@ -338,9 +338,6 @@ function TeachersPage() {
           role: "TEACHER",
           name: values.name.trim(),
           email: values.email.trim(),
-          gender: values.gender === "none" ? undefined : values.gender,
-          dateOfBirth: normalizeOptional(values.dateOfBirth),
-          phoneNumber: normalizeOptional(values.phoneNumber),
         });
 
         createdUserEmail = registerResponse.data.user.email;
@@ -348,6 +345,9 @@ function TeachersPage() {
         await createProfile.mutateAsync({
           userId: registerResponse.data.user.id,
           hiredAt: normalizeOptional(values.hiredAt),
+          gender: values.gender === "none" ? undefined : values.gender,
+          dateOfBirth: normalizeOptional(values.dateOfBirth),
+          phoneNumber: normalizeOptional(values.phoneNumber),
         });
 
         setIsCreateOpen(false);
@@ -380,8 +380,8 @@ function TeachersPage() {
     [
       createProfile,
       getErrorMessage,
-      normalizeOptional,
       inviteUser,
+      normalizeOptional,
       showFeedback,
       user?.tenantId,
     ],

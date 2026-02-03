@@ -1,156 +1,119 @@
-## Implementation Plan — Homeroom Recap Review + Score Table
+# Implementation Plan - Profile Identifiers and Demographics Refactor
 
-### Goal
+## Goal
 
-Extend the homeroom recap page so homeroom teachers can review submitted scores in a data table, in addition to approving/rejecting change requests.
+Refactor student identifiers and user demographics as follows:
 
-### Scope
+- Move NIS and NISN to StudentProfile as nullable columns with unique-per-tenant constraints.
+- Remove StudentProfile.additionalIdentifiers from schema and code.
+- Remove User.gender, User.dateOfBirth, and User.phoneNumber; store these as profile custom field values for students and teachers only.
+- Keep TeacherProfile.additionalIdentifiers unchanged for now.
 
-- Backend: add a homeroom recap detail endpoint that returns score data for a selected submission (students + assessment type breakdown).
-- Frontend (Academic app): add table view to the homeroom recap page, reuse existing table patterns, and keep the approve/reject flow intact.
+## Scope
 
-### Requirements (Updated)
+- Database schema, migrations, and data backfill.
+- Backend services, DTOs, and API response shapes for users and profiles.
+- Frontend API types and UI usage for student profile data.
+- Seed and migration scripts touching identifiers and profile fields.
 
-1. Replace the recap list with selector-driven review (no separate list view).
-2. Add a class filter plus a single selector for subject - teacher.
-3. Default to the most recent submitted recap for the selected class.
-4. Scope to active period only (no period filter).
-5. Display summary cards and a data table for the selected recap.
-6. Continue to allow approve/reject from the detail view with change-request status next to actions.
+## Out of Scope
 
-### Out of Scope
+- Admin/principal demographic fields (future work).
+- Removing TeacherProfile.additionalIdentifiers.
 
-### Requirements (Updated)
+## Current State Summary (Key Observations)
 
-### UI/UX Design
+- Student identifiers (nis/nisn) are stored as TenantProfileField + StudentProfileFieldValue and used in backend services and student UI.
+- StudentProfile.additionalIdentifiers is created/updated/exposed in the backend and frontend.
+- User.gender, User.dateOfBirth, and User.phoneNumber are stored on User and used in create/update flows and profile responses.
+- Seed and migration scripts assume identifier custom fields and additional identifiers on profiles.
 
-- Replace the list with a selector bar:
-  - Class dropdown.
-  - Subject - teacher dropdown (disabled until class selected).
-- Show summary cards and the data table for the selected recap.
-- Place change-request status next to the approve/reject actions.
-- Keep colors and layout consistent with the current flat design system (no borders or shadows).
+## Requirements and Constraints
 
-2. Allow homeroom teachers to open a submitted recap and review student scores.
-3. Display scores using a data table (sortable, paginated like other tables).
+- NIS and NISN must be unique per tenant, nullable.
+- Demographic fields are only needed for student and teacher roles for now.
+- No backward compatibility required for API responses.
 
-### Current Implementation Review
+## Implementation Plan
 
-### API/Data Design
+### 1) Schema Changes (Prisma)
 
-- **Selector data endpoint**: extend `GET /assessment-recap/homeroom` to return
-  active-period submissions grouped by class and subject-teacher pairs
-  (or add a lightweight `GET /assessment-recap/homeroom/options`).
-- **Detail endpoint**: `GET /assessment-recap/homeroom/:submissionId`
-  - Response should include: class, subject, period labels, assessment types, class KKM, and student rows with component scores and final score.
-  - Match the shape of existing teacher recap data where possible to reuse table logic.
+- Add StudentProfile columns:
+  - nis String? and nisn String?
+  - Add @@unique([tenantId, nis]) and @@unique([tenantId, nisn])
+- Remove StudentProfile.additionalIdentifiers.
+- Remove User.gender, User.dateOfBirth, User.phoneNumber.
+- Keep TeacherProfile.additionalIdentifiers unchanged.
 
-- Homeroom recap list and decisions already exist in [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/compile/index.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/compile/index.tsx).
-- Recap table component exists in [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/recap/-components/recap-table.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/recap/-components/recap-table.tsx) and uses the shared data table pattern.
+### 2) Data Migration Strategy
 
-### API/Data Design
+- Preflight checks:
+  - Scan for duplicate nis/nisn per tenant in existing custom field values.
+  - Decide whether to fail migration or resolve duplicates manually.
+- Backfill StudentProfile.nis and StudentProfile.nisn from StudentProfileFieldValue (keys: nis, nisn).
+- Backfill TeacherProfileFieldValue and StudentProfileFieldValue for gender, dateOfBirth, phoneNumber from User columns.
+  - Confirm or add TenantProfileField definitions for these keys and ensure types are consistent.
+- Optional cleanup:
+  - Deprecate or disable nis/nisn profile fields after backfill to avoid divergence.
 
-1. **Backend: DTOs + Types**
-   - Add a DTO for homeroom recap detail parameters.
-   - Add response types for recap detail (assessment types + students + KKM).
-   - Add selector option response types if using a dedicated options endpoint.
+### 3) Backend Updates
 
-- **Detail endpoint**: `GET /assessment-recap/homeroom/:submissionId`
-  - Response should include: class, subject, period labels, assessment types, class KKM, and student rows with component scores and final score.
-  - Match the shape of existing teacher recap data where possible to reuse table logic.
+- Users module:
+  - Remove gender/dateOfBirth/phoneNumber from DTOs and service create/update/select payloads.
+  - Adjust response shapes to no longer expose those fields on User.
+- Profiles module:
+  - Remove StudentProfile.additionalIdentifiers from create/update/find methods and selects.
+  - Add nis/nisn to StudentProfile select/response as needed.
+  - Ensure TeacherProfile remains unchanged except for removal of user demographic fields.
+- Sessions service:
+  - Replace lookup of nis/nisn via profile field values with StudentProfile.nis/nisn.
+- Assessment recap service:
+  - Replace nis lookups via profile field values with StudentProfile.nis.
+- Profile custom fields:
+  - Ensure endpoints can create/update field values for gender, dateOfBirth, phoneNumber for both students and teachers.
 
-2. **Backend: Service Logic**
-   - Implement a detail query scoped by submission ID and homeroom authorization.
-   - If needed, implement selector options query (class + subject-teacher pairs for active period).
+### 4) Frontend Updates (Academic App)
 
-### UI/UX Design
+- Update API types:
+  - Remove gender/dateOfBirth/phoneNumber from user types.
+  - Remove StudentProfile.additionalIdentifiers from student types.
+  - Add nis/nisn to student profile types as required by UI.
+- Update data usage:
+  - Student top nav/profile card should use StudentProfile.nis from profile endpoints instead of custom fields.
+  - Teacher profile UI should no longer rely on user demographics; use profile field values if required.
 
-- Add a “Lihat Rekap” action on each list card to open score details.
+### 5) Seed and Migration Tooling
 
-3. **Backend: Controller + Permissions**
-   - Add a `GET /assessment-recap/homeroom/:submissionId` route.
-   - Add `GET /assessment-recap/homeroom/options` if separating selector data.
-   - Keep permission aligned with `ASSESSMENT_READ` and homeroom checks.
+- Update seed CSV headers and payload mapping to remove user demographics and student additional identifiers.
+- Update seed logic to populate StudentProfile.nis/nisn directly.
+- Update or replace migrate-profile-identifiers script:
+  - New direction: migrate nis/nisn from custom fields into StudentProfile columns.
+  - Ensure script is idempotent and logs duplicates.
 
-- Show scores in a data table using the same table component or a small wrapper that adapts data to the existing column model.
-- Use a split layout or expandable panel:
-  - Option A: expand/collapse under each list item.
-  - Option B: right-side panel or dialog with the data table.
+### 6) Validation and Cleanup
 
-4. **Frontend: API Client + Hooks**
-   - Add API client and hooks to fetch selector options and recap detail by submission ID.
-   - Add query keys for options + detail caching and invalidation.
+- Remove unused fields from API responses and client types.
+- Delete or disable unused TenantProfileField entries for nis/nisn if desired.
+- Verify no remaining references to StudentProfile.additionalIdentifiers or User demographics.
 
-- Keep colors and layout consistent with the current flat design system (no borders or shadows).
+## Testing Plan
 
-### Implementation Tasks
+- Database migration:
+  - Verify migration runs with existing data.
+  - Validate unique constraints for nis/nisn with NULLs allowed.
+- Backend API:
+  - Users list, get, update, invite flows no longer include demographics.
+  - Student and teacher profile endpoints return expected data.
+  - Sessions attendance and assessment recap still include student identifiers.
+- Frontend:
+  - Student dashboard profile card shows NIS from StudentProfile.
+  - User management and profile screens work without demographics on User.
+- Seed and scripts:
+  - Seed completes without missing columns.
+  - Migration script correctly backfills nis/nisn and demographics field values.
 
-5. **Frontend: Data Mapping**
-   - Transform detail data into `RecapTableRow` to reuse [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/recap/-components/recap-table.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/recap/-components/recap-table.tsx).
-   - Compute summary cards from detail data or use API-provided summary.
-1. **Backend: DTOs + Types**
-   - Add a DTO for homeroom recap detail parameters.
-   - Add response types for recap detail (assessment types + students + KKM).
+## Risks and Open Questions
 
-1. **Backend: Service Logic**
-1. **Frontend: UI Updates**
-   - Replace the list with selector controls (class + subject-teacher).
-   - Default to the latest submission for the selected class.
-   - Render summary cards and the recap table for the selected submission.
-   - Show change-request status next to approve/reject actions.
-   - Implement a detail query that reuses the existing recap computation but scoped by submission ID and homeroom authorization.
-   - Validate homeroom ownership of the class linked to the submission.
-
-1. **Backend: Controller + Permissions**
-1. **Frontend: Loading + Empty States**
-   - Add skeleton state for selector + detail table.
-   - Show empty state if no submissions exist for a class.
-   - Add a `GET /assessment-recap/homeroom/:submissionId` route.
-   - Keep permission aligned with `ASSESSMENT_READ` and homeroom checks.
-1. **Frontend: API Client + Hooks**
-   - Add API client and hooks to fetch homeroom recap detail by submission ID.
-
-### Testing Plan
-
-- **Backend**
-  - Verify options endpoint returns only active-period submissions.
-  - Verify detail endpoint returns consistent assessment types and student rows.
-  - Verify homeroom authorization blocks non-homeroom access.
-  - Add query keys for detail caching and invalidation.
-
-5. **Frontend: Data Mapping**
-   - Transform detail data into `RecapTableRow` to reuse [apps/academic/src/routes/\_authed/dashboard/\_topnavs/teacher/recap/-components/recap-table.tsx](apps/academic/src/routes/_authed/dashboard/_topnavs/teacher/recap/-components/recap-table.tsx).
-
-- **Frontend**
-  - Manual UI: selector loads, default selection applies, table renders, actions work.
-  - Regression: approve/reject flow invalidates options + detail data.
-  - Ensure assessment type averages and final score are computed or passed from the API.
-
-### Risks / Open Questions
-
-### Decision Summary
-
-- Selector fields: Class + Subject - Teacher.
-- Default selection: most recent submission for the selected class.
-- Period scope: active period only (no period filter).
-- Change-request status placement: next to action buttons.
-  - Render the table panel (expandable section or modal) with the selected recap’s data.
-
-7. **Frontend: Loading + Empty States**
-   - Add a skeleton state for the detail table.
-   - Show a friendly empty state if no students are returned.
-
-### Testing Plan
-
-- **Backend**
-  - Verify detail endpoint returns consistent assessment types and student rows.
-  - Verify homeroom authorization blocks non-homeroom access.
-
-- **Frontend**
-  - Manual UI: list loads, detail opens, table renders, and actions still work.
-  - Regression: approve/reject flow still invalidates list and detail data.
-
-### Risks / Open Questions
-
-- Decide whether detail view should be inline expansion or modal panel for best usability.
-- Confirm whether to return only active period data or allow historical submissions.
+- Duplicate nis/nisn values per tenant can block migration due to unique constraints.
+- Confirm final key names and types for gender, dateOfBirth, phoneNumber in TenantProfileField.
+- Decide whether to keep nis/nisn custom fields for legacy display or disable them post-migration.

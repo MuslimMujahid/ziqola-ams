@@ -55,9 +55,6 @@ export class AuthService {
         email: true,
         name: true,
         role: true,
-        gender: true,
-        dateOfBirth: true,
-        phoneNumber: true,
         createdAt: true,
         passwordHash: true,
         status: true,
@@ -91,9 +88,6 @@ export class AuthService {
       name: user.name,
       role: user.role,
       isHomeroomTeacher,
-      gender: user.gender,
-      dateOfBirth: user.dateOfBirth,
-      phoneNumber: user.phoneNumber,
       createdAt: user.createdAt,
     };
     return { user: safeUser, accessToken: token };

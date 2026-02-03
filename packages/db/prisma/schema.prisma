@@ -196,11 +196,6 @@ model User {
   inviteSentCount Int @default(0)
   invitedById String?
 
-  // Optional user-level attributes
-  gender      Gender?
-  dateOfBirth DateTime?
-  phoneNumber       String?
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -227,6 +222,10 @@ model TeacherProfile {
 
   userId      String  @unique
   user        User    @relation("TeacherProfileUser", fields: [userId], references: [id])
+
+  gender      Gender?
+  dateOfBirth DateTime?
+  phoneNumber String?
 
   additionalIdentifiers Json?
 
@@ -257,12 +256,19 @@ model StudentProfile {
   userId      String  @unique
   user        User    @relation("StudentProfileUser", fields: [userId], references: [id])
 
-  additionalIdentifiers Json?
+  gender      Gender?
+  dateOfBirth DateTime?
+  phoneNumber String?
+
+  nis         String?
+  nisn        String?
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([tenantId])
+  @@unique([tenantId, nis])
+  @@unique([tenantId, nisn])
 
   // Back-relations (student context)
   classEnrollments ClassEnrollment[]     @relation("ClassEnrollmentStudentProfile")

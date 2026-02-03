@@ -1,10 +1,33 @@
-import { IsObject, IsOptional, IsUUID } from "class-validator";
+import {
+  IsDateString,
+  IsEnum,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from "class-validator";
+import { Gender } from "@repo/db";
 
 export class CreateStudentProfileDto {
   @IsUUID()
   userId: string;
 
   @IsOptional()
-  @IsObject()
-  additionalIdentifiers?: Record<string, unknown>;
+  @IsString()
+  nis?: string;
+
+  @IsOptional()
+  @IsString()
+  nisn?: string;
+
+  @IsOptional()
+  @IsEnum(Gender)
+  gender?: Gender;
+
+  @IsOptional()
+  @IsDateString()
+  dateOfBirth?: string;
+
+  @IsOptional()
+  @IsString()
+  phoneNumber?: string;
 }

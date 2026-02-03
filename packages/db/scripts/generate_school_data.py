@@ -302,9 +302,6 @@ def build_users_and_profiles(
             "name": admin_name,
             "role": "ADMIN_STAFF",
             "status": "ACTIVE",
-            "gender": pick_gender(),
-            "date_of_birth": to_iso(birth_date_for("MALE", 30, 50)),
-            "phone_number": faker.phone_number(),
         }
     )
 
@@ -318,9 +315,6 @@ def build_users_and_profiles(
             "name": principal_name,
             "role": "PRINCIPAL",
             "status": "ACTIVE",
-            "gender": pick_gender(),
-            "date_of_birth": to_iso(birth_date_for("MALE", 35, 55)),
-            "phone_number": faker.phone_number(),
         }
     )
 
@@ -338,9 +332,6 @@ def build_users_and_profiles(
                 "name": name,
                 "role": "TEACHER",
                 "status": "ACTIVE",
-                "gender": gender,
-                "date_of_birth": to_iso(birth_date_for(gender, 24, 55)),
-                "phone_number": faker.phone_number(),
             }
         )
 
@@ -354,6 +345,9 @@ def build_users_and_profiles(
                 "user_id": user_id,
                 "hired_at": to_iso(date(rng.randint(2005, 2023), rng.randint(1, 12), 1)),
                 "additional_identifiers": json.dumps({"nip": nip, "nuptk": nuptk}),
+                "gender": gender,
+                "date_of_birth": to_iso(birth_date_for(gender, 24, 55)),
+                "phone_number": faker.phone_number(),
             }
         )
 
@@ -396,6 +390,21 @@ def build_student_cohorts(
 
     cohort_students: dict[str, list[dict[str, Any]]] = {key: [] for key in cohort_definitions}
 
+    nis_counter = 1000
+    nisn_counter = 1000000000
+
+    def next_incremental_nis(year: int) -> str:
+        nonlocal nis_counter
+        value = f"{year}{nis_counter:04d}"
+        nis_counter += 1
+        return value
+
+    def next_incremental_nisn() -> str:
+        nonlocal nisn_counter
+        value = f"{nisn_counter:010d}"
+        nisn_counter += 1
+        return value
+
     for cohort_key in cohort_definitions:
         for stream in streams:
             for section in range(1, classes_per_stream + 1):
@@ -420,23 +429,24 @@ def build_student_cohorts(
                             "name": name,
                             "role": "STUDENT",
                             "status": "ACTIVE",
-                            "gender": gender,
-                            "date_of_birth": to_iso(
-                                date(rng.randint(2006, 2012), rng.randint(1, 12), rng.randint(1, 28))
-                            ),
-                            "phone_number": faker.phone_number(),
                         }
                     )
 
                     student_profile_id = id_factory.make("student_profile", user_id)
-                    nis = f"{rng.randint(2020,2026)}{rng.randint(1000,9999)}"
-                    nisn = f"{rng.randint(1000000000, 9999999999)}"
+                    nis = next_incremental_nis(date.today().year)
+                    nisn = next_incremental_nisn()
                     student_profiles.append(
                         {
                             "id": student_profile_id,
                             "tenant_id": id_factory.make("tenant", config.tenant_slug),
                             "user_id": user_id,
-                            "additional_identifiers": json.dumps({"nis": nis, "nisn": nisn}),
+                            "nis": nis,
+                            "nisn": nisn,
+                            "gender": gender,
+                            "date_of_birth": to_iso(
+                                date(rng.randint(2006, 2012), rng.randint(1, 12), rng.randint(1, 28))
+                            ),
+                            "phone_number": faker.phone_number(),
                         }
                     )
 

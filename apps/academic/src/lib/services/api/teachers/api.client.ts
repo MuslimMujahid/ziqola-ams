@@ -20,7 +20,14 @@ async function getTeacherProfiles(params?: GetTeacherProfilesVars) {
 async function createTeacherProfile(vars: CreateTeacherProfileVars) {
   const response = await clientApi.post<CreateTeacherProfileResponse>(
     "/profiles/teacher",
-    vars,
+    {
+      userId: vars.userId,
+      hiredAt: vars.hiredAt,
+      gender: vars.gender,
+      dateOfBirth: vars.dateOfBirth,
+      phoneNumber: vars.phoneNumber,
+      additionalIdentifiers: vars.additionalIdentifiers,
+    },
   );
   return response.data.data;
 }
@@ -44,6 +51,9 @@ async function updateTeacherProfile(vars: UpdateTeacherProfileVars) {
     `/profiles/teacher/${vars.id}`,
     {
       hiredAt: vars.hiredAt,
+      gender: vars.gender,
+      dateOfBirth: vars.dateOfBirth,
+      phoneNumber: vars.phoneNumber,
       additionalIdentifiers: vars.additionalIdentifiers,
     },
   );
