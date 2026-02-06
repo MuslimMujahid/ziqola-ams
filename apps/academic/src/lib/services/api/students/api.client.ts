@@ -5,6 +5,8 @@ import type {
   GetStudentsResponse,
   GetStudentsVars,
   GetStudentProfileResponse,
+  ImportStudentsResponse,
+  ImportStudentsVars,
   UpdateStudentProfileResponse,
   UpdateStudentProfileVars,
 } from "./students.types";
@@ -53,5 +55,22 @@ async function updateStudentProfile(vars: UpdateStudentProfileVars) {
   return response.data.data;
 }
 
+async function getStudentImportTemplate() {
+  const response = await clientApi.get<Blob>("/profiles/student/template", {
+    responseType: "blob",
+  });
+  return response.data;
+}
+
+async function importStudents(vars: ImportStudentsVars, signal?: AbortSignal) {
+  const response = await clientApi.post<ImportStudentsResponse>(
+    "/profiles/student/import",
+    vars,
+    { signal },
+  );
+  return response.data;
+}
+
 export { getStudents, createStudentProfile, updateStudentProfile };
 export { getStudentProfileByUserId };
+export { getStudentImportTemplate, importStudents };

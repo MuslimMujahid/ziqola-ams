@@ -78,6 +78,33 @@ type CreateStudentProfileResponse = ApiResponse<StudentProfile>;
 
 type UpdateStudentProfileResponse = ApiResponse<StudentProfile>;
 
+type ImportStudentsRow = {
+  name: string;
+  email: string;
+  className: string;
+  nisn: string;
+  customFields?: Record<string, string>;
+};
+
+type ImportStudentsVars = {
+  academicYearId: string;
+  academicPeriodId: string;
+  rows: ImportStudentsRow[];
+};
+
+type ImportStudentsError = {
+  rowIndex: number | null;
+  field: string;
+  message: string;
+};
+
+type ImportStudentsResult = {
+  createdCount: number;
+  errors: ImportStudentsError[];
+};
+
+type ImportStudentsResponse = ApiResponse<ImportStudentsResult>;
+
 export type {
   StudentClassSummary,
   StudentListItem,
@@ -89,4 +116,9 @@ export type {
   UpdateStudentProfileVars,
   CreateStudentProfileResponse,
   UpdateStudentProfileResponse,
+  ImportStudentsRow,
+  ImportStudentsVars,
+  ImportStudentsError,
+  ImportStudentsResult,
+  ImportStudentsResponse,
 };

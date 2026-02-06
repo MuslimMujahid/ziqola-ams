@@ -1,5 +1,5 @@
 import React from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import type {
   ColumnDef,
   PaginationState,
@@ -10,6 +10,7 @@ import {
   Loader2Icon,
   PlusIcon,
   RefreshCwIcon,
+  UploadCloudIcon,
 } from "lucide-react";
 
 import { DataTable } from "@/components/data-table/data-table";
@@ -595,6 +596,18 @@ function StudentsPage() {
               />
             )}
             Export
+          </Button>
+          <Button
+            asChild
+            type="button"
+            variant="secondary"
+            className="gap-2"
+            disabled={isYearMissing || isPeriodMissing}
+          >
+            <Link to="/dashboard/admin-staff/students/import">
+              <UploadCloudIcon className="h-4 w-4" aria-hidden="true" />
+              Impor siswa
+            </Link>
           </Button>
           <Button type="button" onClick={handleOpenCreate} className="gap-2">
             <PlusIcon className="h-4 w-4" aria-hidden="true" />
