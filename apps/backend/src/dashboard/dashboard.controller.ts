@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards, Query } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
@@ -13,7 +13,16 @@ export class DashboardController {
 
   @Get('admin-staff/summary')
   @Roles(Role.ADMIN_STAFF, Role.PRINCIPAL)
-  async getAdminStaffSummary(@User() user: { tenantId: string }) {
-    return this.dashboardService.getAdminStaffSummary(user.tenantId);
+  async getAdminStaffSummary(
+    @User() user: { tenantId: string },
+    @Query('academicYearId') queryYearId?: string,
+    @Query('academicPeriodId') queryPeriodId?: string,
+  ) {
+    return this.dashboardService.getAdminStaffSummary(
+      user.tenantId,
+      queryYearId,
+      queryPeriodId,
+    );
   }
 }
+

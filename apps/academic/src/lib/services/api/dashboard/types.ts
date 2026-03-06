@@ -37,3 +37,8 @@ export type AdminStaffDashboardResponse = {
   activities: AdminStaffActivityItem[];
   alerts: AdminStaffAlertItem[];
 };
+
+export type GetAdminStaffDashboardSummaryVars = {
+  academicYearId?: string | null;
+  academicPeriodId?: string | null;
+};

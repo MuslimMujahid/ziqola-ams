@@ -87,7 +87,8 @@ This change introduces a new **Dashboard** feature that replaces mock data with 
 4. **Parallel DB queries**: `Promise.all()` is used for the four main count queries, which is a performance win.
 5. **Clean API Architecture**: Query keys factory and client hooks pattern are strictly adhered to, allowing for easy server-side usage if required later.
 6. **Graceful degradation**: The frontend elegantly handles `null` API values for features that are still "Coming Soon."
+7. **Workspace Context Integration**: The new query filtering appropriately utilizes the `useWorkspaceStore` on the frontend, accurately passing `academicYearId` and `academicPeriodId` to the NestJS backend which gracefully falls back to `ACTIVE` values, maintaining correct UI scoping.
 
 ## Conclusion
 **Status:** **APPROVED** 🟢
-The implementation has fully cleared the code review. It's ready to be staged and committed.
+The implementation has fully cleared the code review. The addition of global workspace filtering on top of the initial fixes is robust and well-executed. It's ready to be staged and committed.

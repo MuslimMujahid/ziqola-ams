@@ -5,18 +5,31 @@ import { PrismaService } from '../prisma/prisma.service';
 export class DashboardService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getAdminStaffSummary(tenantId: string) {
+  async getAdminStaffSummary(
+    tenantId: string,
+    queryYearId?: string,
+    queryPeriodId?: string,
+  ) {
     const activeYear = await this.prisma.client.academicYear.findFirst({
       where: {
         tenantId,
-        status: 'ACTIVE',
+        ...(queryYearId ? { id: queryYearId } : { status: 'ACTIVE' }),
       },
       include: {
         activePeriod: true,
       },
     });
 
-    const activePeriodName = activeYear?.activePeriod?.name || 'Belum diatur';
+    let activePeriodName = activeYear?.activePeriod?.name || 'Belum diatur';
+    if (queryPeriodId && queryPeriodId !== activeYear?.activePeriodId) {
+      const specificPeriod = await this.prisma.client.academicPeriod.findUnique({
+        where: { id: queryPeriodId },
+      });
+      if (specificPeriod) {
+        activePeriodName = specificPeriod.name;
+      }
+    }
+
     const activeYearLabel = activeYear?.label || 'Belum diatur';
 
     const tenant = await this.prisma.client.tenant.findUnique({
@@ -26,7 +39,20 @@ export class DashboardService {
 
     // 1. STAT_ITEMS
     const [totalStudents, totalClasses, totalSubjects, totalTeachers] = await Promise.all([
-      this.prisma.client.studentProfile.count({ where: { tenantId } }),
+      this.prisma.client.studentProfile.count({ 
+        where: { 
+          tenantId,
+          ...(activeYear?.id ? {
+            classEnrollments: {
+              some: {
+                class: {
+                  academicYearId: activeYear.id
+                }
+              }
+            }
+          } : {})
+        } 
+      }),
       this.prisma.client.class.count({ 
         where: { 
           tenantId, 
