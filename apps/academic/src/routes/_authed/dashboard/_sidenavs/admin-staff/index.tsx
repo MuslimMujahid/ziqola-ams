@@ -165,9 +165,9 @@ function AdminStaffDashboardIndexPage() {
     },
     {
       label: "Jadwal",
-      value: dashboardData?.stats.incompleteSchedulesClassCount !== null && dashboardData?.stats.incompleteSchedulesClassCount !== undefined
-        ? dashboardData?.stats.incompleteSchedulesClassCount.toString()
-        : "-",
+      value: dashboardData?.stats.schedulePercentage !== null && dashboardData?.stats.schedulePercentage !== undefined
+        ? `${dashboardData.stats.schedulePercentage}%`
+        : "0%",
       helper: dashboardData?.stats.incompleteSchedulesClassCount !== null && dashboardData?.stats.incompleteSchedulesClassCount !== undefined
         ? `${dashboardData?.stats.incompleteSchedulesClassCount} kelas belum lengkap`
         : "Segera hadir",

@@ -6,6 +6,7 @@ export type AdminStaffStatItems = {
   unusedSubjectsCount: number;
   totalTeachers: number;
   unassignedTeachers: number;
+  schedulePercentage: number;
   incompleteSchedulesClassCount: number;
   dataIssuesCount: number;
 };

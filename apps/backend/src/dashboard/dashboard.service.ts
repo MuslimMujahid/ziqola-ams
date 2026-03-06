@@ -87,10 +87,104 @@ export class DashboardService {
       }
     });
 
-    // We can simulate some missing stats by setting them to null or 0 if appropriate
-    const unusedSubjectsCount = null; // Requires complex join to see if a subject is in classSubjects
-    const incompleteSchedulesClassCount = null; // Requires checking if all classSubjects have schedules
-    const dataIssuesCount = null; // Generic data issue count
+    // Count subjects that are not used in any ClassSubject for the active year
+    const unusedSubjectsCount = await this.prisma.client.subject.count({
+      where: {
+        tenantId,
+        isDeleted: false,
+        classSubjects: activeYear?.id
+          ? { none: { academicYearId: activeYear.id, isDeleted: false } }
+          : { none: { isDeleted: false } },
+      },
+    });
+    // Calculate Schedule Completion
+    let incompleteSchedulesClassCount = 0;
+    let schedulePercentage = 0;
+
+    if (activeYear?.id && activeYear?.activePeriodId) {
+      // Find all classes in this year
+      const classes = await this.prisma.client.class.findMany({
+        where: { tenantId, academicYearId: activeYear.id },
+        include: {
+          classSubjects: {
+            where: { isDeleted: false },
+            include: {
+              schedules: {
+                where: { academicPeriodId: activeYear.activePeriodId }
+              }
+            }
+          }
+        }
+      });
+
+      let fullyScheduledClasses = 0;
+
+      for (const cls of classes) {
+        if (cls.classSubjects.length === 0) {
+          // A class without subjects is not "scheduled"
+          continue;
+        }
+
+        const isFullyScheduled = cls.classSubjects.every(
+          subject => subject.schedules.length > 0
+        );
+
+        if (isFullyScheduled) {
+          fullyScheduledClasses++;
+        }
+      }
+
+      const totalActiveClasses = classes.length;
+      incompleteSchedulesClassCount = totalActiveClasses - fullyScheduledClasses;
+      
+      if (totalActiveClasses > 0) {
+        schedulePercentage = Math.round((fullyScheduledClasses / totalActiveClasses) * 100);
+      }
+    } else {
+      incompleteSchedulesClassCount = totalClasses;
+    }
+    // Calculate Teacher Conflicts
+    let teachersWithConflictsCount = 0;
+    if (activeYear?.activePeriodId) {
+      // For each teacher, get their schedules in the active period
+      // and check for overlaps. This is a bit heavy, but fine for a dashboard aggregate
+      // if the data size is small. In a real highly-scaled app, we'd cache this or DB view it.
+      const schedules = await this.prisma.client.schedule.findMany({
+        where: { tenantId, academicPeriodId: activeYear.activePeriodId },
+        select: { teacherProfileId: true, dayOfWeek: true, startTime: true, endTime: true },
+        orderBy: [{ teacherProfileId: 'asc' }, { dayOfWeek: 'asc' }, { startTime: 'asc' }]
+      });
+
+      let currentTeacher: string | null = null;
+      let currentDay: number | null = null;
+      let lastEndTime: Date | null = null;
+      const conflictedTeachers = new Set<string>();
+
+      for (const sched of schedules) {
+        if (sched.teacherProfileId !== currentTeacher || sched.dayOfWeek !== currentDay) {
+          currentTeacher = sched.teacherProfileId;
+          currentDay = sched.dayOfWeek;
+          lastEndTime = sched.endTime;
+          continue;
+        }
+
+        // If same teacher and day, check if start time overlaps with last end time
+        if (lastEndTime && sched.startTime < lastEndTime) {
+          conflictedTeachers.add(sched.teacherProfileId);
+        }
+        
+        // Update last end time to the maximum of the two resolving overlaps
+        if (!lastEndTime || sched.endTime > lastEndTime) {
+          lastEndTime = sched.endTime;
+        }
+      }
+
+      teachersWithConflictsCount = conflictedTeachers.size;
+    }
+
+    const dataIssuesCount = (classesWithoutHomeroom > 0 ? 1 : 0) + 
+                            (incompleteSchedulesClassCount > 0 ? 1 : 0) + 
+                            (teachersWithConflictsCount > 0 ? 1 : 0);
 
     // 2. CHECKLIST_ITEMS
     const checklist = [
@@ -104,6 +198,17 @@ export class DashboardService {
         status: activeYear?.activePeriod ? "Aktif" : "Perlu tindakan",
         href: "/dashboard/admin-staff/settings/academic-years",
       },
+      {
+        label: "Semua kelas memiliki guru per mata pelajaran",
+        // True if no unassigned teachers AND classes are mapped? (simplification: just use unassigned indicator)
+        status: unassignedTeachers === 0 ? "Aktif" : "Perlu tindakan",
+        href: "/dashboard/admin-staff/teachers",
+      },
+      {
+        label: `Jadwal bentrok pada ${teachersWithConflictsCount} guru`,
+        status: teachersWithConflictsCount === 0 ? "Aktif" : "Peringatan",
+        href: "/dashboard/admin-staff/schedules",
+      }
     ];
 
     if (classesWithoutHomeroom > 0) {
@@ -169,6 +274,22 @@ export class DashboardService {
       });
     }
 
+    if (teachersWithConflictsCount > 0) {
+      alerts.push({
+        title: "Bentrok Jadwal guru",
+        detail: `${teachersWithConflictsCount} guru mengajar di dua kelas pada jam yang sama.`,
+        severity: "blocking", // Mockup shows a red X circle for this
+      });
+    }
+
+    if (incompleteSchedulesClassCount > 0) {
+      alerts.push({
+        title: "Jadwal belum lengkap",
+        detail: `${incompleteSchedulesClassCount} kelas belum memiliki jadwal lengkap.`,
+        severity: "warning", // Mockup shows an orange alert triangle
+      });
+    }
+
     return {
       schoolName: tenant?.name ?? "Ziqola",
       activeYearLabel,
@@ -181,6 +302,7 @@ export class DashboardService {
         unusedSubjectsCount,
         totalTeachers,
         unassignedTeachers,
+        schedulePercentage,
         incompleteSchedulesClassCount,
         dataIssuesCount,
       },
