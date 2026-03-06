@@ -9,15 +9,22 @@ echo "🚀 Starting development deployment..."
 
 # 0. Setup environment files
 echo "🔐 Setting up environment files..."
-if [ ! -f .env ]; then
+
+# Determine source env file
+ENV_SOURCE=".env.example"
+if [ -f .env ]; then
+  ENV_SOURCE=".env"
+  echo "ℹ️ Using existing root .env as source"
+else
   echo "📄 Creating root .env from .env.example"
   cp .env.example .env
 fi
 
-if [ ! -f packages/db/.env ]; then
-  echo "📄 Creating packages/db/.env from .env.example"
-  cp .env.example packages/db/.env
-fi
+# Distribute env to apps and packages
+for dir in packages/db apps/backend apps/academic apps/web; do
+  echo "📄 Syncing $dir/.env from $ENV_SOURCE"
+  cp "$ENV_SOURCE" "$dir/.env"
+done
 echo "📦 Installing dependencies..."
 pnpm install
 
