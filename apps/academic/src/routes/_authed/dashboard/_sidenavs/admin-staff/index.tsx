@@ -19,15 +19,10 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { useGetAdminStaffDashboard } from "@/lib/hooks/dashboard/use-get-admin-staff-dashboard";
 
-export const Route = createFileRoute(
-  "/_authed/dashboard/_sidenavs/admin-staff/",
-)({
-  component: AdminStaffDashboardIndexPage,
-  errorComponent: ({ error }: { error: Error }) => (
-    <div className="p-6 text-error">Terjadi kesalahan: {error.message}</div>
-  ),
-  pendingComponent: () => (
+function DashboardSkeleton() {
+  return (
     <div className="space-y-6 p-6">
       <div className="h-32 animate-pulse rounded-xl bg-surface-1" />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -43,7 +38,17 @@ export const Route = createFileRoute(
         <div className="h-64 animate-pulse rounded-xl bg-surface-1" />
       </div>
     </div>
+  );
+}
+
+export const Route = createFileRoute(
+  "/_authed/dashboard/_sidenavs/admin-staff/",
+)({
+  component: AdminStaffDashboardIndexPage,
+  errorComponent: ({ error }: { error: Error }) => (
+    <div className="p-6 text-error">Terjadi kesalahan: {error.message}</div>
   ),
+  pendingComponent: () => <DashboardSkeleton />,
 });
 
 type StatItem = {
@@ -79,50 +84,7 @@ type AlertItem = {
   severity: "blocking" | "warning" | "info" | "success";
 };
 
-const STAT_ITEMS: StatItem[] = [
-  {
-    label: "Total siswa",
-    value: "1.248",
-    helper: "Aktif periode ini",
-    accent: "bg-primary/10 text-primary",
-    icon: UsersIcon,
-  },
-  {
-    label: "Total kelas",
-    value: "38",
-    helper: "1 kelas tanpa wali",
-    accent: "bg-warning/10 text-warning",
-    icon: LayoutDashboardIcon,
-  },
-  {
-    label: "Mata pelajaran",
-    value: "17",
-    helper: "2 belum terpakai",
-    accent: "bg-info/10 text-info",
-    icon: BookOpenIcon,
-  },
-  {
-    label: "Jadwal",
-    value: "82%",
-    helper: "3 kelas belum lengkap",
-    accent: "bg-warning/10 text-warning",
-    icon: CalendarDaysIcon,
-  },
-  {
-    label: "Guru",
-    value: "74",
-    helper: "5 belum ditugaskan",
-    accent: "bg-neutral/10 text-neutral",
-    icon: ShieldIcon,
-  },
-  {
-    label: "Isu data",
-    value: "4",
-    helper: "Perlu tindakan",
-    accent: "bg-error/10 text-error",
-    icon: AlertCircleIcon,
-  },
-];
+// Removing global mock data
 
 const SHORTCUT_ITEMS: ShortcutItem[] = [
   {
@@ -163,76 +125,79 @@ const SHORTCUT_ITEMS: ShortcutItem[] = [
   },
 ];
 
-const CHECKLIST_ITEMS: ChecklistItem[] = [
-  {
-    label: "Tahun ajaran aktif",
-    status: "Aktif",
-    href: "/dashboard/admin-staff",
-  },
-  {
-    label: "Periode akademik aktif",
-    status: "Aktif",
-    href: "/dashboard/admin-staff",
-  },
-  {
-    label: "2 kelas belum memiliki wali kelas",
-    status: "Perlu tindakan",
-    href: "/dashboard/admin-staff",
-  },
-  {
-    label: "Semua kelas memiliki guru per mata pelajaran",
-    status: "Aktif",
-    href: "/dashboard/admin-staff",
-  },
-  {
-    label: "Jadwal bentrok pada 1 guru",
-    status: "Peringatan",
-    href: "/dashboard/admin-staff",
-  },
-];
-
-const ACTIVITY_ITEMS: ActivityItem[] = [
-  {
-    title: "Siswa Andi Pratama ditambahkan",
-    timestamp: "Hari ini, 08:45",
-    detail: "Kelas XI IPA 1 · Sumber: Form pendaftaran",
-  },
-  {
-    title: "Jadwal XI IPA 1 diperbarui",
-    timestamp: "Hari ini, 10:10",
-    detail: "2 mata pelajaran dipindah · Oleh: Admin TU",
-  },
-  {
-    title: "Guru Budi ditetapkan sebagai wali kelas XI IPA 2",
-    timestamp: "Kemarin, 16:20",
-    detail: "Status wali kelas terkonfirmasi",
-  },
-];
-
-const ALERT_ITEMS: AlertItem[] = [
-  {
-    title: "Bentrok jadwal guru",
-    detail: "1 guru mengajar di dua kelas pada jam yang sama.",
-    severity: "blocking",
-  },
-  {
-    title: "Jadwal belum lengkap",
-    detail: "3 kelas belum memiliki jadwal lengkap.",
-    severity: "warning",
-  },
-  {
-    title: "Periode akademik aktif",
-    detail: "Semester 1 aktif, pastikan jadwal dipublikasikan.",
-    severity: "info",
-  },
-  {
-    title: "Validasi data siswa",
-    detail: "Pengisian NISN lengkap untuk 20 siswa.",
-    severity: "success",
-  },
-];
-
 function AdminStaffDashboardIndexPage() {
+  const { data: result, isLoading, isError, error } = useGetAdminStaffDashboard();
+
+  if (isLoading) {
+    return <DashboardSkeleton />;
+  }
+
+  if (isError) {
+    return <div className="p-6 text-error">Gagal memuat data dashboard: {error?.message}</div>;
+  }
+
+  const dashboardData = result?.data;
+
+  // Re-map STAT_ITEMS with real data, but keep icons and static styling
+  const STAT_ITEMS: StatItem[] = [
+    {
+      label: "Total siswa",
+      value: dashboardData?.stats.totalStudents?.toString() || "0",
+      helper: "Aktif periode ini",
+      accent: "bg-primary/10 text-primary",
+      icon: UsersIcon,
+    },
+    {
+      label: "Total kelas",
+      value: dashboardData?.stats.totalClasses?.toString() || "0",
+      helper: `${dashboardData?.stats.classesWithoutHomeroom || 0} kelas tanpa wali`,
+      accent: "bg-warning/10 text-warning",
+      icon: LayoutDashboardIcon,
+    },
+    {
+      label: "Mata pelajaran",
+      value: dashboardData?.stats.totalSubjects?.toString() || "0",
+      helper: dashboardData?.stats.unusedSubjectsCount !== null && dashboardData?.stats.unusedSubjectsCount !== undefined
+        ? `${dashboardData?.stats.unusedSubjectsCount} belum terpakai`
+        : "Segera hadir",
+      accent: "bg-info/10 text-info",
+      icon: BookOpenIcon,
+    },
+    {
+      label: "Jadwal",
+      value: dashboardData?.stats.incompleteSchedulesClassCount !== null && dashboardData?.stats.incompleteSchedulesClassCount !== undefined
+        ? dashboardData?.stats.incompleteSchedulesClassCount.toString()
+        : "-",
+      helper: dashboardData?.stats.incompleteSchedulesClassCount !== null && dashboardData?.stats.incompleteSchedulesClassCount !== undefined
+        ? `${dashboardData?.stats.incompleteSchedulesClassCount} kelas belum lengkap`
+        : "Segera hadir",
+      accent: "bg-warning/10 text-warning",
+      icon: CalendarDaysIcon,
+    },
+    {
+      label: "Guru",
+      value: dashboardData?.stats.totalTeachers?.toString() || "0",
+      helper: `${dashboardData?.stats.unassignedTeachers || 0} belum ditugaskan`,
+      accent: "bg-neutral/10 text-neutral",
+      icon: ShieldIcon,
+    },
+    {
+      label: "Isu data",
+      value: dashboardData?.stats.dataIssuesCount !== null && dashboardData?.stats.dataIssuesCount !== undefined
+        ? dashboardData?.stats.dataIssuesCount.toString()
+        : "-",
+      helper: dashboardData?.stats.dataIssuesCount !== null && dashboardData?.stats.dataIssuesCount !== undefined
+        ? "Perlu tindakan"
+        : "Segera hadir",
+      accent: "bg-error/10 text-error",
+      icon: AlertCircleIcon,
+    },
+  ];
+
+  const CHECKLIST_ITEMS: ChecklistItem[] = (dashboardData?.checklist || []) as ChecklistItem[];
+  const ACTIVITY_ITEMS: ActivityItem[] = dashboardData?.activities || [];
+  const ALERT_ITEMS: AlertItem[] = (dashboardData?.alerts || []) as AlertItem[];
+
   return (
     <>
       <section className="grid gap-4 lg:grid-cols-3">
@@ -245,7 +210,7 @@ function AdminStaffDashboardIndexPage() {
           <div className="space-y-3">
             <div className="space-y-1">
               <h2 className="text-2xl font-semibold leading-tight">
-                SMA Nusantara 1
+                {dashboardData?.schoolName || "SMA Nusantara 1"}
               </h2>
             </div>
 
@@ -257,7 +222,7 @@ function AdminStaffDashboardIndexPage() {
                     className="h-4 w-4 text-white"
                     aria-hidden="true"
                   />
-                  <span className="font-semibold">2026/2027</span>
+                  <span className="font-semibold">{dashboardData?.activeYearLabel || "Belum diatur"}</span>
                 </div>
               </div>
               <div className="rounded-xl bg-white/8 px-4 py-3">
@@ -267,7 +232,7 @@ function AdminStaffDashboardIndexPage() {
                     className="h-4 w-4 text-white"
                     aria-hidden="true"
                   />
-                  <span className="font-semibold">Semester 1</span>
+                  <span className="font-semibold">{dashboardData?.activePeriodLabel || "Belum diatur"}</span>
                 </div>
               </div>
             </div>
@@ -356,7 +321,7 @@ function AdminStaffDashboardIndexPage() {
                 Pastikan data akademik siap dipakai
               </p>
             </div>
-            <span className="text-xs text-ink-subtle">5 poin dipantau</span>
+            <span className="text-xs text-ink-subtle">{CHECKLIST_ITEMS.length} poin dipantau</span>
           </div>
           <div className="mt-5 divide-y divide-border/60">
             {CHECKLIST_ITEMS.map((item) => (
@@ -399,7 +364,7 @@ function AdminStaffDashboardIndexPage() {
               />
               Aktivitas Terbaru
             </h3>
-            <span className="text-xs text-ink-subtle">3 aktivitas</span>
+            <span className="text-xs text-ink-subtle">{ACTIVITY_ITEMS.length} aktivitas</span>
           </div>
           <div className="mt-5 divide-y divide-border/60">
             {ACTIVITY_ITEMS.map((item) => (
@@ -429,7 +394,7 @@ function AdminStaffDashboardIndexPage() {
               Hanya isu yang bisa ditindaklanjuti
             </p>
           </div>
-          <span className="text-xs text-ink-subtle">4 peringatan</span>
+          <span className="text-xs text-ink-subtle">{ALERT_ITEMS.length} peringatan</span>
         </div>
         <div className="mt-5 divide-y divide-border/60">
           {ALERT_ITEMS.map((item) => (
