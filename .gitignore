@@ -39,3 +39,5 @@ yarn-error.log*
 
 # IDEs and editors
 .vscode/
+/packages/db/src/generated
+apps/academic/src/routeTree.gen.ts

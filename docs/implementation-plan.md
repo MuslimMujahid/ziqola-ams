@@ -1,119 +1,48 @@
-# Implementation Plan - Profile Identifiers and Demographics Refactor
+# Dashboard Fixes Implementation Plan
 
-## Goal
+This plan outlines the steps to resolve issues highlighted in `docs/review-report.md` as well as the TypeScript import compilation errors currently preventing `dashboard.module.ts` from compiling.
 
-Refactor student identifiers and user demographics as follows:
+## User Review Required
+No major architectural shifts. Review the approach to handling the currently uncalculated dashboard stats below.
 
-- Move NIS and NISN to StudentProfile as nullable columns with unique-per-tenant constraints.
-- Remove StudentProfile.additionalIdentifiers from schema and code.
-- Remove User.gender, User.dateOfBirth, and User.phoneNumber; store these as profile custom field values for students and teachers only.
-- Keep TeacherProfile.additionalIdentifiers unchanged for now.
+## Proposed Changes
 
-## Scope
+### Backend
+#### [MODIFY] apps/backend/src/dashboard/dashboard.service.ts
+- **Fix Hardcoded Tenant**: Replace static `"Ziqola"` with actual database fetch: `const tenant = await this.prisma.client.tenant.findUnique({ where: { id: tenantId }, select: { name: true } })`.
+- **Fix Placeholders**: Instead of showing `0`, make placeholder stats (e.g. `unusedSubjectsCount`, `incompleteSchedulesClassCount`, `dataIssuesCount`) return `null` or omit them until implemented, allowing frontend to adapt accurately without misleading users.
+- **Fix Audit Log Mapping**: Update the `detail` property to use the joined actor name: `` `Oleh: ${log.actor?.name ?? log.actorId ?? 'Sistem'}` ``.
+- **Fix Placeholders Links**: Remove inline comment placeholders from checklist items and map to realistic expected frontend routes like `/dashboard/admin-staff/class-management`.
 
-- Database schema, migrations, and data backfill.
-- Backend services, DTOs, and API response shapes for users and profiles.
-- Frontend API types and UI usage for student profile data.
-- Seed and migration scripts touching identifiers and profile fields.
+#### [MODIFY] apps/backend/src/dashboard/dashboard.controller.ts
+- **Fix Type Error**: Resolve the TypeScript compilation error causing "Cannot find module './dashboard.controller'". The issue stems from `@Roles(Role.ADMIN_STAFF as any, Role.PRINCIPAL as any)`. Remove `as any` and import `Role` strictly from `@repo/db`, updating generic constraints on `Roles` decorator if necessary to prevent the TS parsing failure that breaks `dashboard.module.ts`.
 
-## Out of Scope
+### Frontend
+#### [MODIFY] apps/academic/src/lib/services/api/dashboard/api.client.ts
+- **Refactor Response Handling**: Remove the fragile `as any` cast logic. Assume the NestJS backend returns the payload directly and clean the wrapper approach if possible, or expect standard `data.data` unwrap.
+- **Remove Local Type**: Delete local duplicate `ApiResponse<T>` and import the centralized one from `api.types.ts`.
 
-- Admin/principal demographic fields (future work).
-- Removing TeacherProfile.additionalIdentifiers.
+#### [NEW] apps/academic/src/lib/services/api/dashboard/index.ts
+- **Add Barrel File**: Create the missing `index.ts` file extending exports for `api.client`, `keys`, and `types`.
 
-## Current State Summary (Key Observations)
+#### [MODIFY] apps/academic/src/lib/hooks/dashboard/use-get-admin-staff-dashboard.ts
+- **Implement Factory Pattern**: Extract `.adminStaffSummary()` invocation into a structured `dashboardQueryOptions` factory to avoid inline `queryFn` and `queryKey` definitions directly inside the hook.
 
-- Student identifiers (nis/nisn) are stored as TenantProfileField + StudentProfileFieldValue and used in backend services and student UI.
-- StudentProfile.additionalIdentifiers is created/updated/exposed in the backend and frontend.
-- User.gender, User.dateOfBirth, and User.phoneNumber are stored on User and used in create/update flows and profile responses.
-- Seed and migration scripts assume identifier custom fields and additional identifiers on profiles.
+#### [MODIFY] apps/academic/src/routes/_authed/dashboard/_sidenavs/admin-staff/index.tsx
+- **Fix Import Order**: Move the `useGetAdminStaffDashboard` hook import to the top of the file, above all local constants.
+- **Refactor Skeleton UI**: Move the inline skeleton loading markup to a separate reusable `DashboardSkeleton` React component inside the file.
+- **Remove `N/A` text**: Instead of returning raw `"N/A"`, gracefully hide or fallback the value dynamically based on whether backend provides `null` or actual figures for unimplemented statistics like `incompleteSchedulesClassCount`.
 
-## Requirements and Constraints
+## Verification Plan
 
-- NIS and NISN must be unique per tenant, nullable.
-- Demographic fields are only needed for student and teacher roles for now.
-- No backward compatibility required for API responses.
+### Automated Tests
+Since there are no `*.spec.ts` files related specifically to the dashboard at present, verification will heavily rely on compilation and linter passing.
+- Run `pnpm --filter backend build` to verify that `dashboard.module.ts` properly imports and compiles `dashboard.controller.ts` without errors.
+- Run `pnpm --filter academic check` to confirm Biome passes all formatting/linting rules on the frontend fixes.
+- Run `pnpm --filter academic build` to verify frontend production build succeeds with the new strict typings.
 
-## Implementation Plan
-
-### 1) Schema Changes (Prisma)
-
-- Add StudentProfile columns:
-  - nis String? and nisn String?
-  - Add @@unique([tenantId, nis]) and @@unique([tenantId, nisn])
-- Remove StudentProfile.additionalIdentifiers.
-- Remove User.gender, User.dateOfBirth, User.phoneNumber.
-- Keep TeacherProfile.additionalIdentifiers unchanged.
-
-### 2) Data Migration Strategy
-
-- Preflight checks:
-  - Scan for duplicate nis/nisn per tenant in existing custom field values.
-  - Decide whether to fail migration or resolve duplicates manually.
-- Backfill StudentProfile.nis and StudentProfile.nisn from StudentProfileFieldValue (keys: nis, nisn).
-- Backfill TeacherProfileFieldValue and StudentProfileFieldValue for gender, dateOfBirth, phoneNumber from User columns.
-  - Confirm or add TenantProfileField definitions for these keys and ensure types are consistent.
-- Optional cleanup:
-  - Deprecate or disable nis/nisn profile fields after backfill to avoid divergence.
-
-### 3) Backend Updates
-
-- Users module:
-  - Remove gender/dateOfBirth/phoneNumber from DTOs and service create/update/select payloads.
-  - Adjust response shapes to no longer expose those fields on User.
-- Profiles module:
-  - Remove StudentProfile.additionalIdentifiers from create/update/find methods and selects.
-  - Add nis/nisn to StudentProfile select/response as needed.
-  - Ensure TeacherProfile remains unchanged except for removal of user demographic fields.
-- Sessions service:
-  - Replace lookup of nis/nisn via profile field values with StudentProfile.nis/nisn.
-- Assessment recap service:
-  - Replace nis lookups via profile field values with StudentProfile.nis.
-- Profile custom fields:
-  - Ensure endpoints can create/update field values for gender, dateOfBirth, phoneNumber for both students and teachers.
-
-### 4) Frontend Updates (Academic App)
-
-- Update API types:
-  - Remove gender/dateOfBirth/phoneNumber from user types.
-  - Remove StudentProfile.additionalIdentifiers from student types.
-  - Add nis/nisn to student profile types as required by UI.
-- Update data usage:
-  - Student top nav/profile card should use StudentProfile.nis from profile endpoints instead of custom fields.
-  - Teacher profile UI should no longer rely on user demographics; use profile field values if required.
-
-### 5) Seed and Migration Tooling
-
-- Update seed CSV headers and payload mapping to remove user demographics and student additional identifiers.
-- Update seed logic to populate StudentProfile.nis/nisn directly.
-- Update or replace migrate-profile-identifiers script:
-  - New direction: migrate nis/nisn from custom fields into StudentProfile columns.
-  - Ensure script is idempotent and logs duplicates.
-
-### 6) Validation and Cleanup
-
-- Remove unused fields from API responses and client types.
-- Delete or disable unused TenantProfileField entries for nis/nisn if desired.
-- Verify no remaining references to StudentProfile.additionalIdentifiers or User demographics.
-
-## Testing Plan
-
-- Database migration:
-  - Verify migration runs with existing data.
-  - Validate unique constraints for nis/nisn with NULLs allowed.
-- Backend API:
-  - Users list, get, update, invite flows no longer include demographics.
-  - Student and teacher profile endpoints return expected data.
-  - Sessions attendance and assessment recap still include student identifiers.
-- Frontend:
-  - Student dashboard profile card shows NIS from StudentProfile.
-  - User management and profile screens work without demographics on User.
-- Seed and scripts:
-  - Seed completes without missing columns.
-  - Migration script correctly backfills nis/nisn and demographics field values.
-
-## Risks and Open Questions
-
-- Duplicate nis/nisn values per tenant can block migration due to unique constraints.
-- Confirm final key names and types for gender, dateOfBirth, phoneNumber in TenantProfileField.
-- Decide whether to keep nis/nisn custom fields for legacy display or disable them post-migration.
+### Manual Verification
+1. Launch `pnpm dev`
+2. Authenticate locally into the UI via the development environment
+3. Load the `/dashboard/admin-staff` route
+4. Ensure the dashboard mounts properly, the correct school name renders in place of 'Ziqola', and skeleton loaders fire correctly before rendering the stats cards.

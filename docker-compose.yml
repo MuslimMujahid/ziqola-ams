@@ -52,7 +52,7 @@ services:
     container_name: ziqola-sessions-cron
     restart: unless-stopped
     environment:
-      BACKEND_URL: ${BACKEND_URL:-http://host.docker.internal:5000}
+      BACKEND_URL: ${BACKEND_URL:-http://host.docker.internal}:${PORT:-5000}
       CRON_SECRET: ${CRON_SECRET}
       SESSIONS_WINDOW_DAYS: ${SESSIONS_WINDOW_DAYS:-7}
       SESSIONS_CRON_SCHEDULE: ${SESSIONS_CRON_SCHEDULE:-0 1 * * *}
