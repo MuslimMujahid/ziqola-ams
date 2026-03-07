@@ -1,0 +1,11 @@
+meta {
+  name: Get Session Attendance
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/sessions/{{sessionId}}/attendance
+  body: none
+  auth: inherit
+}

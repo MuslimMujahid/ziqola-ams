@@ -1,0 +1,21 @@
+meta {
+  name: Create Schedule
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/schedules
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "academicPeriodId": "{{academicPeriodId}}",
+    "classSubjectId": "{{classSubjectId}}",
+    "dayOfWeek": 1,
+    "startTime": "2024-07-01T07:00:00.000Z",
+    "endTime": "2024-07-01T08:30:00.000Z"
+  }
+}

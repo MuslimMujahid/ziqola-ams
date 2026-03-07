@@ -1,0 +1,18 @@
+meta {
+  name: Update Tenant Assessment Type
+  type: http
+  seq: 13
+}
+
+patch {
+  url: {{baseUrl}}/configurations/tenants/{{tenantId}}/assessment-types/{{assessmentTypeId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "label": "Daily Exam",
+    "order": 1
+  }
+}

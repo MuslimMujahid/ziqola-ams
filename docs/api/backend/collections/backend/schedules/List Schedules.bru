@@ -1,0 +1,22 @@
+meta {
+  name: List Schedules
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/schedules
+  body: none
+  auth: inherit
+}
+
+params:query {
+  offset: 0
+  limit: 20
+  ~academicPeriodId: 
+  ~classId: 
+  ~classSubjectId: 
+  ~subjectId: 
+  ~teacherProfileId: 
+  ~dayOfWeek: 
+}

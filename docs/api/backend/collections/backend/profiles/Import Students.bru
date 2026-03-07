@@ -1,0 +1,15 @@
+meta {
+  name: Import Students
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/profiles/student/import
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  file: @file()
+}

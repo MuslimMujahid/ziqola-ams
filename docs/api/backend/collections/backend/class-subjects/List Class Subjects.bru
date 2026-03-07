@@ -1,0 +1,20 @@
+meta {
+  name: List Class Subjects
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/class-subjects
+  body: none
+  auth: inherit
+}
+
+params:query {
+  offset: 0
+  limit: 20
+  ~academicYearId: 
+  ~classId: 
+  ~subjectId: 
+  ~teacherProfileId: 
+}

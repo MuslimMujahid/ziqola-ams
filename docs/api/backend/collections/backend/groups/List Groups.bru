@@ -1,0 +1,18 @@
+meta {
+  name: List Groups
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/groups
+  body: none
+  auth: inherit
+}
+
+params:query {
+  offset: 0
+  limit: 20
+  ~type: GRADE
+  ~search: 
+}

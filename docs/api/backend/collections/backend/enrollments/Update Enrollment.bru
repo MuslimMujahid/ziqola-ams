@@ -1,0 +1,17 @@
+meta {
+  name: Update Enrollment
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{baseUrl}}/enrollments/{{enrollmentId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "endDate": "2025-06-30"
+  }
+}

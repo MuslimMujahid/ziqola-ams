@@ -1,0 +1,11 @@
+meta {
+  name: Get Homeroom Recap Detail
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/assessment-recap/homeroom/{{submissionId}}
+  body: none
+  auth: inherit
+}

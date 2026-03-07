@@ -1,0 +1,15 @@
+meta {
+  name: Get Profile Custom Fields
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{baseUrl}}/configurations/tenants/{{tenantId}}/profiles/{{studentProfileId}}/custom-fields
+  body: none
+  auth: inherit
+}
+
+params:query {
+  role: STUDENT
+}

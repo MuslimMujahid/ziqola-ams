@@ -1,0 +1,17 @@
+meta {
+  name: Get Configurations Batch
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/configurations/tenants/{{tenantId}}/configurations/batch
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "types": ["PROFILE"]
+  }
+}

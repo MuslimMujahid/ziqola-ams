@@ -1,0 +1,20 @@
+meta {
+  name: Create Assessment Component
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/assessment-components
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "classSubjectId": "{{classSubjectId}}",
+    "academicPeriodId": "{{academicPeriodId}}",
+    "assessmentTypeId": "{{assessmentTypeId}}",
+    "name": "Ulangan Harian 1"
+  }
+}

@@ -1,0 +1,11 @@
+meta {
+  name: Get Profile Template
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/configurations/templates/{{templateId}}
+  body: none
+  auth: inherit
+}

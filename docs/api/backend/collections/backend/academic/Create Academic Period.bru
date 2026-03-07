@@ -1,0 +1,21 @@
+meta {
+  name: Create Academic Period
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/academic/periods
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "academicYearId": "{{academicYearId}}",
+    "name": "Semester 1",
+    "startDate": "2024-07-01",
+    "endDate": "2024-12-31",
+    "makeActive": false
+  }
+}

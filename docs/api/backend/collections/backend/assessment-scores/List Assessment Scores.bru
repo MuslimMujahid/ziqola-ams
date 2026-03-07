@@ -1,0 +1,15 @@
+meta {
+  name: List Assessment Scores
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/assessment-scores
+  body: none
+  auth: inherit
+}
+
+params:query {
+  componentId: {{assessmentComponentId}}
+}

@@ -1,0 +1,17 @@
+meta {
+  name: List Subjects
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/subjects
+  body: none
+  auth: inherit
+}
+
+params:query {
+  offset: 0
+  limit: 20
+  ~search: 
+}

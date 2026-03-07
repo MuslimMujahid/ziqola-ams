@@ -1,0 +1,26 @@
+meta {
+  name: Create Tenant Profile Field
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/configurations/tenants/{{tenantId}}/profile-fields
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "key": "blood_type",
+    "label": "Blood Type",
+    "type": "SELECT",
+    "role": "STUDENT",
+    "options": [
+      { "label": "A", "value": "A" },
+      { "label": "B", "value": "B" },
+      { "label": "AB", "value": "AB" },
+      { "label": "O", "value": "O" }
+    ]
+  }
+}

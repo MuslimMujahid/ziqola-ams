@@ -1,0 +1,19 @@
+meta {
+  name: List Academic Years
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/academic/years
+  body: none
+  auth: inherit
+}
+
+params:query {
+  offset: 0
+  limit: 20
+  ~status: ACTIVE
+  ~search: 
+  ~order: desc
+}

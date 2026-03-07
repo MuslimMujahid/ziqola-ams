@@ -1,0 +1,11 @@
+meta {
+  name: Activate Academic Period
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/academic/periods/{{academicPeriodId}}/activate
+  body: none
+  auth: inherit
+}

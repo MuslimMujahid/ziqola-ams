@@ -1,0 +1,17 @@
+meta {
+  name: Assign Homeroom Teacher
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/classes/{{classId}}/homeroom
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "teacherProfileId": "{{teacherProfileId}}"
+  }
+}

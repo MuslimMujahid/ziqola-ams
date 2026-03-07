@@ -1,0 +1,17 @@
+meta {
+  name: List Teachers
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/profiles/teacher
+  body: none
+  auth: inherit
+}
+
+params:query {
+  offset: 0
+  limit: 20
+  ~search: 
+}

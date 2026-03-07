@@ -1,0 +1,11 @@
+meta {
+  name: Activate Academic Year
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/academic/years/{{academicYearId}}/activate
+  body: none
+  auth: inherit
+}

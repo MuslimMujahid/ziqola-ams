@@ -1,0 +1,18 @@
+meta {
+  name: Update Class Subject
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/class-subjects/{{classSubjectId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "teacherProfileId": "{{teacherProfileId}}",
+    "kkm": 75
+  }
+}

@@ -1,0 +1,15 @@
+meta {
+  name: List Tenant Profile Fields
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/configurations/tenants/{{tenantId}}/profile-fields
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~role: STUDENT
+}

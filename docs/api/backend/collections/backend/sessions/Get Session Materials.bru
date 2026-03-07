@@ -1,0 +1,11 @@
+meta {
+  name: Get Session Materials
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/sessions/{{sessionId}}/materials
+  body: none
+  auth: inherit
+}

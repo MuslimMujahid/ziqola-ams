@@ -1,0 +1,15 @@
+meta {
+  name: List Tenant Assessment Types
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/configurations/tenants/{{tenantId}}/assessment-types
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~includeDisabled: false
+}

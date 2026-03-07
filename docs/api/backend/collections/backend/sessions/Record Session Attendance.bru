@@ -1,0 +1,23 @@
+meta {
+  name: Record Session Attendance
+  type: http
+  seq: 7
+}
+
+put {
+  url: {{baseUrl}}/sessions/{{sessionId}}/attendance
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "items": [
+      {
+        "studentProfileId": "{{studentProfileId}}",
+        "status": "PRESENT",
+        "remarks": ""
+      }
+    ]
+  }
+}

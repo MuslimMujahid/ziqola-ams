@@ -1,0 +1,24 @@
+meta {
+  name: Register Tenant
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/tenants/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "schoolCode": "demo-school",
+    "schoolName": "Demo School",
+    "educationLevel": "SMP",
+    "admin": {
+      "fullName": "Admin User",
+      "email": "admin@demo.school",
+      "password": "password123"
+    }
+  }
+}

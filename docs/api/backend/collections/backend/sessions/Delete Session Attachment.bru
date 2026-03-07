@@ -1,0 +1,11 @@
+meta {
+  name: Delete Session Attachment
+  type: http
+  seq: 10
+}
+
+delete {
+  url: {{baseUrl}}/sessions/{{sessionId}}/materials/attachments/{{attachmentId}}
+  body: none
+  auth: inherit
+}

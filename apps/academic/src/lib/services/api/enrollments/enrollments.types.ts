@@ -17,19 +17,6 @@ type CreateEnrollmentVars = {
   endDate?: string;
 };
 
-type UpdateEnrollmentVars = {
-  id: string;
-  endDate?: string;
-};
-
 type CreateEnrollmentResponse = ApiResponse<Enrollment>;
 
-type UpdateEnrollmentResponse = ApiResponse<Enrollment>;
-
-export type {
-  Enrollment,
-  CreateEnrollmentVars,
-  UpdateEnrollmentVars,
-  CreateEnrollmentResponse,
-  UpdateEnrollmentResponse,
-};
+export type { Enrollment, CreateEnrollmentVars, CreateEnrollmentResponse };

@@ -1,0 +1,11 @@
+meta {
+  name: Disable Tenant Assessment Type
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{baseUrl}}/configurations/tenants/{{tenantId}}/assessment-types/{{assessmentTypeId}}/disable
+  body: none
+  auth: inherit
+}

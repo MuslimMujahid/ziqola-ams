@@ -1,0 +1,27 @@
+meta {
+  name: Create Academic Setup
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{baseUrl}}/academic/setup
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "year": {
+      "label": "2024/2025",
+      "startDate": "2024-07-01",
+      "endDate": "2025-06-30"
+    },
+    "period": {
+      "name": "Semester 1",
+      "startDate": "2024-07-01",
+      "endDate": "2024-12-31",
+      "makeActive": true
+    }
+  }
+}

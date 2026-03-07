@@ -1,0 +1,18 @@
+meta {
+  name: Update Assessment Component
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/assessment-components/{{assessmentComponentId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Ulangan Harian 1",
+    "assessmentTypeId": "{{assessmentTypeId}}"
+  }
+}

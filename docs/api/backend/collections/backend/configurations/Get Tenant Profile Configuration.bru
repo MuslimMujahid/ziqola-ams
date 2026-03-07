@@ -1,0 +1,11 @@
+meta {
+  name: Get Tenant Profile Configuration
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/configurations/tenants/{{tenantId}}/profile-configuration
+  body: none
+  auth: inherit
+}

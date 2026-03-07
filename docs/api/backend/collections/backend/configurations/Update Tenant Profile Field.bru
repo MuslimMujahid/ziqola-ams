@@ -1,0 +1,18 @@
+meta {
+  name: Update Tenant Profile Field
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{baseUrl}}/configurations/tenants/{{tenantId}}/profile-fields/{{profileFieldId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "label": "Blood Type",
+    "order": 1
+  }
+}

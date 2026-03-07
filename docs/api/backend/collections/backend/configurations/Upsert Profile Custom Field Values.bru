@@ -1,0 +1,26 @@
+meta {
+  name: Upsert Profile Custom Field Values
+  type: http
+  seq: 17
+}
+
+put {
+  url: {{baseUrl}}/configurations/tenants/{{tenantId}}/profiles/{{studentProfileId}}/custom-fields
+  body: json
+  auth: inherit
+}
+
+params:query {
+  role: STUDENT
+}
+
+body:json {
+  {
+    "values": [
+      {
+        "fieldId": "{{profileFieldId}}",
+        "valueText": "A"
+      }
+    ]
+  }
+}

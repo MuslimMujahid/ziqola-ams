@@ -1,0 +1,18 @@
+meta {
+  name: Decide Score Change
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/assessment-recap/change-requests/{{changeRequestId}}/decision
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "decision": "approved",
+    "note": ""
+  }
+}

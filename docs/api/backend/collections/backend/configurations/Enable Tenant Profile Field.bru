@@ -1,0 +1,11 @@
+meta {
+  name: Enable Tenant Profile Field
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/configurations/tenants/{{tenantId}}/profile-fields/{{profileFieldId}}/enable
+  body: none
+  auth: inherit
+}

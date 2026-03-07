@@ -1,0 +1,21 @@
+meta {
+  name: Generate Sessions
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{baseUrl}}/sessions/generate
+  body: json
+  auth: none
+}
+
+headers {
+  x-cron-secret: {{cronSecret}}
+}
+
+body:json {
+  {
+    "windowDays": 7
+  }
+}

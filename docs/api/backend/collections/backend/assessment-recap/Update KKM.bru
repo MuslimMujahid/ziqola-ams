@@ -1,0 +1,18 @@
+meta {
+  name: Update KKM
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{baseUrl}}/assessment-recap/kkm
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "classSubjectId": "{{classSubjectId}}",
+    "kkm": 75
+  }
+}

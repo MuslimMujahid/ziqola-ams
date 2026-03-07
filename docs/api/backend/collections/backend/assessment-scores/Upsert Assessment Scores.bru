@@ -1,0 +1,23 @@
+meta {
+  name: Upsert Assessment Scores
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseUrl}}/assessment-scores
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "componentId": "{{assessmentComponentId}}",
+    "items": [
+      {
+        "studentProfileId": "{{studentProfileId}}",
+        "score": 85
+      }
+    ]
+  }
+}

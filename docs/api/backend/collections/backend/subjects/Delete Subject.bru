@@ -1,0 +1,11 @@
+meta {
+  name: Delete Subject
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/subjects/{{subjectId}}
+  body: none
+  auth: inherit
+}

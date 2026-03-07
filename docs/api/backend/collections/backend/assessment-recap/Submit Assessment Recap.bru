@@ -1,0 +1,19 @@
+meta {
+  name: Submit Assessment Recap
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/assessment-recap/submit
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "classId": "{{classId}}",
+    "subjectId": "{{subjectId}}",
+    "periodId": "{{academicPeriodId}}"
+  }
+}

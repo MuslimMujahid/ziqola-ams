@@ -1,0 +1,20 @@
+meta {
+  name: Create Tenant Assessment Type
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}/configurations/tenants/{{tenantId}}/assessment-types
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "key": "DAILY_EXAM",
+    "label": "Daily Exam",
+    "description": "Daily written examination",
+    "order": 1
+  }
+}

@@ -1,0 +1,22 @@
+meta {
+  name: Export Profiles
+  type: http
+  seq: 19
+}
+
+post {
+  url: {{baseUrl}}/configurations/tenants/{{tenantId}}/profiles/export
+  body: json
+  auth: inherit
+}
+
+params:query {
+  role: STUDENT
+}
+
+body:json {
+  {
+    "filters": [],
+    "format": "xlsx"
+  }
+}

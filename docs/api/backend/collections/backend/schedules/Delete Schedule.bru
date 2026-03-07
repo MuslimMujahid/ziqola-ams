@@ -1,0 +1,11 @@
+meta {
+  name: Delete Schedule
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/schedules/{{scheduleId}}
+  body: none
+  auth: inherit
+}

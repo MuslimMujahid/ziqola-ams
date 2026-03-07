@@ -1,0 +1,20 @@
+meta {
+  name: Upsert Type Weight
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/assessment-components/type-weights
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "teacherSubjectId": "{{classSubjectId}}",
+    "academicPeriodId": "{{academicPeriodId}}",
+    "assessmentTypeId": "{{assessmentTypeId}}",
+    "weight": 40
+  }
+}

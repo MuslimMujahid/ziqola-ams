@@ -1,0 +1,20 @@
+meta {
+  name: Create Enrollment
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/enrollments
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "studentProfileId": "{{studentProfileId}}",
+    "classId": "{{classId}}",
+    "startDate": "2024-07-01",
+    "endDate": "2025-06-30"
+  }
+}

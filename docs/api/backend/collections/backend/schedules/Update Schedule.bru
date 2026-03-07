@@ -1,0 +1,19 @@
+meta {
+  name: Update Schedule
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/schedules/{{scheduleId}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "dayOfWeek": 2,
+    "startTime": "2024-07-01T07:00:00.000Z",
+    "endTime": "2024-07-01T08:30:00.000Z"
+  }
+}

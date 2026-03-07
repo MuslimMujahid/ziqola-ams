@@ -1,0 +1,16 @@
+meta {
+  name: List Type Weights
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/assessment-components/type-weights
+  body: none
+  auth: inherit
+}
+
+params:query {
+  teacherSubjectId: {{classSubjectId}}
+  academicPeriodId: {{academicPeriodId}}
+}

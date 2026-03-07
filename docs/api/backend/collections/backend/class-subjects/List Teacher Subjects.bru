@@ -1,0 +1,16 @@
+meta {
+  name: List Teacher Subjects
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/class-subjects/teacher-subjects
+  body: none
+  auth: inherit
+}
+
+params:query {
+  academicYearId: {{academicYearId}}
+  ~teacherProfileId: 
+}

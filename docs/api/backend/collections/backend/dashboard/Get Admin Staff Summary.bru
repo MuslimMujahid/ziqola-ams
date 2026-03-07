@@ -1,0 +1,16 @@
+meta {
+  name: Get Admin Staff Summary
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/dashboard/admin-staff/summary
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~academicYearId: 
+  ~academicPeriodId: 
+}

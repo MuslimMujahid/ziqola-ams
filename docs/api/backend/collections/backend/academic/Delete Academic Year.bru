@@ -1,0 +1,11 @@
+meta {
+  name: Delete Academic Year
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{baseUrl}}/academic/years/{{academicYearId}}
+  body: none
+  auth: inherit
+}

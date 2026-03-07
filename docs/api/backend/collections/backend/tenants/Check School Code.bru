@@ -1,0 +1,15 @@
+meta {
+  name: Check School Code
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/tenants/check-school-code?schoolCode=demo-school
+  body: none
+  auth: none
+}
+
+params:query {
+  schoolCode: demo-school
+}

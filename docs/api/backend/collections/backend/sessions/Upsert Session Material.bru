@@ -1,0 +1,18 @@
+meta {
+  name: Upsert Session Material
+  type: http
+  seq: 9
+}
+
+put {
+  url: {{baseUrl}}/sessions/{{sessionId}}/materials
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "notes": "Today we covered chapter 1.",
+    "attachments": []
+  }
+}

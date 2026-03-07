@@ -6,7 +6,6 @@ import { ConfigModule } from "@nestjs/config";
 import { PrismaModule } from "./prisma/prisma.module";
 import { AuthModule } from "./auth/auth.module";
 import { RbacModule } from "./common/rbac/rbac.module";
-import { ExamplesModule } from "./examples/examples.module";
 import { TenantsModule } from "./tenants/tenants.module";
 import { ProfilesModule } from "./profiles/profiles.module";
 import { AcademicModule } from "./academic/academic.module";
@@ -58,7 +57,6 @@ import { DashboardModule } from "./dashboard/dashboard.module";
     AssessmentScoresModule,
     AssessmentRecapModule,
     DashboardModule,
-    ExamplesModule, // Example controller for RBAC patterns
   ],
   controllers: [AppController],
   providers: [AppService],

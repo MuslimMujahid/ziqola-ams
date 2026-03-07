@@ -1,0 +1,19 @@
+meta {
+  name: List Classes
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/classes
+  body: none
+  auth: inherit
+}
+
+params:query {
+  offset: 0
+  limit: 20
+  ~academicYearId: 
+  ~groupId: 
+  ~search: 
+}
