@@ -7,7 +7,9 @@ import {
   Patch,
   Post,
   Query,
+  Res,
 } from "@nestjs/common";
+import type { Response } from "express";
 import { ProfilesService } from "./profiles.service";
 import { CreateTeacherProfileDto } from "./dto/create-teacher-profile.dto";
 import { UpdateTeacherProfileDto } from "./dto/update-teacher-profile.dto";
@@ -15,6 +17,7 @@ import { CreateStudentProfileDto } from "./dto/create-student-profile.dto";
 import { UpdateStudentProfileDto } from "./dto/update-student-profile.dto";
 import { ListTeacherProfilesDto } from "./dto/list-teacher-profiles.dto";
 import { ListStudentProfilesDto } from "./dto/list-student-profiles.dto";
+import { ImportStudentsDto } from "./dto/import-students.dto";
 import {
   Permission,
   RequirePermissions,
@@ -138,6 +141,33 @@ export class ProfilesController {
       "Teacher profile updated successfully",
       200,
     );
+  }
+
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
+  @RequirePermissions(Permission.STUDENT_CREATE)
+  @Get("student/template")
+  async downloadStudentTemplate(
+    @Res() response: Response,
+    @UserDecorator() user: JwtUser,
+  ) {
+    const csv = await this.profiles.buildStudentImportTemplate(user.tenantId);
+    response.setHeader("Content-Type", "text/csv; charset=utf-8");
+    response.setHeader(
+      "Content-Disposition",
+      'attachment; filename="template-import-siswa.csv"',
+    );
+    response.status(200).send(csv);
+  }
+
+  @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)
+  @RequirePermissions(Permission.STUDENT_CREATE)
+  @Post("student/import")
+  async importStudents(
+    @Body() dto: ImportStudentsDto,
+    @UserDecorator() user: JwtUser,
+  ) {
+    const result = await this.profiles.importStudents(user.tenantId, dto, user);
+    return successResponse(result, "Import siswa diproses", 200);
   }
 
   @Roles(Role.PRINCIPAL, Role.ADMIN_STAFF)

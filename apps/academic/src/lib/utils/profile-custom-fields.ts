@@ -5,6 +5,15 @@ import type {
 
 const EMPTY_VALUE_LABEL = "-" as const;
 
+export function buildEmptyCustomFieldValues(
+  customFields: TenantProfileField[],
+) {
+  return customFields.reduce<Record<string, string>>((acc, field) => {
+    acc[field.id] = "";
+    return acc;
+  }, {});
+}
+
 export function formatProfileValue(
   field: TenantProfileField,
   value?: ProfileFieldValue,
@@ -46,4 +55,15 @@ export function formatProfileValue(
     default:
       return EMPTY_VALUE_LABEL;
   }
+}
+
+export function getCustomFieldId(fieldKey: string) {
+  if (!fieldKey.startsWith("field:")) {
+    return null;
+  }
+  return fieldKey.slice("field:".length);
+}
+
+export function getCustomFieldKey(fieldId: string) {
+  return `field:${fieldId}`;
 }

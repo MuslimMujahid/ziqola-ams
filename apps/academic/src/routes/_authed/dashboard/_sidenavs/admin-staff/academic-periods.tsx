@@ -221,10 +221,6 @@ function AcademicPeriodsPage() {
     ],
   );
 
-  const selectedYearLabel = academicYearsQuery.data?.data.find(
-    (year) => year.id === academicYearId,
-  )?.label;
-
   const isYearMissing = !academicYearId && !academicYearsQuery.isLoading;
 
   return (

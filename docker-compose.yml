@@ -66,6 +66,20 @@ services:
         echo "${SESSIONS_CRON_SCHEDULE} curl -sS -X POST ${BACKEND_URL}/sessions/generate -H 'x-cron-secret: ${CRON_SECRET}' -H 'Content-Type: application/json' -d '{\"windowDays\": ${SESSIONS_WINDOW_DAYS}}'" > /etc/crontabs/root
         crond -f -l 2
 
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: ziqola-ngrok
+    restart: unless-stopped
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
+    command: http ${NGROK_TARGET:-host.docker.internal:5000}
+    ports:
+      - "${NGROK_INSPECT_PORT:-4040}:4040"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - appnet
+
 volumes:
   postgres_data:
   minio_data:
