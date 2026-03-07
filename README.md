@@ -1,169 +1,113 @@
-# Turborepo starter
+# Ziqola AMS
 
-This Turborepo starter is maintained by the Turborepo core team.
+Ziqola AMS (Academic Management System) is a monorepo managed with **pnpm workspaces** and **Turborepo**.
 
-## Using this example
+## 🛠️ Getting Started
 
-Run the following command:
+### Prerequisites
 
-```sh
-npx create-turbo@latest
+- [Node.js](https://nodejs.org/) (>= 18)
+- [pnpm](https://pnpm.io/) (>= 9)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+### 1. Environment Setup
+
+The deployment scripts will **automatically** create the necessary `.env` files from `.env.example` if they are missing. However, you can also do it manually:
+
+```bash
+# Root environment
+cp .env.example .env
+
+# Database package environment
+cp .env.example packages/db/.env
 ```
 
-## What's inside?
+### 2. Infrastructure (PostgreSQL & MinIO)
 
-This Turborepo includes the following packages/apps:
+Ensure Docker is running, then start the infrastructure:
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
-
-## Docker + Postgres
-
-- Prerequisites: Docker Desktop installed and running.
-- Env: Copy [.env.example](.env.example) to `.env` and adjust values if needed.
-
-### Start services
-
-```sh
+```bash
 docker compose up -d
 ```
 
-### Stop services
+### 3. Build & Database Setup
 
-```sh
-docker compose down
+Install dependencies and prepare the shared database package:
+
+```bash
+# Install dependencies
+pnpm install
+
+# Build the database shared package
+pnpm --filter @repo/db build
+
+# Synchronize database schema (Development)
+pnpm --filter @repo/db db:push
+
+# Seed the database (Initial data)
+pnpm --filter @repo/db db:seed
 ```
 
-### Services
+## 🚀 Development
 
-- Postgres: localhost on `${POSTGRES_PORT}` (default 5432)
-- Adminer UI: http://localhost:${ADMINER_PORT} (default 8080)
-	- System: PostgreSQL
-	- Server: postgres
-	- Username: `${POSTGRES_USER}`
-	- Password: `${POSTGRES_PASSWORD}`
-	- Database: `${POSTGRES_DB}`
+To start the development servers for all applications:
 
-### Connection string
+```bash
+pnpm dev
+```
 
-- Local apps can use: `DATABASE_URL=postgresql://<user>:<pass>@localhost:<port>/<db>?schema=public`
-- Example (matches [.env.example](.env.example)): `postgresql://postgres:postgres@localhost:5432/ziqola_ams?schema=public`
+The main applications will be available at:
+- Academic Frontend: [http://localhost:5173](http://localhost:5173) (Vite)
+- Marketing/Web: [http://localhost:3000](http://localhost:3000) (Next.js)
 
-> Note: The backend currently does not include an ORM configuration. Once added (e.g., Prisma or TypeORM), point it to `DATABASE_URL` from the environment.
+## 🏗️ Build
+
+To build all apps and packages:
+
+```bash
+pnpm build
+```
+
+## 📦 Deployment Scripts
+
+We provide handy scripts to automate the deployment process in the `scripts/` directory.
+
+### Development Environment (Local/Staging)
+
+Synchronizes the database schema using `db:push` (non-destructive).
+
+- **Linux/macOS/Git Bash**:
+  ```bash
+  ./scripts/deploy-dev.sh [--seed]
+  ```
+- **Windows (Command Prompt)**:
+  ```cmd
+  scripts\deploy-dev.bat [--seed]
+  ```
+
+### Production Environment
+
+Runs database migrations using `db:migrate` (transactional).
+
+- **Linux/macOS**:
+  ```bash
+  ./scripts/deploy-prod.sh
+  ```
+
+## 🗄️ Services
+
+- **PostgreSQL**: `localhost:5432`
+- **Adminer (DB UI)**: [http://localhost:8080](http://localhost:8080)
+- **MinIO (Object Storage)**: `localhost:9000` (Console: `localhost:9001`)
+
+---
+
+## 🏗️ Architecture
+
+| Layer | Stack | Location |
+|---|---|---|
+| Backend API | NestJS + Prisma + PostgreSQL | `apps/backend` |
+| Academic | React (Vite) + TanStack Router | `apps/academic` |
+| Web | Next.js | `apps/web` |
+| Shared DB | Prisma schema + generated client | `packages/db` |
+| Shared UI | Component library (`@repo/ui`) | `packages/ui` |

@@ -24,6 +24,7 @@ import { ConfigurationsModule } from "./configurations/configurations.module";
 import { AssessmentComponentsModule } from "./assessment-components/assessment-components.module";
 import { AssessmentScoresModule } from "./assessment-scores/assessment-scores.module";
 import { AssessmentRecapModule } from "./assessment-recap/assessment-recap.module";
+import { DashboardModule } from "./dashboard/dashboard.module";
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { AssessmentRecapModule } from "./assessment-recap/assessment-recap.modul
     AssessmentComponentsModule,
     AssessmentScoresModule,
     AssessmentRecapModule,
+    DashboardModule,
     ExamplesModule, // Example controller for RBAC patterns
   ],
   controllers: [AppController],
