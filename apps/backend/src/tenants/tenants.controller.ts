@@ -14,6 +14,7 @@ import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { UpdateTenantDto } from "./dto/update-tenant.dto";
 import { RegisterTenantDto } from "./dto/register-tenant.dto";
 import { CheckSchoolCodeQueryDto } from "./dto/check-school-code.dto";
+import { CheckEmailQueryDto } from "./dto/check-email.dto";
 import {
   Permission,
   RequirePermissions,
@@ -53,6 +54,19 @@ export class TenantsController {
     return successResponse(
       result,
       "School code availability retrieved successfully",
+      200,
+    );
+  }
+
+  @Public()
+  @UseGuards(ThrottlerGuard)
+  @Throttle({ default: { limit: 10, ttl: 60 } })
+  @Get("check-email")
+  async checkEmailAvailability(@Query() query: CheckEmailQueryDto) {
+    const result = await this.tenants.checkEmailAvailability(query.email);
+    return successResponse(
+      result,
+      "Email availability retrieved successfully",
       200,
     );
   }

@@ -3,3 +3,4 @@ export * from "./tenant.types";
 export * from "./tenant.keys";
 export * from "./use-check-school-code";
 export * from "./use-register-tenant";
+export * from "./use-check-email";

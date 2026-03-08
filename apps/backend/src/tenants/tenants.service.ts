@@ -141,6 +141,16 @@ export class TenantsService {
     return { available: !existing };
   }
 
+  async checkEmailAvailability(email: string) {
+    const normalized = email.trim().toLowerCase();
+    const existing = await this.prisma.client.user.findFirst({
+      where: { email: normalized },
+      select: { id: true },
+    });
+
+    return { available: !existing };
+  }
+
   async registerTenant(dto: RegisterTenantDto) {
     const normalizedCode = dto.schoolCode.trim().toLowerCase();
 
@@ -153,6 +163,16 @@ export class TenantsService {
 
     if (existing) {
       throw new ConflictException("School name or code already exists");
+    }
+
+    const normalizedEmail = dto.admin.email.trim().toLowerCase();
+    const existingEmail = await this.prisma.client.user.findFirst({
+      where: { email: normalizedEmail },
+      select: { id: true },
+    });
+
+    if (existingEmail) {
+      throw new ConflictException("Admin email is already registered");
     }
 
     const passwordHash = await argon2.hash(dto.admin.password);
@@ -190,7 +210,7 @@ export class TenantsService {
       const user = await tx.user.create({
         data: {
           tenantId: tenant.id,
-          email: dto.admin.email,
+          email: normalizedEmail,
           name: dto.admin.fullName,
           passwordHash,
           role: Role.ADMIN_STAFF,

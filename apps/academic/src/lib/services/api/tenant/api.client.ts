@@ -4,6 +4,8 @@ import type {
   CheckSchoolCodeResult,
   RegisterTenantResponse,
   RegisterTenantVars,
+  CheckEmailResponse,
+  CheckEmailResult,
 } from "@/lib/services/api/tenant/tenant.types";
 
 export async function checkSchoolCodeAvailability(
@@ -13,6 +15,19 @@ export async function checkSchoolCodeAvailability(
     "/tenants/check-school-code",
     {
       params: { schoolCode },
+    },
+  );
+
+  return response.data.data;
+}
+
+export async function checkEmailAvailability(
+  email: string,
+): Promise<CheckEmailResult> {
+  const response = await clientApi.get<CheckEmailResponse>(
+    "/tenants/check-email",
+    {
+      params: { email },
     },
   );
 

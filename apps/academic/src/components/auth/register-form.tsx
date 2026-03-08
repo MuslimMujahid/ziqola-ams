@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { getDashboardRoute } from "@/lib/utils/auth";
 import { useRegisterTenant } from "@/lib/services/api/tenant/use-register-tenant";
 import { useCheckSchoolCodeAvailability } from "@/lib/services/api/tenant/use-check-school-code";
+import { useCheckEmailAvailability } from "@/lib/services/api/tenant/use-check-email";
 import { Button } from "@repo/ui/button";
 import type { RegisterTenantVars } from "@/lib/services/api/tenant/tenant.types";
 
@@ -50,18 +51,22 @@ const adminSchema = z
       .trim()
       .min(2, "Nama lengkap wajib diisi")
       .max(120, "Nama lengkap terlalu panjang"),
-    email: z.string().trim().email("Email tidak valid"),
+    email: z
+      .string()
+      .trim()
+      .email("Format email tidak valid"),
     password: z
       .string()
-      .min(8, "Kata sandi minimal 8 karakter")
+      .min(8, "Minimal 8 karakter diperlakukan")
+      .regex(/[0-9]/, "Harus mengandung minimal satu angka")
       .max(128, "Kata sandi terlalu panjang"),
     confirmPassword: z
       .string()
-      .min(8, "Konfirmasi minimal 8 karakter")
+      .min(8, "Minimal 8 karakter diperlakukan")
       .max(128, "Konfirmasi terlalu panjang"),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Konfirmasi kata sandi harus sama",
+    message: "Kata sandi tidak cocok",
     path: ["confirmPassword"],
   });
 
@@ -402,6 +407,34 @@ const AdminStepForm = withForm({
     onBack: () => {},
   },
   render: function Render({ form, serverError, isSubmitting, onBack }) {
+    const adminEmail = useStore(form.store, (state) => state.values.admin.email);
+    const [debouncedEmail, setDebouncedEmail] = React.useState("");
+
+    React.useEffect(() => {
+      const timer = setTimeout(() => {
+        setDebouncedEmail(adminEmail.trim());
+      }, 400);
+
+      return () => clearTimeout(timer);
+    }, [adminEmail]);
+
+    // Check if email is valid according to Zod first, so we don't send malformed requests
+    const emailResult = adminSchema.shape.email.safeParse(debouncedEmail);
+    const isEmailValid = emailResult.success;
+
+    const { data: emailAvailability, isFetching: isCheckingEmail } = useCheckEmailAvailability(
+      debouncedEmail,
+      { enabled: isEmailValid },
+    );
+
+    const isEmailAvailable = emailAvailability?.available ?? true;
+    const shouldShowEmailAvailability = isEmailValid && debouncedEmail.length > 0;
+
+    const canSubmit = useStore(form.store, (state) => state.canSubmit);
+
+    // Disable if submitting, or form has zod errors, or email is taken, or email check is running
+    const isNextDisabled = isSubmitting || !canSubmit || (shouldShowEmailAvailability && !isEmailAvailable) || isCheckingEmail;
+
     return (
       <div className="space-y-5">
         {serverError ? (
@@ -416,42 +449,103 @@ const AdminStepForm = withForm({
         <div className="space-y-4 rounded-lg py-4">
           <form.AppField name="admin.fullName">
             {(field) => (
-              <field.TextField
-                id="admin-full-name"
-                label="Nama Lengkap"
-                placeholder="Nama lengkap admin"
-              />
+              <div>
+                <field.TextField
+                  id="admin-full-name"
+                  label="Nama Lengkap"
+                  placeholder="Nama lengkap admin"
+                />
+                {field.state.meta.errors.length > 0 && (
+                  <p className="mt-1 text-xs text-error">
+                    {typeof field.state.meta.errors[0] === 'string' 
+                      ? field.state.meta.errors[0] 
+                      : (field.state.meta.errors[0] as any)?.message}
+                  </p>
+                )}
+              </div>
             )}
           </form.AppField>
 
           <form.AppField name="admin.email">
             {(field) => (
-              <field.TextField
-                id="admin-email"
-                type="email"
-                label="Email"
-                placeholder="admin@sekolah.id"
-              />
+              <div>
+                <field.TextField
+                  id="admin-email"
+                  type="email"
+                  label="Email"
+                  placeholder="admin@sekolah.id"
+                  className={cn((field.state.meta.errors.length > 0 || (shouldShowEmailAvailability && !isEmailAvailable)) && "border-error focus-visible:ring-error")}
+                />
+                {field.state.meta.errors.length > 0 ? (
+                  <p className="mt-1 text-xs text-error">
+                    {typeof field.state.meta.errors[0] === 'string' 
+                      ? field.state.meta.errors[0] 
+                      : (field.state.meta.errors[0] as any)?.message}
+                  </p>
+                ) : shouldShowEmailAvailability ? (
+                  <div
+                    className={cn(
+                      "mt-1 flex items-center gap-1 text-xs",
+                      isEmailAvailable ? "text-success" : "text-error",
+                    )}
+                  >
+                    {isCheckingEmail ? (
+                      <Loader2Icon className="h-3 w-3 animate-spin" />
+                    ) : isEmailAvailable ? (
+                      <CheckCircleIcon className="h-3 w-3" />
+                    ) : (
+                      <XCircleIcon className="h-3 w-3" />
+                    )}
+                    <span>
+                      {isCheckingEmail
+                        ? "Memeriksa email..."
+                        : isEmailAvailable
+                          ? "Email tersedia"
+                          : "Email sudah terdaftar"}
+                    </span>
+                  </div>
+                ) : null}
+              </div>
             )}
           </form.AppField>
 
           <form.AppField name="admin.password">
             {(field) => (
-              <field.PasswordField
-                id="admin-password"
-                label="Kata Sandi"
-                placeholder="Minimal 8 karakter"
-              />
+              <div>
+                <field.PasswordField
+                  id="admin-password"
+                  label="Kata Sandi"
+                  placeholder="Minimal 8 karakter"
+                  className={cn(field.state.meta.errors.length > 0 && "border-error focus-visible:ring-error")}
+                />
+                {field.state.meta.errors.length > 0 && (
+                  <p className="mt-1 text-xs text-error">
+                    {typeof field.state.meta.errors[0] === 'string' 
+                      ? field.state.meta.errors[0] 
+                      : (field.state.meta.errors[0] as any)?.message}
+                  </p>
+                )}
+              </div>
             )}
           </form.AppField>
 
           <form.AppField name="admin.confirmPassword">
             {(field) => (
-              <field.PasswordField
-                id="admin-confirm-password"
-                label="Konfirmasi Kata Sandi"
-                placeholder="Ulangi kata sandi"
-              />
+              <div>
+                <field.PasswordField
+                  id="admin-confirm-password"
+                  label="Konfirmasi Kata Sandi"
+                  placeholder="Ulangi kata sandi"
+                  className={cn(field.state.meta.errors.length > 0 && "border-error focus-visible:ring-error")}
+                />
+                {field.state.meta.errors.length > 0 && (
+                  <p className="mt-1 text-xs text-error">
+                    {typeof field.state.meta.errors[0] === 'string' 
+                      ? field.state.meta.errors[0] 
+                      : (field.state.meta.errors[0] as any)?.message}
+                  </p>
+                )}
+              </div>
             )}
           </form.AppField>
         </div>
@@ -470,13 +564,13 @@ const AdminStepForm = withForm({
             type="submit"
             className={cn(
               "flex-1",
-              isSubmitting
+              isNextDisabled
                 ? "cursor-not-allowed bg-brand/50"
                 : "hover:bg-brand/90",
             )}
-            disabled={isSubmitting}
+            disabled={isNextDisabled}
           >
-            {isSubmitting ? (
+            {isSubmitting || isCheckingEmail ? (
               <Loader2Icon className="h-4 w-4 animate-spin" />
             ) : (
               "Buat Akun"

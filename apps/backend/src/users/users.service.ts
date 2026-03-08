@@ -131,7 +131,7 @@ export class UsersService {
 
     if (dto.email && dto.email !== existing.email) {
       const emailExists = await this.prisma.client.user.findFirst({
-        where: { tenantId, email: dto.email },
+        where: { email: dto.email },
         select: { id: true },
       });
       if (emailExists) {
@@ -226,12 +226,12 @@ export class UsersService {
   ) {
     const normalizedEmail = dto.email.trim().toLowerCase();
     const existing = await this.prisma.client.user.findFirst({
-      where: { tenantId, email: normalizedEmail },
+      where: { email: normalizedEmail },
       select: { id: true },
     });
 
     if (existing) {
-      throw new ConflictException("Email already registered for this tenant");
+      throw new ConflictException("Email already registered");
     }
 
     const { token, tokenHash, expiresAt } = this.createInviteToken();
@@ -291,7 +291,7 @@ export class UsersService {
 
     const emails = Object.keys(emailCounts);
     const existing = await this.prisma.client.user.findMany({
-      where: { tenantId, email: { in: emails } },
+      where: { email: { in: emails } },
       select: { email: true },
     });
     const existingSet = new Set(existing.map((item) => item.email));

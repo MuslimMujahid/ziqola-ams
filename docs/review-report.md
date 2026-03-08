@@ -1,97 +1,73 @@
 # Code Review Report
 
-**Branch:** `feat/academic`  
-**Date:** 2026-03-07    
+**Branch:** `main` (Unstaged Changes)  
+**Date:** 2026-03-09  
 **Reviewer:** AI Code Review Agent  
-**Scope:** Uncommitted changes — Dashboard feature implementation
+**Scope:** Global Email Uniqueness & Real-time Email Validation  
 
 ---
 
 ## Summary
 
-This change introduces a new **Dashboard** feature that replaces mock data with real API-backed data on the `admin-staff` dashboard. The implementation spans both the backend (NestJS) and frontend (TanStack Start / React Query).
-
-**✅ Pass 2 Update:** The author has successfully implemented fixes for all critical, major, and minor issues raised in the initial review, and smoothly integrated Workspace Context filtering via `academicYearId` and `academicPeriodId`.
-
-**✅ Pass 3 Update:** The remaining "Placeholder Stats" (schedule completion, unused subjects, and data issues) have now been fully implemented with real, optimized database queries. Impressively, this includes cross-checking class subjects, schedules, and identifying teacher overlapping schedule conflicts — all cleanly integrated into the frontend alerts and stat cards. This code is rock-solid.
+This change updates the Ziqola AMS platform to enforce **global email uniqueness** across all tenants, replacing the previous tenant-scoped email uniqueness. It also introduces real-time email availability validation on the frontend registration form, using a custom React Query hook to check availability against a new public backend endpoint.
 
 ### Files Reviewed
 
 | File | Type | Status |
 |---|---|---|
-| `apps/backend/src/dashboard/dashboard.service.ts` | New | ✅ Excellent |
-| `apps/backend/src/dashboard/dashboard.controller.ts` | New | ✅ Excellent |
-| `apps/backend/src/dashboard/dashboard.module.ts` | New | ✅ Excellent |
-| `apps/backend/src/app.module.ts` | Modified | ✅ Excellent |
-| `apps/academic/src/lib/services/api/dashboard/api.client.ts` | New | ✅ Excellent |
-| `apps/academic/src/lib/services/api/dashboard/types.ts` | New | ✅ Excellent |
-| `apps/academic/src/lib/services/api/dashboard/keys.ts` | New | ✅ Excellent |
-| `apps/academic/src/lib/services/api/dashboard/index.ts` | New | ✅ Excellent |
-| `apps/academic/src/lib/hooks/dashboard/use-get-admin-staff-dashboard.ts` | New | ✅ Excellent |
-| `apps/academic/src/routes/_authed/dashboard/_sidenavs/admin-staff/index.tsx` | Modified | ✅ Excellent |
-| `apps/academic/src/routeTree.gen.ts` | Modified | ✅ Auto-generated (do not edit) |
+| `apps/academic/src/components/auth/register-form.tsx` | Modified | ✅ Excellent with minor notes |
+| `apps/academic/src/lib/services/api/tenant/api.client.ts` | Modified | ✅ Excellent |
+| `apps/academic/src/lib/services/api/tenant/use-check-email.ts` | New | ✅ Excellent |
+| `apps/backend/src/tenants/tenants.controller.ts` | Modified | ✅ Excellent |
+| `apps/backend/src/tenants/tenants.service.ts` | Modified | ✅ Excellent |
+| `apps/backend/src/users/users.service.ts` | Modified | ✅ Excellent |
+| `packages/db/prisma/schema.prisma` | Modified | ✅ Architectural Change Noted |
+| `packages/db/prisma/migrations/.../migration.sql` | New | ⚠️ See below |
 
 ---
 
-## ✅ Resolved Issues
+## 🔍 Code Quality & Maintainability
 
-### 1. Fragile Response Handling with `any` Cast in `api.client.ts` (Critical)
-**Issue:** Dual-path response handling using `as any` and `as unknown as` obscured type safety.
-**Resolution:** Logic was simplified to return `response.data` correctly utilizing the shared `ApiResponse` type.
-
-### 2. Locally Redeclared `ApiResponse<T>` (Critical)
-**Issue:** Redefined a global type locally, violating DRY.
-**Resolution:** Local definition was removed and successfully imported from `src/lib/services/api/api.types.ts`.
-
-### 3. Missing `index.ts` Barrel File (Major)
-**Issue:** Violated frontend-implementation guidelines.
-**Resolution:** `index.ts` was added to export `api.client`, `types`, and `keys`.
-
-### 4. Hardcoded School Name (Major)
-**Issue:** Returned "Ziqola" for all tenants.
-**Resolution:** Added a Prisma query to correctly fetch the tenant's actual name.
-
-### 5. Hardcoded Placeholder Stats (Major)
-**Issue:** Returning 0 for unimplemented stats misled users.
-**Resolution:** Now correctly returns `null`, and the frontend gracefully handles this by rendering "Segera hadir" or "-".
-
-### 6. `@Roles()` Cast with `as any` (Major)
-**Issue:** Suppressed TypeScript mismatch errors, bypassing type safety.
-**Resolution:** Removed `as any` casts and correctly imported `Role` from the shared enum.
-
-### 7. Missing `queryOptions` Factory (Major)
-**Issue:** Inline query options rather than reusing a factory.
-**Resolution:** `dashboardQueryOptions` factory was introduced in `api.client.ts` and successfully utilized in the custom hook.
-
-### 8. Import Order Violation (Minor)
-**Issue:** Hook was imported in the middle of `index.tsx`.
-**Resolution:** Hook import moved to the top underneath node modules block.
-
-### 9. Skeleton/Loading UI Duplication (Minor)
-**Issue:** JSX for the skeleton loader was duplicated in two spots.
-**Resolution:** Extracted into a reusable `<DashboardSkeleton />` component.
-
-### 10. Activity Log — Actor Name Not Used (Minor)
-**Issue:** Fallback to raw `actorId` UUID.
-**Resolution:** Data mapped beautifully: ``Oleh: ${log.actor?.name ?? log.actorId ?? 'Sistem'}``.
-
-### 11. `N/A` as a Stat Card Value (Minor)
-**Issue:** `N/A` is poor UX.
-**Resolution:** `null` states are now robustly handled falling back to `-` or `Segera hadir`.
+- **React Query Hook Customization:** The creation of `useCheckEmailAvailability` follows the project's API fetching guidelines nicely.
+- **Form State Usage:** The localized debounce logic inside `React.useEffect` handles real-time input cleanly without triggering unnecessary re-renders across the whole form.
+- **Graceful Error Handling:** The frontend correctly leverages the returned `isCheckingEmail` state to conditionally disable the submit button and show loading indicators, providing an excellent UX.
+- **Data Normalization:** The backend properly normalizes emails with `.trim().toLowerCase()` prior to running queries and inserting data, which is a crucial best practice.
 
 ---
 
-## ✅ What's Done Well
+## 🛡️ Security Issues & Vulnerabilities
 
-1. **NestJS module structure is correct**: `DashboardModule` correctly imports `PrismaModule`, uses proper DI with `PrismaService`, and registers the controller/service properly.
-2. **RBAC guards are applied**: The controller correctly uses `JwtAuthGuard` + `RolesGuard` and restricts access to the appropriate roles.
-3. **Multi-tenant data isolation**: All Prisma queries correctly scope by `tenantId`.
-4. **Parallel DB queries**: `Promise.all()` is used for the four main count queries, which is a performance win.
-5. **Clean API Architecture**: Query keys factory and client hooks pattern are strictly adhered to, allowing for easy server-side usage if required later.
-6. **Graceful degradation**: The frontend elegantly handles `null` API values for features that are still "Coming Soon."
-7. **Workspace Context Integration**: The new query filtering appropriately utilizes the `useWorkspaceStore` on the frontend, accurately passing `academicYearId` and `academicPeriodId` to the NestJS backend which gracefully falls back to `ACTIVE` values, maintaining correct UI scoping.
-8. **Robust Dynamic Statistics**: Replaced all remaining placeholder zeroes with actual database calculations, successfully integrating `schedulePercentage`, identifying schedule conflicts for teachers, and uncovering classes missing complete schedules.
+### 1. Email Enumeration Risk (Acceptable Risk)
+- **Issue:** The new `@Get("check-email")` endpoint is `@Public()`, which theoretically allows an attacker to enumerate registered emails on the platform.
+- **Mitigation:** The developer correctly implemented `@UseGuards(ThrottlerGuard)` with `@Throttle({ default: { limit: 10, ttl: 60 } })`. This strict rate limit (10 hits per minute) successfully mitigates brute-force enumeration scripts. This is a standard and acceptable trade-off for real-time form validation.
+
+---
+
+## 🏗️ Architectural & Database Review
+
+### 1. Global Email Uniqueness
+- **Change:** The Prisma schema constraint for `User.email` was changed from `@@unique([tenantId, email])` to a globally scoped `@unique`.
+- **Impact:** A single email address can now belong to **only one tenant**. An admin or teacher cannot register accounts in two different schools using the exact same email. Assuming this is an intentional product decision for account singularity, the implementation is correct.
+
+### 2. Migration History Reset (Warning)
+- **Change:** The unstaged files include a new `migration.sql` and `migration_lock.toml` that completely recreate the database structure.
+- **Impact:** It seems the `migrations/` folder was deleted and regenerated.
+- **Recommendation:** While perfectly acceptable during MVP development and debugging to clean up broken migration states, **do not do this in production**. Deleting migration history on a live database will cause Prisma to fail when syncing future migrations.
+
+---
+
+## 💡 Suggested Improvements (Minor)
+
+1. **Consider abstracting debounce logic:**
+   Instead of directly writing a `setTimeout` inside a `useEffect` within the component, you could create a generic shared `useDebounce` hook (e.g. `const debouncedEmail = useDebounce(adminEmail, 400);`) to keep the component code slightly cleaner.
+
+2. **Wait for Blur (Alternative Pattern):**
+   Validating on every keystroke after a 400ms pause is decent, but checking availability `onBlur` (when the field loses focus) reduces backend load even further since the user has fully finished typing. Evaluate which UX feels better for your specific audience.
+
+3. **Check error messages for bulk imports:**
+   In `users.service.ts`, when encountering email collisions, the error message now says `"Email already registered"`. Just ensure that if a school tries to import a teacher who is already registered at *another* school, this error message is clear enough so they don't think it's a bug in their own tenant.
 
 ## Conclusion
-**Status:** **APPROVED** 🟢
-The implementation has successfully cleared all rounds of code review. The addition of global workspace filtering and the dynamic calculation of complex schedule integrity queries makes this an exceptionally comprehensive dashboard feature. Ready to be staged and committed.
+
+**Status:** **APPROVED WITH MINOR NOTES** 🟢
+The implementation is clean, robust, and prioritizes user experience while safely handling the required architectural tweaks. Rate limiting was proactively added, and all modifications correctly adhere to the project's coding standards. Ready to be committed.
