@@ -46,9 +46,8 @@ export class AuthService {
   }
 
   async login(dto: LoginDto) {
-    const tenantId = await this.resolveTenantId(dto);
     const user = await this.prisma.client.user.findFirst({
-      where: { tenantId, email: dto.email, role: dto.role },
+      where: { email: dto.email, role: dto.role },
       select: {
         id: true,
         tenantId: true,
@@ -178,26 +177,6 @@ export class AuthService {
     return { user: updated };
   }
 
-  private async resolveTenantId(dto: LoginDto): Promise<string> {
-    if (dto.tenantId) {
-      return dto.tenantId;
-    }
-
-    if (!dto.tenantSlug) {
-      throw new UnauthorizedException("Invalid credentials");
-    }
-
-    const tenant = await this.prisma.client.tenant.findFirst({
-      where: { slug: dto.tenantSlug },
-      select: { id: true },
-    });
-
-    if (!tenant) {
-      throw new UnauthorizedException("Tenant not found");
-    }
-
-    return tenant.id;
-  }
 
   private hashToken(token: string) {
     return crypto.createHash("sha256").update(token).digest("hex");

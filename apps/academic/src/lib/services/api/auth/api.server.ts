@@ -15,7 +15,6 @@ const AUTH_ROLE_VALUES = [
 ] as const;
 
 const loginServerSchema = z.object({
-  tenantSlug: z.string().min(1),
   role: z.enum(AUTH_ROLE_VALUES),
   email: z.email(),
   password: z.string().min(1),

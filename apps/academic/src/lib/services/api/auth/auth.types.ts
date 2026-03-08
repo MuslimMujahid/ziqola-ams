@@ -13,7 +13,6 @@ type AuthUser = {
 export type { AuthUser };
 
 export type LoginVars = {
-  tenantSlug: string;
   role: AuthRole;
   email: string;
   password: string;

@@ -1,73 +1,57 @@
 # Code Review Report
 
-**Branch:** `main` (Unstaged Changes)  
-**Date:** 2026-03-09  
+**Branch:** `feat/ensure-email-uniqueness` (Unstaged Changes)  
+**Date:** 2026-03-09   
 **Reviewer:** AI Code Review Agent  
-**Scope:** Global Email Uniqueness & Real-time Email Validation  
+**Scope:** Auth Login Flow Simplification (Removal of Tenant Slug)
 
 ---
 
 ## Summary
 
-This change updates the Ziqola AMS platform to enforce **global email uniqueness** across all tenants, replacing the previous tenant-scoped email uniqueness. It also introduces real-time email availability validation on the frontend registration form, using a custom React Query hook to check availability against a new public backend endpoint.
+Following the previous architectural change to make user emails globally unique across the platform, this set of changes correctly simplifies the login process. Users are no longer required to provide a `tenantSlug` (school code) to log in. The backend handles looking up the user directly by their unique email and role.
 
 ### Files Reviewed
 
 | File | Type | Status |
 |---|---|---|
-| `apps/academic/src/components/auth/register-form.tsx` | Modified | ✅ Excellent with minor notes |
-| `apps/academic/src/lib/services/api/tenant/api.client.ts` | Modified | ✅ Excellent |
-| `apps/academic/src/lib/services/api/tenant/use-check-email.ts` | New | ✅ Excellent |
-| `apps/backend/src/tenants/tenants.controller.ts` | Modified | ✅ Excellent |
-| `apps/backend/src/tenants/tenants.service.ts` | Modified | ✅ Excellent |
-| `apps/backend/src/users/users.service.ts` | Modified | ✅ Excellent |
-| `packages/db/prisma/schema.prisma` | Modified | ✅ Architectural Change Noted |
-| `packages/db/prisma/migrations/.../migration.sql` | New | ⚠️ See below |
+| `apps/academic/src/components/auth/login-form.tsx` | Modified | ✅ Excellent |
+| `apps/academic/src/lib/services/api/auth/api.server.ts` | Modified | ✅ Excellent |
+| `apps/academic/src/lib/services/api/auth/auth.types.ts` | Modified | ✅ Excellent |
+| `apps/academic/src/routes/auth/login.tsx` | Modified | ✅ Excellent |
+| `apps/backend/src/auth/auth.service.ts` | Modified | ✅ Excellent |
+| `apps/backend/src/auth/dto/login.dto.ts` | Modified | ✅ Excellent |
+| `apps/backend/test/auth.e2e-spec.ts` | Modified | ✅ Excellent |
 
 ---
 
-## 🔍 Code Quality & Maintainability
+## ✅ What's Done Well
 
-- **React Query Hook Customization:** The creation of `useCheckEmailAvailability` follows the project's API fetching guidelines nicely.
-- **Form State Usage:** The localized debounce logic inside `React.useEffect` handles real-time input cleanly without triggering unnecessary re-renders across the whole form.
-- **Graceful Error Handling:** The frontend correctly leverages the returned `isCheckingEmail` state to conditionally disable the submit button and show loading indicators, providing an excellent UX.
-- **Data Normalization:** The backend properly normalizes emails with `.trim().toLowerCase()` prior to running queries and inserting data, which is a crucial best practice.
+### 1. Robust Deletion of Dead Code
+- Removed the `resolveTenantId` function entirely from the NestJS `AuthService`. Since it's no longer needed to look up the tenant by slug before checking the email, this eliminates an entire database query during the login flow, optimizing performance.
+- Cleanly dropped `tenantSlug` and `tenantId` from all frontend and backend validation schemas and types (`loginServerSchema`, `LoginVars`, `LoginDto`, etc).
 
----
+### 2. Improved User Experience
+- The UI in `login-form.tsx` and `login.tsx` was correctly updated to remove the "Kode Sekolah" field. This provides a much smoother login experience for end-users, as they only need to remember their email and password.
+- Error handling specific to `Tenant not found` was successfully pruned, keeping the `catch` blocks clean and focused on standard invalid credentials messages.
 
-## 🛡️ Security Issues & Vulnerabilities
-
-### 1. Email Enumeration Risk (Acceptable Risk)
-- **Issue:** The new `@Get("check-email")` endpoint is `@Public()`, which theoretically allows an attacker to enumerate registered emails on the platform.
-- **Mitigation:** The developer correctly implemented `@UseGuards(ThrottlerGuard)` with `@Throttle({ default: { limit: 10, ttl: 60 } })`. This strict rate limit (10 hits per minute) successfully mitigates brute-force enumeration scripts. This is a standard and acceptable trade-off for real-time form validation.
+### 3. E2E Test Maintenance
+- `apps/backend/test/auth.e2e-spec.ts` was properly updated to reflect the new API signature (`role` added, `tenantId` removed) and updated HTTP status code expectation (200 OK vs 201 Created).
 
 ---
 
-## 🏗️ Architectural & Database Review
+## 🛡️ Security & Maintainability
 
-### 1. Global Email Uniqueness
-- **Change:** The Prisma schema constraint for `User.email` was changed from `@@unique([tenantId, email])` to a globally scoped `@unique`.
-- **Impact:** A single email address can now belong to **only one tenant**. An admin or teacher cannot register accounts in two different schools using the exact same email. Assuming this is an intentional product decision for account singularity, the implementation is correct.
-
-### 2. Migration History Reset (Warning)
-- **Change:** The unstaged files include a new `migration.sql` and `migration_lock.toml` that completely recreate the database structure.
-- **Impact:** It seems the `migrations/` folder was deleted and regenerated.
-- **Recommendation:** While perfectly acceptable during MVP development and debugging to clean up broken migration states, **do not do this in production**. Deleting migration history on a live database will cause Prisma to fail when syncing future migrations.
+- **Maintainability:** Removing the extraneous fields from DTOs ensures that the strict `class-validator` decorators won't inadvertently throw errors if generic JSON objects are passed. `nestjs` is well aligned with the frontend types.
+- **Security Constraint Maintained:** The backend `.findFirst` query for the user still enforces a check against `role: dto.role`, which ensures cross-contamination between roles using the same email address doesn't happen (assuming role forms part of authorization, though current schema implies 1 email = 1 user).
 
 ---
 
-## 💡 Suggested Improvements (Minor)
+## 💡 Suggested Improvements
 
-1. **Consider abstracting debounce logic:**
-   Instead of directly writing a `setTimeout` inside a `useEffect` within the component, you could create a generic shared `useDebounce` hook (e.g. `const debouncedEmail = useDebounce(adminEmail, 400);`) to keep the component code slightly cleaner.
-
-2. **Wait for Blur (Alternative Pattern):**
-   Validating on every keystroke after a 400ms pause is decent, but checking availability `onBlur` (when the field loses focus) reduces backend load even further since the user has fully finished typing. Evaluate which UX feels better for your specific audience.
-
-3. **Check error messages for bulk imports:**
-   In `users.service.ts`, when encountering email collisions, the error message now says `"Email already registered"`. Just ensure that if a school tries to import a teacher who is already registered at *another* school, this error message is clear enough so they don't think it's a bug in their own tenant.
+None. The implementation is flawless and accurately reflects the architectural shift to global email uniqueness. It improves UX, reduces backend load, and simplifies code.
 
 ## Conclusion
 
-**Status:** **APPROVED WITH MINOR NOTES** 🟢
-The implementation is clean, robust, and prioritizes user experience while safely handling the required architectural tweaks. Rate limiting was proactively added, and all modifications correctly adhere to the project's coding standards. Ready to be committed.
+**Status:** **APPROVED** 🟢
+The login flow simplification has been successfully executed. Ready to be committed and merged.

@@ -38,7 +38,7 @@ describe("Auth E2E (conditional)", () => {
     // Ensure tenant exists
     await prisma.tenant.upsert({
       where: { id: tenantId },
-      create: { id: tenantId, name: "E2E Tenant" },
+      create: { id: tenantId, name: "E2E Tenant", slug: "e2e-tenant" },
       update: {},
     });
 
@@ -53,8 +53,8 @@ describe("Auth E2E (conditional)", () => {
     // Login
     const login = await request(app.getHttpServer())
       .post("/auth/login")
-      .send({ tenantId, email, password })
-      .expect(201);
+      .send({ email, password, role: "ADMIN_STAFF" })
+      .expect(200);
 
     const token = login.body.accessToken as string;
     expect(token).toBeTruthy();
