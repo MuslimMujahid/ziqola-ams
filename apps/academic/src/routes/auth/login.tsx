@@ -115,7 +115,7 @@ function LoginPage() {
             <div className="mb-6 space-y-1">
               <h2 className="text-xl font-semibold text-ink-strong">Masuk</h2>
               <p className="text-xs text-ink-muted">
-                Gunakan kode sekolah dan kredensial resmi Anda.
+                Gunakan kredensial resmi Anda.
               </p>
             </div>
 

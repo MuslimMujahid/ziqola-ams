@@ -42,6 +42,12 @@ type CheckSchoolCodeResult = {
 
 type CheckSchoolCodeResponse = ApiResponse<CheckSchoolCodeResult>;
 
+type CheckEmailResult = {
+  available: boolean;
+};
+
+type CheckEmailResponse = ApiResponse<CheckEmailResult>;
+
 export type {
   EducationLevel,
   RegisterTenantAdminInput,
@@ -52,4 +58,6 @@ export type {
   RegisterTenantResponse,
   CheckSchoolCodeResult,
   CheckSchoolCodeResponse,
+  CheckEmailResult,
+  CheckEmailResponse,
 };

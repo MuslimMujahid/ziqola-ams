@@ -9,15 +9,6 @@ import {
 } from "class-validator";
 
 export class LoginDto {
-  @ValidateIf((dto) => !dto.tenantSlug)
-  @IsString()
-  @IsNotEmpty()
-  tenantId?: string;
-
-  @ValidateIf((dto) => !dto.tenantId)
-  @IsString()
-  @IsNotEmpty()
-  tenantSlug?: string;
 
   @IsString()
   @IsNotEmpty()

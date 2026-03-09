@@ -20,7 +20,6 @@ const ROLE_OPTIONS = [
 ] as const;
 
 const loginSchema = z.object({
-  tenantSlug: z.string().min(1, "Kode sekolah tidak boleh kosong"),
   role: z.enum(ROLE_VALUES, { message: "Peran tidak boleh kosong" }),
   email: z.email("Email tidak valid"),
   password: z.string().min(1, "Kata sandi tidak boleh kosong"),
@@ -30,7 +29,6 @@ type LoginInput = z.infer<typeof loginSchema>;
 
 const loginFormOptions = formOptions({
   defaultValues: {
-    tenantSlug: "",
     role: "PRINCIPAL",
     email: "",
     password: "",
@@ -51,7 +49,6 @@ export function LoginForm() {
     onSubmit: async ({ value }) => {
       try {
         const response = await login({
-          tenantSlug: value.tenantSlug,
           role: value.role,
           email: value.email,
           password: value.password,
@@ -79,11 +76,6 @@ export function LoginForm() {
         navigate({ to: getDashboardRoute(role), replace: true });
       } catch (error) {
         const message = error instanceof Error ? error.message : "";
-
-        if (message.includes("Tenant not found")) {
-          setServerError("Gagal masuk. Kode sekolah tidak ditemukan.");
-          return;
-        }
 
         if (message.length > 0) {
           setServerError("Gagal masuk. Email atau kata sandi salah.");
@@ -113,20 +105,6 @@ export function LoginForm() {
         </div>
       ) : null}
 
-      <div className="space-y-2">
-        <form.AppField name="tenantSlug">
-          {(field) => (
-            <field.TextField
-              id="tenant-slug"
-              label="Kode Sekolah"
-              placeholder="contoh: sma-1-bdg"
-            />
-          )}
-        </form.AppField>
-        <p className="text-xs text-ink-muted">
-          Gunakan kode sekolah yang diberikan admin.
-        </p>
-      </div>
 
       <div className="space-y-2">
         <form.AppField name="role">
