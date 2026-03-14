@@ -152,7 +152,11 @@ export class TenantsService {
   }
 
   async registerTenant(dto: RegisterTenantDto) {
-    const normalizedCode = dto.schoolCode.trim().toLowerCase();
+    const normalizedCode = dto.schoolName
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
 
     const existing = await this.prisma.client.tenant.findFirst({
       where: {
@@ -162,7 +166,7 @@ export class TenantsService {
     });
 
     if (existing) {
-      throw new ConflictException("School name or code already exists");
+      throw new ConflictException("School name or generated slug already exists");
     }
 
     const normalizedEmail = dto.admin.email.trim().toLowerCase();

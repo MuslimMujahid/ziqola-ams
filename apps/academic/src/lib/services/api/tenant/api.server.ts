@@ -6,14 +6,6 @@ import { registerTenantAndCreateSession } from "@/lib/utils/auth.server";
 const EDUCATION_LEVEL_VALUES = ["SD", "SMP", "SMA", "SMK", "OTHER"] as const;
 
 const registerTenantSchema = z.object({
-  schoolCode: z
-    .string()
-    .trim()
-    .min(3, "School code is required")
-    .max(50, "School code is too long")
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
-      message: "Use lowercase letters, numbers, and hyphens only",
-    }),
   schoolName: z
     .string()
     .trim()

@@ -10,7 +10,6 @@ type RegisterTenantAdminInput = {
 };
 
 type RegisterTenantVars = {
-  schoolCode: string;
   schoolName: string;
   educationLevel: EducationLevel;
   admin: RegisterTenantAdminInput;

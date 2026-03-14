@@ -10,7 +10,6 @@ import { useAppForm, withForm } from "@/lib/utils/form";
 import { cn } from "@/lib/utils";
 import { getDashboardRoute } from "@/lib/utils/auth";
 import { useRegisterTenant } from "@/lib/services/api/tenant/use-register-tenant";
-import { useCheckSchoolCodeAvailability } from "@/lib/services/api/tenant/use-check-school-code";
 import { useCheckEmailAvailability } from "@/lib/services/api/tenant/use-check-email";
 import { Button } from "@repo/ui/button";
 import type { RegisterTenantVars } from "@/lib/services/api/tenant/tenant.types";
@@ -23,17 +22,7 @@ const EDUCATION_LEVEL_OPTIONS = [
   { label: "Lainnya", value: "OTHER" },
 ] as const;
 
-const SCHOOL_CODE_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-
 const schoolSchema = z.object({
-  schoolCode: z
-    .string()
-    .trim()
-    .min(3, "Kode sekolah wajib diisi")
-    .max(50, "Kode sekolah terlalu panjang")
-    .regex(SCHOOL_CODE_REGEX, {
-      message: "Gunakan huruf kecil, angka, dan tanda hubung",
-    }),
   schoolName: z
     .string()
     .trim()
@@ -80,7 +69,6 @@ type RegisterInput = z.infer<typeof registerSchema>;
 
 const registerFormOptions = formOptions({
   defaultValues: {
-    schoolCode: "",
     schoolName: "",
     educationLevel: "SD",
     admin: {
@@ -101,7 +89,6 @@ export function RegisterForm() {
   const navigate = useNavigate();
   const { mutateAsync: registerTenant } = useRegisterTenant();
   const [serverError, setServerError] = React.useState<string | null>(null);
-  const [debouncedSchoolCode, setDebouncedSchoolCode] = React.useState("");
   const [step, setStep] = React.useState<RegisterStep>("school");
   const form = useAppForm({
     ...registerFormOptions,
@@ -110,7 +97,6 @@ export function RegisterForm() {
 
       try {
         const payload: RegisterTenantVars = {
-          schoolCode: value.schoolCode,
           schoolName: value.schoolName,
           educationLevel: value.educationLevel,
           admin: {
@@ -124,8 +110,8 @@ export function RegisterForm() {
         navigate({ to: getDashboardRoute(role), replace: true });
       } catch (error) {
         const message = error instanceof Error ? error.message : "";
-        if (message.toLowerCase().includes("code")) {
-          setServerError("Kode sekolah sudah digunakan. Gunakan kode lain.");
+        if (message.toLowerCase().includes("school name or generated slug")) {
+          setServerError("Nama sekolah atau slug sudah digunakan. Gunakan nama lain.");
           setStep("school");
           return;
         }
@@ -140,36 +126,11 @@ export function RegisterForm() {
     },
   });
 
-  const schoolCode = useStore(form.store, (state) => state.values.schoolCode);
   const isSubmitting = useStore(form.store, (state) => state.isSubmitting);
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSchoolCode(schoolCode.trim());
-    }, 400);
-
-    return () => clearTimeout(timer);
-  }, [schoolCode]);
-
-  const isSchoolCodeValid =
-    debouncedSchoolCode.length >= 3 &&
-    debouncedSchoolCode.length <= 50 &&
-    SCHOOL_CODE_REGEX.test(debouncedSchoolCode);
-
-  const { data: availability, isFetching } = useCheckSchoolCodeAvailability(
-    debouncedSchoolCode,
-    { enabled: isSchoolCodeValid },
-  );
-
-  const isAvailable = availability?.available ?? false;
-  const shouldShowAvailability =
-    isSchoolCodeValid && debouncedSchoolCode.length > 0;
-  const isNextBlocked = shouldShowAvailability ? !isAvailable : true;
-  const isNextDisabled = isSubmitting || isNextBlocked;
+  const isNextDisabled = isSubmitting;
 
   const handleNext = React.useCallback(async () => {
     const fields: Array<keyof SchoolInput> = [
-      "schoolCode",
       "schoolName",
       "educationLevel",
     ];
@@ -180,10 +141,10 @@ export function RegisterForm() {
 
     const hasErrors = results.some((errors) => errors.length > 0);
 
-    if (!hasErrors && !isNextBlocked) {
+    if (!hasErrors) {
       setStep("admin");
     }
-  }, [form, isNextBlocked]);
+  }, [form]);
 
   const renderStepIndicator = () => {
     const steps: Array<{ key: RegisterStep; title: string }> = [
@@ -268,9 +229,6 @@ export function RegisterForm() {
         {step === "school" ? (
           <SchoolStepForm
             form={form}
-            isFetching={isFetching}
-            isAvailable={isAvailable}
-            shouldShowAvailability={shouldShowAvailability}
             isNextDisabled={isNextDisabled}
             isSubmitting={isSubmitting}
             onNext={handleNext}
@@ -291,18 +249,12 @@ export function RegisterForm() {
 const SchoolStepForm = withForm({
   ...registerFormOptions,
   props: {
-    isFetching: false,
-    isAvailable: false,
-    shouldShowAvailability: false,
     isNextDisabled: false,
     isSubmitting: false,
     onNext: async () => {},
   },
   render: function Render({
     form,
-    isFetching,
-    isAvailable,
-    shouldShowAvailability,
     isNextDisabled,
     isSubmitting,
     onNext,
@@ -310,43 +262,6 @@ const SchoolStepForm = withForm({
     return (
       <div className="space-y-5">
         <div className="space-y-4 rounded-lg py-4">
-          <form.AppField name="schoolCode">
-            {(field) => (
-              <field.TextField
-                id="school-code"
-                label="Kode Sekolah"
-                placeholder="contoh: sm-1-bdg"
-              />
-            )}
-          </form.AppField>
-
-          {shouldShowAvailability ? (
-            <div
-              className={cn(
-                "flex items-center gap-2 text-xs",
-                isAvailable ? "text-success" : "text-error",
-              )}
-            >
-              {isFetching ? (
-                <Loader2Icon className="h-3.5 w-3.5 animate-spin" />
-              ) : isAvailable ? (
-                <CheckCircleIcon className="h-3.5 w-3.5" />
-              ) : (
-                <XCircleIcon className="h-3.5 w-3.5" />
-              )}
-              <span>
-                {isFetching
-                  ? "Memeriksa ketersediaan kode..."
-                  : isAvailable
-                    ? "Kode sekolah tersedia"
-                    : "Kode sekolah sudah digunakan"}
-              </span>
-            </div>
-          ) : (
-            <p className="text-xs text-ink-muted">
-              Gunakan huruf kecil, angka, dan tanda hubung.
-            </p>
-          )}
 
           <form.AppField name="schoolName">
             {(field) => (
@@ -390,10 +305,6 @@ const SchoolStepForm = withForm({
             "Lanjut ke Admin"
           )}
         </Button>
-
-        <p className="text-xs text-ink-muted">
-          Pastikan kode sekolah belum digunakan untuk tenant lain.
-        </p>
       </div>
     );
   },
